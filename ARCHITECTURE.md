@@ -30,6 +30,14 @@ The guide also states a **300,000 strong Indian diaspora**. `trade-stats.html` c
 `[[TBD]]` for this. The guide is INZBC-supplied but is a planning document, not a
 statistics source, so the figure stays a placeholder until sourced.
 
+**3. Palette — live site vs. repo, and now a third provisional option.** The live site's
+colors do not match this repo's (`docs/live-site-extract.md` has the full comparison table).
+As of 6 August 2026 there is also a **provisional third palette** under consideration
+(Deep Navy `#12203D` / Marigold `#E86A17` / Teal `#0E7C86`, bicultural-identity rationale) —
+see `docs/live-site-extract.md` for the full writeup and contrast numbers. **Not approved.**
+Nothing in this repo is built against it; both the live-site-vs-repo conflict and this third
+option await Sunil/INZBC confirmation.
+
 ## Navigation — 8 top-level items, per the guide
 
 | Top level | Children | Purpose |

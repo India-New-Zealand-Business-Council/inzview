@@ -29,6 +29,27 @@ Note the contrast rule survives either way, but the numbers must be rechecked: n
 `#160933` on tangerine `#f05b29` is 5.56:1. `#1B1464` on `#D0611D` has **not** been
 measured. Measure before adopting.
 
+## PROVISIONAL — under consideration, not yet approved by INZBC
+
+A third option, added 6 August 2026, pending Sunil/INZBC confirmation. **This does not
+resolve the conflict above** — it sits alongside the live-site and repo palettes as a
+candidate, not a replacement for either. Do not build against it until approved.
+
+| | Provisional |
+|---|---|
+| Primary (60%) | Deep Navy `#12203D` — trust/heritage |
+| Accent (30%) | Marigold/Saffron `#E86A17` — distinct, India association |
+| Secondary/Bridge (10%) | Teal `#0E7C86` — differentiator, bridges NZ/India visually |
+
+Rationale: sourced from 2026 B2B branding research — a trust-color-plus-distinctive-accent
+pattern, allocated on a 60/30/10 rule, tied to INZBC's bicultural India–NZ identity (a third
+axis neither the live site's nor the repo's current palette names explicitly).
+
+Contrast, computed the same way as the rest of this doc, not yet independently verified:
+navy `#12203D` on marigold `#E86A17` is ~5.0:1 (passes AA normal text). White on marigold is
+~3.23:1 (fails — same lesson as tangerine: keep it an accent, not a text background). White
+on teal `#0E7C86` is ~4.95:1 (passes, usable as a secondary surface with white text).
+
 ## Typography
 
 | | Live | Repo |
