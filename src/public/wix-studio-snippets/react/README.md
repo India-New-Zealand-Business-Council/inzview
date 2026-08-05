@@ -19,7 +19,8 @@ React 16 JSX components that mirror the HTML embed snippets. Two intended uses:
 - `InzTextSection` — simple text block section.
 
 ### Pages
-One component per page slug from `docs/studio-build-spec.md`:
+One component per page. Slugs come from `docs/website-redirect-map.md` in the `inzbc`
+repo — each is the destination of a live 301, so they are not free to change:
 `HomePage`, `AboutPage`, `MembershipPage`, `MembershipJoinPage`, `MemberDirectoryPage`,
 `EventsPage`, `EventsPastPage`, `TradeResourcesPage`, `TradeMissionsPage`,
 `IndiaMarketOpportunitiesPage`, `FtaCentrePage`, `FtaExplainerPage`,
@@ -39,32 +40,42 @@ Each bundle is self-contained (includes React 16) and registers a custom element
 
 ## Using in Wix Studio
 
-1. In Studio, create the target page slug (e.g., `/about`, `/fta`).
+1. In Studio, create the target page slug from the table below. Do not shorten or invent
+   one: each confirmed slug is the destination of an existing 301 in
+   `docs/website-redirect-map.md`, and a changed slug silently breaks that redirect.
 2. On that page, go to **Add** → **Custom Element**.
-3. Upload the matching file from `dist/`:
+3. Point it at the matching file from `dist/` and enter the tag:
 
-| File | Custom element tag |
-|---|---|
-| `dist/home.js` | `inzbc-home` |
-| `dist/about.js` | `inzbc-about` |
-| `dist/membership.js` | `inzbc-membership` |
-| `dist/membership-join.js` | `inzbc-membership-join` |
-| `dist/member-directory.js` | `inzbc-member-directory` |
-| `dist/events.js` | `inzbc-events` |
-| `dist/events-past.js` | `inzbc-events-past` |
-| `dist/trade-resources.js` | `inzbc-trade-resources` |
-| `dist/trade-missions.js` | `inzbc-trade-missions` |
-| `dist/india-market-opportunities.js` | `inzbc-india-market-opportunities` |
-| `dist/fta-centre.js` | `inzbc-fta-centre` |
-| `dist/fta-explainer.js` | `inzbc-fta-explainer` |
-| `dist/insights-publications.js` | `inzbc-insights-publications` |
-| `dist/insights-newsletters.js` | `inzbc-insights-newsletters` |
-| `dist/digest.js` | `inzbc-digest` |
-| `dist/news.js` | `inzbc-news` |
-| `dist/partners.js` | `inzbc-partners` |
-| `dist/connect.js` | `inzbc-connect` |
-| `dist/executive-council.js` | `inzbc-executive-council` |
-| `dist/our-patron.js` | `inzbc-our-patron` |
+| File | Custom element tag | Slug |
+|---|---|---|
+| `dist/home.js` | `inzbc-home` | `/` |
+| `dist/about.js` | `inzbc-about` | `/about-inzbc` |
+| `dist/membership.js` | `inzbc-membership` | `/membership` |
+| `dist/membership-join.js` | `inzbc-membership-join` | `/membership/join` |
+| `dist/member-directory.js` | `inzbc-member-directory` | `/membership/directory` |
+| `dist/events.js` | `inzbc-events` | `/events` |
+| `dist/events-past.js` | `inzbc-events-past` | `/events/past` |
+| `dist/trade-resources.js` | `inzbc-trade-resources` | **unconfirmed** |
+| `dist/trade-missions.js` | `inzbc-trade-missions` | `/trade-missions` |
+| `dist/india-market-opportunities.js` | `inzbc-india-market-opportunities` | `/india-market-opportunities` |
+| `dist/fta-centre.js` | `inzbc-fta-centre` | **unconfirmed** |
+| `dist/fta-explainer.js` | `inzbc-fta-explainer` | **unconfirmed** |
+| `dist/insights-publications.js` | `inzbc-insights-publications` | `/insights/publications` |
+| `dist/insights-newsletters.js` | `inzbc-insights-newsletters` | `/insights/newsletters` |
+| `dist/digest.js` | `inzbc-digest` | **unconfirmed** |
+| `dist/news.js` | `inzbc-news` | `/news` — keep this URL, label it Media in navigation |
+| `dist/partners.js` | `inzbc-partners` | `/partners` |
+| `dist/connect.js` | `inzbc-connect` | `/connect` |
+| `dist/executive-council.js` | `inzbc-executive-council` | `/executive-council` |
+| `dist/our-patron.js` | `inzbc-our-patron` | `/our-patron` |
+
+The four marked **unconfirmed** are new pages with no live URL behind them
+(`page-specs.md` §4, §6, §7). Confirm each with Bhanu before creating it.
+
+Five slugs are nested: `/membership/join`, `/membership/directory`, `/events/past`,
+`/insights/publications`, `/insights/newsletters`. **Check that URL hierarchy flattening
+is OFF before creating any of them** — with it on they serve at `/join`, `/directory`,
+`/past`, `/publications`, `/newsletters` and every nested redirect misses.
 
 4. Resize the custom element container to fill the page width as needed.
 
