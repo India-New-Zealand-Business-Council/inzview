@@ -24,6 +24,44 @@ paste is stored by Wix, not here, and a push cannot reach it.
 Wix's own Save dialog says it plainly: *"This does not push code to GitHub."* The sync is
 Editor → local files, and only for design metadata. It is not a deploy.
 
+## How the pages were made, and how to change them now
+
+**Pages can only be created in the Editor. Not from git, not from the CLI.** The page code
+files are named `<Page Name>.<wix-id>.js` and that id (`c1dmp`, `f6qs1`, …) is minted by
+Wix when the page is created. Git can carry code *for a page that already exists*; it
+cannot bring a page into being. All 20 pages already exist, so this should not need doing
+again.
+
+Each page needs **one Embed Code element**, added by hand once, with its own code box left
+**empty**. It is only a container. Page code sets its `src`, so everything visible on the
+page comes from git after that.
+
+Once a page has its embed, the whole edit loop is git:
+
+```bash
+# 1. edit the section markup
+vim src/public/wix-studio-snippets/about-hero.html
+
+# 2. regenerate (never edit src/public/sections.js by hand — it is generated)
+node scripts/build-sections.js
+
+# 3. ship
+git push
+npx wix publish --source local -y
+```
+
+`scripts/build-sections.js` holds two things worth knowing: `PAGES`, mapping each page key
+to its ordered list of snippet files, and `BASE_CSS`, the stylesheet every page carries.
+Add a section to a page by adding its filename to that page's array. Change the design
+system by editing `BASE_CSS` — and keep `wix-studio-snippets/site-head.html` in step,
+since that is the copy a human would paste into Custom Code.
+
+`scripts/wire-pages.js` rewrites every page code file from `KEY_BY_PAGE`. Run it after
+adding a page; it maps by page name and leaves the Wix id alone.
+
+Both scripts live outside `src/` because Wix lints everything under `src/` and Node
+globals fail that lint.
+
 ## So how do you change page content from git?
 
 Put the markup in a public module and inject it from page code. This is what
@@ -108,6 +146,59 @@ until someone picks the destination.
 `/membership/directory`, `/events/past`, `/insights/publications` or
 `/insights/newsletters`. With it on they serve at `/join`, `/past`, `/publications` and
 every nested redirect misses.
+
+## State as at 6 August 2026, and what is still missing
+
+**Done.** 20 pages exist. `src/public/sections.js` carries markup for all 20, generated
+from the snippets. Every page code file is wired to its key. Verified: all 20 render, the
+largest data URI is 12.7 KB, eslint clean.
+
+**Embeds placed on 2 of 20 pages** — Home and About INZBC. The other 18 are wired in code
+but have no container to render into, so they show blank. Adding one is: select the page,
+Add → Embed & Social → Embed Code, leave the code box empty, set W 1280 / H 900. Two
+shortcuts that do **not** work: Ctrl+C/Ctrl+V between pages (Wix intercepts the clipboard)
+and pasting into the embed's code box (that stores markup in Wix, not git).
+
+**Missing against the live site** (`docs/website-url-inventory-2026-07-31.txt`, 20 live
+pages):
+
+- **Two event detail pages.** `/india-x-nz` and `/copy-of-boardroom-to-border` are two
+  distinct real events — Auckland and Christchurch — each with its own date, venue,
+  speakers and pricing. They need `/events/boardroom-to-border-auckland-2025` and
+  `-christchurch-2025`. Do not treat the second as a duplicate and do not unpublish it.
+- **`/member-profile`.** Member-gated today. `website-redirect-map.md` marks its redirect
+  **staging only** — do not apply it in production before the Member Jungle and privacy
+  decisions are made.
+- **The entire blog: 154 posts and 6 categories.** The `News` page here is a shell. The
+  Wix Blog app is not connected and no posts have been migrated. This is the single
+  largest missing piece.
+- **Site chrome.** Header still says "Business Name" — no logo, and the nav lists only
+  Home, so none of the 19 new pages are reachable by clicking.
+- **Slugs.** Wix derived them from page names, so nested ones are wrong: Join is likely
+  `/join`, not `/membership/join`. Every slug must be set to match
+  `docs/website-redirect-map.md` or the 301s miss.
+- **Custom Code not added.** `site-head.html` (fonts, brand tokens) and
+  `organization-schema.html` (JSON-LD) still need pasting into Settings → Custom Code.
+- **Forms.** The Connect page's contact form is a `[[placeholder]]`, not a Wix Form.
+- **SEO.** No per-page titles or descriptions, no favicon.
+
+## Designing this site
+
+The design lives in two places, both in git, both safe for another agent to work on:
+
+- `src/public/wix-studio-snippets/*.html` — one file per section, plain HTML with inline
+  styles and the `inz-` classes.
+- `BASE_CSS` in `scripts/build-sections.js` — the design system: tokens, type scale,
+  buttons, container.
+
+A designer never has to touch the Editor. Edit those, run `node scripts/build-sections.js`,
+push. What they **cannot** change from git: the header, footer, nav menu, page slugs, and
+anything else Wix treats as site structure.
+
+Non-negotiables for any redesign: navy `#160933` on tangerine `#f05b29` for buttons (5.56:1,
+passes AA — white on tangerine is 3.37:1 and fails); `[[placeholder]]` markers stay until
+INZBC supplies the fact; and the sourced figures in `trade-stats.html` are not to be
+reworded or rounded.
 
 ## Content rules
 
