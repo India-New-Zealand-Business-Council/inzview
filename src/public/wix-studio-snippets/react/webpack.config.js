@@ -14,7 +14,9 @@ fs.readdirSync(entriesDir)
 module.exports = {
   entry: entries,
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    // Velo only offers scripts from src/public/custom-elements as custom element
+    // sources, so bundles are emitted there rather than a local dist folder.
+    path: path.resolve(__dirname, '../../custom-elements'),
     filename: '[name].js',
     // IIFE is required for Wix custom elements; each bundle self-registers.
     iife: true,

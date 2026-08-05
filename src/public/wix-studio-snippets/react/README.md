@@ -35,7 +35,10 @@ npm install
 npm run build
 ```
 
-This produces one bundle per page in `dist/`, e.g. `dist/home.js`, `dist/about.js`.
+This produces one bundle per page in `src/public/custom-elements/`, e.g. `home.js`,
+`about.js`. That folder is not a free choice: Velo only offers scripts from
+`src/public/custom-elements` when you pick a custom element source, so a bundle emitted
+anywhere else cannot be selected in the editor.
 Each bundle is self-contained (includes React 16) and registers a custom element.
 
 ## Using in Wix Studio
@@ -44,30 +47,30 @@ Each bundle is self-contained (includes React 16) and registers a custom element
    one: each confirmed slug is the destination of an existing 301 in
    `docs/website-redirect-map.md`, and a changed slug silently breaks that redirect.
 2. On that page, go to **Add** → **Custom Element**.
-3. Point it at the matching file from `dist/` and enter the tag:
+3. Choose Source → **Velo file**, pick the matching file, and enter the tag:
 
 | File | Custom element tag | Slug |
 |---|---|---|
-| `dist/home.js` | `inzbc-home` | `/` |
-| `dist/about.js` | `inzbc-about` | `/about-inzbc` |
-| `dist/membership.js` | `inzbc-membership` | `/membership` |
-| `dist/membership-join.js` | `inzbc-membership-join` | `/membership/join` |
-| `dist/member-directory.js` | `inzbc-member-directory` | `/membership/directory` |
-| `dist/events.js` | `inzbc-events` | `/events` |
-| `dist/events-past.js` | `inzbc-events-past` | `/events/past` |
-| `dist/trade-resources.js` | `inzbc-trade-resources` | **unconfirmed** |
-| `dist/trade-missions.js` | `inzbc-trade-missions` | `/trade-missions` |
-| `dist/india-market-opportunities.js` | `inzbc-india-market-opportunities` | `/india-market-opportunities` |
-| `dist/fta-centre.js` | `inzbc-fta-centre` | **unconfirmed** |
-| `dist/fta-explainer.js` | `inzbc-fta-explainer` | **unconfirmed** |
-| `dist/insights-publications.js` | `inzbc-insights-publications` | `/insights/publications` |
-| `dist/insights-newsletters.js` | `inzbc-insights-newsletters` | `/insights/newsletters` |
-| `dist/digest.js` | `inzbc-digest` | **unconfirmed** |
-| `dist/news.js` | `inzbc-news` | `/news` — keep this URL, label it Media in navigation |
-| `dist/partners.js` | `inzbc-partners` | `/partners` |
-| `dist/connect.js` | `inzbc-connect` | `/connect` |
-| `dist/executive-council.js` | `inzbc-executive-council` | `/executive-council` |
-| `dist/our-patron.js` | `inzbc-our-patron` | `/our-patron` |
+| `custom-elements/home.js` | `inzbc-home` | `/` |
+| `custom-elements/about.js` | `inzbc-about` | `/about-inzbc` |
+| `custom-elements/membership.js` | `inzbc-membership` | `/membership` |
+| `custom-elements/membership-join.js` | `inzbc-membership-join` | `/membership/join` |
+| `custom-elements/member-directory.js` | `inzbc-member-directory` | `/membership/directory` |
+| `custom-elements/events.js` | `inzbc-events` | `/events` |
+| `custom-elements/events-past.js` | `inzbc-events-past` | `/events/past` |
+| `custom-elements/trade-resources.js` | `inzbc-trade-resources` | **unconfirmed** |
+| `custom-elements/trade-missions.js` | `inzbc-trade-missions` | `/trade-missions` |
+| `custom-elements/india-market-opportunities.js` | `inzbc-india-market-opportunities` | `/india-market-opportunities` |
+| `custom-elements/fta-centre.js` | `inzbc-fta-centre` | **unconfirmed** |
+| `custom-elements/fta-explainer.js` | `inzbc-fta-explainer` | **unconfirmed** |
+| `custom-elements/insights-publications.js` | `inzbc-insights-publications` | `/insights/publications` |
+| `custom-elements/insights-newsletters.js` | `inzbc-insights-newsletters` | `/insights/newsletters` |
+| `custom-elements/digest.js` | `inzbc-digest` | **unconfirmed** |
+| `custom-elements/news.js` | `inzbc-news` | `/news` — keep this URL, label it Media in navigation |
+| `custom-elements/partners.js` | `inzbc-partners` | `/partners` |
+| `custom-elements/connect.js` | `inzbc-connect` | `/connect` |
+| `custom-elements/executive-council.js` | `inzbc-executive-council` | `/executive-council` |
+| `custom-elements/our-patron.js` | `inzbc-our-patron` | `/our-patron` |
 
 The four marked **unconfirmed** are new pages with no live URL behind them
 (`page-specs.md` §4, §6, §7). Confirm each with Bhanu before creating it.
@@ -79,8 +82,19 @@ is OFF before creating any of them** — with it on they serve at `/join`, `/dir
 
 4. Resize the custom element container to fill the page width as needed.
 
+## Custom elements need a Premium plan
+
+The Element Attributes panel states: *"To see this element, upgrade your site with a
+Premium plan."* The site is currently on the free plan, so a custom element can be placed
+and configured but will not render. `Publish` is also disabled. Confirm the plan before
+committing further work to this approach — the paste-ready HTML embeds in the parent
+folder are the fallback if Premium is not bought.
+
 ## Notes
 
+- Do not run `npm install` in this folder and then `wix dev`. The CLI uploads all of
+  `src/`, and 51 MB of `node_modules` makes it fail with HTTP 413 ("Failed to create an
+  isolated environment"). Install, build, then move `node_modules` out before `wix dev`.
 - All styles are inline or injected via `InzGlobalStyles`; no external CSS imports in components.
 - `[[placeholder]]` markers are preserved for INZBC input.
 - Tangerine buttons use navy text for WCAG AA contrast.
