@@ -14,8 +14,14 @@ export default function ExecutiveCouncilPage() {
           { name: 'Edwin Paul', role: 'Chair' },
           { name: 'Tony Martin', role: 'Deputy Chair' },
           { name: 'Bharat Chawla', role: 'Treasurer' },
-          { name: 'Antje Fiedler, Prince Kumar, Jonathan Manuel, Rachel Lynch, Jenny McGregor, Sumant Khedkar', role: 'Board Members' },
+          { name: 'Antje Fiedler', role: 'Board Member' },
+          { name: 'Prince Kumar', role: 'Board Member' },
+          { name: 'Jonathan Manuel', role: 'Board Member' },
+          { name: 'Rachel Lynch', role: 'Board Member' },
+          { name: 'Jenny McGregor', role: 'Board Member' },
+          { name: 'Sumant Khedkar', role: 'Board Member' },
         ]}
+        note="[[Proposed — read from inzbc.org 27 Jul 2026; pending INZBC confirmation before publish.]]"
       />
       <InzProfileGrid
         title="Executive team"
