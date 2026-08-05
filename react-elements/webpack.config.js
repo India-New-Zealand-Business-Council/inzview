@@ -14,9 +14,12 @@ fs.readdirSync(entriesDir)
 module.exports = {
   entry: entries,
   output: {
-    // Velo only offers scripts from src/public/custom-elements as custom element
-    // sources, so bundles are emitted there rather than a local dist folder.
-    path: path.resolve(__dirname, '../../custom-elements'),
+    // Velo only offers custom element sources from src/public/custom-elements, but
+    // emitting there breaks `wix publish`: Wix lints every .js under src/, and the
+    // minified React bundle trips no-undef on MSApp and __REACT_DEVTOOLS_GLOBAL_HOOK__.
+    // Point this back at src/public/custom-elements only once the site is on a Premium
+    // plan, which is what custom elements need in order to render at all.
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
     // IIFE is required for Wix custom elements; each bundle self-registers.
     iife: true,

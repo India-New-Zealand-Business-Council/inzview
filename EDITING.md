@@ -53,25 +53,46 @@ One-time setup per section, done in the Editor by hand:
 3. Size and position it. Full width is W 1280, X 0.
 4. Reference that ID from the page's code file.
 
-## Custom elements need a Premium plan
+## Custom elements need a Premium plan, and break `wix publish`
 
-There are 20 built React bundles in `src/public/custom-elements/`. They are wired
-correctly — Velo only lists scripts from that exact folder, which is why
-`webpack.config.js` emits there rather than a local `dist/`.
+The React component project lives at **`react-elements/` in the repo root — deliberately
+outside `src/`.**
 
-They still will not render. The Element Attributes panel states: *"To see this element,
-upgrade your site with a Premium plan."* The site is on the free plan. Do not spend time
-debugging a custom element that shows an empty box; check the plan first.
+Two things forced that. First, custom elements do not render on a free plan: the Element
+Attributes panel states *"To see this element, upgrade your site with a Premium plan."* Do
+not debug a custom element showing an empty box; check the plan first.
 
-The public-module approach above is the free-plan path, and it is also simpler.
+Second, and worse, **Wix lints every `.js` file under `src/` during `wix publish`**, and a
+minified React bundle fails that lint:
+
+```
+error: no-undef: 'MSApp' is not defined.
+error: no-undef: '__REACT_DEVTOOLS_GLOBAL_HOOK__' is not defined.
+```
+
+Both are guarded at runtime and harmless, but the build fails and the publish is blocked.
+The Node tooling (`webpack.config.js`, `generate-entries.js`) would fail the same lint on
+`require` and `__dirname`. So nothing from that project may live under `src/`.
+
+Velo only offers custom element sources from `src/public/custom-elements`. That is a real
+conflict with the rule above and it has no clean resolution on a free plan — which is why
+the public-module approach is the one in use.
+
+If Premium is ever bought: repoint `output.path` in `react-elements/webpack.config.js` back
+to `src/public/custom-elements`, and expect to deal with the lint errors above.
+
+The public-module approach is the free-plan path, and it is also simpler.
 
 ## Traps
 
-**Never run `npm install` inside `src/` and then `wix dev`.** The CLI uploads the whole
-`src/` tree. 51 MB of `node_modules` makes it fail with HTTP 413, surfaced misleadingly as
-"Failed to create an isolated environment". Neither `.gitignore` is honoured. To rebuild
-the React bundles: move `node_modules` back in, `npm run build`, then move it out again
-before starting `wix dev`.
+**Nothing that is not Velo code belongs under `src/`.** The CLI uploads the whole `src/`
+tree on `wix dev` and lints every `.js` in it on `wix publish`. A `node_modules` under
+`src/` fails with HTTP 413, surfaced misleadingly as "Failed to create an isolated
+environment", and `.gitignore` is not honoured. This is why `react-elements/` sits in the
+repo root.
+
+**`git mv` fails with "Permission denied" while `wix dev` is running.** It holds file
+handles under `src/`. Stop it first.
 
 **`wix dev` must run on Windows, not WSL.** It launches a browser WSL does not have, and
 prints no URL you can use.
