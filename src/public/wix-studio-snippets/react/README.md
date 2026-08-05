@@ -26,29 +26,51 @@ One component per page slug from `docs/studio-build-spec.md`:
 `InsightsPublicationsPage`, `InsightsNewslettersPage`, `DigestPage`, `NewsPage`,
 `PartnersPage`, `ConnectPage`, `ExecutiveCouncilPage`, `OurPatronPage`.
 
-## Using in Wix Studio
+## Build
 
-Wix custom elements must be bundled as a single UMD/IIFE file and registered with
-`customElements.define`. A minimal wrapper looks like:
-
-```jsx
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { HomePage } from './index';
-
-class InzbcHome extends HTMLElement {
-  connectedCallback() {
-    ReactDOM.render(<HomePage />, this);
-  }
-}
-
-customElements.define('inzbc-home', InzbcHome);
+```bash
+cd src/public/wix-studio-snippets/react
+npm install
+npm run build
 ```
 
-Then in Wix Studio: **Add** → **Custom Elements** → upload the bundled file → tag name `inzbc-home`.
+This produces one bundle per page in `dist/`, e.g. `dist/home.js`, `dist/about.js`.
+Each bundle is self-contained (includes React 16) and registers a custom element.
+
+## Using in Wix Studio
+
+1. In Studio, create the target page slug (e.g., `/about`, `/fta`).
+2. On that page, go to **Add** → **Custom Element**.
+3. Upload the matching file from `dist/`:
+
+| File | Custom element tag |
+|---|---|
+| `dist/home.js` | `inzbc-home` |
+| `dist/about.js` | `inzbc-about` |
+| `dist/membership.js` | `inzbc-membership` |
+| `dist/membership-join.js` | `inzbc-membership-join` |
+| `dist/member-directory.js` | `inzbc-member-directory` |
+| `dist/events.js` | `inzbc-events` |
+| `dist/events-past.js` | `inzbc-events-past` |
+| `dist/trade-resources.js` | `inzbc-trade-resources` |
+| `dist/trade-missions.js` | `inzbc-trade-missions` |
+| `dist/india-market-opportunities.js` | `inzbc-india-market-opportunities` |
+| `dist/fta-centre.js` | `inzbc-fta-centre` |
+| `dist/fta-explainer.js` | `inzbc-fta-explainer` |
+| `dist/insights-publications.js` | `inzbc-insights-publications` |
+| `dist/insights-newsletters.js` | `inzbc-insights-newsletters` |
+| `dist/digest.js` | `inzbc-digest` |
+| `dist/news.js` | `inzbc-news` |
+| `dist/partners.js` | `inzbc-partners` |
+| `dist/connect.js` | `inzbc-connect` |
+| `dist/executive-council.js` | `inzbc-executive-council` |
+| `dist/our-patron.js` | `inzbc-our-patron` |
+
+4. Resize the custom element container to fill the page width as needed.
 
 ## Notes
 
 - All styles are inline or injected via `InzGlobalStyles`; no external CSS imports in components.
 - `[[placeholder]]` markers are preserved for INZBC input.
 - Tangerine buttons use navy text for WCAG AA contrast.
+- Each bundle is ~130 KiB because React 16 is bundled in for standalone use.
