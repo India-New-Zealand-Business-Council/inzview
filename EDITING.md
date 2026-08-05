@@ -1,5 +1,8 @@
 # How to edit this site
 
+> Target sitemap, the pages still to build, and two open conflicts with the client's
+> migration guide: [ARCHITECTURE.md](./ARCHITECTURE.md).
+
 Read this before changing anything. The obvious approach does not work, and the reason is
 not discoverable from the Wix docs.
 
