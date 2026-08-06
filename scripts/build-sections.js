@@ -45,20 +45,20 @@ const PAGES = {
 // See ARCHITECTURE.md.
 const NAV = `
 <header class="inz-nav">
-  <a class="inz-nav__brand" href="/" target="_top">INZBC</a>
+  <a class="inz-nav__brand" href="/" onclick="inzNav(event, '/')">INZBC</a>
   <nav aria-label="Main">
     <ul class="inz-nav__list">
-      <li><a href="/fta" target="_top">NZ&ndash;India FTA</a></li>
-      <li><a href="/trade-resources" target="_top">Trade</a></li>
-      <li><a href="/events" target="_top">Events</a></li>
-      <li><a href="/membership" target="_top">Membership</a></li>
-      <li><a href="/publications" target="_top">Insights</a></li>
-      <li><a href="/news" target="_top">Media</a></li>
-      <li><a href="/partners" target="_top">Partners</a></li>
-      <li><a href="/about-inzbc" target="_top">About</a></li>
+      <li><a href="/fta" onclick="inzNav(event, '/fta')">NZ&ndash;India FTA</a></li>
+      <li><a href="/trade-resources" onclick="inzNav(event, '/trade-resources')">Trade</a></li>
+      <li><a href="/events" onclick="inzNav(event, '/events')">Events</a></li>
+      <li><a href="/membership" onclick="inzNav(event, '/membership')">Membership</a></li>
+      <li><a href="/publications" onclick="inzNav(event, '/publications')">Insights</a></li>
+      <li><a href="/news" onclick="inzNav(event, '/news')">Media</a></li>
+      <li><a href="/partners" onclick="inzNav(event, '/partners')">Partners</a></li>
+      <li><a href="/about-inzbc" onclick="inzNav(event, '/about-inzbc')">About</a></li>
     </ul>
   </nav>
-  <a class="inz-btn inz-btn--primary inz-nav__cta" href="/membership/join" target="_top">Join</a>
+  <a class="inz-btn inz-btn--primary inz-nav__cta" href="/membership/join" onclick="inzNav(event, '/membership/join')">Join</a>
 </header>`;
 
 const FOOTER = `
