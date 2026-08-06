@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en-NZ">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INZBC — parallax home concept</title>
+<!--
+  DESIGN CONCEPT — not wired into the site yet.
+  Open this file directly in a browser to review.
+
+  Why this scrolls internally: on the live site each page renders inside a fixed-height
+  sandboxed iframe. If the iframe is as tall as its content, nothing inside it ever
+  scrolls, and every scroll-linked effect (sticky, reveals, parallax) silently does
+  nothing. So the embed must be set to ~100vh and the content scrolls INSIDE it. That is
+  the whole reason parallax is possible here at all. See EDITING.md.
+
+  Images are local files from assets/from-live-site/ (originals pulled from inzbc.org).
+  Before this goes live they must be uploaded to the new site's Media Manager and these
+  paths swapped for the new static.wixstatic.com URLs — see that folder's README.
+
+  Content follows CLAUDE.md: no invented figures. [[placeholders]] are deliberate and
+  must be filled by INZBC before publication.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,400..900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1b1464; --navy-deep:#120d42; --blue:#097bb8; --gold:#f8c70c;
+  --orange:#d0611d; --ink:#414141; --paper:#ffffff; --mist:#f4f5f8; --line:#e2e4ec;
+  --max:1160px; --r:10px;
+  --display:'Big Shoulders',Impact,sans-serif;
+  --body:'Merriweather',Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--body); line-height:1.65; overflow-x:hidden;
+}
+h1,h2,h3,.display{
+  font-family:var(--display); font-weight:800; text-transform:uppercase;
+  letter-spacing:.02em; line-height:.95; margin:0 0 .35em;
+}
+h1{font-size:clamp(2.8rem,7vw,5.5rem)}
+h2{font-size:clamp(2rem,4.5vw,3.4rem)}
+h3{font-size:clamp(1.2rem,2vw,1.5rem)}
+p{margin:0 0 1em}
+.wrap{width:min(90%,var(--max));margin-inline:auto}
+.eyebrow{
+  font-family:var(--display); text-transform:uppercase; letter-spacing:.18em;
+  font-size:.8rem; font-weight:700; color:var(--gold); margin-bottom:1rem;
+}
+.btn{
+  display:inline-block; font-family:var(--display); font-weight:800;
+  text-transform:uppercase; letter-spacing:.06em; text-decoration:none;
+  padding:.9em 1.9em; border-radius:var(--r); font-size:1rem;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+/* Gold on navy text = 9.89:1, passes AA. Never white on gold. */
+.btn--gold{background:var(--gold); color:var(--navy)}
+.btn--ghost{background:transparent; color:#fff; box-shadow:inset 0 0 0 2px rgba(255,255,255,.65)}
+.btn:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.22)}
+
+/* ---------- nav ---------- */
+.nav{
+  position:fixed; inset:0 0 auto 0; z-index:50; display:flex; align-items:center;
+  gap:1.5rem; padding:.85rem clamp(1rem,4vw,2.5rem);
+  background:rgba(27,20,100,0); backdrop-filter:blur(0px);
+  transition:background .3s ease, backdrop-filter .3s ease, box-shadow .3s ease;
+}
+.nav.solid{background:rgba(18,13,66,.94); backdrop-filter:blur(10px); box-shadow:0 6px 24px rgba(0,0,0,.25)}
+.nav__brand{font-family:var(--display);font-weight:800;font-size:1.45rem;letter-spacing:.1em;color:#fff;text-decoration:none;margin-right:auto}
+.nav__list{display:flex;gap:1.4rem;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.nav__list a{
+  color:#fff;text-decoration:none;font-family:var(--display);text-transform:uppercase;
+  letter-spacing:.07em;font-size:.92rem;padding:.3rem 0;border-bottom:2px solid transparent;
+}
+.nav__list a:hover{border-bottom-color:var(--gold)}
+@media(max-width:900px){.nav__list{display:none}}
+
+/* ---------- hero: three parallax layers ---------- */
+.hero{position:relative;height:100vh;min-height:620px;overflow:hidden;display:grid;place-items:center;text-align:center}
+.hero__img{
+  position:absolute; inset:-12% 0 0 0; height:124%;
+  background:url('../assets/from-live-site/hero-tall.jpg') center/cover no-repeat;
+  will-change:transform;
+}
+.hero__scrim{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(120% 90% at 50% 30%, rgba(27,20,100,.55) 0%, rgba(18,13,66,.92) 70%),
+    linear-gradient(180deg, rgba(18,13,66,.85) 0%, rgba(9,123,184,.45) 100%);
+}
+.hero__inner{position:relative;z-index:2;color:#fff;width:min(90%,900px);will-change:transform,opacity}
+.hero h1{color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.35)}
+.hero__sub{font-size:clamp(1rem,1.8vw,1.3rem);color:#e6e8f5;max-width:56ch;margin:1.2rem auto 2rem}
+.hero__cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.hero__rule{width:70px;height:4px;background:var(--gold);margin:0 auto 1.6rem}
+.scrollcue{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2;color:#fff;opacity:.75;font-family:var(--display);letter-spacing:.2em;font-size:.7rem;text-transform:uppercase}
+.scrollcue::after{content:"";display:block;width:1px;height:34px;background:linear-gradient(#fff,transparent);margin:.6rem auto 0;animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:1;transform:translateY(6px)}}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(34px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.09s}.rv.d2{transition-delay:.18s}.rv.d3{transition-delay:.27s}
+
+/* ---------- stats ---------- */
+.stats{background:var(--navy);color:#fff;padding:clamp(4rem,8vw,6.5rem) 0;position:relative;overflow:hidden}
+.stats::before{
+  content:"";position:absolute;inset:0;opacity:.16;will-change:transform;
+  background:url('../assets/from-live-site/banner-wide-secondary.jpg') center/cover no-repeat;
+}
+.stats .wrap{position:relative;z-index:2}
+.stats h2{color:#fff}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:2rem;margin-top:3rem}
+.stat{border-top:3px solid var(--gold);padding-top:1.2rem}
+.stat__n{font-family:var(--display);font-size:clamp(2.6rem,5vw,3.8rem);font-weight:800;color:var(--gold);line-height:1;margin:0}
+.stat__l{color:#c9cde4;font-size:.95rem;margin:.6rem 0 0}
+.src{color:#8f96c2;font-size:.8rem;margin-top:2.5rem}
+
+/* ---------- sticky FTA ---------- */
+.pin{position:relative;background:var(--mist)}
+.pin__sticky{position:sticky;top:0;height:100vh;display:grid;place-items:center;overflow:hidden}
+.pin__bg{position:absolute;inset:0;background:linear-gradient(120deg,var(--navy-deep),var(--navy) 45%,var(--blue));}
+.pin__art{position:absolute;inset:0;opacity:.22;background:url('../assets/from-live-site/banner-wide-primary.jpg') center/cover no-repeat;will-change:transform}
+.pin__c{position:relative;z-index:2;color:#fff;text-align:center;width:min(90%,860px)}
+.pin__c h2{color:#fff}
+.pin__c p{color:#e6e8f5;max-width:60ch;margin-inline:auto}
+.badge{display:inline-block;font-family:var(--display);letter-spacing:.14em;text-transform:uppercase;font-size:.75rem;background:rgba(248,199,12,.16);color:var(--gold);border:1px solid rgba(248,199,12,.5);padding:.45em 1em;border-radius:100px;margin-bottom:1.4rem}
+
+/* ---------- pathways ---------- */
+.section{padding:clamp(4rem,8vw,7rem) 0}
+.lede{font-size:clamp(1.05rem,1.6vw,1.2rem);max-width:60ch}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(15.5rem,1fr));gap:1.5rem;margin-top:3rem}
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--r);
+  padding:2rem 1.75rem;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;
+}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(27,20,100,.13);border-color:transparent}
+.card__k{font-family:var(--display);color:var(--blue);letter-spacing:.12em;font-size:.75rem;text-transform:uppercase}
+.card h3{margin:.5rem 0 .5rem;color:var(--navy)}
+.card p{margin:0;font-size:.95rem}
+
+/* ---------- partners ---------- */
+.partners{background:var(--mist);text-align:center}
+.partners img{max-width:min(100%,860px);height:auto;border-radius:var(--r);margin-top:2rem}
+
+/* ---------- closing CTA ---------- */
+.close{position:relative;overflow:hidden;background:var(--navy-deep);color:#fff;text-align:center;padding:clamp(5rem,10vw,8rem) 0}
+.close__art{position:absolute;inset:-10% 0;opacity:.2;background:url('../assets/from-live-site/banner-wide-primary.jpg') center/cover no-repeat;will-change:transform}
+.close .wrap{position:relative;z-index:2}
+.close h2{color:#fff}
+.close p{color:#e6e8f5;max-width:52ch;margin-inline:auto}
+
+/* ---------- footer ---------- */
+.foot{background:#0d0930;color:#c9cde4;padding:3.5rem 0 2.5rem;font-size:.92rem}
+.foot__g{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:2rem}
+.foot h4{font-family:var(--display);color:var(--gold);text-transform:uppercase;letter-spacing:.1em;font-size:.85rem;margin:0 0 .8rem}
+.foot ul{list-style:none;margin:0;padding:0}
+.foot li{margin-bottom:.45rem}
+.foot a{color:#e6e8f5;text-decoration:none}
+.foot a:hover{text-decoration:underline}
+.foot__note{border-top:1px solid rgba(255,255,255,.12);margin-top:2.5rem;padding-top:1.5rem;font-size:.82rem;color:#8f96c2}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .scrollcue::after{animation:none}
+  *{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#top">INZBC</a>
+  <nav aria-label="Main">
+    <ul class="nav__list">
+      <li><a href="#fta">NZ–India FTA</a></li>
+      <li><a href="#numbers">Trade</a></li>
+      <li><a href="#pathways">Membership</a></li>
+      <li><a href="#partners">Partners</a></li>
+    </ul>
+  </nav>
+  <a class="btn btn--gold" href="#join" style="padding:.55em 1.3em;font-size:.9rem">Join</a>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero__img" data-par="0.35"></div>
+  <div class="hero__scrim"></div>
+  <div class="hero__inner" id="heroInner">
+    <div class="hero__rule"></div>
+    <p class="eyebrow">India – New Zealand trade since 1988</p>
+    <h1>New Zealand's gateway<br>to the India opportunity</h1>
+    <p class="hero__sub">The India New Zealand Business Council connects exporters, investors and institutions across the NZ–India trade relationship — and leads the way through the new Free Trade Agreement.</p>
+    <div class="hero__cta">
+      <a class="btn btn--gold" href="#fta">Explore the FTA</a>
+      <a class="btn btn--ghost" href="#join">Join INZBC</a>
+    </div>
+  </div>
+  <div class="scrollcue">Scroll</div>
+</section>
+
+<section class="stats" id="numbers">
+  <div class="wrap">
+    <p class="eyebrow rv">The opportunity</p>
+    <h2 class="rv d1">In numbers</h2>
+    <div class="stat-grid">
+      <div class="stat rv"><p class="stat__n" data-count="3.95" data-pre="NZ$" data-post="bn" data-dec="2">NZ$3.95bn</p><p class="stat__l">Two-way trade with India, year ended December 2025.</p></div>
+      <div class="stat rv d1"><p class="stat__n" data-count="95" data-post="%">95%</p><p class="stat__l">Of NZ exports to India receiving tariff elimination or reduction over time.</p></div>
+      <div class="stat rv d2"><p class="stat__n" data-count="57" data-post="%">57%</p><p class="stat__l">Duty-free from day one, rising to 82% once fully implemented.</p></div>
+      <div class="stat rv d3"><p class="stat__n">[[TBD]]</p><p class="stat__l">[[NZ Indian diaspora population — source and confirm before publish.]]</p></div>
+    </div>
+    <p class="src rv">Figures sourced from MFAT. Verified 22 July 2026.</p>
+  </div>
+</section>
+
+<section class="pin" id="fta">
+  <div class="pin__sticky">
+    <div class="pin__bg"></div>
+    <div class="pin__art" data-par="0.18"></div>
+    <div class="pin__c">
+      <span class="badge">Signed 27 April 2026 — not yet in force</span>
+      <h2>The NZ–India FTA changes what's possible</h2>
+      <p>The agreement was signed on 27 April 2026 and awaits domestic ratification in both countries. INZBC is tracking what it means sector by sector, so members can prepare before it enters into force.</p>
+      <p style="margin-top:1.8rem"><a class="btn btn--gold" href="#">Understand the FTA</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pathways">
+  <div class="wrap">
+    <p class="eyebrow rv" style="color:var(--blue)">Where to start</p>
+    <h2 class="rv d1" style="color:var(--navy)">Four ways in</h2>
+    <p class="lede rv d2">Whether you are exporting, sourcing, or building a presence in the market, INZBC is the practical starting point.</p>
+    <div class="cards">
+      <article class="card rv"><p class="card__k">01</p><h3>Export to India</h3><p>Practical guidance for New Zealand businesses preparing to export and use FTA opportunities.</p></article>
+      <article class="card rv d1"><p class="card__k">02</p><h3>Import from India</h3><p>Sourcing products and services under the evolving trade relationship.</p></article>
+      <article class="card rv d2"><p class="card__k">03</p><h3>Attend an event</h3><p>Briefings, delegations, networking and the annual INZBC Summit.</p></article>
+      <article class="card rv d3"><p class="card__k">04</p><h3>Become a member</h3><p>Advocacy, market intelligence, networks and access across the corridor.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section partners" id="partners">
+  <div class="wrap">
+    <p class="eyebrow rv" style="color:var(--blue)">Supported by</p>
+    <h2 class="rv d1" style="color:var(--navy)">Our partners</h2>
+    <p class="rv d2" style="max-width:52ch;margin-inline:auto">Organisations that support INZBC's work across the NZ–India corridor.</p>
+    <img class="rv d3" src="../assets/from-live-site/partner-logo-strip.jpg" alt="[[Replace with individual partner logos and links — alt text required per accessibility audit]]">
+  </div>
+</section>
+
+<section class="close" id="join">
+  <div class="close__art" data-par="0.12"></div>
+  <div class="wrap">
+    <h2 class="rv">Ready to grow your business with India?</h2>
+    <p class="rv d1">Join INZBC, or talk to us about how we can help your organisation engage across the NZ–India corridor.</p>
+    <p class="rv d2" style="margin-top:2rem">
+      <a class="btn btn--gold" href="#">Join INZBC</a>
+      <a class="btn btn--ghost" href="#" style="margin-left:.6rem">Contact us</a>
+    </p>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot__g">
+    <div>
+      <h4>INZBC</h4>
+      <p style="max-width:32ch">Connecting New Zealand and India through trade, investment and commercial diplomacy since 1988.</p>
+    </div>
+    <div><h4>Explore</h4><ul><li><a href="#">NZ–India FTA</a></li><li><a href="#">Trade missions</a></li><li><a href="#">Market opportunities</a></li><li><a href="#">Events</a></li></ul></div>
+    <div><h4>Membership</h4><ul><li><a href="#">Why join</a></li><li><a href="#">Become a member</a></li><li><a href="#">Member directory</a></li><li><a href="#">Executive Council</a></li></ul></div>
+    <div><h4>Connect</h4><ul><li><a href="#">Contact us</a></li><li><a href="#">Partners</a></li><li><a href="#">Newsletters</a></li><li><a href="#">News</a></li></ul></div>
+  </div>
+  <div class="wrap foot__note">Design concept, 6 August 2026. [[Placeholders]] must be resolved by INZBC before publication.</div>
+</footer>
+
+<script>
+(function(){
+  var nav = document.getElementById('nav');
+  var hero = document.getElementById('heroInner');
+  var layers = [].slice.call(document.querySelectorAll('[data-par]'));
+  var statsBg = document.querySelector('.stats');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ticking = false;
+
+  function frame(){
+    var y = window.pageYOffset || document.documentElement.scrollTop;
+    nav.classList.toggle('solid', y > 60);
+
+    if (!reduce) {
+      // Each layer moves a fraction of the scroll distance. Lower factor = further away.
+      layers.forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if (r.bottom > -200 && r.top < window.innerHeight + 200) {
+          var f = parseFloat(el.getAttribute('data-par')) || 0.2;
+          el.style.transform = 'translate3d(0,' + ((window.innerHeight - r.top) * f * -0.35).toFixed(2) + 'px,0)';
+        }
+      });
+      // Hero copy drifts up and fades as it leaves — ties the layers together.
+      if (y < window.innerHeight) {
+        hero.style.transform = 'translate3d(0,' + (y * 0.28).toFixed(2) + 'px,0)';
+        hero.style.opacity = Math.max(0, 1 - y / (window.innerHeight * 0.72)).toFixed(3);
+      }
+    }
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if (!ticking) { ticking = true; window.requestAnimationFrame(frame); }
+  }, { passive: true });
+  frame();
+
+  // Reveal on enter. IntersectionObserver so it costs nothing while off-screen.
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
+  [].slice.call(document.querySelectorAll('.rv')).forEach(function(el){ io.observe(el); });
+
+  // Count up the sourced figures once, when the block first appears. The numbers are
+  // real (MFAT); the animation must never change the final value shown.
+  var counted = false;
+  var cio = new IntersectionObserver(function(entries){
+    if (counted || !entries[0].isIntersecting) return;
+    counted = true;
+    [].slice.call(document.querySelectorAll('[data-count]')).forEach(function(el){
+      var end = parseFloat(el.getAttribute('data-count'));
+      var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+      var pre = el.getAttribute('data-pre') || '';
+      var post = el.getAttribute('data-post') || '';
+      if (reduce) { el.textContent = pre + end.toFixed(dec) + post; return; }
+      var t0 = null, dur = 1100;
+      function step(ts){
+        if (!t0) t0 = ts;
+        var p = Math.min(1, (ts - t0) / dur);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = pre + (end * e).toFixed(dec) + post;
+        if (p < 1) requestAnimationFrame(step); else el.textContent = pre + end.toFixed(dec) + post;
+      }
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.4 });
+  if (statsBg) cio.observe(statsBg);
+})();
+</script>
+</body>
+</html>

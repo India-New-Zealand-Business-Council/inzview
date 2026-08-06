@@ -132,86 +132,211 @@ const NAV_SCRIPT = `
 //   orange #D0611D .......... 4.07 / 3.88:1  FAILS as body text either way.
 // Orange is therefore decorative only: rules, eyebrows, large display text. Never a
 // button fill with text on it, and never body copy.
+
+// Hero plate photograph, layered behind every page's opening band. INZBC's own image,
+// pulled from the live site (assets/from-live-site/banner-wide-primary.jpg): Auckland
+// harbour at dusk — Sky Tower, port cranes, a ferry. Commercial trade, not tourism.
+//
+// TODO before go-live: upload to the new site's Media Manager and replace this with the
+// new static.wixstatic.com URL. This one belongs to the site being replaced — see
+// assets/from-live-site/README.md.
+const HERO_IMAGE = 'https://static.wixstatic.com/media/df219d_e6b3ac4fcb3f410a9ed94ce82358aa15~mv2.jpg';
+// The stylesheet every page carries. A data: URI has an opaque origin and inherits
+// nothing from the parent page, so the whole design system travels inside each document.
+//
+// Cinematic direction adopted 6 August 2026 (design-preview/home-cinematic.html), in the
+// language of wearebrand.io: full-bleed photography, large lowercase geometric sans, tight
+// leading, minimal chrome, depth from layered movement rather than decoration.
+//
+// TYPEFACE: Poppins. This deviates from Big Shoulders in docs/design-decisions.md — that
+// face is condensed and uppercase-only, and this look does not survive in it. Recorded as
+// a deviation pending INZBC sign-off, not a silent change.
+//
+// Palette from the live inzbc.org (docs/live-site-extract.md). Contrast measured:
+//   indigo #1b1464 on white ........ 15.78:1  AA
+//   white on indigo ................ 15.78:1  AA
+//   indigo on gold #f8c70c .......... 9.89:1  AA  <- primary CTA
+//   white on blue #097bb8 ........... 4.63:1  AA
+//   #414141 body on white .......... 10.21:1  AA
+//   orange #d0611d ........... 4.07 / 3.88:1  FAILS as text either way.
+// Orange stays decorative — rules and large display only. Never a button fill.
 const BASE_CSS = `
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,400..900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --inz-navy: #1b1464; --inz-blue: #097bb8; --inz-gold: #f8c70c;
-    --inz-orange: #d0611d; --inz-ink: #414141; --inz-white: #ffffff;
-    --inz-light: #f4f5f8; --inz-line: #e2e4ec;
-    --inz-max-width: 1160px; --inz-radius: 10px;
+  :root{
+    --inz-navy:#1b1464; --inz-ink:#12103a; --inz-deep:#0c0a2c; --inz-blue:#097bb8;
+    --inz-gold:#f8c70c; --inz-orange:#d0611d; --inz-body:#414141;
+    --inz-white:#fff; --inz-mist:#f2f3f7; --inz-line:#e4e6ee; --inz-muted:#6b7086;
+    --inz-max-width:1240px; --inz-radius:100px;
     /* Retained so older inline styles in the snippets still resolve. */
-    --inz-purple: #1b1464; --inz-tangerine: #f8c70c; --inz-lavender: #9fb6e8;
-    --inz-forest: #097bb8; --inz-crimson: #d0611d; --inz-lime: #f8c70c;
+    --inz-purple:#1b1464; --inz-tangerine:#f8c70c; --inz-lavender:#9fb6e8;
+    --inz-forest:#097bb8; --inz-crimson:#d0611d; --inz-lime:#f8c70c; --inz-light:#f2f3f7;
   }
-  html, body { margin: 0; padding: 0; background: #ffffff; }
-  a { color: var(--inz-blue); }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;padding:0;background:var(--inz-white);color:var(--inz-body);
+    font-family:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
+    line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--inz-blue)}
+  .par{will-change:transform}
+
+  /* Headings: lowercase geometric, tight. line-height 1 clears Poppins' descenders —
+     at .88 the g/y of "gateway" collide with the line below. */
+  .inz-section h1,.inz-section h2,.inz-section h3,.inz-section .inz-heading{
+    font-family:inherit;font-weight:600;text-transform:none;letter-spacing:-.03em;
+    line-height:1;margin:0 0 .45em;color:var(--inz-ink);
+  }
+  .inz-section h1{font-size:clamp(2.7rem,6.8vw,6rem)}
+  .inz-section h2{font-size:clamp(1.9rem,4.3vw,3.4rem)}
+  .inz-section h3{font-size:clamp(1.2rem,2.3vw,1.75rem);font-weight:500}
+  .inz-section{font-family:inherit;color:var(--inz-body);line-height:1.65}
+  .inz-section p{max-width:64ch;margin:0 0 1em;font-weight:300}
+  .inz-container{width:min(90%,var(--inz-max-width));margin-inline:auto}
+
+  /* Buttons: pill, no uppercase. Gold fill takes navy text (9.89:1). */
+  .inz-btn{
+    display:inline-flex;align-items:center;font-family:inherit;font-weight:500;
+    text-transform:none;letter-spacing:0;text-decoration:none;font-size:.88rem;
+    padding:1em 1.9em;border-radius:var(--inz-radius);
+    transition:transform .2s ease,background .2s ease;
+  }
+  .inz-btn:focus-visible{outline:3px solid var(--inz-gold);outline-offset:3px}
+  .inz-btn--primary{background-color:var(--inz-gold);color:var(--inz-navy) !important}
+  .inz-btn--secondary{background-color:transparent;color:var(--inz-navy);box-shadow:inset 0 0 0 1px currentColor}
+  .inz-btn:hover{transform:translateY(-2px)}
+
+  /* Hero band. Snippet heroes already carry a navy gradient inline; this layers a
+     photographic plate and scrims underneath so every page opens cinematically. */
+  .inz-section.inz-hero,.inz-hero{position:relative;overflow:hidden;background:var(--inz-ink)}
+  .inz-hero__plate{
+    position:absolute;inset:-18% 0 0;height:136%;z-index:0;opacity:.55;
+    background:url('IMG_HERO') center 42%/cover no-repeat;
+  }
+  .inz-hero__scrim{
+    position:absolute;inset:0;z-index:1;
+    background:linear-gradient(100deg,rgba(18,16,58,.94) 0%,rgba(18,16,58,.6) 45%,rgba(27,20,100,.2) 100%);
+  }
+  .inz-hero__base{position:absolute;inset:auto 0 0;height:44%;z-index:1;
+    background:linear-gradient(180deg,transparent,rgba(18,16,58,.96))}
+  .inz-hero > .inz-container{position:relative;z-index:3}
+  .inz-hero h1,.inz-hero h2{color:#fff}
+  .inz-hero p{color:rgba(255,255,255,.82)}
+
+  /* Eyebrow rule — the gold tick that opens each band. */
+  .inz-kick{
+    display:flex;align-items:center;gap:.85rem;color:var(--inz-gold);font-size:.72rem;
+    letter-spacing:.22em;text-transform:uppercase;font-weight:500;margin:0 0 1.6rem;
+  }
+  .inz-kick::before{content:"";width:44px;height:1px;background:var(--inz-gold);flex:0 0 auto}
+
+  /* Scroll reveal */
+  .rv{opacity:0;transform:translateY(32px);
+    transition:opacity .85s cubic-bezier(.2,.7,.25,1),transform .85s cubic-bezier(.2,.7,.25,1)}
+  .rv.in{opacity:1;transform:none}
 
   /* Navigation */
-  .inz-nav {
-    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
-    padding: 0.9rem clamp(1rem, 4vw, 2.5rem);
-    background: var(--inz-navy); color: #fff;
-    font-family: 'Big Shoulders', Impact, sans-serif;
-    position: sticky; top: 0; z-index: 10;
+  .inz-nav{
+    position:fixed;inset:0 0 auto 0;z-index:60;display:flex;align-items:center;
+    justify-content:space-between;gap:1.5rem;padding:1.5rem clamp(1.25rem,4vw,3rem);
+    transition:padding .35s ease,background .35s ease,backdrop-filter .35s ease;
   }
-  .inz-nav__brand {
-    font-size: 1.5rem; font-weight: 800; letter-spacing: 0.08em;
-    text-transform: uppercase; color: #fff; text-decoration: none; margin-right: auto;
-  }
-  .inz-nav__list { display: flex; flex-wrap: wrap; gap: 0.25rem 1.4rem; list-style: none; margin: 0; padding: 0; }
-  .inz-nav__list a {
-    color: #fff; text-decoration: none; text-transform: uppercase;
-    letter-spacing: 0.06em; font-size: 0.95rem; padding: 0.35rem 0;
-    border-bottom: 2px solid transparent; display: inline-block;
-  }
-  .inz-nav__list a:hover, .inz-nav__list a:focus-visible { border-bottom-color: var(--inz-gold); }
-  .inz-nav__cta { padding: 0.5em 1.2em; font-size: 0.95rem; }
-  @media (max-width: 700px) {
-    .inz-nav { gap: 0.75rem; }
-    .inz-nav__list { gap: 0.25rem 1rem; }
-    .inz-nav__list a { font-size: 0.85rem; }
-  }
+  .inz-nav.solid{background:rgba(18,16,58,.92);backdrop-filter:blur(14px);padding:.95rem clamp(1.25rem,4vw,3rem)}
+  .inz-nav__brand{font-weight:700;font-size:1.1rem;color:#fff;text-decoration:none;letter-spacing:.01em}
+  .inz-nav__list{display:flex;flex-wrap:wrap;gap:.4rem 2rem;list-style:none;margin:0;padding:0}
+  .inz-nav__list a{color:#fff;text-decoration:none;font-size:.82rem;opacity:.82;text-transform:lowercase}
+  .inz-nav__list a:hover,.inz-nav__list a:focus-visible{opacity:1}
+  .inz-nav__cta{padding:.72em 1.5em;font-size:.8rem}
+  @media (max-width:900px){.inz-nav__list{display:none}}
 
   /* Footer */
-  .inz-footer {
-    background: var(--inz-navy); color: #fff; padding: clamp(2.5rem, 5vw, 4rem) 0 2rem;
-    font-family: 'Merriweather', Georgia, serif;
-  }
-  .inz-footer__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 2rem; }
-  .inz-footer__brand { font-family: 'Big Shoulders', Impact, sans-serif; font-size: 1.25rem; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.5rem; }
-  .inz-footer__note { color: #c9cde4; font-size: 0.9rem; max-width: 34ch; }
-  .inz-footer__head { font-family: 'Big Shoulders', Impact, sans-serif; text-transform: uppercase; letter-spacing: 0.08em; color: var(--inz-gold); margin: 0 0 0.6rem; }
-  .inz-footer ul { list-style: none; margin: 0; padding: 0; }
-  .inz-footer li { margin-bottom: 0.4rem; }
-  .inz-footer a { color: #e6e8f5; text-decoration: none; font-size: 0.92rem; }
-  .inz-footer a:hover, .inz-footer a:focus-visible { text-decoration: underline; }
+  .inz-footer{background:var(--inz-deep);color:rgba(255,255,255,.66);
+    padding:4rem 0 2.2rem;font-size:.88rem;font-weight:300}
+  .inz-footer__grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:2.4rem}
+  @media (max-width:820px){.inz-footer__grid{grid-template-columns:1fr 1fr}}
+  .inz-footer__brand{color:#fff;font-weight:500;margin:0 0 .7rem;font-size:1rem}
+  .inz-footer__note{max-width:30ch}
+  .inz-footer__head{margin:0 0 1rem;font-size:.7rem;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--inz-gold);font-weight:500}
+  .inz-footer ul{list-style:none;margin:0;padding:0}
+  .inz-footer li{margin-bottom:.55rem}
+  .inz-footer a{color:rgba(255,255,255,.72);text-decoration:none;font-size:.88rem}
+  .inz-footer a:hover,.inz-footer a:focus-visible{color:#fff;text-decoration:underline}
+  .inz-footer__legal{border-top:1px solid rgba(255,255,255,.1);margin-top:3rem;
+    padding-top:1.4rem;font-size:.76rem;color:rgba(255,255,255,.4)}
 
-  .inz-section { font-family: 'Merriweather', Georgia, serif; color: var(--inz-ink); line-height: 1.6; }
-  .inz-section h1, .inz-section h2, .inz-section h3, .inz-section .inz-heading {
-    font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.05; margin: 0 0 0.4em;
+  @media (prefers-reduced-motion:reduce){
+    .rv{opacity:1;transform:none;transition:none}
+    .par{transform:none !important}
+    html{scroll-behavior:auto}
   }
-  .inz-section h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
-  .inz-section h2 { font-size: clamp(2rem, 4.5vw, 3.25rem); }
-  .inz-section h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
-  .inz-section p { max-width: 68ch; margin: 0 0 1em; }
-  .inz-btn {
-    display: inline-block; font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none;
-    padding: 0.85em 1.6em; border-radius: var(--inz-radius);
-    transition: transform 0.15s ease, opacity 0.15s ease;
+</style>`.replace('IMG_HERO', HERO_IMAGE);
+
+// Parallax + reveal. Runs inside each page document.
+//
+// IMPORTANT: this only does anything if the Embed Code element is about 100vh, so the
+// content scrolls INSIDE the iframe. If the embed is as tall as its content, nothing in
+// it ever scrolls and every scroll-linked effect silently does nothing. See WIX-TASKS.md.
+//
+// Each .par layer carries data-p (0 = pinned to page, 1 = moves with scroll). Offsets are
+// smoothed with a lerp so motion settles instead of snapping. Transforms are translate3d
+// or scale only, so they stay on the compositor and never trigger layout.
+const PARALLAX_SCRIPT = `
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var nav = document.querySelector('.inz-nav');
+  var items = [].slice.call(document.querySelectorAll('.par')).map(function(el){
+    return {
+      el: el,
+      p: parseFloat(el.getAttribute('data-p')) || 0,
+      scale: parseFloat(el.getAttribute('data-scale')) || 0,
+      cur: 0
+    };
+  });
+
+  function targetFor(it){
+    var r = it.el.getBoundingClientRect();
+    return -(((r.top + r.height / 2) - (innerHeight / 2)) * it.p);
   }
-  .inz-btn:focus-visible { outline: 3px solid var(--inz-lavender); outline-offset: 3px; }
-  /* Gold fill with indigo text is 9.89:1. Do not swap the fill for orange #D0611D:
-     it measures 4.07:1 with indigo and 3.88:1 with white, failing AA both ways. */
-  .inz-btn--primary { background-color: var(--inz-gold); color: var(--inz-navy) !important; }
-  .inz-btn--secondary { background-color: transparent; color: var(--inz-navy); box-shadow: inset 0 0 0 2px currentColor; }
-  .inz-btn:hover { transform: translateY(-2px); opacity: 0.92; }
-  .inz-container { width: min(92%, var(--inz-max-width)); margin-inline: auto; }
-</style>`;
+
+  var running = false;
+  function loop(){
+    if (nav) nav.classList.toggle('solid', (pageYOffset || document.documentElement.scrollTop) > 80);
+    var moving = false;
+    for (var i = 0; i < items.length; i++){
+      var it = items[i], r = it.el.getBoundingClientRect();
+      if (r.bottom < -300 || r.top > innerHeight + 300) continue;
+      var t = targetFor(it);
+      it.cur += (t - it.cur) * 0.1;
+      if (Math.abs(t - it.cur) > 0.4) moving = true;
+      var tf = 'translate3d(0,' + it.cur.toFixed(2) + 'px,0)';
+      if (it.scale) tf += ' scale(' + it.scale + ')';
+      it.el.style.transform = tf;
+    }
+    if (moving) requestAnimationFrame(loop); else running = false;
+  }
+  function kick(){ if (!running && !reduce){ running = true; requestAnimationFrame(loop); } }
+
+  if (!reduce){
+    addEventListener('scroll', kick, { passive: true });
+    addEventListener('resize', kick);
+    items.forEach(function(it){ it.cur = targetFor(it); });
+    kick();
+  }
+  if (nav) nav.classList.toggle('solid', (pageYOffset || 0) > 80);
+
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+  [].slice.call(document.querySelectorAll('.inz-section')).forEach(function(el){
+    el.classList.add('rv'); io.observe(el);
+  });
+})();
+</script>`;
 
 function readSnippet(name) {
   const file = path.join(SNIPPETS, `${name}.html`);
@@ -224,12 +349,37 @@ function readSnippet(name) {
     .trim();
 }
 
+// The photographic plate and scrims that sit behind a page's opening band. Injected into
+// the first <section> of every page so each one opens cinematically without every snippet
+// having to repeat the markup. data-p drives the parallax rate: the plate drifts at half
+// the scroll distance while the copy above it stays put, which is what reads as depth.
+const HERO_LAYERS =
+  '<div class="inz-hero__plate par" data-p="0.5" data-scale="1.12"></div>' +
+  '<div class="inz-hero__scrim"></div>' +
+  '<div class="inz-hero__base"></div>';
+
+/**
+ * Adds the hero treatment to a page's first section.
+ * @param {string} html the page's concatenated snippet markup
+ * @returns {string}
+ */
+function withHero(html) {
+  const open = html.indexOf('>', html.indexOf('<section'));
+  if (open === -1) return html;
+  const tag = html.slice(0, open + 1);
+  // Mark it a hero so the CSS positions the layers, unless the snippet already says so.
+  const marked = tag.includes('inz-hero')
+    ? tag
+    : tag.replace('class="inz-section', 'class="inz-section inz-hero');
+  return marked + HERO_LAYERS + html.slice(open + 1);
+}
+
 const entries = Object.entries(PAGES).map(([key, files]) => {
-  const html = files.map(readSnippet).join('\n');
+  const html = withHero(files.map(readSnippet).join('\n'));
   return `  ${key}: ${JSON.stringify(html)},`;
 });
 
-const shell = { nav: NAV, footer: FOOTER, navScript: NAV_SCRIPT };
+const shell = { nav: NAV, footer: FOOTER, navScript: NAV_SCRIPT, parallax: PARALLAX_SCRIPT };
 
 const out = `// GENERATED by scripts/build-sections.js — do not edit by hand.
 // Edit the snippets in wix-studio-snippets/ and re-run: node scripts/build-sections.js
@@ -246,6 +396,8 @@ const NAV = ${JSON.stringify(shell.nav)};
 
 const FOOTER = ${JSON.stringify(shell.footer)};
 
+const PARALLAX_SCRIPT = ${JSON.stringify(shell.parallax)};
+
 const PAGES = {
 ${entries.join('\n')}
 };
@@ -260,7 +412,7 @@ export function pageHtml(name) {
   if (!body) {
     throw new Error('sections.js: no page named ' + name);
   }
-  return '<!doctype html><html lang="en-NZ"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' + BASE_CSS + NAV_SCRIPT + '</head><body>' + NAV + body + FOOTER + '</body></html>';
+  return '<!doctype html><html lang="en-NZ"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' + BASE_CSS + NAV_SCRIPT + '</head><body>' + NAV + body + FOOTER + PARALLAX_SCRIPT + '</body></html>';
 }
 
 /**
