@@ -294,25 +294,46 @@ const PARALLAX_SCRIPT = `
       el: el,
       p: parseFloat(el.getAttribute('data-p')) || 0,
       scale: parseFloat(el.getAttribute('data-scale')) || 0,
-      cur: 0
+      cur: 0,
+      target: 0
     };
   });
 
-  function targetFor(it){
-    var r = it.el.getBoundingClientRect();
-    return -(((r.top + r.height / 2) - (innerHeight / 2)) * it.p);
+  // Where each layer sits within this document. The embed does not scroll, so these are
+  // fixed; the parent's scroll is what moves underneath them.
+  function anchorOf(el){
+    var y = 0, n = el;
+    while (n){ y += n.offsetTop || 0; n = n.offsetParent; }
+    return y + (el.offsetHeight || 0) / 2;
   }
+  items.forEach(function(it){ it.anchor = anchorOf(it.el); });
+
+  // Driven by the parent page's scroll, posted in by page code (wire-pages.js). The
+  // iframe cannot read the parent's scroll itself — same sandbox that blocks
+  // target="_top". Offset by the layer's own anchor so each one has its own phase; the
+  // absolute origin does not matter, only relative movement, so the unknown distance
+  // from page top to the embed just shifts phase imperceptibly.
+  var scrollY = 0, haveScroll = false;
+  addEventListener('message', function(e){
+    if (!e.data || typeof e.data.scrollY !== 'number') return;
+    scrollY = e.data.scrollY;
+    haveScroll = true;
+    if (nav) nav.classList.toggle('solid', scrollY > 80);
+    for (var i = 0; i < items.length; i++){
+      items[i].target = -(scrollY - items[i].anchor) * items[i].p;
+    }
+    kick();
+  });
 
   var running = false;
   function loop(){
-    if (nav) nav.classList.toggle('solid', (pageYOffset || document.documentElement.scrollTop) > 80);
     var moving = false;
     for (var i = 0; i < items.length; i++){
-      var it = items[i], r = it.el.getBoundingClientRect();
-      if (r.bottom < -300 || r.top > innerHeight + 300) continue;
-      var t = targetFor(it);
-      it.cur += (t - it.cur) * 0.1;
-      if (Math.abs(t - it.cur) > 0.4) moving = true;
+      var it = items[i];
+      // Lerp toward the target. This is what makes a polled scroll signal look smooth:
+      // the damping fills in the gaps between samples.
+      it.cur += (it.target - it.cur) * 0.12;
+      if (Math.abs(it.target - it.cur) > 0.4) moving = true;
       var tf = 'translate3d(0,' + it.cur.toFixed(2) + 'px,0)';
       if (it.scale) tf += ' scale(' + it.scale + ')';
       it.el.style.transform = tf;
@@ -321,20 +342,28 @@ const PARALLAX_SCRIPT = `
   }
   function kick(){ if (!running && !reduce){ running = true; requestAnimationFrame(loop); } }
 
-  if (!reduce){
-    addEventListener('scroll', kick, { passive: true });
-    addEventListener('resize', kick);
-    items.forEach(function(it){ it.cur = targetFor(it); });
+  // Fallback: if this document ever scrolls on its own — a taller-than-embed iframe, or
+  // opened directly rather than embedded — drive from local scroll instead.
+  addEventListener('scroll', function(){
+    if (haveScroll) return;
+    for (var i = 0; i < items.length; i++){
+      var r = items[i].el.getBoundingClientRect();
+      items[i].target = -(((r.top + r.height / 2) - (innerHeight / 2)) * items[i].p);
+    }
+    if (nav) nav.classList.toggle('solid', (pageYOffset || 0) > 80);
     kick();
-  }
-  if (nav) nav.classList.toggle('solid', (pageYOffset || 0) > 80);
+  }, { passive: true });
 
+  var sections = [].slice.call(document.querySelectorAll('.inz-section'));
   var io = new IntersectionObserver(function(es){
     es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
-  [].slice.call(document.querySelectorAll('.inz-section')).forEach(function(el){
-    el.classList.add('rv'); io.observe(el);
-  });
+  sections.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+
+  // Safety net. .rv starts at opacity 0, so anything the observer misses would stay
+  // invisible — a far worse failure than a missing animation. Reveal everything after a
+  // beat regardless.
+  setTimeout(function(){ sections.forEach(function(el){ el.classList.add('in'); }); }, 1500);
 })();
 </script>`;
 
