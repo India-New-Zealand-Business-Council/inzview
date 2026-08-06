@@ -146,9 +146,11 @@ a redirect decided weeks ago. Four slugs (`trade-resources`, `fta-centre`, `fta-
 until someone picks the destination.
 
 **Check URL hierarchy flattening is OFF** before creating `/membership/join`,
-`/membership/directory`, `/events/past`, `/insights/publications` or
-`/insights/newsletters`. With it on they serve at `/join`, `/past`, `/publications` and
-every nested redirect misses.
+`/membership/directory` or `/events/past`. With it on they serve at `/join`, `/directory`
+and `/past` and every nested redirect misses. `/publications`, `/newsletters` and
+`/digest` are flat, top-level slugs — Wix Studio has no `Insights` parent page, so they
+were set flat rather than nested under `/insights/`, and hierarchy flattening does not
+apply to them.
 
 ## State as at 6 August 2026, and what is still missing
 

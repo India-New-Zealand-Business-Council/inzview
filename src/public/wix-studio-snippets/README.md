@@ -37,8 +37,8 @@ Every snippet uses inline CSS so it works as a standalone embed.
 | `fta-centre.html` | `/fta` page embed | FTA Centre landing page. |
 | `fta-explainer.html` | `/fta/explainer` page embed | Wrapper for the deployed FTA Explainer app. |
 | **Insights** |
-| `insights-publications.html` | `/insights/publications` page embed | Publications library. |
-| `insights-newsletters.html` | `/insights/newsletters` page embed | Newsletters, Digest and Kia Ora India. |
+| `insights-publications.html` | `/publications` page embed | Publications library. |
+| `insights-newsletters.html` | `/newsletters` page embed | Newsletters, Digest and Kia Ora India. |
 | `digest.html` | Trade Intelligence Digest page embed | Digest landing + archive. |
 | **Other** |
 | `news.html` | `/news` page embed | Blog/news landing. |

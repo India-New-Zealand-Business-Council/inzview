@@ -63,8 +63,8 @@ Each bundle is self-contained (includes React 16) and registers a custom element
 | `custom-elements/india-market-opportunities.js` | `inzbc-india-market-opportunities` | `/india-market-opportunities` |
 | `custom-elements/fta-centre.js` | `inzbc-fta-centre` | **unconfirmed** |
 | `custom-elements/fta-explainer.js` | `inzbc-fta-explainer` | **unconfirmed** |
-| `custom-elements/insights-publications.js` | `inzbc-insights-publications` | `/insights/publications` |
-| `custom-elements/insights-newsletters.js` | `inzbc-insights-newsletters` | `/insights/newsletters` |
+| `custom-elements/insights-publications.js` | `inzbc-insights-publications` | `/publications` |
+| `custom-elements/insights-newsletters.js` | `inzbc-insights-newsletters` | `/newsletters` |
 | `custom-elements/digest.js` | `inzbc-digest` | **unconfirmed** |
 | `custom-elements/news.js` | `inzbc-news` | `/news` — keep this URL, label it Media in navigation |
 | `custom-elements/partners.js` | `inzbc-partners` | `/partners` |
@@ -75,10 +75,11 @@ Each bundle is self-contained (includes React 16) and registers a custom element
 The four marked **unconfirmed** are new pages with no live URL behind them
 (`page-specs.md` §4, §6, §7). Confirm each with Bhanu before creating it.
 
-Five slugs are nested: `/membership/join`, `/membership/directory`, `/events/past`,
-`/insights/publications`, `/insights/newsletters`. **Check that URL hierarchy flattening
-is OFF before creating any of them** — with it on they serve at `/join`, `/directory`,
-`/past`, `/publications`, `/newsletters` and every nested redirect misses.
+Three slugs are nested: `/membership/join`, `/membership/directory`, `/events/past`.
+**Check that URL hierarchy flattening is OFF before creating any of them** — with it on
+they serve at `/join`, `/directory`, `/past` and every nested redirect misses.
+`/publications` and `/newsletters` are flat, top-level slugs — Wix Studio has no
+`Insights` parent page, so they cannot nest under `/insights/`.
 
 4. Resize the custom element container to fill the page width as needed.
 

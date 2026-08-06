@@ -18,7 +18,7 @@ export default function TradeResourcesPage() {
           { title: 'Export to India', body: 'A practical guide for NZ businesses preparing to export, build partnerships and use FTA opportunities.', cta: 'Explore sectors', href: '/india-market-opportunities' },
           { title: 'Import from India', body: 'Guidance for NZ businesses sourcing products and services from India under the evolving trade relationship.', cta: 'See suppliers', href: '/trade-missions' },
           { title: 'Trade missions and shows', body: 'Delegations, trade shows and market events merged into one pathway.', cta: 'View missions', href: '/trade-missions' },
-          { title: 'Market intelligence', body: 'The Trade Intelligence Digest, human-reviewed before publication.', cta: 'Read the digest', href: '/insights/newsletters' },
+          { title: 'Market intelligence', body: 'The Trade Intelligence Digest, human-reviewed before publication.', cta: 'Read the digest', href: '/newsletters' },
         ]}
       />
       <InzFeatureBand

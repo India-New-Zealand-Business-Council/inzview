@@ -52,7 +52,7 @@ const NAV = `
       <li><a href="/trade-resources" target="_top">Trade</a></li>
       <li><a href="/events" target="_top">Events</a></li>
       <li><a href="/membership" target="_top">Membership</a></li>
-      <li><a href="/insights/publications" target="_top">Insights</a></li>
+      <li><a href="/publications" target="_top">Insights</a></li>
       <li><a href="/news" target="_top">Media</a></li>
       <li><a href="/partners" target="_top">Partners</a></li>
       <li><a href="/about-inzbc" target="_top">About</a></li>
@@ -91,7 +91,7 @@ const FOOTER = `
       <ul>
         <li><a href="/connect" target="_top">Contact us</a></li>
         <li><a href="/partners" target="_top">Partners</a></li>
-        <li><a href="/insights/newsletters" target="_top">Newsletters</a></li>
+        <li><a href="/newsletters" target="_top">Newsletters</a></li>
         <li><a href="/news" target="_top">News</a></li>
       </ul>
     </div>
