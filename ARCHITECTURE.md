@@ -52,6 +52,21 @@ option await Sunil/INZBC confirmation.
 | Partners | Sponsors, Strategic Partners, Patron, Partner With Us | Sponsor retention and leads |
 | About | About INZBC, Executive Council, Chapters, Contact | Trust and governance |
 
+### Navigation implementation — sandboxed iframe, no `target="_top"`
+
+Every page's Embed Code element is a sandboxed iframe (confirmed against Wix's own docs:
+["Working with the HTML iFrame Element"](https://dev.wix.com/docs/develop-websites/articles/wix-editor-elements/other-elements/html-i-frame-element/working-with-the-html-iframe-element))
+with no direct access to the parent page and no way to grant it `allow-top-navigation`. A
+plain `<a href target="_top">` is silently swallowed — no navigation, no error. Fixed
+6 August 2026 using Wix's documented [iframe↔page messaging
+API](https://dev.wix.com/docs/velo/velo-only-apis/$w/html-component/messaging-between-a-site-page-and-an-html-element):
+every internal link calls `inzNav(event, path)` (`build-sections.js`'s `NAV_SCRIPT`), which
+posts `{ path }` to `SITE_ORIGIN` (never `"*"` — Wix's docs warn that lets any site
+intercept the message); each page's generated code (`wire-pages.js`'s template) receives it
+via `$w('#html1').onMessage(...)` and calls `wixLocation.to()`. Any new internal link must
+use this pattern, not `target="_top"` — see `WIX-TASKS.md`'s "Navigation fix — needs live
+verification" for the live-testing status.
+
 ## Built so far — 20 pages
 
 `home`, `about`, `membership`, `membershipJoin`, `memberDirectory`, `events`,
