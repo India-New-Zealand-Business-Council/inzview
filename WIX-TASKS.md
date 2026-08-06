@@ -25,11 +25,14 @@ Estimated: 45–60 minutes total.
 
 ---
 
-## Task 1 — Set the page slugs (the blocker)
+## Task 1 — Set the page slugs (the blocker) — ✅ Done 6 August 2026
 
 ### 1a. Turn off URL hierarchy flattening FIRST
 
-If you skip this, `/membership/join` silently becomes `/join` and seven redirects miss.
+If you skip this, `/membership/join` silently becomes `/join` and four nested-page
+redirects miss (`membership/join`, `membership/directory`, `events/past`,
+`fta/explainer` — down from seven now that Publications, Newsletters and Digest are
+flat, not nested; see the note below the slug table).
 
 1. Editor → **Settings** (left sidebar, gear icon) → **SEO** → **URL structure**
 2. Find the setting for **URL hierarchy / flattening** and make sure nested URLs are
@@ -46,27 +49,37 @@ click the **⋯** that appears → **Settings** → **SEO Basics** → **URL Slu
 | Home | *(leave as the home page — no slug)* |
 | About INZBC | `about-inzbc` |
 | Membership | `membership` |
-| Join | `membership/join` |
-| Member Directory | `membership/directory` |
+| Join | `join`, parent page **Membership** → resolves to `membership/join` |
+| Member Directory | `directory`, parent page **Membership** → resolves to `membership/directory` |
 | Events | `events` |
 | Past Events | `events/past` |
 | Trade Missions | `trade-missions` |
 | India Market Opportunities | `india-market-opportunities` |
-| Publications | `insights/publications` |
-| Newsletters | `insights/newsletters` |
+| Publications | `publications` — flat, see note below |
+| Newsletters | `newsletters` — flat, see note below |
 | News | `news` |
 | Partners | `partners` |
 | Connect | `connect` |
 | Executive Council | `executive-council` |
 | Our Patron | `our-patron` |
 | FTA | `fta` |
-| FTA Explainer | `fta/explainer` |
+| FTA Explainer | `explainer`, parent page **FTA** → resolves to `fta/explainer` |
 | Trade Resources | `trade-resources` |
-| Digest | `insights/digest` |
+| Digest | `digest` — flat, see note below |
 
 **These are not free choices.** Each one is the destination of a live 301 recorded in
 `docs/website-redirect-map.md` in the `inzbc` repo. Changing one breaks a redirect that
 was decided weeks ago. If a slug looks wrong, raise it — do not "improve" it.
+
+**Adjustment made during Task 1, 6 August 2026:** Publications, Newsletters and Digest
+were set as flat top-level slugs (`/publications`, `/newsletters`, `/digest`) instead of
+nested under `/insights/` as originally planned. Wix Studio's slug field does not accept
+slashes, and nesting instead requires a **Parent page** — there is no `Insights` parent
+page in this site, so nesting them wasn't possible without creating one. `sections.js`
+and every internal link have been updated to match. Join, Member
+Directory and FTA Explainer nest correctly via the **Parent page** dropdown (set to
+Membership / Membership / FTA respectively) and resolve to the paths this table always
+specified.
 
 Save when done.
 
