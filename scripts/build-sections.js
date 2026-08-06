@@ -71,28 +71,28 @@ const FOOTER = `
     <div>
       <p class="inz-footer__head">Explore</p>
       <ul>
-        <li><a href="/fta" target="_top">NZ&ndash;India FTA</a></li>
-        <li><a href="/trade-missions" target="_top">Trade missions</a></li>
-        <li><a href="/india-market-opportunities" target="_top">Market opportunities</a></li>
-        <li><a href="/events" target="_top">Events</a></li>
+        <li><a href="/fta" onclick="inzNav(event, '/fta')">NZ&ndash;India FTA</a></li>
+        <li><a href="/trade-missions" onclick="inzNav(event, '/trade-missions')">Trade missions</a></li>
+        <li><a href="/india-market-opportunities" onclick="inzNav(event, '/india-market-opportunities')">Market opportunities</a></li>
+        <li><a href="/events" onclick="inzNav(event, '/events')">Events</a></li>
       </ul>
     </div>
     <div>
       <p class="inz-footer__head">Membership</p>
       <ul>
-        <li><a href="/membership" target="_top">Why join</a></li>
-        <li><a href="/membership/join" target="_top">Become a member</a></li>
-        <li><a href="/membership/directory" target="_top">Member directory</a></li>
-        <li><a href="/executive-council" target="_top">Executive Council</a></li>
+        <li><a href="/membership" onclick="inzNav(event, '/membership')">Why join</a></li>
+        <li><a href="/membership/join" onclick="inzNav(event, '/membership/join')">Become a member</a></li>
+        <li><a href="/membership/directory" onclick="inzNav(event, '/membership/directory')">Member directory</a></li>
+        <li><a href="/executive-council" onclick="inzNav(event, '/executive-council')">Executive Council</a></li>
       </ul>
     </div>
     <div>
       <p class="inz-footer__head">Connect</p>
       <ul>
-        <li><a href="/connect" target="_top">Contact us</a></li>
-        <li><a href="/partners" target="_top">Partners</a></li>
-        <li><a href="/newsletters" target="_top">Newsletters</a></li>
-        <li><a href="/news" target="_top">News</a></li>
+        <li><a href="/connect" onclick="inzNav(event, '/connect')">Contact us</a></li>
+        <li><a href="/partners" onclick="inzNav(event, '/partners')">Partners</a></li>
+        <li><a href="/newsletters" onclick="inzNav(event, '/newsletters')">Newsletters</a></li>
+        <li><a href="/news" onclick="inzNav(event, '/news')">News</a></li>
       </ul>
     </div>
   </div>
