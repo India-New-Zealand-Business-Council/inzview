@@ -191,19 +191,41 @@ pages):
 
 The design lives in two places, both in git, both safe for another agent to work on:
 
-- `src/public/wix-studio-snippets/*.html` — one file per section, plain HTML with inline
-  styles and the `inz-` classes.
-- `BASE_CSS` in `scripts/build-sections.js` — the design system: tokens, type scale,
-  buttons, container.
+- `src/public/wix-studio-snippets/*.html` — one file per section, plain HTML using only the
+  `inz-` class vocabulary. **No inline styles**; the build rejects them. The class list is in
+  [that folder's README](./src/public/wix-studio-snippets/README.md).
+- `BASE_CSS` in `scripts/build-sections.js` — the design system: palettes, tokens, type
+  scale, and every class the snippets use.
 
 A designer never has to touch the Editor. Edit those, run `node scripts/build-sections.js`,
 push. What they **cannot** change from git: the header, footer, nav menu, page slugs, and
 anything else Wix treats as site structure.
 
-Non-negotiables for any redesign: navy `#160933` on tangerine `#f05b29` for buttons (5.56:1,
-passes AA — white on tangerine is 3.37:1 and fails); `[[placeholder]]` markers stay until
-INZBC supplies the fact; and the sourced figures in `trade-stats.html` are not to be
-reworded or rounded.
+`site-head.html` is **generated** from the same token block as `BASE_CSS`, so it can no
+longer drift. Do not edit it by hand.
+
+### Two palettes, one flag
+
+INZBC has not chosen between the live-site palette and the provisional bicultural one
+(`docs/live-site-extract.md`). Both are built:
+
+```bash
+node scripts/build-sections.js                        # live-site palette (default)
+INZ_PALETTE=bicultural node scripts/build-sections.js  # provisional, NOT approved
+```
+
+### Non-negotiables for any redesign
+
+- **Contrast is asserted, not documented.** `CONTRAST_PAIRS` in `build-sections.js` fails
+  the build below AA, per palette. The comment block that used to live there claimed
+  everything passed while the footer's legal line shipped at 3.75:1 and the focus ring at
+  1.60:1 on white. Add a pair when you add a surface; never lower a threshold to pass.
+- **Never write a hex or `rgba()` in a snippet.** A raw value is invisible to that check.
+  Use the tokens.
+- Gold `#f8c70c` takes navy text, never white. Orange stays decorative.
+- `[[placeholder]]` markers stay until INZBC supplies the fact. `INZ_RELEASE=1` refuses to
+  build while any remain.
+- The sourced figures in `trade-stats.html` are not to be reworded or rounded.
 
 ## Content rules
 
@@ -216,7 +238,8 @@ From `CLAUDE.md` in the `inzbc` repo, and they are not negotiable:
 - `ExecutiveCouncilPage` and `executive-council.html` carry real board names, read from
   `inzbc.org` on 27 July 2026 and marked `[[Proposed]]`. The Board confirms currency before
   publication. Do not add, drop or reorder a name.
-- Navy `#160933` on tangerine `#f05b29` is 5.56:1 and passes AA. White on tangerine is
-  3.37:1 and fails. Tangerine is the CTA colour, navy the base.
+- Navy `#1b1464` on gold `#f8c70c` is 9.89:1 and passes AA. Gold is the CTA fill, navy the
+  text on it — never white. (An earlier draft of this file named `#160933` on `#f05b29`,
+  which is the superseded repo palette and is not what the build uses.)
 - Log every Editor session in `docs/wix-changes-log.md` in the `inzbc` repo, with before
   and after text. Wix records *that* something changed, not what it said.

@@ -1,63 +1,101 @@
-# Wix Studio paste-ready snippets
+# Section snippets
 
-Ready-to-paste code blocks for the INZBC Studio site
-(`040b006f-3745-4a4f-ae4d-03aedb08a7b1`).
+One HTML file per section of the site. `scripts/build-sections.js` concatenates them per
+page into `src/public/sections.js`, which page code loads into that page's Embed Code
+element as a `data:` URI.
 
-These are **design-system scaffolding and section HTML**, not a replacement for
-building pages in the Studio editor. Paste each snippet into the location noted.
-Every snippet uses inline CSS so it works as a standalone embed.
+> **Editing a file here does not change the site on its own.** Run
+> `node scripts/build-sections.js` and push. See [EDITING.md](../../../EDITING.md).
 
-## Files
+## The rules
 
-| File | Paste location | What it does |
-|---|---|---|
-| `site-head.html` | Studio → **Settings** → **Custom Code** → `<head>` | Loads Google Fonts (Big Shoulders, Merriweather) and global CSS variables/colours. |
-| `organization-schema.html` | Same, once details are final | JSON-LD `Organization` schema. |
-| **Homepage** |
-| `home-hero.html` | Home page → **Add** → **Embed** → **Embed HTML** | Hero section with headline, sub, and CTAs. |
-| `fta-feature-band.html` | Home page embed | Lavender→Blue→Navy gradient FTA announcement band. |
-| `trade-stats.html` | Home page embed | Trade-opportunity statistics grid. |
-| `credibility-strip.html` | Home page embed | Established / members / recognised-by-govts line. |
-| `join-cta.html` | Home or Membership page embed | Final conversion band. |
-| **About** |
-| `about-hero.html` | About page embed | About hero section. |
-| `executive-council.html` | `/executive-council` page embed | Board and executive team grid. **Carries real names. Do not publish without Board confirmation** (`client-answers.md` D1). |
-| `our-patron.html` | `/our-patron` page embed | Patron profile. |
-| **Membership** |
-| `membership.html` | `/membership` page embed | Value proposition and tiers placeholder. |
-| `membership-join.html` | `/membership/join` page embed | Application gateway to Member Jungle. |
-| `member-directory.html` | `/membership/directory` page embed | Static gateway to Member Jungle directory. |
-| **Events** |
-| `events.html` | `/events` page embed | Upcoming events grid. |
-| `events-past.html` | `/events/past` page embed | Past events archive. |
-| **Trade & FTA** |
-| `trade-resources.html` | Trade Resources page embed | Trade hub with four pathway cards. |
-| `trade-missions.html` | `/trade-missions` page embed | Trade missions and shows. |
-| `india-market-opportunities.html` | `/india-market-opportunities` page embed | Sector opportunity grid. |
-| `fta-centre.html` | `/fta` page embed | FTA Centre landing page. |
-| `fta-explainer.html` | `/fta/explainer` page embed | Wrapper for the deployed FTA Explainer app. |
-| **Insights** |
-| `insights-publications.html` | `/publications` page embed | Publications library. |
-| `insights-newsletters.html` | `/newsletters` page embed | Newsletters, Digest and Kia Ora India. |
-| `digest.html` | Trade Intelligence Digest page embed | Digest landing + archive. |
-| **Other** |
-| `news.html` | `/news` page embed | Blog/news landing. |
-| `partners.html` | `/partners` page embed | Sponsor/partner logos and become-a-sponsor CTA. |
-| `connect.html` | `/connect` page embed | Contact details and form placeholder. |
+**1. No inline styles. Ever.**
 
-## Rules enforced in the CSS
+These files used to carry ~290 `style="…"` attributes. An inline style beats any stylesheet
+rule, so the design system in `BASE_CSS` could not reach the markup it was meant to style —
+it had to fight back with `!important`, and mostly lost. Use the classes below.
 
-- Tangerine (`#f05b29`) buttons use **navy** text, not white (white-on-tangerine
-  is 3.37:1, below WCAG AA).
-- Big Shoulders is used for headings/short statements in uppercase.
-- Merriweather is used for body copy.
-- Max content width ~1160px, body measure capped.
-- `[[placeholder]]` markers are left visible for items that still need INZBC input.
+**2. Never edit `site-head.html` or `sections.js`.** Both are generated. `site-head.html` is
+written from the same token block as `BASE_CSS` specifically so the two cannot drift apart
+again; it had been left on a superseded system, still loading Merriweather and Big Shoulders.
+
+**3. The build enforces both.** These fail the build with a file and line number:
+
+| Banned | Why |
+|---|---|
+| `style="…"` | see rule 1 |
+| `Big Shoulders`, `Merriweather`, `Impact,` | retired typefaces; the system is Poppins |
+| `#16307f` `#c1acfb` `#f6f5f8` `#f05b29` `#160933` `#e8e6ee` | retired palette values; use a token |
+| `rgba(255,255,255,…)` | use `--inz-on-dark` / `--inz-on-deep` / `--inz-on-deep-muted` |
+
+**4. Internal links use `onclick="inzNav(event, '/path')"`,** never `target="_top"`. The
+Embed Code element is a sandboxed iframe and the sandbox silently swallows `_top`.
+
+**5. `[[placeholder]]` stays until INZBC supplies the fact.** The build wraps each one in a
+visible marker, counts them per page, and `INZ_RELEASE=1` refuses to build while any remain.
+A placeholder inside a tag, `<script>` or `<style>` cannot be wrapped and fails the build.
+
+## The class vocabulary
+
+Every class was extracted from a pattern that appeared **3 or more times** with the same
+intent. Do not add a class for a one-off; do not reach for a new value when one of these fits.
+
+### Bands
+
+| Class | Use |
+|---|---|
+| `inz-section` | Every band. Required — the scroll reveal selects it. |
+| `inz-section--paper` / `--mist` / `--dark` | Band surface. Alternate them for rhythm. |
+| `inz-section--tall` | Taller padding, for an opening or closing band. |
+| `inz-center` | Centres the band's text and its headings, lede and kick. |
+| `inz-container` | Width cap. One per band, directly inside the section. |
+
+### Content
+
+| Class | Use |
+|---|---|
+| `inz-lede` | The larger opening paragraph under an `h1`. |
+| `inz-prose` | Wraps a run of body copy at a 68ch measure. Styles `ul` / `ol` inside it. |
+| `inz-kick` | The gold rule and label that opens a band. |
+| `inz-note` | Small print: source citations, meta lines, captions. |
+| `inz-grid` (+ `--wide`, `--tight`) | Auto-fitting card grid. Default 16rem, wide 18rem, tight 14rem. |
+| `inz-card` (+ `--raised`) | A tile. Inverts against its band automatically. |
+| `inz-person` | With `inz-card`: a name and a role. |
+| `inz-stat` + `inz-stat__figure` | A large sourced figure and its caption. |
+| `inz-split` (+ `--media`) | Two columns: copy beside a CTA, or copy beside an image. |
+| `inz-media` | Placeholder or frame for an image. |
+| `inz-strip` | The centred credibility line. |
+| `inz-logos` + `inz-logo` | Partner logo tiles. |
+| `inz-rail` | Sideways links to sibling pages. |
+| `inz-actions` (+ `--center`) | A row of buttons. |
+| `inz-btn` + `--primary` / `--secondary` / `--sm` | Buttons. |
+
+### Colour
+
+Never write a hex or an `rgba()` in a snippet. Contrast is asserted at build time against
+both palettes, and a raw value is invisible to that check.
+
+| Token | Use |
+|---|---|
+| `--inz-navy` `--inz-ink` `--inz-deep` | Dark surfaces |
+| `--inz-gold` | The CTA fill. Takes navy text, never white. |
+| `--inz-blue` `--inz-orange` | Secondary and warm accents |
+| `--inz-note-text` `--inz-stat-text` | The same hues, darkened until they clear AA on the tinted surface. Use these for text. |
+| `--inz-on-dark` `--inz-on-deep` `--inz-on-deep-muted` | Text on dark surfaces, pre-flattened |
+| `--inz-focus-light` `--inz-focus-dark` | Focus rings. Two, because no single colour clears 3:1 on both paper and deep. |
+
+## Adding a section
+
+1. Write the file here using the classes above.
+2. Add its name to that page's array in `PAGES` in `scripts/build-sections.js`.
+3. `node scripts/build-sections.js`
+4. Check the placeholder count in the build output.
 
 ## Before publish
 
-- Replace every `[[placeholder]]` with sourced copy.
-- Confirm the two-way trade figure: `$3.68b` (migration guide) vs `NZ$3.95bn`
-  (FTA corpus) — see `docs/design-decisions.md`.
-- Confirm member count with INZBC.
-- Add JSON-LD `Organization` schema once logo/contact details are final.
+- Replace every `[[placeholder]]`. `INZ_RELEASE=1 node scripts/build-sections.js` must pass.
+- `executive-council.html` carries real board names, read from inzbc.org on 27 July 2026.
+  **The Board confirms currency before publication.** Do not add, drop or reorder a name.
+- The two-way trade figure is unresolved: `$3.68b` (migration guide) vs `NZ$3.95bn` (FTA
+  corpus). See `ARCHITECTURE.md`. Do not reword or round the sourced figures.
+- The NZ–India FTA is **signed and not in force**. Do not imply otherwise.

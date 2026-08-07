@@ -1,0 +1,18 @@
+⠋
+[2K[1A[2K[G
+⠋ Creating a preview...⠙ Creating a preview...⠹ Creating a preview...⠸ Creating a preview...⠼ Creating a preview...⠴ Creating a preview...⠦ Creating a preview...⠧ Creating a preview...⠇ Creating a preview...⠏ Creating a preview...⠋ Creating a preview...⠙ Creating a preview...⠹ Creating a preview...⠸ Creating a preview...⠼ Creating a preview...⠴ Creating a preview...⠦ Creating a preview...⠧ Creating a preview...⠇ Creating a preview...⠏ Creating a preview...⠋ Creating a preview...⠙ Creating a preview...⠹ Creating a preview...⠸ Creating a preview...⠼ Creating a preview...⠴ Creating a preview...⠦ Creating a preview...⠧ Creating a preview...⠇ Creating a preview...⠏ Creating a preview...⠋ Creating a preview...⠙ Creating a preview...⠹ Creating a preview...⠸ Creating a preview...⠼ Creating a preview...⠴ Creating a preview...⠦ Creating a preview...⠧ Creating a preview...⠇ Creating a preview...✔ Preview created successfully
+
+  Preview your site before publishing:
+  https://wix.to/r63RFtJ
+
+  You are about to publish:
+
+    Local code
+    UI version: 13
+    
+  Caution: The Editor contains newer design changes. To publish the latest UI changes, cancel this operation, click 'Save' in the local Editor, then run `wix publish` again. Learn more about UI versions https://support.wix.com/en/article/velo-working-with-the-local-editor-early-access#about-ui-versions
+
+    Caution: Publishing from the local working copy might publish code that is uncommitted and not synced with the online editor.
+
+⠋ Deploying your code...⠙ Deploying your code...⠹ Deploying your code...⠸ Deploying your code...⠼ Deploying your code...⠴ Deploying your code...⠦ Deploying your code...⠧ Deploying your code...⠇ Deploying your code...⠏ Deploying your code...⠋ Deploying your code...⠙ Deploying your code...⠹ Deploying your code...⠸ Deploying your code...⠼ Deploying your code...⠴ Deploying your code...⠦ Deploying your code...⠧ Deploying your code...⠇ Deploying your code...⠏ Deploying your code...⠋ Deploying your code...⠙ Deploying your code...⠹ Deploying your code...⠸ Deploying your code...⠼ Deploying your code...⠴ Deploying your code...⠦ Deploying your code...⠧ Deploying your code...⠇ Deploying your code...⠏ Deploying your code...⠋ Deploying your code...⠙ Deploying your code...✔ Deploying your code... Done
+⠋ Publishing...⠙ Publishing...⠹ Publishing...⠸ Publishing...⠼ Publishing...✔ Your site has been published successfully: https://inzbcsecretariat.wixstudio.com/my-site
