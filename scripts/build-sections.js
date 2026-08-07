@@ -133,14 +133,6 @@ const NAV_SCRIPT = `
 // Orange is therefore decorative only: rules, eyebrows, large display text. Never a
 // button fill with text on it, and never body copy.
 
-// Hero plate photograph, layered behind every page's opening band. INZBC's own image,
-// pulled from the live site (assets/from-live-site/banner-wide-primary.jpg): Auckland
-// harbour at dusk — Sky Tower, port cranes, a ferry. Commercial trade, not tourism.
-//
-// TODO before go-live: upload to the new site's Media Manager and replace this with the
-// new static.wixstatic.com URL. This one belongs to the site being replaced — see
-// assets/from-live-site/README.md.
-const HERO_IMAGE = 'https://static.wixstatic.com/media/df219d_e6b3ac4fcb3f410a9ed94ce82358aa15~mv2.jpg';
 // The stylesheet every page carries. A data: URI has an opaque origin and inherits
 // nothing from the parent page, so the whole design system travels inside each document.
 //
@@ -209,22 +201,64 @@ const BASE_CSS = `
   .inz-btn--secondary{background-color:transparent;color:var(--inz-navy);box-shadow:inset 0 0 0 1px currentColor}
   .inz-btn:hover{transform:translateY(-2px)}
 
-  /* Hero band. Snippet heroes already carry a navy gradient inline; this layers a
-     photographic plate and scrims underneath so every page opens cinematically. */
-  .inz-section.inz-hero,.inz-hero{position:relative;overflow:hidden;background:var(--inz-ink)}
+  /* ---- Hero: photographic depth generated in CSS, no photograph ----
+     What makes an image read as "photographic" rather than "a gradient" is four things,
+     and all four can be synthesised: overlapping soft colour pools at different depths,
+     film grain, a vignette, and something with a real edge (here, a horizon and a
+     perspective grid). Together they give a rendered scene rather than a flat wash — and
+     nothing has to be licensed, uploaded, or kept in step with a Media Manager. */
+  .inz-section.inz-hero,.inz-hero{
+    position:relative;overflow:hidden;
+    /* !important because every hero snippet carries its own inline background gradient,
+       and an inline style would otherwise paint straight over all of this. */
+    background:var(--inz-ink) !important;
+    min-height:min(88vh,760px);display:flex;align-items:center;
+  }
+  /* Colour pools. Three offset radial gradients at different scales — the same trick a
+     mesh-gradient tool uses, done by hand so it costs nothing. */
   .inz-hero__plate{
-    position:absolute;inset:-18% 0 0;height:136%;z-index:0;opacity:.55;
-    background:url('IMG_HERO') center 42%/cover no-repeat;
+    position:absolute;inset:-25% -10%;z-index:0;
+    background:
+      radial-gradient(60% 55% at 18% 22%, rgba(9,123,184,.55) 0%, transparent 62%),
+      radial-gradient(46% 48% at 82% 30%, rgba(97,20,95,.5) 0%, transparent 66%),
+      radial-gradient(70% 60% at 55% 92%, rgba(248,199,12,.16) 0%, transparent 60%),
+      radial-gradient(90% 80% at 50% 50%, rgba(27,20,100,.9) 0%, rgba(12,10,44,1) 78%);
+    filter:blur(4px);
   }
+  /* Horizon + perspective grid. The straight edge is what stops it reading as a blur:
+     an eye takes a hard horizontal as depth cue and fills in a landscape behind it. */
   .inz-hero__scrim{
-    position:absolute;inset:0;z-index:1;
-    background:linear-gradient(100deg,rgba(18,16,58,.94) 0%,rgba(18,16,58,.6) 45%,rgba(27,20,100,.2) 100%);
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:
+      linear-gradient(180deg,transparent 0%,transparent 61.5%,rgba(159,182,232,.5) 61.7%,transparent 62%),
+      repeating-linear-gradient(90deg,rgba(159,182,232,.09) 0 1px,transparent 1px 92px),
+      linear-gradient(180deg,rgba(12,10,44,.15) 0%,transparent 30%,transparent 55%,rgba(12,10,44,.72) 100%);
+    -webkit-mask-image:linear-gradient(180deg,transparent 8%,#000 45%,#000 78%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 8%,#000 45%,#000 78%,transparent 100%);
   }
-  .inz-hero__base{position:absolute;inset:auto 0 0;height:44%;z-index:1;
-    background:linear-gradient(180deg,transparent,rgba(18,16,58,.96))}
-  .inz-hero > .inz-container{position:relative;z-index:3}
-  .inz-hero h1,.inz-hero h2{color:#fff}
+  /* Grain + vignette. feTurbulence is the same fractal noise a film-grain filter uses;
+     at low opacity it removes the plasticky banding that gives CSS gradients away. */
+  .inz-hero__base{
+    position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5;
+    background-image:
+      radial-gradient(120% 95% at 50% 45%, transparent 42%, rgba(6,5,26,.78) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    background-size:cover,220px 220px;
+    mix-blend-mode:normal;
+  }
+  .inz-hero > .inz-container{position:relative;z-index:4}
+  .inz-hero h1,.inz-hero h2,.inz-hero h3{color:#fff}
   .inz-hero p{color:rgba(255,255,255,.82)}
+  .inz-hero .inz-btn--secondary{color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)}
+
+  /* Body sections get the same grain, far weaker, so light and dark bands feel like one
+     surface rather than two different documents. */
+  .inz-section:not(.inz-hero){position:relative}
+  .inz-section:not(.inz-hero)::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+  }
+  .inz-section > *{position:relative;z-index:1}
 
   /* Eyebrow rule — the gold tick that opens each band. */
   .inz-kick{
@@ -273,7 +307,7 @@ const BASE_CSS = `
     .par{transform:none !important}
     html{scroll-behavior:auto}
   }
-</style>`.replace('IMG_HERO', HERO_IMAGE);
+</style>`;
 
 // Parallax + reveal. Runs inside each page document.
 //
@@ -382,9 +416,11 @@ function readSnippet(name) {
 // the first <section> of every page so each one opens cinematically without every snippet
 // having to repeat the markup. data-p drives the parallax rate: the plate drifts at half
 // the scroll distance while the copy above it stays put, which is what reads as depth.
+// Three layers at three depths. The colour pools drift most, the horizon grid less, the
+// grain not at all — grain that moves reads as a dirty screen rather than as film.
 const HERO_LAYERS =
-  '<div class="inz-hero__plate par" data-p="0.5" data-scale="1.12"></div>' +
-  '<div class="inz-hero__scrim"></div>' +
+  '<div class="inz-hero__plate par" data-p="0.34" data-scale="1.1"></div>' +
+  '<div class="inz-hero__scrim par" data-p="0.14"></div>' +
   '<div class="inz-hero__base"></div>';
 
 /**
