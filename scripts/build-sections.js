@@ -38,8 +38,8 @@ const PAGES = {
 // Navigation, rendered inside every page's document.
 //
 // The Wix header menu is site structure and cannot be set from git. This nav can, because
-// each page is a self-contained document. target="_top" is required: without it a link
-// would open inside the iframe rather than navigating the browser.
+// each page is a self-contained document. Every link goes through inzNav() rather than
+// target="_top" — see the SITE_ORIGIN block below for why that attribute does nothing here.
 //
 // Slugs must match what is set in Wix Page Settings. Where they do not, the link 404s.
 // See ARCHITECTURE.md.
@@ -404,6 +404,15 @@ const BASE_CSS = `
   }
   .inz-section > *{position:relative;z-index:1}
 
+  /* [[placeholder]] markers. Deliberately outside both palettes: this is a build-state
+     warning, not part of the design, and it should look wrong on the page. The release
+     gate (INZ_RELEASE=1) refuses to build while any remain, so none of this ships. */
+  .inz-ph{
+    background:repeating-linear-gradient(45deg,#ffe9a8 0 8px,#ffd970 8px 16px);
+    color:#3a2c00;font-weight:500;padding:.05em .3em;border-radius:3px;
+    box-shadow:inset 0 0 0 1px #b98900;
+  }
+
   /* Eyebrow rule — the gold tick that opens each band. */
   .inz-kick{
     display:flex;align-items:center;gap:.85rem;color:var(--inz-gold);font-size:.72rem;
@@ -547,15 +556,65 @@ const PARALLAX_SCRIPT = `
 })();
 </script>`;
 
+// ---------------------------------------------------------------------------
+// [[placeholder]] handling
+// ---------------------------------------------------------------------------
+// WIX-TASKS.md: the site must not be shared publicly while [[placeholder]] markers are
+// visible. They were styled like body copy, so nothing enforced that. Now they are wrapped
+// in <mark> so they cannot be missed, counted in the build summary, and INZ_RELEASE=1
+// refuses to build while any remain.
+
+// Everything a placeholder must NOT be rewritten inside: whole tags, so attribute values
+// are safe, and the bodies of the two raw-text elements, where markup is not parsed and a
+// <mark> would either break the code or appear as literal text.
+//
+// Written as "match what to skip, transform the gaps" rather than "match text between > and
+// <", which silently misses the first and last text node of a fragment.
+const SKIP_REGIONS = /<(script|style)\b[^>]*>[\s\S]*?<\/\1>|<[^>]*>/gi;
+const PLACEHOLDER = /\[\[([^\]]+)\]\]/g;
+const MARKED = '<mark class="inz-ph">[[$1]]</mark>';
+
+function markPlaceholders(html) {
+  let out = '';
+  let last = 0;
+  for (const skip of html.matchAll(SKIP_REGIONS)) {
+    out += html.slice(last, skip.index).replace(PLACEHOLDER, MARKED) + skip[0];
+    last = skip.index + skip[0].length;
+  }
+  return out + html.slice(last).replace(PLACEHOLDER, MARKED);
+}
+
+// A placeholder inside a tag or a script/style body cannot be wrapped, so it would ship
+// invisibly and the release gate would never see it. Fail loudly rather than skip quietly.
+function placeholdersInMarkup(html) {
+  return [...html.matchAll(SKIP_REGIONS)]
+    .filter((skip) => skip[0].includes('[['))
+    .map((skip) => skip[0].slice(0, 100));
+}
+
+function countPlaceholders(html) {
+  return [...html.matchAll(/<mark class="inz-ph">/g)].length;
+}
+
 function readSnippet(name) {
   const file = path.join(SNIPPETS, `${name}.html`);
   if (!fs.existsSync(file)) {
     throw new Error(`build-sections: missing snippet ${file}`);
   }
-  return fs
+  const raw = fs
     .readFileSync(file, 'utf8')
     .replace(/<!--[\s\S]*?-->/g, '') // drop the "paste here" instruction comments
     .trim();
+
+  const unwrappable = placeholdersInMarkup(raw);
+  if (unwrappable.length) {
+    throw new Error(
+      `build-sections: ${name}.html has a [[placeholder]] inside a tag, script or style, ` +
+      `where it can be neither marked nor detected:\n    ${unwrappable.join('\n    ')}`
+    );
+  }
+
+  return markPlaceholders(raw);
 }
 
 // The photographic plate and scrims that sit behind a page's opening band. Injected into
@@ -585,10 +644,12 @@ function withHero(html) {
   return marked + HERO_LAYERS + html.slice(open + 1);
 }
 
-const entries = Object.entries(PAGES).map(([key, files]) => {
+const built = Object.entries(PAGES).map(([key, files]) => {
   const html = withHero(files.map(readSnippet).join('\n'));
-  return `  ${key}: ${JSON.stringify(html)},`;
+  return { key, html, placeholders: countPlaceholders(html) };
 });
+
+const entries = built.map((p) => `  ${p.key}: ${JSON.stringify(p.html)},`);
 
 const shell = { nav: NAV, footer: FOOTER, navScript: NAV_SCRIPT, parallax: PARALLAX_SCRIPT };
 
@@ -637,6 +698,28 @@ export function pageSrc(name) {
 `;
 
 fs.writeFileSync(OUT, out, 'utf8');
-const sizes = Object.keys(PAGES).map((k) => k);
+
 console.log(`wrote ${OUT}`);
-console.log(`${sizes.length} pages: ${sizes.join(', ')}`);
+console.log(`palette: ${PALETTE}`);
+console.log(`${built.length} pages: ${built.map((p) => p.key).join(', ')}`);
+
+// Placeholder report. INZBC owes a fact for every one of these; docs/wix-staging-readiness.md
+// says nothing is shared publicly while they are visible.
+const outstanding = built.filter((p) => p.placeholders > 0);
+const totalPlaceholders = outstanding.reduce((n, p) => n + p.placeholders, 0);
+
+if (totalPlaceholders) {
+  console.log(`\n${totalPlaceholders} [[placeholder]] marker(s) awaiting INZBC:`);
+  for (const p of [...outstanding].sort((a, b) => b.placeholders - a.placeholders)) {
+    console.log(`  ${String(p.placeholders).padStart(3)}  ${p.key}`);
+  }
+}
+
+// The release gate. A warning during development, a hard stop when building to publish.
+if (process.env.INZ_RELEASE === '1' && totalPlaceholders) {
+  console.error(
+    `\nbuild-sections: INZ_RELEASE=1 and ${totalPlaceholders} placeholder(s) remain. ` +
+    `Every one is a fact INZBC still owes; none may be published.\n`
+  );
+  process.exit(1);
+}
