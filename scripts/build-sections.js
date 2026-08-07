@@ -369,7 +369,7 @@ const BASE_CSS = `
   .inz-btn:focus-visible,a:focus-visible{outline:3px solid var(--inz-focus-light);outline-offset:3px}
   .inz-hero :focus-visible,.inz-nav :focus-visible,.inz-footer :focus-visible,
   .inz-band--dark :focus-visible{outline-color:var(--inz-focus-dark)}
-  .inz-btn--primary{background-color:var(--inz-gold);color:var(--inz-navy) !important}
+  .inz-btn--primary{background-color:var(--inz-gold);color:var(--inz-navy)}
   .inz-btn--secondary{background-color:transparent;color:var(--inz-navy);box-shadow:inset 0 0 0 1px currentColor}
   .inz-btn:hover{transform:translateY(-2px)}
   .inz-btn--sm{padding:.65em 1.4em;font-size:.8125rem}
@@ -399,9 +399,22 @@ const BASE_CSS = `
      text-align:center x28. 65ch is the readable floor, so the lede sits at 60
      (it is larger than body) and prose at 68. */
   .inz-lede{font-size:clamp(1rem,2vw,1.25rem);max-width:60ch;margin:0 0 2rem}
+  /* 68ch, not the 76ch that was set inline x4. 65-75ch is the readable measure; 76 is
+     over it, and the container is already capped at 1240px for wider layouts. */
   .inz-prose{max-width:68ch}
+  .inz-prose ol,.inz-prose ul{padding-left:1.25rem;margin:0 0 1.5rem}
+  .inz-prose li{margin-bottom:.75rem}
+  .inz-prose li:last-child{margin-bottom:0}
   .inz-center{text-align:center}
   .inz-center .inz-lede,.inz-center p,.inz-center h1,.inz-center h2{margin-inline:auto}
+  /* The kick is a left-aligned rule plus label; centring it needs the flex axis moved,
+     not just text-align. */
+  .inz-center .inz-kick{justify-content:center}
+  /* More space above a heading than below it. Scoped to direct children of the container
+     so a card's own h3 is not pushed away from its card. Replaces margin-top:2.5rem x3. */
+  .inz-container > :is(h2,h3):not(:first-child){margin-top:2.5rem}
+  /* Hero headlines were set inline at 18ch x8, 20ch x6 and 22ch x4. One measure. */
+  .inz-hero h1{max-width:20ch}
 
   /* ---- Grid ----------------------------------------------------------------
      minmax(16rem) x5, (18rem) x5, (14rem) x3; gap 1.5rem x11. */
@@ -420,6 +433,10 @@ const BASE_CSS = `
   .inz-section--mist .inz-card{background:var(--inz-white)}
   .inz-section--dark .inz-card{background:rgba(255,255,255,.06)}
   .inz-card--raised{background:var(--inz-white);box-shadow:0 4px 18px rgba(0,0,0,.07)}
+  /* Name plus role, x12 on the Executive Council. Denser than a content card: the name
+     leads and the role sits tight beneath it. */
+  .inz-person h3{font-size:1.25rem;margin-bottom:.15em}
+  .inz-person p{margin:0;color:var(--inz-note-text)}
 
   /* ---- Stat ----------------------------------------------------------------
      font-size 2.5rem + weight 800 + colour + margin, x4 each. tabular-nums so a
@@ -439,6 +456,9 @@ const BASE_CSS = `
   /* ---- Small print ----------------------------------------------------------
      color #097bb8 x33, mostly source citations and meta lines. */
   .inz-note{font-size:.8125rem;color:var(--inz-note-text)}
+  /* A source citation almost always trails a grid or a card. Spacing it by adjacency
+     avoids a margin utility class, which is where utility sprawl starts. */
+  .inz-grid + .inz-note,.inz-card + .inz-note{margin-top:1.5rem}
   .inz-section--dark .inz-note{color:var(--inz-on-deep-muted)}
 
   /* ---- Sibling rail ---------------------------------------------------------
@@ -458,13 +478,32 @@ const BASE_CSS = `
   }
   .inz-split{display:flex;flex-wrap:wrap;align-items:center;gap:2rem;justify-content:space-between}
   .inz-split > :first-child{flex:1 1 32rem}
+  /* Portrait or cover beside copy: the media column is fixed, the text takes the rest. */
+  .inz-split--media{align-items:flex-start;gap:2.5rem}
+  .inz-split--media > :first-child{flex:0 0 14rem;max-width:100%}
+  .inz-split--media > :last-child{flex:1 1 24rem}
+  .inz-media{
+    background:var(--inz-mist);border-radius:var(--inz-radius-card);aspect-ratio:1;
+    display:grid;place-items:center;text-align:center;padding:1rem;
+    color:var(--inz-note-text);font-size:.875rem;
+  }
+  .inz-section--mist .inz-media{background:var(--inz-white)}
+
+  /* A real path or identifier, not monospace worn as a costume. */
+  code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em;
+    background:var(--inz-line);padding:.15em .4em;border-radius:4px;
+  }
 
   /* ---- Partner logo tile ----------------------------------------------------
      width 9rem + height 5rem + radius 8px, x3 each. */
+  .inz-logos{display:flex;flex-wrap:wrap;gap:2rem;align-items:center;justify-content:center;margin-top:2rem}
   .inz-logo{
-    width:9rem;height:5rem;display:grid;place-items:center;
-    background:var(--inz-white);border-radius:8px;padding:.75rem;
+    width:9rem;height:5rem;display:grid;place-items:center;text-align:center;
+    background:var(--inz-mist);border-radius:8px;padding:.75rem;
+    font-size:.75rem;color:var(--inz-note-text);
   }
+  .inz-section--mist .inz-logo{background:var(--inz-white)}
 
   /* ---- Browser surfaces -----------------------------------------------------
      Selection, caret and scrollbar ship with browser defaults that belong to no
@@ -481,9 +520,9 @@ const BASE_CSS = `
      nothing has to be licensed, uploaded, or kept in step with a Media Manager. */
   .inz-section.inz-hero,.inz-hero{
     position:relative;overflow:hidden;
-    /* !important because every hero snippet carries its own inline background gradient,
-       and an inline style would otherwise paint straight over all of this. */
-    background:var(--inz-ink) !important;
+    /* Was !important while the hero snippets still carried their own inline navy gradient.
+       They no longer do, and the guard stops one coming back. */
+    background:var(--inz-ink);
     min-height:min(88vh,760px);display:flex;align-items:center;
   }
   /* Colour pools. Three offset radial gradients at different scales — the same trick a
@@ -724,6 +763,41 @@ function countPlaceholders(html) {
   return [...html.matchAll(/<mark class="inz-ph">/g)].length;
 }
 
+// ---------------------------------------------------------------------------
+// Regression guards
+// ---------------------------------------------------------------------------
+// The design system used to lose a specificity fight it created itself: BASE_CSS carried
+// the current system while the snippets carried the previous one inline, and an inline
+// style beats any stylesheet rule. Documentation asking people not to do that is how it
+// got there. This fails the build instead.
+//
+// Switched on in the same commit that migrated the last snippet, so it has never been
+// knowingly red. If a future migration needs more than one commit, shrink an explicit
+// allowlist rather than disabling this.
+const BANNED = [
+  [/\sstyle="/, 'inline style attribute (use the class vocabulary in BASE_CSS)'],
+  [/Big Shoulders|Merriweather|Impact,/, 'retired typeface (the system is Poppins)'],
+  [/#16307f|#c1acfb|#f6f5f8|#f05b29|#160933|#e8e6ee/i, 'retired palette value (use a token)'],
+  [/rgba\(255,\s*255,\s*255/, 'raw translucent white (use --inz-on-dark / --inz-on-deep)'],
+];
+
+function checkBanned(name, html) {
+  const problems = [];
+  const lines = html.split('\n');
+  for (const [pattern, why] of BANNED) {
+    lines.forEach((line, i) => {
+      const hit = line.match(pattern);
+      if (hit) problems.push(`  ${name}.html:${i + 1}  ${why}\n      ${hit[0].trim()}`);
+    });
+  }
+  if (problems.length) {
+    throw new Error(
+      `build-sections: ${problems.length} banned pattern(s) in ${name}.html\n` +
+      problems.join('\n')
+    );
+  }
+}
+
 function readSnippet(name) {
   const file = path.join(SNIPPETS, `${name}.html`);
   if (!fs.existsSync(file)) {
@@ -733,6 +807,8 @@ function readSnippet(name) {
     .readFileSync(file, 'utf8')
     .replace(/<!--[\s\S]*?-->/g, '') // drop the "paste here" instruction comments
     .trim();
+
+  checkBanned(name, raw);
 
   const unwrappable = placeholdersInMarkup(raw);
   if (unwrappable.length) {
