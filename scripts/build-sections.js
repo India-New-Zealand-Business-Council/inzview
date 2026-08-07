@@ -119,52 +119,191 @@ const NAV_SCRIPT = `
   }
 </script>`;
 
-// The stylesheet each document carries. A data: URI has an opaque origin and inherits
-// nothing from the parent page, so everything the snippets rely on travels with them.
+// ---------------------------------------------------------------------------
+// Palette
+// ---------------------------------------------------------------------------
+// INZBC has not chosen between the candidate palettes. docs/live-site-extract.md records
+// the conflict and marks the bicultural set explicitly NOT approved, so both are built and
+// previewed side by side rather than one being guessed at:
 //
-// Palette: taken from the live inzbc.org, measured 6 August 2026 (docs/live-site-extract.md).
-// Contrast measured, not assumed:
-//   indigo #1B1464 on white ....... 15.78:1  AA
-//   white on indigo ............... 15.78:1  AA
-//   indigo on gold #F8C70C ......... 9.89:1  AA  <- primary CTA
-//   white on blue #097BB8 .......... 4.63:1  AA  <- secondary CTA
-//   #414141 body text on white .... 10.21:1  AA
-//   orange #D0611D .......... 4.07 / 3.88:1  FAILS as body text either way.
-// Orange is therefore decorative only: rules, eyebrows, large display text. Never a
-// button fill with text on it, and never body copy.
+//   node scripts/build-sections.js                          -> live-site palette
+//   INZ_PALETTE=bicultural node scripts/build-sections.js    -> provisional palette
+//
+// Production bakes whichever is selected. Only the preview emitter writes both.
+const PALETTES = {
+  // Measured from the live inzbc.org, 6 August 2026.
+  live: {
+    navy: '#1b1464', ink: '#12103a', deep: '#0c0a2c',
+    second: '#097bb8', accent: '#f8c70c', warm: '#d0611d',
+    body: '#414141', muted: '#6b7086',
+    paper: '#ffffff', mist: '#f2f3f7', line: '#e4e6ee',
+    // Decorative only, never text: the hero's counterpoint colour pool and the hairline
+    // used for the horizon and perspective grid.
+    pool: '#61145f', hairline: '#9fb6e8',
+  },
+  // PROVISIONAL, not approved. The three brand colours are from docs/live-site-extract.md;
+  // ink, deep, body, muted and line are derived here because that document names only the
+  // three. If INZBC adopts this set, those five need confirming too.
+  bicultural: {
+    navy: '#12203d', ink: '#0b1526', deep: '#060d18',
+    second: '#0e7c86', accent: '#e86a17', warm: '#e86a17',
+    body: '#3d4450', muted: '#657084',
+    paper: '#ffffff', mist: '#f2f4f7', line: '#e2e6ec',
+    // Marigold is the natural counterpoint to teal here, where the live palette uses a
+    // magenta. Decorative only.
+    pool: '#7a3208', hairline: '#8fb3bd',
+  },
+};
 
-// The stylesheet every page carries. A data: URI has an opaque origin and inherits
-// nothing from the parent page, so the whole design system travels inside each document.
+// ---- Colour maths ---------------------------------------------------------
+// WCAG 2.1 relative luminance. This exists to fail the build, not to produce a number for
+// a comment: the comment block that used to sit here listed every pair as passing while
+// .inz-footer__legal shipped at 3.75:1 and the focus ring at 1.60:1 on white.
+function rgbOf(hex) {
+  const h = hex.replace('#', '');
+  const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
+  return [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16));
+}
+
+function luminance(hex) {
+  const [r, g, b] = rgbOf(hex).map((v) => {
+    const c = v / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function contrast(a, b) {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((m, n) => n - m);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+// Flatten a translucent colour against the surface it actually sits on. Authoring alpha
+// here rather than in the CSS is the entire point: an rgba() text colour is invisible to
+// any check that compares declared token values, because the token says #fff (15.78:1 on
+// deep) while the reader sees the composite (3.75:1 at 40% alpha).
+function over(hex, alpha, bgHex) {
+  const fg = rgbOf(hex);
+  const bg = rgbOf(bgHex);
+  return '#' + fg
+    .map((c, i) => Math.round(alpha * c + (1 - alpha) * bg[i]).toString(16).padStart(2, '0'))
+    .join('');
+}
+
+// For decorative layers that genuinely need alpha at paint time — gradient stops composite
+// against whatever is beneath them, so they cannot be pre-flattened the way text can.
+// Written as a function so these still follow the palette; the hero used to hardcode the
+// live palette's RGB triples, which meant switching palettes recoloured every token and
+// left the largest element on every page in the old colours.
+function rgba(hex, alpha) {
+  return `rgba(${rgbOf(hex).join(',')},${alpha})`;
+}
+
+const PALETTE = process.env.INZ_PALETTE || 'live';
+const P = PALETTES[PALETTE];
+if (!P) {
+  throw new Error(
+    `build-sections: unknown INZ_PALETTE "${PALETTE}" (have: ${Object.keys(PALETTES).join(', ')})`
+  );
+}
+
+// Text and rules on dark surfaces, flattened at build time. The alphas are a starting
+// point; the assert below is what holds them to AA.
+P.onDark = over('#ffffff', 0.86, P.ink);          // hero body copy
+P.onDeep = over('#ffffff', 0.7, P.deep);          // footer body and links
+P.onDeepMuted = over('#ffffff', 0.5, P.deep);     // footer legal. Was 0.4 -> 3.75:1, failed
+P.ruleOnDark = over('#ffffff', 0.16, P.deep);     // hairlines. Decorative, not text
+
+// Focus rings are surface-specific, and this is not cosmetic. Gold on white is 1.60:1 and
+// on mist 1.44:1 — a keyboard user on a light band cannot see where they are. Gold on deep
+// is 12.02:1 and fine. One token cannot serve both, so there are two.
+P.focusLight = P.navy;
+P.focusDark = P.accent;
+
+// ---- Contrast policy ------------------------------------------------------
+// Text needs 4.5:1. Large text (>=24px, or >=18.66px bold) and non-text UI indicators such
+// as focus rings need 3:1. Purely decorative colour carries no requirement and is
+// deliberately absent from this table rather than given a token threshold of 1.
+//
+// [[REVIEW: Bhanu — the pairs below are the ones I can justify from the CSS as it stands.
+// Two judgement calls worth checking: (a) the .inz-stat figure is display-sized, so it is
+// listed at 3:1 not 4.5:1; (b) hairline rules on dark are treated as decorative and are
+// not asserted at all. If either should be stricter, change the threshold here — that is
+// the only place it is expressed.]]
+const CONTRAST_PAIRS = [
+  ['body on paper', P.body, P.paper, 4.5],
+  ['body on mist', P.body, P.mist, 4.5],
+  ['muted on paper', P.muted, P.paper, 4.5],
+  ['link on paper', P.second, P.paper, 4.5],
+  ['heading on paper', P.ink, P.paper, 4.5],
+  ['primary CTA text on fill', P.navy, P.accent, 4.5],
+  ['secondary CTA on paper', P.navy, P.paper, 4.5],
+  ['white on ink', '#ffffff', P.ink, 4.5],
+  ['white on deep', '#ffffff', P.deep, 4.5],
+  ['white on navy', '#ffffff', P.navy, 4.5],
+  ['hero copy on ink', P.onDark, P.ink, 4.5],
+  ['footer copy on deep', P.onDeep, P.deep, 4.5],
+  ['footer legal on deep', P.onDeepMuted, P.deep, 4.5],
+  ['stat figure on paper', P.warm, P.paper, 3],
+  ['focus ring on paper', P.focusLight, P.paper, 3],
+  ['focus ring on mist', P.focusLight, P.mist, 3],
+  ['focus ring on deep', P.focusDark, P.deep, 3],
+];
+
+const contrastFailures = CONTRAST_PAIRS
+  .map(([name, fg, bg, min]) => ({ name, fg, bg, min, ratio: contrast(fg, bg) }))
+  .filter((r) => r.ratio < r.min);
+
+if (contrastFailures.length) {
+  console.error(`\nbuild-sections: palette "${PALETTE}" fails WCAG AA\n`);
+  for (const f of contrastFailures) {
+    console.error(
+      `  ${f.name.padEnd(26)} ${f.fg} on ${f.bg}  ` +
+      `${f.ratio.toFixed(2)}:1  (needs ${f.min}:1)`
+    );
+  }
+  console.error('');
+  throw new Error(`${contrastFailures.length} contrast failure(s) in palette "${PALETTE}"`);
+}
+
+// ---------------------------------------------------------------------------
+// The stylesheet every page carries. A data: URI has an opaque origin and inherits nothing
+// from the parent page, so the whole design system travels inside each document.
 //
 // Cinematic direction adopted 6 August 2026 (design-preview/home-cinematic.html), in the
 // language of wearebrand.io: full-bleed photography, large lowercase geometric sans, tight
 // leading, minimal chrome, depth from layered movement rather than decoration.
 //
-// TYPEFACE: Poppins. This deviates from Big Shoulders in docs/design-decisions.md — that
-// face is condensed and uppercase-only, and this look does not survive in it. Recorded as
-// a deviation pending INZBC sign-off, not a silent change.
+// TYPEFACE: Poppins. This deviates from Big Shoulders in docs/design-decisions.md, which is
+// condensed and uppercase-only; the look does not survive in it. Recorded as a deviation
+// pending INZBC sign-off, not a silent change.
 //
-// Palette from the live inzbc.org (docs/live-site-extract.md). Contrast measured:
-//   indigo #1b1464 on white ........ 15.78:1  AA
-//   white on indigo ................ 15.78:1  AA
-//   indigo on gold #f8c70c .......... 9.89:1  AA  <- primary CTA
-//   white on blue #097bb8 ........... 4.63:1  AA
-//   #414141 body on white .......... 10.21:1  AA
-//   orange #d0611d ........... 4.07 / 3.88:1  FAILS as text either way.
-// Orange stays decorative — rules and large display only. Never a button fill.
+// Contrast is asserted above, not documented here. A comment cannot fail a build.
 const BASE_CSS = `
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --inz-navy:#1b1464; --inz-ink:#12103a; --inz-deep:#0c0a2c; --inz-blue:#097bb8;
-    --inz-gold:#f8c70c; --inz-orange:#d0611d; --inz-body:#414141;
-    --inz-white:#fff; --inz-mist:#f2f3f7; --inz-line:#e4e6ee; --inz-muted:#6b7086;
-    --inz-max-width:1240px; --inz-radius:100px;
-    /* Retained so older inline styles in the snippets still resolve. */
-    --inz-purple:#1b1464; --inz-tangerine:#f8c70c; --inz-lavender:#9fb6e8;
-    --inz-forest:#097bb8; --inz-crimson:#d0611d; --inz-lime:#f8c70c; --inz-light:#f2f3f7;
+    --inz-navy:${P.navy}; --inz-ink:${P.ink}; --inz-deep:${P.deep}; --inz-blue:${P.second};
+    --inz-gold:${P.accent}; --inz-orange:${P.warm}; --inz-body:${P.body};
+    --inz-white:${P.paper}; --inz-mist:${P.mist}; --inz-line:${P.line}; --inz-muted:${P.muted};
+
+    /* Text on dark surfaces, pre-flattened against the surface named in the token. Never
+       replace these with rgba(): the alpha then becomes invisible to the contrast assert. */
+    --inz-on-dark:${P.onDark}; --inz-on-deep:${P.onDeep};
+    --inz-on-deep-muted:${P.onDeepMuted}; --inz-rule-on-dark:${P.ruleOnDark};
+
+    /* Two focus rings, because one colour cannot clear 3:1 on both paper and deep. */
+    --inz-focus-light:${P.focusLight}; --inz-focus-dark:${P.focusDark};
+
+    --inz-max-width:1240px; --inz-radius:100px; --inz-radius-card:14px;
+
+    /* RATCHET: retained only so not-yet-migrated inline styles still resolve. Delete when
+       Phase 1c finishes and the inline-style guard goes live. */
+    --inz-purple:${P.navy}; --inz-tangerine:${P.accent}; --inz-lavender:#9fb6e8;
+    --inz-forest:${P.second}; --inz-crimson:${P.warm}; --inz-lime:${P.accent};
+    --inz-light:${P.mist};
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -196,7 +335,12 @@ const BASE_CSS = `
     padding:1em 1.9em;border-radius:var(--inz-radius);
     transition:transform .2s ease,background .2s ease;
   }
-  .inz-btn:focus-visible{outline:3px solid var(--inz-gold);outline-offset:3px}
+  /* Focus is visible on both surfaces or it is not an accessibility feature. The dark
+     override has to come after, and has to cover every dark context: hero, nav, footer,
+     and any band carrying the dark surface modifier. */
+  .inz-btn:focus-visible,a:focus-visible{outline:3px solid var(--inz-focus-light);outline-offset:3px}
+  .inz-hero :focus-visible,.inz-nav :focus-visible,.inz-footer :focus-visible,
+  .inz-band--dark :focus-visible{outline-color:var(--inz-focus-dark)}
   .inz-btn--primary{background-color:var(--inz-gold);color:var(--inz-navy) !important}
   .inz-btn--secondary{background-color:transparent;color:var(--inz-navy);box-shadow:inset 0 0 0 1px currentColor}
   .inz-btn:hover{transform:translateY(-2px)}
@@ -219,10 +363,10 @@ const BASE_CSS = `
   .inz-hero__plate{
     position:absolute;inset:-25% -10%;z-index:0;
     background:
-      radial-gradient(60% 55% at 18% 22%, rgba(9,123,184,.55) 0%, transparent 62%),
-      radial-gradient(46% 48% at 82% 30%, rgba(97,20,95,.5) 0%, transparent 66%),
-      radial-gradient(70% 60% at 55% 92%, rgba(248,199,12,.16) 0%, transparent 60%),
-      radial-gradient(90% 80% at 50% 50%, rgba(27,20,100,.9) 0%, rgba(12,10,44,1) 78%);
+      radial-gradient(60% 55% at 18% 22%, ${rgba(P.second, 0.55)} 0%, transparent 62%),
+      radial-gradient(46% 48% at 82% 30%, ${rgba(P.pool, 0.5)} 0%, transparent 66%),
+      radial-gradient(70% 60% at 55% 92%, ${rgba(P.accent, 0.16)} 0%, transparent 60%),
+      radial-gradient(90% 80% at 50% 50%, ${rgba(P.navy, 0.9)} 0%, ${P.deep} 78%);
     filter:blur(4px);
   }
   /* Horizon + perspective grid. The straight edge is what stops it reading as a blur:
@@ -230,9 +374,9 @@ const BASE_CSS = `
   .inz-hero__scrim{
     position:absolute;inset:0;z-index:1;pointer-events:none;
     background:
-      linear-gradient(180deg,transparent 0%,transparent 61.5%,rgba(159,182,232,.5) 61.7%,transparent 62%),
-      repeating-linear-gradient(90deg,rgba(159,182,232,.09) 0 1px,transparent 1px 92px),
-      linear-gradient(180deg,rgba(12,10,44,.15) 0%,transparent 30%,transparent 55%,rgba(12,10,44,.72) 100%);
+      linear-gradient(180deg,transparent 0%,transparent 61.5%,${rgba(P.hairline, 0.5)} 61.7%,transparent 62%),
+      repeating-linear-gradient(90deg,${rgba(P.hairline, 0.09)} 0 1px,transparent 1px 92px),
+      linear-gradient(180deg,${rgba(P.deep, 0.15)} 0%,transparent 30%,transparent 55%,${rgba(P.deep, 0.72)} 100%);
     -webkit-mask-image:linear-gradient(180deg,transparent 8%,#000 45%,#000 78%,transparent 100%);
     mask-image:linear-gradient(180deg,transparent 8%,#000 45%,#000 78%,transparent 100%);
   }
@@ -241,15 +385,15 @@ const BASE_CSS = `
   .inz-hero__base{
     position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5;
     background-image:
-      radial-gradient(120% 95% at 50% 45%, transparent 42%, rgba(6,5,26,.78) 100%),
+      radial-gradient(120% 95% at 50% 45%, transparent 42%, rgba(0,0,0,.72) 100%),
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
     background-size:cover,220px 220px;
     mix-blend-mode:normal;
   }
   .inz-hero > .inz-container{position:relative;z-index:4}
   .inz-hero h1,.inz-hero h2,.inz-hero h3{color:#fff}
-  .inz-hero p{color:rgba(255,255,255,.82)}
-  .inz-hero .inz-btn--secondary{color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)}
+  .inz-hero p{color:var(--inz-on-dark)}
+  .inz-hero .inz-btn--secondary{color:#fff;box-shadow:inset 0 0 0 1px var(--inz-on-deep-muted)}
 
   /* Body sections get the same grain, far weaker, so light and dark bands feel like one
      surface rather than two different documents. */
@@ -278,7 +422,7 @@ const BASE_CSS = `
     justify-content:space-between;gap:1.5rem;padding:1.5rem clamp(1.25rem,4vw,3rem);
     transition:padding .35s ease,background .35s ease,backdrop-filter .35s ease;
   }
-  .inz-nav.solid{background:rgba(18,16,58,.92);backdrop-filter:blur(14px);padding:.95rem clamp(1.25rem,4vw,3rem)}
+  .inz-nav.solid{background:${rgba(P.ink, 0.92)};backdrop-filter:blur(14px);padding:.95rem clamp(1.25rem,4vw,3rem)}
   .inz-nav__brand{font-weight:700;font-size:1.1rem;color:#fff;text-decoration:none;letter-spacing:.01em}
   .inz-nav__list{display:flex;flex-wrap:wrap;gap:.4rem 2rem;list-style:none;margin:0;padding:0}
   .inz-nav__list a{color:#fff;text-decoration:none;font-size:.82rem;opacity:.82;text-transform:lowercase}
@@ -287,7 +431,7 @@ const BASE_CSS = `
   @media (max-width:900px){.inz-nav__list{display:none}}
 
   /* Footer */
-  .inz-footer{background:var(--inz-deep);color:rgba(255,255,255,.66);
+  .inz-footer{background:var(--inz-deep);color:var(--inz-on-deep);
     padding:4rem 0 2.2rem;font-size:.88rem;font-weight:300}
   .inz-footer__grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:2.4rem}
   @media (max-width:820px){.inz-footer__grid{grid-template-columns:1fr 1fr}}
@@ -297,10 +441,12 @@ const BASE_CSS = `
     text-transform:uppercase;color:var(--inz-gold);font-weight:500}
   .inz-footer ul{list-style:none;margin:0;padding:0}
   .inz-footer li{margin-bottom:.55rem}
-  .inz-footer a{color:rgba(255,255,255,.72);text-decoration:none;font-size:.88rem}
+  .inz-footer a{color:var(--inz-on-deep);text-decoration:none;font-size:.88rem}
   .inz-footer a:hover,.inz-footer a:focus-visible{color:#fff;text-decoration:underline}
-  .inz-footer__legal{border-top:1px solid rgba(255,255,255,.1);margin-top:3rem;
-    padding-top:1.4rem;font-size:.76rem;color:rgba(255,255,255,.4)}
+  /* .76rem is normal text, so this needs 4.5:1. At the previous rgba(255,255,255,.4) it
+     was 3.75:1 and failed. --inz-on-deep-muted is the same idea at an alpha that passes. */
+  .inz-footer__legal{border-top:1px solid var(--inz-rule-on-dark);margin-top:3rem;
+    padding-top:1.4rem;font-size:.76rem;color:var(--inz-on-deep-muted)}
 
   @media (prefers-reduced-motion:reduce){
     .rv{opacity:1;transform:none;transition:none}
