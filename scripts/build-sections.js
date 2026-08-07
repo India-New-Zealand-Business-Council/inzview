@@ -199,6 +199,19 @@ function rgba(hex, alpha) {
   return `rgba(${rgbOf(hex).join(',')},${alpha})`;
 }
 
+// Brand colours are chosen against white. On a tinted surface they lose contrast, and
+// small text is where that first bites: #097bb8 is 4.63:1 on paper but 4.17:1 on mist.
+// Darkening the brand hue itself keeps the colour recognisably the brand — the alternative
+// everyone reaches for is grey, which throws the hue away. Steps in 4% black until the
+// ratio clears, so it re-derives correctly for any palette rather than being hand-tuned.
+function darkenUntil(hex, bgHex, target) {
+  let c = hex;
+  for (let i = 0; i < 40 && contrast(c, bgHex) < target; i++) {
+    c = over('#000000', 0.04, c);
+  }
+  return c;
+}
+
 const PALETTE = process.env.INZ_PALETTE || 'live';
 const P = PALETTES[PALETTE];
 if (!P) {
@@ -219,6 +232,12 @@ P.ruleOnDark = over('#ffffff', 0.16, P.deep);     // hairlines. Decorative, not 
 // is 12.02:1 and fine. One token cannot serve both, so there are two.
 P.focusLight = P.navy;
 P.focusDark = P.accent;
+
+// Text-safe variants for the tinted surface. .inz-note is .8125rem (normal text, 4.5:1);
+// .inz-stat__figure is clamp(2rem,...) (large text, 3:1). Derived against mist because
+// that is the worse of the two light surfaces, so one value is safe on both.
+P.noteText = darkenUntil(P.second, P.mist, 4.5);
+P.statText = darkenUntil(P.warm, P.mist, 3);
 
 // ---- Contrast policy ------------------------------------------------------
 // Text needs 4.5:1. Large text (>=24px, or >=18.66px bold) and non-text UI indicators such
@@ -244,7 +263,12 @@ const CONTRAST_PAIRS = [
   ['hero copy on ink', P.onDark, P.ink, 4.5],
   ['footer copy on deep', P.onDeep, P.deep, 4.5],
   ['footer legal on deep', P.onDeepMuted, P.deep, 4.5],
-  ['stat figure on paper', P.warm, P.paper, 3],
+  // .inz-stat__figure is clamp(2rem,...) so it is large text at 3:1. .inz-note is
+  // .8125rem, which is normal text at 4.5:1 however small it looks.
+  ['stat figure on paper', P.statText, P.paper, 3],
+  ['stat figure on mist', P.statText, P.mist, 3],
+  ['note on paper', P.noteText, P.paper, 4.5],
+  ['note on mist', P.noteText, P.mist, 4.5],
   ['focus ring on paper', P.focusLight, P.paper, 3],
   ['focus ring on mist', P.focusLight, P.mist, 3],
   ['focus ring on deep', P.focusDark, P.deep, 3],
@@ -297,6 +321,10 @@ const BASE_CSS = `
     /* Two focus rings, because one colour cannot clear 3:1 on both paper and deep. */
     --inz-focus-light:${P.focusLight}; --inz-focus-dark:${P.focusDark};
 
+    /* Brand hues darkened until they clear AA on the tinted surface. Use these for text,
+       and the plain brand tokens for fills, rules and large display. */
+    --inz-note-text:${P.noteText}; --inz-stat-text:${P.statText};
+
     --inz-max-width:1240px; --inz-radius:100px; --inz-radius-card:14px;
 
     /* RATCHET: retained only so not-yet-migrated inline styles still resolve. Delete when
@@ -344,6 +372,106 @@ const BASE_CSS = `
   .inz-btn--primary{background-color:var(--inz-gold);color:var(--inz-navy) !important}
   .inz-btn--secondary{background-color:transparent;color:var(--inz-navy);box-shadow:inset 0 0 0 1px currentColor}
   .inz-btn:hover{transform:translateY(-2px)}
+  .inz-btn--sm{padding:.65em 1.4em;font-size:.8125rem}
+
+  /* =========================================================================
+     Class vocabulary
+     -------------------------------------------------------------------------
+     Extracted from the 290 inline style attributes across the 24 snippets, and
+     only where a pattern appeared 3+ times with the same intent. The counts in
+     each comment are the measured occurrences it replaces.
+     ========================================================================= */
+
+  /* ---- Band surfaces --------------------------------------------------------
+     .inz-section stays the band class. PARALLAX_SCRIPT selects it to attach the
+     scroll reveal, so renaming it would silently kill every animation on every
+     page. These are modifiers on it, not a replacement.
+     Padding: clamp(3rem,6vw,4.5rem) x23, clamp(4rem,10vw,6rem) x18. */
+  .inz-section{padding:clamp(3rem,6vw,4.5rem) 0}
+  .inz-section--tall{padding:clamp(4rem,10vw,6rem) 0}
+  .inz-section--paper{background:var(--inz-white);color:var(--inz-body)}
+  .inz-section--mist{background:var(--inz-mist);color:var(--inz-body)}
+  .inz-section--dark{background:var(--inz-ink);color:var(--inz-on-dark)}
+  .inz-section--dark h2,.inz-section--dark h3{color:#fff}
+
+  /* ---- Measure --------------------------------------------------------------
+     max-width 55ch x16, 60ch x6, plus margin-inline:auto x20 and
+     text-align:center x28. 65ch is the readable floor, so the lede sits at 60
+     (it is larger than body) and prose at 68. */
+  .inz-lede{font-size:clamp(1rem,2vw,1.25rem);max-width:60ch;margin:0 0 2rem}
+  .inz-prose{max-width:68ch}
+  .inz-center{text-align:center}
+  .inz-center .inz-lede,.inz-center p,.inz-center h1,.inz-center h2{margin-inline:auto}
+
+  /* ---- Grid ----------------------------------------------------------------
+     minmax(16rem) x5, (18rem) x5, (14rem) x3; gap 1.5rem x11. */
+  .inz-grid{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))}
+  .inz-grid--wide{grid-template-columns:repeat(auto-fit,minmax(18rem,1fr))}
+  .inz-grid--tight{grid-template-columns:repeat(auto-fit,minmax(14rem,1fr))}
+
+  /* ---- Card ----------------------------------------------------------------
+     background #f6f5f8 x40, border-radius 10px x41, padding 1.5rem x27 and
+     1.75rem x12. The card radius is its own token: --inz-radius is the 100px
+     button pill and would turn a card into a lozenge. Cards invert against their
+     band so a mist card never sits on a mist section. */
+  .inz-card{background:var(--inz-mist);padding:1.75rem;border-radius:var(--inz-radius-card)}
+  .inz-card h3{font-size:1.35rem;margin-bottom:.5rem}
+  .inz-card > :last-child{margin-bottom:0}
+  .inz-section--mist .inz-card{background:var(--inz-white)}
+  .inz-section--dark .inz-card{background:rgba(255,255,255,.06)}
+  .inz-card--raised{background:var(--inz-white);box-shadow:0 4px 18px rgba(0,0,0,.07)}
+
+  /* ---- Stat ----------------------------------------------------------------
+     font-size 2.5rem + weight 800 + colour + margin, x4 each. tabular-nums so a
+     column of figures aligns; proportional digits make NZ$3.95bn ragged. */
+  .inz-stat__figure{
+    font-size:clamp(2rem,4vw,2.75rem);font-weight:700;line-height:1;
+    color:var(--inz-stat-text);margin:0 0 .25em;letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums;
+  }
+  .inz-stat > :last-child{margin-bottom:0}
+
+  /* ---- Action rows ----------------------------------------------------------
+     display:flex x11, flex-wrap x7, justify-content:center x8. */
+  .inz-actions{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.5rem}
+  .inz-actions--center{justify-content:center}
+
+  /* ---- Small print ----------------------------------------------------------
+     color #097bb8 x33, mostly source citations and meta lines. */
+  .inz-note{font-size:.8125rem;color:var(--inz-note-text)}
+  .inz-section--dark .inz-note{color:var(--inz-on-deep-muted)}
+
+  /* ---- Sibling rail ---------------------------------------------------------
+     Phase 0 finding: the page set is organised by INZBC's org chart, not visitor
+     intent, so four pages publish things and three help you export. Slugs are
+     live 301 destinations and cannot be merged, so this routes sideways instead. */
+  .inz-rail{
+    display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;padding-top:1.6rem;
+    border-top:1px solid var(--inz-line);margin-top:2.5rem;font-size:.85rem;
+  }
+  .inz-section--dark .inz-rail{border-top-color:var(--inz-rule-on-dark)}
+
+  /* ---- Credibility strip and split band ------------------------------------- */
+  .inz-strip{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:.75rem 2.5rem;
+    text-align:center;font-size:clamp(.85rem,1.5vw,1rem);
+  }
+  .inz-split{display:flex;flex-wrap:wrap;align-items:center;gap:2rem;justify-content:space-between}
+  .inz-split > :first-child{flex:1 1 32rem}
+
+  /* ---- Partner logo tile ----------------------------------------------------
+     width 9rem + height 5rem + radius 8px, x3 each. */
+  .inz-logo{
+    width:9rem;height:5rem;display:grid;place-items:center;
+    background:var(--inz-white);border-radius:8px;padding:.75rem;
+  }
+
+  /* ---- Browser surfaces -----------------------------------------------------
+     Selection, caret and scrollbar ship with browser defaults that belong to no
+     design system. Cheap to theme, conspicuous when nobody has. */
+  ::selection{background:var(--inz-gold);color:var(--inz-navy)}
+  html{scrollbar-color:var(--inz-muted) transparent;caret-color:var(--inz-blue)}
+  a{text-underline-offset:.18em}
 
   /* ---- Hero: photographic depth generated in CSS, no photograph ----
      What makes an image read as "photographic" rather than "a gradient" is four things,
