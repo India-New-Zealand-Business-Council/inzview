@@ -37,6 +37,49 @@ const ARCHETYPE = {
 
 const HERO_TIER = { landmark: 'landmark', hub: 'page', editorial: 'page', task: 'task' };
 
+// ---------------------------------------------------------------------------
+// Media
+// ---------------------------------------------------------------------------
+// The images exist at assets/from-live-site/ but are NOT in this site's Media Manager
+// (WIX-TASKS.md task 4). Repo files are not served as images, and the old site's
+// static.wixstatic.com URLs must not be hot-linked: they resolve today but belong to the
+// site being replaced, on a different Wix account.
+//
+// So every src starts empty. An empty src omits the layer entirely and the CSS gradient
+// plate shows through, which is what ships today. Paste the new Media Manager URL here
+// after the upload and the photograph appears with no other change.
+//
+//   role: 'decorative'  a CSS background layer. Backgrounds cannot carry alt text, so only
+//                       imagery that adds nothing to the meaning goes here.
+//   role: 'content'     a real <img alt>. Publication covers, people, event flyers. The
+//                       build refuses a content image with an empty alt.
+//
+// Photography is for landmark and hub pages. A Join or Directory page does not need a hero
+// photograph, and giving it one is decoration standing in for content.
+const MEDIA = {
+  home: { src: '', alt: '', role: 'decorative', position: 'center 42%' },
+  fta: { src: '', alt: '', role: 'decorative', position: 'center 45%' },
+  tradeResources: { src: '', alt: '', role: 'decorative', position: 'center 50%' },
+  events: { src: '', alt: '', role: 'decorative', position: 'center 40%' },
+  membership: { src: '', alt: '', role: 'decorative', position: 'center 45%' },
+};
+
+for (const [key, m] of Object.entries(MEDIA)) {
+  if (m.src && m.role === 'content' && !m.alt.trim()) {
+    throw new Error(
+      `build-sections: MEDIA.${key} is a content image with no alt text. ` +
+      `Several of these arrived with filenames as alt text on the live site; ` +
+      `see assets/from-live-site/README.md.`
+    );
+  }
+  if (m.src && !/^https:\/\/static\.wixstatic\.com\//.test(m.src)) {
+    throw new Error(
+      `build-sections: MEDIA.${key} must point at this site's Media Manager ` +
+      `(https://static.wixstatic.com/...), not ${m.src}`
+    );
+  }
+}
+
 // Page key -> ordered snippet files. Keys are what page code passes to pageSrc().
 // The closing section is the CTA the page has earned. Joining means leaving for Member
 // Jungle, which is a lot to ask of someone who arrived forty seconds ago wanting to know
@@ -592,6 +635,13 @@ ${TOKENS}
       radial-gradient(90% 80% at 50% 50%, ${rgba(P.navy, 0.9)} 0%, ${P.deep} 78%);
     filter:blur(4px);
   }
+  /* The photograph, when a page has one. Sits above the synthesised plate and below the
+     scrim and grain, so it picks up the same vignette and film treatment instead of looking
+     pasted on. Absent entirely when MEDIA has no src, which is the state that ships today. */
+  .inz-hero__photo{
+    position:absolute;inset:-25% -10%;z-index:1;
+    background-size:cover;background-repeat:no-repeat;opacity:.55;
+  }
   /* Horizon + perspective grid. The straight edge is what stops it reading as a blur:
      an eye takes a hard horizontal as depth cue and fills in a landscape behind it. */
   .inz-hero__scrim{
@@ -893,6 +943,22 @@ const HERO_LAYERS =
   '<div class="inz-hero__scrim par" data-p="0.14"></div>' +
   '<div class="inz-hero__base"></div>';
 
+// The photograph, when there is one, sits above the synthesised plate and below the scrim
+// and grain, so it inherits the same vignette and film treatment rather than looking pasted
+// on. aria-hidden because it is decorative: it carries no information the heading does not.
+function heroPhoto(key) {
+  const m = MEDIA[key];
+  if (!m || !m.src) return '';
+  // An inline style is correct here and not a guard violation: the guard inspects
+  // hand-authored snippets, and this is generated from a validated URL. The alternative,
+  // a per-page rule inside a shared stylesheet, would be worse.
+  const pos = m.position || 'center';
+  return (
+    `<div class="inz-hero__photo par" data-p="0.34" data-scale="1.1" aria-hidden="true" ` +
+    `style="background-image:url('${m.src}');background-position:${pos}"></div>`
+  );
+}
+
 /**
  * Adds the hero treatment to a page's first section.
  * @param {string} html the page's concatenated snippet markup
@@ -915,7 +981,7 @@ function withHero(html, key) {
   if (!marked.includes('inz-hero--')) {
     throw new Error(`build-sections: ${key} has no hero tier; its first section may not be a <section class="inz-section">`);
   }
-  return marked + HERO_LAYERS + html.slice(open + 1);
+  return marked + HERO_LAYERS + heroPhoto(key) + html.slice(open + 1);
 }
 
 const built = Object.entries(PAGES).map(([key, files]) => {
