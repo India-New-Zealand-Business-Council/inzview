@@ -11,28 +11,64 @@ const ROOT = path.resolve(__dirname, '..');
 const SNIPPETS = path.join(ROOT, 'src/public/wix-studio-snippets');
 const OUT = path.join(ROOT, 'src/public/sections.js');
 
+// ---------------------------------------------------------------------------
+// Page archetypes (DESIGN.local.md, Phase 0)
+// ---------------------------------------------------------------------------
+// Applying one band rhythm to all twenty pages trades a messy template for a tidy one.
+// These four say what a page is FOR, and the composition follows from that.
+//
+//   landmark   Home, FTA. Cold traffic arriving on the FTA news. Orient and route.
+//   hub        Routes to the right sub-thing.
+//   editorial  Credibility or content. Provenance matters more than persuasion.
+//   task       One action. No decoration, no photography, short hero.
+const ARCHETYPE = {
+  home: 'landmark', fta: 'landmark',
+
+  membership: 'hub', events: 'hub', tradeResources: 'hub',
+  tradeMissions: 'hub', indiaMarketOpportunities: 'hub',
+
+  about: 'editorial', executiveCouncil: 'editorial', ourPatron: 'editorial',
+  publications: 'editorial', newsletters: 'editorial', digest: 'editorial',
+  news: 'editorial', partners: 'editorial',
+
+  membershipJoin: 'task', connect: 'task', memberDirectory: 'task',
+  ftaExplainer: 'task', eventsPast: 'task',
+};
+
+const HERO_TIER = { landmark: 'landmark', hub: 'page', editorial: 'page', task: 'task' };
+
 // Page key -> ordered snippet files. Keys are what page code passes to pageSrc().
+// The closing section is the CTA the page has earned. Joining means leaving for Member
+// Jungle, which is a lot to ask of someone who arrived forty seconds ago wanting to know
+// what a tariff line means, so informational pages ask for the cheaper next step.
 const PAGES = {
+  // Landmark
   home: ['home-hero', 'fta-feature-band', 'trade-stats', 'credibility-strip', 'join-cta'],
+  fta: ['fta-centre', 'cta-guidance'],
+
+  // Hub
+  membership: ['membership', 'join-cta'],
+  events: ['events', 'cta-events'],
+  tradeResources: ['trade-resources', 'cta-guidance'],
+  tradeMissions: ['trade-missions', 'cta-guidance'],
+  indiaMarketOpportunities: ['india-market-opportunities', 'cta-guidance'],
+
+  // Editorial
   about: ['about-hero', 'credibility-strip', 'join-cta'],
-  membership: ['membership'],
+  executiveCouncil: ['executive-council', 'join-cta'],
+  ourPatron: ['our-patron', 'join-cta'],
+  publications: ['insights-publications', 'cta-subscribe'],
+  newsletters: ['insights-newsletters', 'cta-subscribe'],
+  digest: ['digest', 'cta-subscribe'],
+  news: ['news', 'cta-subscribe'],
+  partners: ['partners', 'cta-sponsor'],
+
+  // Task. No closing CTA: the page IS the action, and a second one competes with it.
   membershipJoin: ['membership-join'],
-  memberDirectory: ['member-directory'],
-  events: ['events'],
-  eventsPast: ['events-past'],
-  tradeMissions: ['trade-missions'],
-  indiaMarketOpportunities: ['india-market-opportunities'],
-  publications: ['insights-publications'],
-  newsletters: ['insights-newsletters'],
-  news: ['news'],
-  partners: ['partners'],
   connect: ['connect'],
-  executiveCouncil: ['executive-council'],
-  ourPatron: ['our-patron'],
-  fta: ['fta-centre'],
+  memberDirectory: ['member-directory'],
   ftaExplainer: ['fta-explainer'],
-  tradeResources: ['trade-resources'],
-  digest: ['digest'],
+  eventsPast: ['events-past'],
 };
 
 // Navigation, rendered inside every page's document.
@@ -531,8 +567,20 @@ ${TOKENS}
     /* Was !important while the hero snippets still carried their own inline navy gradient.
        They no longer do, and the guard stops one coming back. */
     background:var(--inz-ink);
-    min-height:min(88vh,760px);display:flex;align-items:center;
+    display:flex;align-items:center;
   }
+  /* Hero height is an archetype decision, not one number for twenty pages. A single
+     min(88vh,760px) put a near-full screen of empty gradient above one paragraph: on
+     ourPatron that was 39.5% of the entire page height, measured in a browser.
+       landmark  Home and FTA. Cold traffic, nothing above it, earns the full screen.
+       page      Hubs and editorial. Enough to establish the band, not a barrier.
+       task      Join, Connect, Directory. The visitor came to do one thing. */
+  .inz-hero--landmark{min-height:min(88vh,760px)}
+  .inz-hero--page{min-height:min(46vh,400px)}
+  .inz-hero--task{min-height:min(32vh,280px)}
+  .inz-hero--landmark .inz-container{padding-block:4rem}
+  .inz-hero--page .inz-container{padding-block:3rem}
+  .inz-hero--task .inz-container{padding-block:2.5rem}
   /* Colour pools. Three offset radial gradients at different scales — the same trick a
      mesh-gradient tool uses, done by hand so it costs nothing. */
   .inz-hero__plate{
@@ -568,7 +616,12 @@ ${TOKENS}
   .inz-hero > .inz-container{position:relative;z-index:4}
   .inz-hero h1,.inz-hero h2,.inz-hero h3{color:#fff}
   .inz-hero p{color:var(--inz-on-dark)}
-  .inz-hero .inz-btn--secondary{color:#fff;box-shadow:inset 0 0 0 1px var(--inz-on-deep-muted)}
+  /* Every dark context, not just the hero. Scoping this to .inz-hero alone left the
+     secondary button navy-on-navy at 1.15:1 in the closing CTA band, which is
+     .inz-section--dark. The focus ring above needs exactly the same list. */
+  .inz-hero .inz-btn--secondary,
+  .inz-section--dark .inz-btn--secondary,
+  .inz-footer .inz-btn--secondary{color:#fff;box-shadow:inset 0 0 0 1px var(--inz-on-deep-muted)}
 
   /* Body sections get the same grain, far weaker, so light and dark bands feel like one
      surface rather than two different documents. */
@@ -845,19 +898,29 @@ const HERO_LAYERS =
  * @param {string} html the page's concatenated snippet markup
  * @returns {string}
  */
-function withHero(html) {
+function withHero(html, key) {
   const open = html.indexOf('>', html.indexOf('<section'));
   if (open === -1) return html;
   const tag = html.slice(0, open + 1);
+  const tier = HERO_TIER[ARCHETYPE[key]];
   // Mark it a hero so the CSS positions the layers, unless the snippet already says so.
-  const marked = tag.includes('inz-hero')
+  let marked = tag.includes('inz-hero')
     ? tag
     : tag.replace('class="inz-section', 'class="inz-section inz-hero');
+  // The tier is added separately. Adding it only on the branch that injects inz-hero meant
+  // home-hero.html, the one snippet that declares inz-hero itself, silently got no tier.
+  if (!marked.includes('inz-hero--')) {
+    marked = marked.replace('inz-hero', `inz-hero inz-hero--${tier}`);
+  }
+  if (!marked.includes('inz-hero--')) {
+    throw new Error(`build-sections: ${key} has no hero tier; its first section may not be a <section class="inz-section">`);
+  }
   return marked + HERO_LAYERS + html.slice(open + 1);
 }
 
 const built = Object.entries(PAGES).map(([key, files]) => {
-  const html = withHero(files.map(readSnippet).join('\n'));
+  if (!ARCHETYPE[key]) throw new Error(`build-sections: page "${key}" has no archetype`);
+  const html = withHero(files.map(readSnippet).join('\n'), key);
   return { key, html, placeholders: countPlaceholders(html) };
 });
 
@@ -944,8 +1007,44 @@ ${TOKENS}
 
 fs.writeFileSync(path.join(SNIPPETS, 'site-head.html'), SITE_HEAD, 'utf8');
 
+// Standalone previews, so a page can be opened in a browser without Wix in the way, and so
+// INZBC can compare both palettes side by side rather than from a table of hex values.
+// Gitignored: these are build output, not source.
+const PREVIEW_DIR = path.join(ROOT, 'design-preview', '_generated', PALETTE);
+fs.mkdirSync(PREVIEW_DIR, { recursive: true });
+for (const page of built) {
+  const doc =
+    '<!doctype html><html lang="en-NZ"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    `<title>INZBC ${page.key} (${PALETTE})</title>` +
+    BASE_CSS + NAV_SCRIPT + '</head><body>' +
+    NAV + page.html + FOOTER + PARALLAX_SCRIPT + '</body></html>';
+  fs.writeFileSync(path.join(PREVIEW_DIR, `${page.key}.html`), doc, 'utf8');
+}
+
+// Size budget. BASE_CSS ships inside every document, so a page is its body plus the whole
+// stylesheet. Generous on purpose: this catches a runaway asset, it does not police growth.
+const BUDGET_KB = 64;
+const oversize = built
+  .map((p) => ({ key: p.key, kb: (p.html.length + BASE_CSS.length) / 1024 }))
+  .filter((p) => p.kb > BUDGET_KB);
+
 console.log(`wrote ${OUT}`);
 console.log(`wrote ${path.join(SNIPPETS, 'site-head.html')}`);
+console.log(`wrote ${built.length} previews to ${PREVIEW_DIR}`);
+
+const largest = built
+  .map((p) => ({ key: p.key, kb: (p.html.length + BASE_CSS.length) / 1024 }))
+  .sort((a, b) => b.kb - a.kb)[0];
+console.log(
+  `largest document: ${largest.key} ${largest.kb.toFixed(1)} KB of ${BUDGET_KB} KB budget`
+);
+
+if (oversize.length) {
+  console.error(`\nbuild-sections: ${oversize.length} page(s) over the ${BUDGET_KB} KB budget`);
+  for (const p of oversize) console.error(`  ${p.key.padEnd(26)} ${p.kb.toFixed(1)} KB`);
+  process.exit(1);
+}
 console.log(`palette: ${PALETTE}`);
 console.log(`${built.length} pages: ${built.map((p) => p.key).join(', ')}`);
 
