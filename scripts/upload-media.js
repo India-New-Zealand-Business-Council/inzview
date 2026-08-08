@@ -30,33 +30,45 @@ const MIME = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png' 
 // logo is INZBC_Logo_Files.ai and should be exported to SVG instead.
 const SKIP = new Set(['logo-live-site-small.jpg']);
 
-function token() {
-  // execFileSync, not exec: no shell, so nothing can be injected and the value never
-  // touches a command line.
-  const out = execFileSync('npx', ['--yes', 'wix', 'token'], {
-    cwd: ROOT,
-    encoding: 'utf8',
-    shell: process.platform === 'win32',
-  });
-  // The CLI wraps the token in a box-drawing banner. Matching the token's actual shape
-  // (three base64url segments) rather than "the longest run of non-whitespace", which
-  // picked up a line of ╭──── and produced a header full of characters above U+00FF.
-  const m = out.match(/[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{5,}\.[A-Za-z0-9_.-]{20,}/);
-  if (!m) {
-    throw new Error('upload-media: no token found in `wix token` output. Run `npx wix login` first.');
+// The Wix CLI token (`wix token`) does NOT work here. It is scoped for CLI operations and
+// the Media API rejects it with an HTML 403 before the request reaches the API at all.
+// Site-level REST calls need an API key from https://manage.wix.com/account/api-keys plus
+// a wix-site-id header. The key is a raw value in Authorization, with no "Bearer" prefix.
+//
+// The key is read from the environment, or from a .env file this script parses itself.
+// It is never printed, never passed on a command line, and .env is gitignored.
+const SITE_ID = process.env.WIX_SITE_ID || '040b006f-3745-4a4f-ae4d-03aedb08a7b1';
+
+function apiKey() {
+  if (process.env.WIX_API_KEY) return process.env.WIX_API_KEY.trim();
+
+  const envFile = path.join(ROOT, '.env');
+  if (fs.existsSync(envFile)) {
+    const line = fs.readFileSync(envFile, 'utf8')
+      .split(/\r?\n/)
+      .find((l) => /^\s*WIX_API_KEY\s*=/.test(l));
+    if (line) return line.replace(/^\s*WIX_API_KEY\s*=\s*/, '').replace(/^["']|["']$/g, '').trim();
   }
-  const t = m[0];
-  // A header value must be Latin-1. Fail here with a clear message rather than 22 times
-  // inside fetch with an opaque ByteString error.
-  const bad = [...t].findIndex((c) => c.codePointAt(0) > 255);
-  if (bad !== -1) throw new Error(`upload-media: token has a non-Latin-1 character at ${bad}`);
-  return t;
+
+  throw new Error(
+    'upload-media: no WIX_API_KEY.\n' +
+    '  1. Create a key at https://manage.wix.com/account/api-keys (account owner only).\n' +
+    '     Give it Media Manager permissions and access to this site.\n' +
+    '  2. Put it in a .env file at the repo root:  WIX_API_KEY=...\n' +
+    '     .env is gitignored. Do not paste the key into a terminal or a chat.\n' +
+    `  3. Site id defaults to ${SITE_ID}; override with WIX_SITE_ID if that is wrong.`
+  );
 }
 
 async function api(auth, url, init = {}) {
   const res = await fetch(url, {
     ...init,
-    headers: { Authorization: auth, 'Content-Type': 'application/json', ...(init.headers || {}) },
+    headers: {
+      Authorization: auth,
+      'wix-site-id': SITE_ID,
+      'Content-Type': 'application/json',
+      ...(init.headers || {}),
+    },
   });
   const body = await res.text();
   if (!res.ok) {
@@ -116,7 +128,7 @@ async function main() {
     return;
   }
 
-  const auth = token();
+  const auth = apiKey();
   const results = {};
   for (const f of files) {
     try {

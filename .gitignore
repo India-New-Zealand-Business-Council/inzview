@@ -10,3 +10,7 @@ devlog.txt
 pub*.txt
 design-preview/_*
 design-preview/*.log
+
+# Secrets. scripts/upload-media.js reads WIX_API_KEY from here.
+.env
+.env.*
