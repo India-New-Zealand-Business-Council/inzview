@@ -698,10 +698,35 @@ ${TOKENS}
   }
   .inz-kick::before{content:"";width:44px;height:1px;background:var(--inz-gold);flex:0 0 auto}
 
-  /* Scroll reveal */
-  .rv{opacity:0;transform:translateY(32px);
-    transition:opacity .85s cubic-bezier(.2,.7,.25,1),transform .85s cubic-bezier(.2,.7,.25,1)}
-  .rv.in{opacity:1;transform:none}
+  /* ---- Motion -------------------------------------------------------------
+     Two rules govern everything here.
+
+     First, animate from an already-visible default. The hidden state is scoped to
+     .js-motion, which the script adds to <html> only once it is running. If the script
+     fails, throws, or is blocked, nothing is ever hidden and the page reads normally. The
+     previous version started at opacity:0 unconditionally and needed a 1.5s timeout to
+     un-hide anything the observer missed, which is a blank page waiting to happen.
+
+     Second, restraint. Every .inz-section used to get the same entrance, which is a tell
+     rather than a design. The hero parallax is the authored moment; elsewhere only card
+     grids move, and they stagger their children rather than sliding as a slab. */
+  .js-motion .rv-stagger > *{
+    opacity:0;transform:translateY(18px);
+    transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1);
+  }
+  .js-motion .rv-stagger.in > *{opacity:1;transform:none}
+  /* 70ms reads as a sequence; much more and the last card feels late. */
+  .js-motion .rv-stagger.in > :nth-child(2){transition-delay:70ms}
+  .js-motion .rv-stagger.in > :nth-child(3){transition-delay:140ms}
+  .js-motion .rv-stagger.in > :nth-child(4){transition-delay:210ms}
+  .js-motion .rv-stagger.in > :nth-child(5){transition-delay:280ms}
+  .js-motion .rv-stagger.in > :nth-child(n+6){transition-delay:350ms}
+
+  /* Only cards that actually go somewhere respond to the pointer. A lift on a card with
+     no link promises an interaction that does not exist. */
+  .inz-card{transition:transform .18s cubic-bezier(.2,.8,.3,1),box-shadow .18s ease}
+  .inz-card:has(a):hover{transform:translateY(-3px)}
+  .inz-card--raised:has(a):hover{box-shadow:0 10px 28px rgba(0,0,0,.1)}
 
   /* Navigation */
   .inz-nav{
@@ -736,8 +761,11 @@ ${TOKENS}
     padding-top:1.4rem;font-size:.76rem;color:var(--inz-on-deep-muted)}
 
   @media (prefers-reduced-motion:reduce){
-    .rv{opacity:1;transform:none;transition:none}
+    /* The reveal needs no rule here: .js-motion is never added under reduced motion, so
+       the hidden state never applies. These cover what CSS owns on its own. */
     .par{transform:none !important}
+    .inz-card,.inz-btn{transition:none}
+    .inz-card:has(a):hover,.inz-btn:hover{transform:none}
     html{scroll-behavior:auto}
   }
 </style>`;
@@ -821,16 +849,28 @@ const PARALLAX_SCRIPT = `
     kick();
   }, { passive: true });
 
-  var sections = [].slice.call(document.querySelectorAll('.inz-section'));
-  var io = new IntersectionObserver(function(es){
-    es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
-  sections.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  // Only card grids reveal, and only their children. Every section animating identically
+  // is a tell, not a design; the hero parallax above is the authored moment.
+  //
+  // .js-motion is added here rather than sitting in the markup, so the hidden state exists
+  // only while this script is alive to remove it. Under reduced motion it is never added
+  // at all, which is why no separate reduced-motion rule is needed for the reveal.
+  if (!reduce) {
+    document.documentElement.classList.add('js-motion');
 
-  // Safety net. .rv starts at opacity 0, so anything the observer misses would stay
-  // invisible — a far worse failure than a missing animation. Reveal everything after a
-  // beat regardless.
-  setTimeout(function(){ sections.forEach(function(el){ el.classList.add('in'); }); }, 1500);
+    var grids = [].slice.call(document.querySelectorAll('.inz-grid, .inz-logos'));
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -5% 0px' });
+
+    grids.forEach(function(el){ el.classList.add('rv-stagger'); io.observe(el); });
+
+    // The observer fires on its own for anything already in view at load, so there is no
+    // safety-net timeout. If this whole block never runs, .js-motion is absent and every
+    // grid is simply visible.
+  }
 })();
 </script>`;
 
