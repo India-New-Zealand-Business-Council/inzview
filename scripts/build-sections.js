@@ -1742,9 +1742,15 @@ for (const page of built) {
   fs.writeFileSync(path.join(PREVIEW_DIR, `${page.key}.html`), doc, 'utf8');
 }
 
-// Size budget. BASE_CSS ships inside every document, so a page is its body plus the whole
-// stylesheet. Generous on purpose: this catches a runaway asset, it does not police growth.
-const BUDGET_KB = 64;
+// Size budget. Not a platform limit: a data: URI of 8 MB was loaded successfully in a
+// browser, so nothing here is near a hard ceiling. This is a runaway guard.
+//
+// Two things worth knowing before changing it. First, the number below counts the source
+// document, but what travels is the percent-encoded URI, and for this page that is roughly
+// half: a 62 KB document ships as about 32 KB. Second, and the reason a guard is still
+// worth having, BASE_CSS is most of it and is duplicated into all twenty pages, so a
+// kilobyte added there costs twenty. Page bodies are the cheap part.
+const BUDGET_KB = 200;
 const oversize = built
   .map((p) => ({ key: p.key, kb: (p.html.length + BASE_CSS.length) / 1024 }))
   .filter((p) => p.kb > BUDGET_KB);
