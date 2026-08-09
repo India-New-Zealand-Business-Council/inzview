@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Reveal, Parallax } from './motion';
 import { ART, LINKS } from './content';
@@ -12,6 +12,71 @@ import { ART, LINKS } from './content';
  * one cannot verify — the next event, the member count — the gap is marked rather than
  * filled.
  */
+
+/** INZBC's own event photography, from their Flickr account. Summit 2018 is what that
+    archive holds; the captions say so rather than implying these are recent. */
+const EVENT_PHOTOS = [
+  { src: '/events/summit-group.jpg', alt: 'Delegates and speakers at the INZBC Summit 2018 in Auckland' },
+  { src: '/events/summit-delegates.jpg', alt: 'Delegates at the INZBC Summit 2018 venue' },
+  { src: '/events/summit-speakers.jpg', alt: 'Speakers at the INZBC Summit 2018' },
+  { src: '/events/summit-conversation.jpg', alt: 'Attendees in conversation at the INZBC Summit 2018' },
+];
+
+/** A photo set that advances on its own and can be driven by hand.
+ *
+ *  Autoplay stops permanently the moment someone uses the dots: taking control back from a
+ *  visitor who has just made a choice is the thing carousels get wrong most often. It also
+ *  never autoplays under prefers-reduced-motion. */
+function EventCarousel() {
+  const [index, setIndex] = useState(0);
+  const [held, setHeld] = useState(false);
+  const timer = useRef<ReturnType<typeof setInterval>>();
+
+  useEffect(() => {
+    if (held) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    timer.current = setInterval(() => setIndex((i) => (i + 1) % EVENT_PHOTOS.length), 4500);
+    return () => clearInterval(timer.current);
+  }, [held]);
+
+  return (
+    <div>
+      <div className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-ink shadow-2xl">
+        {EVENT_PHOTOS.map((p, i) => (
+          <img
+            key={p.src}
+            src={p.src}
+            alt={p.alt}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              i === index ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        ))}
+      </div>
+      <div className="mt-4 flex items-center justify-between">
+        <div className="flex gap-2">
+          {EVENT_PHOTOS.map((p, i) => (
+            <button
+              key={p.src}
+              type="button"
+              onClick={() => {
+                setHeld(true);
+                setIndex(i);
+              }}
+              aria-label={`Show photo ${i + 1} of ${EVENT_PHOTOS.length}`}
+              aria-current={i === index}
+              className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                i === index ? 'bg-plum' : 'bg-ink/25 hover:bg-ink/40'
+              }`}
+            />
+          ))}
+        </div>
+        <p className="text-xs text-foreground/70">INZBC Summit 2018, Auckland</p>
+      </div>
+    </div>
+  );
+}
 
 function Todo({ children }: { children: React.ReactNode }) {
   return (
@@ -67,19 +132,7 @@ export function MakeConnections() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <Parallax speed={-0.1}>
-            <figure className="overflow-hidden rounded-2xl shadow-2xl">
-              <img
-                src={ART.ftaNewEra}
-                alt="Delegates at an INZBC event, photographed during a past programme"
-                loading="lazy"
-                className="aspect-[4/3] w-full object-cover"
-              />
-              <figcaption className="bg-ink px-5 py-3 text-xs text-white/70">
-                <Todo>[[Event photo carousel — supply a set from the Flickr archive.]]</Todo>
-              </figcaption>
-            </figure>
-          </Parallax>
+          <EventCarousel />
         </Reveal>
       </div>
     </section>
