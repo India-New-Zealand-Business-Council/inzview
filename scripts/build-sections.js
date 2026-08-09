@@ -96,6 +96,8 @@ const LINKS = {
   join: 'https://inzbc.memberjungle.club/index.cfm?module=membership_v2&kat=add_register',
   subscribe: 'https://emailoctopus.com/lists/442124e3-1caa-11eb-a3d0-06b4694bee2a/forms/subscribe',
   reportIssuu: 'https://issuu.com/inzbc/docs/inzbc_report_2025_digital',
+  kiaOraIssuu: 'https://issuu.com/inzbc/docs/kiaora_india_dec_2023_v6_final',
+  summitSite: 'https://www.inzbusinesssummit.com/',
   facebook: 'https://www.facebook.com/inzbc',
   facebookAlbums: 'https://www.facebook.com/inzbc/photos?tab=albums',
   flickr: 'https://www.flickr.com/photos/inzbc/',
@@ -158,8 +160,9 @@ const PAGES = {
   // the same surface never sit together, which is what stops a long page reading as one
   // undifferentiated column.
   home: ['home-hero', 'credibility-strip', 'why-inzbc', 'pathways', 'fta-feature-band',
-    'trade-stats', 'summit-band', 'latest-insights', 'publications-chapter',
-    'newsletter-band', 'social-band', 'partners-wall', 'join-cta'],
+    'trade-stats', 'events-gateway', 'summit-band', 'member-network',
+    'latest-insights', 'publications-chapter', 'newsletter-band', 'social-band',
+    'partners-wall', 'join-cta'],
   fta: ['fta-centre', 'cta-guidance'],
 
   // Hub
@@ -752,6 +755,25 @@ ${TOKENS}
      and tab order matching the source. */
   .inz-split--flip{flex-direction:row-reverse}
   @media (max-width:820px){.inz-split--flip{flex-direction:column}}
+
+  .inz-chapter__aside{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--inz-rule-on-dark)}
+
+  /* ---- Figure row -----------------------------------------------------------
+     Four numbers stated plainly. Deliberately not cards: the membership band already
+     carries a call to action, and boxing the figures would make them compete with it. */
+  .inz-figures{
+    display:grid;gap:1.75rem;margin:2.75rem 0 1.25rem;padding-top:1.75rem;
+    border-top:1px solid var(--inz-rule-on-dark);
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr));
+  }
+  .inz-figures dt{
+    font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--inz-on-deep-muted);margin:0 0 .4rem;
+  }
+  .inz-figures dd{
+    margin:0;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:600;color:var(--inz-gold);
+    line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+  }
 
   /* ---- Publications shelf ---------------------------------------------------
      One chapter instead of two near-identical feature bands. The covers sit at slightly
@@ -1455,6 +1477,8 @@ function readSnippet(name) {
     .replace(/LINK_JOIN/g, LINKS.join)
     .replace(/LINK_SUBSCRIBE/g, LINKS.subscribe)
     .replace(/LINK_REPORT_ISSUU/g, LINKS.reportIssuu)
+    .replace(/LINK_KIAORA_ISSUU/g, LINKS.kiaOraIssuu)
+    .replace(/LINK_SUMMIT_SITE/g, LINKS.summitSite)
     .replace(/LINK_FACEBOOK_ALBUMS/g, LINKS.facebookAlbums)
     .replace(/LINK_FACEBOOK/g, LINKS.facebook)
     .replace(/LINK_FLICKR/g, LINKS.flickr)
