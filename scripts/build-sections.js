@@ -158,7 +158,7 @@ const PAGES = {
   // the same surface never sit together, which is what stops a long page reading as one
   // undifferentiated column.
   home: ['home-hero', 'credibility-strip', 'why-inzbc', 'pathways', 'fta-feature-band',
-    'trade-stats', 'summit-band', 'latest-insights', 'report-feature', 'magazine-feature',
+    'trade-stats', 'summit-band', 'latest-insights', 'publications-chapter',
     'newsletter-band', 'social-band', 'partners-wall', 'join-cta'],
   fta: ['fta-centre', 'cta-guidance'],
 
@@ -753,6 +753,72 @@ ${TOKENS}
   .inz-split--flip{flex-direction:row-reverse}
   @media (max-width:820px){.inz-split--flip{flex-direction:column}}
 
+  /* ---- Publications shelf ---------------------------------------------------
+     One chapter instead of two near-identical feature bands. The covers sit at slightly
+     different depths and drift at different rates, so the pair reads as a shelf rather
+     than as the same layout twice. */
+  .inz-shelf{
+    display:grid;gap:3rem;margin-top:3rem;
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));
+  }
+  .inz-shelf__item{display:flex;gap:1.75rem;align-items:flex-start}
+  .inz-shelf__cover{flex:0 0 clamp(120px,15vw,180px)}
+  .inz-shelf__cover img{
+    width:100%;height:auto;display:block;border-radius:8px;
+    box-shadow:0 22px 48px rgba(0,0,0,.42);
+  }
+  .inz-shelf__body{flex:1 1 auto;min-width:0}
+  .inz-shelf__body h3{color:#fff;margin-bottom:.2em}
+  .inz-shelf__body p{font-size:.92rem}
+  /* The second cover sits a little lower, so the two do not line up like a table. */
+  .inz-shelf__item:nth-child(2) .inz-shelf__cover{margin-top:2.25rem}
+  @media (max-width:640px){
+    .inz-shelf__item{flex-direction:column}
+    .inz-shelf__item:nth-child(2) .inz-shelf__cover{margin-top:0}
+  }
+
+  /* ---- Band transitions ----------------------------------------------------
+     Bands used to butt against each other on a hard horizontal line, which is what made
+     the page read as a stack of rectangles. Each band now carries a soft edge in its own
+     surface colour, so one dissolves into the next instead of stopping dead.
+
+     The gradient is drawn on a pseudo-element rather than the band itself, because a
+     background-image on the band would paint over the glow layers behind its content. */
+  .inz-section--dark::before,
+  .inz-section--mist::before,
+  .inz-section--paper::before{
+    content:"";position:absolute;left:0;right:0;top:-3.5rem;height:3.5rem;
+    z-index:0;pointer-events:none;
+  }
+  .inz-section--dark::before{background:linear-gradient(180deg,transparent,var(--inz-ink))}
+  .inz-section--mist::before{background:linear-gradient(180deg,transparent,var(--inz-mist))}
+  .inz-section--paper::before{background:linear-gradient(180deg,transparent,var(--inz-white))}
+  /* The hero opens the page, so it has nothing above it to blend into. */
+  .inz-hero::before{display:none}
+
+  /* ---- The trade route ------------------------------------------------------
+     Mid-ground: behind every band's content, in front of the background glows. The three
+     depth tiers on this page are the slow glows furthest back, the route between, and the
+     text and cards in front, static. */
+  .inz-route{
+    position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;
+    overflow:visible;
+  }
+  .inz-route__line{
+    fill:none;stroke:var(--inz-gold);stroke-width:2;stroke-linecap:round;
+    vector-effect:non-scaling-stroke;opacity:.5;
+    stroke-dasharray:var(--route-len,4000);
+    stroke-dashoffset:calc(var(--route-len,4000) * (1 - var(--route-progress,0)));
+    transition:stroke-dashoffset .45s cubic-bezier(.16,1,.3,1);
+  }
+  /* The page is a stack of bands, so the route needs a positioned root spanning all of
+     them rather than sitting inside any one section. */
+  .inz-page{position:relative}
+  .inz-page > .inz-section{position:relative;z-index:1}
+  @media (prefers-reduced-motion:reduce){
+    .inz-route__line{transition:none;stroke-dashoffset:0}
+  }
+
   /* ---- Social blobs ---------------------------------------------------------
      The same commissioned illustration set as the pathway cards, so the two rows read as
      one family rather than two visual systems on one page. */
@@ -1251,6 +1317,27 @@ const PARALLAX_SCRIPT = `
 
     grids.forEach(function(el){ el.classList.add('rv-stagger'); io.observe(el); });
 
+    // Draw the route from how far down the page the visitor has reached. Each band is a
+    // waypoint, and the eased transition between them is what turns a dozen steps into one
+    // continuous stroke. Doing it this way means the route needs no knowledge of the
+    // parent's scroll range or viewport height, neither of which this iframe can see.
+    var line = document.querySelector('.inz-route__line');
+    if (line && line.getTotalLength) {
+      var len = Math.ceil(line.getTotalLength());
+      line.style.setProperty('--route-len', len);
+      var bands = [].slice.call(document.querySelectorAll('.inz-page > .inz-section'));
+      var reached = 0;
+      var ro = new IntersectionObserver(function(es){
+        for (var i = 0; i < es.length; i++){
+          if (!es[i].isIntersecting) continue;
+          var idx = bands.indexOf(es[i].target) + 1;
+          if (idx > reached) reached = idx;
+        }
+        line.style.setProperty('--route-progress', (reached / bands.length).toFixed(3));
+      }, { rootMargin: '0px 0px -35% 0px' });
+      bands.forEach(function(b){ ro.observe(b); });
+    }
+
     // Failsafe. IntersectionObserver normally invokes its callback once per target soon
     // after observe(), so this should never fire. If it does, the observer is not working
     // and every grid below the fold would stay at opacity 0 forever. Dropping .js-motion
@@ -1405,6 +1492,18 @@ function readSnippet(name) {
 // the scroll distance while the copy above it stays put, which is what reads as depth.
 // Three layers at three depths. The colour pools drift most, the horizon grid less, the
 // grain not at all — grain that moves reads as a dirty screen rather than as film.
+// The trade route. One continuous line running the whole page, drawn as the visitor
+// scrolls, with a node at each band. It is the page's persistent object: the same stroke
+// that leaves Auckland in the hero arrives at "Start your India journey" at the end.
+//
+// preserveAspectRatio="none" lets a fixed 0 0 100 1000 viewBox stretch to whatever the
+// page turns out to be, so the path never has to know the document height. The draw is
+// pure stroke-dashoffset, which is compositor-friendly and costs one custom property.
+const ROUTE = `
+<svg class="inz-route" viewBox="0 0 100 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <path class="inz-route__line" d="M 18 0 C 18 90, 82 130, 82 220 S 18 330, 18 430 S 82 540, 82 640 S 22 760, 22 860 L 22 1000"/>
+</svg>`;
+
 const HERO_LAYERS =
   '<div class="inz-hero__plate par" data-p="0.34" data-scale="1.1"></div>' +
   '<div class="inz-hero__scrim par" data-p="0.14"></div>' +
@@ -1453,7 +1552,10 @@ function withHero(html, key) {
 
 const built = Object.entries(PAGES).map(([key, files]) => {
   if (!ARCHETYPE[key]) throw new Error(`build-sections: page "${key}" has no archetype`);
-  const html = withHero(files.map(readSnippet).join('\n'), key);
+  const body = withHero(files.map(readSnippet).join('\n'), key);
+  // The route runs the length of the page, so it needs one positioned ancestor wrapping
+  // every band rather than living inside any single section.
+  const html = '<div class="inz-page">' + ROUTE + body + '</div>';
   return { key, html, placeholders: countPlaceholders(html) };
 });
 
