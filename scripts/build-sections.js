@@ -516,7 +516,7 @@ ${TOKENS}
     font-family:inherit;font-weight:600;text-transform:none;
     margin:0 0 .45em;color:var(--inz-ink);
   }
-  .inz-section h1{font-size:clamp(2.7rem,6.8vw,6rem);letter-spacing:-.035em;line-height:.98}
+  .inz-section h1{font-size:clamp(2.7rem,7vw,7rem);letter-spacing:-.04em;line-height:.96}
   .inz-section h2{font-size:clamp(1.9rem,4.3vw,3.4rem);letter-spacing:-.025em;line-height:1.04}
   .inz-section h3{font-size:clamp(1.2rem,2.3vw,1.75rem);font-weight:500;letter-spacing:-.012em;line-height:1.18}
   /* Body sits near zero. The small print gets a touch of positive tracking, which is what
@@ -632,7 +632,13 @@ ${TOKENS}
      make them the focus of their band instead of the quietest thing in it. */
   /* .inz-card.inz-stat, not .inz-stat. The surface modifiers use .inz-section--mist
      .inz-card at 0,2,0 and would otherwise repaint these tiles white. */
-  .inz-card.inz-stat{background:var(--inz-ink);border-color:transparent;color:var(--inz-on-dark)}
+  /* A lime rule across the top of each tile. No hover lift: a statistic is not a link,
+     and lifting it promises an interaction that does not exist, which is why the card
+     hover is scoped to :has(a) in the first place. */
+  .inz-card.inz-stat{
+    background:var(--inz-ink);color:var(--inz-on-dark);
+    border:1px solid transparent;border-top:2px solid var(--inz-gold);
+  }
   .inz-stat__figure{
     font-size:clamp(2.1rem,4.2vw,3rem);font-weight:700;line-height:1;
     color:var(--inz-gold);margin:0 0 .35em;letter-spacing:-.03em;
@@ -890,6 +896,19 @@ ${TOKENS}
     margin:0;font-size:clamp(1.35rem,2.4vw,1.9rem);font-weight:600;color:#fff;
     line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
   }
+
+  /* A scroll cue, pinned to the hero's bottom-left where the copy already sits. Static:
+     an infinite pulse is a looping oscillation on a page a visitor reads once, and it keeps
+     drawing the eye back to a label that has already been read. The rule fades on the
+     scroll bridge instead, so it disappears the moment it stops being true. */
+  .inz-hero__scroll{
+    position:absolute;left:clamp(1.25rem,4vw,3rem);bottom:1.6rem;z-index:4;
+    display:flex;align-items:center;gap:.7rem;margin:0;
+    color:var(--inz-on-deep-muted);font-size:.68rem;letter-spacing:.18em;
+    text-transform:uppercase;pointer-events:none;
+  }
+  .inz-hero__scroll::after{content:"";width:40px;height:1px;background:currentColor}
+  @media (max-width:900px){.inz-hero__scroll{display:none}}
 
   .inz-hero > .inz-container{position:relative;z-index:4}
   /* A whisper, not a drop shadow. Invisible as an effect; it does quiet work on edge
