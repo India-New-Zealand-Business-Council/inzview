@@ -515,13 +515,20 @@ ${TOKENS}
 
   /* Headings: lowercase geometric, tight. line-height 1 clears Poppins' descenders —
      at .88 the g/y of "gateway" collide with the line below. */
+  /* Tracking and leading are size-specific. One letter-spacing across every heading is
+     wrong somewhere: letters read too far apart as type grows, and too tight as it shrinks.
+     Leading moves inversely to size, tight on display and looser as it approaches body. */
   .inz-section h1,.inz-section h2,.inz-section h3,.inz-section .inz-heading{
-    font-family:inherit;font-weight:600;text-transform:none;letter-spacing:-.03em;
-    line-height:1;margin:0 0 .45em;color:var(--inz-ink);
+    font-family:inherit;font-weight:600;text-transform:none;
+    margin:0 0 .45em;color:var(--inz-ink);
   }
-  .inz-section h1{font-size:clamp(2.7rem,6.8vw,6rem)}
-  .inz-section h2{font-size:clamp(1.9rem,4.3vw,3.4rem)}
-  .inz-section h3{font-size:clamp(1.2rem,2.3vw,1.75rem);font-weight:500}
+  .inz-section h1{font-size:clamp(2.7rem,6.8vw,6rem);letter-spacing:-.035em;line-height:.98}
+  .inz-section h2{font-size:clamp(1.9rem,4.3vw,3.4rem);letter-spacing:-.025em;line-height:1.04}
+  .inz-section h3{font-size:clamp(1.2rem,2.3vw,1.75rem);font-weight:500;letter-spacing:-.012em;line-height:1.18}
+  /* Body sits near zero. The small print gets a touch of positive tracking, which is what
+     small type needs to stay legible. */
+  .inz-section p{letter-spacing:0}
+  .inz-note,.inz-kick,.inz-hero__facts dt{letter-spacing:.01em}
   .inz-section{font-family:inherit;color:var(--inz-body);line-height:1.65}
   .inz-section p{max-width:64ch;margin:0 0 1em;font-weight:300}
   .inz-container{width:min(90%,var(--inz-max-width));margin-inline:auto}
@@ -542,6 +549,10 @@ ${TOKENS}
   .inz-btn--primary{background-color:var(--inz-gold);color:var(--inz-navy)}
   .inz-btn--secondary{background-color:transparent;color:var(--inz-navy);box-shadow:inset 0 0 0 1px currentColor}
   .inz-btn:hover{transform:translateY(-2px)}
+  /* Feedback on press, not on release. Acknowledging only on click is the moment
+     directness falls away, and it costs nothing to fix. */
+  .inz-btn:active{transform:translateY(0) scale(.97);transition-duration:.1s}
+  .inz-pathway:active{transform:scale(.99);transition-duration:.1s}
   .inz-btn--sm{padding:.65em 1.4em;font-size:.8125rem}
 
   /* =========================================================================
@@ -999,9 +1010,15 @@ ${TOKENS}
      the browser's, so this nav floated over the page content instead of sticking to the
      top of the window. A sticky site header has to be Wix's own header, outside the embed;
      it cannot be done from in here. */
+  /* Deliberately opaque. A translucent bar is right when content scrolls underneath it,
+     and none does here: position:fixed pins to the iframe rather than the window, and the
+     embed is sized to its content so it never scrolls internally. Blurring a bar that sits
+     on the white body would only lighten it and put the white nav text at risk. The bright
+     top edge stays, since that reads as light on an edge either way. */
   .inz-nav{
     position:relative;z-index:60;display:flex;align-items:center;
-    background:${rgba(P.ink, 0.92)};
+    background:var(--inz-ink);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
     justify-content:space-between;gap:1.5rem;padding:1.5rem clamp(1.25rem,4vw,3rem);
     /* padding is deliberately NOT transitioned. The .solid state shrinks it, and animating
        a layout property means recalculating this subtree every frame for 350ms, triggered
@@ -1039,6 +1056,14 @@ ${TOKENS}
   .inz-footer__legal{border-top:1px solid var(--inz-rule-on-dark);margin-top:3rem;
     padding-top:1.4rem;font-size:.76rem;color:var(--inz-on-deep-muted)}
 
+  /* No prefers-reduced-transparency rule: nothing on this page is translucent. Adding one
+     would be a rule with no subject. */
+  /* More contrast means near-solid surfaces with a defined edge. */
+  @media (prefers-contrast:more){
+    .inz-nav{background:var(--inz-deep);backdrop-filter:none;-webkit-backdrop-filter:none}
+    .inz-card{border-color:var(--inz-muted)}
+    .inz-btn--secondary{box-shadow:inset 0 0 0 2px currentColor}
+  }
   @media (prefers-reduced-motion:reduce){
     /* The reveal needs no rule here: .js-motion is never added under reduced motion, so
        the hidden state never applies. These cover what CSS owns on its own. */
