@@ -19,21 +19,6 @@ export default {
                 '9xl': ['8rem', { lineHeight: '1', letterSpacing: '-0.02em', fontWeight: '700' }],
             },
             fontFamily: {
-<<<<<<< HEAD
-                heading: "cormorantgaramond",
-                paragraph: "futura-lt-w01-book"
-            },
-            colors: {
-                buttonbackground: '#D9D2C9',
-                buttonborder: '#000000',
-                destructive: '#DF3131',
-                destructiveforeground: '#FFFFFF',
-                background: '#B7AEA3',
-                secondary: '#1A1A1A',
-                'secondary-foreground': '#FFFFFF',
-                'primary-foreground': '#FFFFFF',
-                primary: '#000000'
-=======
                 heading: ['Poppins', 'system-ui', 'sans-serif'],
                 paragraph: ['Poppins', 'system-ui', 'sans-serif'],
             },
@@ -60,7 +45,6 @@ export default {
                 buttonborder: '#160933',
                 destructive: '#DF3131',
                 destructiveforeground: '#FFFFFF',
->>>>>>> ab48f71ea6e72d5988225bc7313d4c4300cbadae
             },
         },
     },

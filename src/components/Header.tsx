@@ -1,16 +1,4 @@
 import { Link } from 'react-router-dom';
-<<<<<<< HEAD
-
-export default function Header() {
-  return (
-    <header className="w-full bg-background border-b border-primary/10">
-      <div className="max-w-[120rem] mx-auto px-6 lg:px-12 py-6">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="font-heading text-2xl lg:text-3xl text-primary">
-            INZBC
-          </Link>
-          
-=======
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -30,7 +18,6 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
->>>>>>> ab48f71ea6e72d5988225bc7313d4c4300cbadae
           <nav className="hidden md:flex items-center gap-8">
             <Link 
               to="/" 
@@ -39,17 +26,10 @@ export default function Header() {
               Home
             </Link>
             <Link 
-<<<<<<< HEAD
-              to="/#services" 
-              className="font-paragraph text-base text-primary hover:opacity-70 transition-opacity"
-            >
-              Services
-=======
               to="/content" 
               className="font-paragraph text-base text-primary hover:opacity-70 transition-opacity"
             >
               Content
->>>>>>> ab48f71ea6e72d5988225bc7313d4c4300cbadae
             </Link>
             <Link 
               to="/#about" 
@@ -65,12 +45,6 @@ export default function Header() {
             </Link>
           </nav>
 
-<<<<<<< HEAD
-          <button className="md:hidden font-paragraph text-base text-primary">
-            Menu
-          </button>
-        </div>
-=======
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -114,7 +88,6 @@ export default function Header() {
             </Link>
           </nav>
         )}
->>>>>>> ab48f71ea6e72d5988225bc7313d4c4300cbadae
       </div>
     </header>
   );
