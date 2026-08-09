@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
 import { STATS } from './content';
+import { CountUp } from './motion';
 
 /**
  * The pinned trade journey.
@@ -35,7 +36,9 @@ function Stat({
   const y = useTransform(progress, [start, start + 0.16], [26, 0]);
   return (
     <motion.div style={{ opacity, y }}>
-      <p className="font-heading text-5xl leading-none text-lime md:text-6xl">{stat.figure}</p>
+      <p className="font-heading text-5xl leading-none text-lime md:text-6xl">
+        <CountUp value={stat.figure} />
+      </p>
       <p className="mt-3 text-lg text-white">{stat.label}</p>
       <p className="mt-1 text-sm text-white/70">{stat.note}</p>
     </motion.div>

@@ -1,8 +1,16 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useInView, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
 import TradeRoute from '@/components/inzbc/TradeRoute';
 import PinnedJourney from '@/components/inzbc/PinnedJourney';
+import {
+  Reveal,
+  WordReveal,
+  Parallax,
+  TiltCard,
+  ScrollProgress,
+  StickyHeader,
+} from '@/components/inzbc/motion';
 import { LINKS, ART, PATHWAYS, BENEFITS, SOCIALS } from '@/components/inzbc/content';
 
 /**
@@ -17,31 +25,6 @@ import { LINKS, ART, PATHWAYS, BENEFITS, SOCIALS } from '@/components/inzbc/cont
  */
 
 /* --- small shared pieces ------------------------------------------------------------- */
-
-function Reveal({
-  children,
-  delay = 0,
-  className = '',
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-12%' });
-  const reduced = useReducedMotion();
-  return (
-    <motion.div
-      ref={ref}
-      initial={reduced ? false : { opacity: 0, y: 26 }}
-      animate={inView || reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 26 }}
-      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
 
 /** A fact INZBC has not supplied yet. Deliberately visible. */
 function Todo({ children }: { children: React.ReactNode }) {
@@ -139,7 +122,7 @@ function Hero() {
         </Reveal>
         <Reveal delay={0.08}>
           <h1 className="max-w-4xl font-heading text-5xl leading-[1.05] text-white md:text-7xl">
-            New Zealand&rsquo;s gateway to the India opportunity
+            <WordReveal text="New Zealand's gateway to the India opportunity" delay={0.15} />
           </h1>
         </Reveal>
         <Reveal delay={0.16}>
@@ -175,6 +158,18 @@ function Hero() {
 export default function HomePage() {
   return (
     <div className="relative bg-white font-paragraph text-foreground">
+      <ScrollProgress />
+      <StickyHeader
+        logo={ART.logo}
+        links={[
+          { label: 'The FTA', href: '/fta' },
+          { label: 'Events', href: '/events' },
+          { label: 'Membership', href: '/membership' },
+          { label: 'Publications', href: '/publications' },
+          { label: 'Connect', href: '/connect' },
+        ]}
+        cta={{ label: 'Join', href: LINKS.join }}
+      />
       <TradeRoute />
 
       <main className="relative z-10">
@@ -246,9 +241,9 @@ export default function HomePage() {
             <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {PATHWAYS.map((p, i) => (
                 <Reveal key={p.title} delay={i * 0.07}>
-                  <a
+                  <TiltCard
                     href={p.href}
-                    className="group block h-full rounded-2xl bg-mist p-7 transition-transform duration-300 hover:-translate-y-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+                    className="group block h-full rounded-2xl bg-mist p-7 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
                   >
                     <img
                       src={p.icon}
@@ -259,7 +254,7 @@ export default function HomePage() {
                     />
                     <h3 className="font-heading text-xl text-ink">{p.title}</h3>
                     <p className="mt-2 text-sm text-foreground">{p.body}</p>
-                  </a>
+                  </TiltCard>
                 </Reveal>
               ))}
             </div>
@@ -311,12 +306,14 @@ export default function HomePage() {
               </div>
             </Reveal>
             <Reveal delay={0.12}>
-              <img
-                src={ART.magazineSpread}
-                alt="Spread from the INZBC report showing photography and articles from the annual summit"
-                loading="lazy"
-                className="w-full rounded-xl shadow-2xl"
-              />
+              <Parallax speed={-0.1}>
+                <img
+                  src={ART.magazineSpread}
+                  alt="Spread from the INZBC report showing photography and articles from the annual summit"
+                  loading="lazy"
+                  className="w-full rounded-xl shadow-2xl"
+                />
+              </Parallax>
             </Reveal>
           </div>
         </section>
@@ -455,13 +452,15 @@ export default function HomePage() {
                 },
               ].map((pub, i) => (
                 <Reveal key={pub.title} delay={i * 0.12}>
-                  <article className={`flex gap-6 transition-transform duration-500 ${pub.lift}`}>
-                    <img
-                      src={pub.cover}
-                      alt={pub.alt}
-                      loading="lazy"
-                      className="h-auto w-32 flex-none rounded-lg shadow-2xl md:w-40"
-                    />
+                  <article className={`flex gap-6 ${pub.lift}`}>
+                    <Parallax speed={i === 0 ? -0.12 : -0.22} className="flex-none">
+                      <img
+                        src={pub.cover}
+                        alt={pub.alt}
+                        loading="lazy"
+                        className="h-auto w-32 rounded-lg shadow-2xl md:w-40"
+                      />
+                    </Parallax>
                     <div>
                       <h3 className="font-heading text-2xl text-white">{pub.title}</h3>
                       <p className="mt-1 text-sm text-lime">{pub.sub}</p>
