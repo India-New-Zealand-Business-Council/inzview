@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { motion, useTransform, useReducedMotion } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
 import { STATS } from './content';
-import { CountUp } from './motion';
+import { CountUp, usePinProgress } from './motion';
 
 /**
  * The pinned trade journey.
@@ -51,10 +51,7 @@ export default function PinnedJourney() {
 
   // Progress through this section specifically: 0 when its top hits the top of the
   // viewport, 1 when its bottom does.
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end end'],
-  });
+  const scrollYProgress = usePinProgress(ref);
 
   // The travelling marker crosses the panel as the section is scrolled.
   const markerX = useTransform(scrollYProgress, [0.05, 0.95], ['4%', '96%']);

@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useSpring, useReducedMotion } from 'framer-motion';
+import { motion, useSpring, useReducedMotion } from 'framer-motion';
+import { usePageProgress } from './motion';
 
 /**
  * The trade route: one line running the whole page, drawing itself as the visitor scrolls.
@@ -24,7 +25,7 @@ const ROUTE_D =
 export default function TradeRoute() {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll();
+  const scrollYProgress = usePageProgress();
 
   // Spring the raw progress so fast flicks glide rather than snap. Low stiffness, high
   // damping: this should feel like a line being drawn, not a value being tracked.

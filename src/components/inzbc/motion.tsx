@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import {
   motion,
-  useScroll,
   useTransform,
   useSpring,
   useInView,
@@ -28,6 +27,134 @@ import type { MotionValue } from 'framer-motion';
  * 2. Transform and opacity only. Both are compositor properties, so none of this causes
  *    layout or paint work while scrolling.
  */
+
+
+/* --- scroll, measured directly ---------------------------------------------------------
+   Framer's useScroll reads its container's scrollHeight against its clientHeight to build a
+   progress range. The Astro template ships height:100% on html, body and #root, which caps
+   the document box at one viewport: the range computes as empty, every scroll-linked value
+   pins to zero, and the whole page renders static while appearing to work. The template is
+   fixed as well, but these hooks no longer depend on that measurement being right.
+
+   window.scrollY is read directly and coalesced on requestAnimationFrame, so this is one
+   listener and at most one update per frame for the entire page. */
+
+function useScrollY() {
+  const y = useMotionValue(0);
+  useEffect(() => {
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      y.set(window.scrollY || document.documentElement.scrollTop || 0);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(read);
+    };
+    read();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [y]);
+  return y;
+}
+
+/** Progress of one element through the viewport: 0 as its top enters, 1 as its bottom leaves. */
+function useElementProgress(ref: React.RefObject<HTMLElement>) {
+  const scrollY = useScrollY();
+  const progress = useMotionValue(0);
+  useEffect(() => {
+    const measure = () => {
+      const el = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const top = rect.top + (window.scrollY || 0);
+      const span = rect.height + window.innerHeight;
+      if (span <= 0) return;
+      const p = (window.scrollY + window.innerHeight - top) / span;
+      progress.set(Math.min(1, Math.max(0, p)));
+    };
+    measure();
+    const unsub = scrollY.on('change', measure);
+    window.addEventListener('resize', measure);
+    return () => {
+      unsub();
+      window.removeEventListener('resize', measure);
+    };
+  }, [ref, scrollY, progress]);
+  return progress;
+}
+
+/** Progress through a tall pinned section: 0 when its top reaches the viewport top, 1 at its end. */
+export function usePinProgress(ref: React.RefObject<HTMLElement>) {
+  const scrollY = useScrollY();
+  const progress = useMotionValue(0);
+  useEffect(() => {
+    const measure = () => {
+      const el = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const top = rect.top + (window.scrollY || 0);
+      const span = rect.height - window.innerHeight;
+      if (span <= 0) return;
+      progress.set(Math.min(1, Math.max(0, (window.scrollY - top) / span)));
+    };
+    measure();
+    const unsub = scrollY.on('change', measure);
+    window.addEventListener('resize', measure);
+    return () => {
+      unsub();
+      window.removeEventListener('resize', measure);
+    };
+  }, [ref, scrollY, progress]);
+  return progress;
+}
+
+/** Progress of the hero out of view: 0 at rest, 1 once it has scrolled fully past. */
+export function useHeroProgress(ref: React.RefObject<HTMLElement>) {
+  const scrollY = useScrollY();
+  const progress = useMotionValue(0);
+  useEffect(() => {
+    const measure = () => {
+      const el = ref.current;
+      if (!el) return;
+      const h = el.getBoundingClientRect().height;
+      if (h <= 0) return;
+      progress.set(Math.min(1, Math.max(0, window.scrollY / h)));
+    };
+    measure();
+    const unsub = scrollY.on('change', measure);
+    window.addEventListener('resize', measure);
+    return () => {
+      unsub();
+      window.removeEventListener('resize', measure);
+    };
+  }, [ref, scrollY, progress]);
+  return progress;
+}
+
+/** Progress through the whole document. */
+export function usePageProgress() {
+  const scrollY = useScrollY();
+  const progress = useMotionValue(0);
+  useEffect(() => {
+    const measure = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.set(max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0);
+    };
+    measure();
+    const unsub = scrollY.on('change', measure);
+    window.addEventListener('resize', measure);
+    return () => {
+      unsub();
+      window.removeEventListener('resize', measure);
+    };
+  }, [scrollY, progress]);
+  return progress;
+}
 
 /* --- reveal on entry ----------------------------------------------------------------- */
 
@@ -125,11 +252,8 @@ export function Parallax({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-  const raw = useTransform(scrollYProgress, [0, 1], [`${-speed * 100}%`, `${speed * 100}%`]);
+  const progress = useElementProgress(ref);
+  const raw = useTransform(progress, [0, 1], [`${-speed * 100}%`, `${speed * 100}%`]);
   const y = useSpring(raw, { stiffness: 90, damping: 30, restDelta: 0.001 });
 
   return (
@@ -219,8 +343,8 @@ export function CountUp({ value, className = '' }: { value: string; className?: 
 /* --- reading progress ------------------------------------------------------------------ */
 
 export function ScrollProgress() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 });
+  const progress = usePageProgress();
+  const scaleX = useSpring(progress, { stiffness: 120, damping: 30, restDelta: 0.001 });
   return (
     <motion.div
       aria-hidden="true"

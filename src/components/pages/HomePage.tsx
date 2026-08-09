@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { motion, useTransform, useReducedMotion } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
 import TradeRoute from '@/components/inzbc/TradeRoute';
 import PinnedJourney from '@/components/inzbc/PinnedJourney';
@@ -10,6 +10,7 @@ import {
   TiltCard,
   ScrollProgress,
   StickyHeader,
+  useHeroProgress,
 } from '@/components/inzbc/motion';
 import { LINKS, ART, PATHWAYS, BENEFITS, SOCIALS } from '@/components/inzbc/content';
 
@@ -79,7 +80,7 @@ function Fade({ to }: { to: string }) {
 function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  const scrollYProgress = useHeroProgress(ref);
 
   // Three depth tiers. The background moves least against the scroll and so reads furthest
   // away; the copy sits in front and barely moves at all.

@@ -15,13 +15,13 @@ const seoTagsServiceConfig = await loadSEOTagsServiceConfig({
 });
 ---
 
-<html lang="en" class="w-full h-full">
+<html lang="en" class="w-full min-h-full">
   <head>
     <Head />
     <SEO.Tags seoTagsServiceConfig={seoTagsServiceConfig} slot="seo-tags" />
   </head>
-  <body class="w-full h-full">
-    <div id="root" class="w-full h-full">
+  <body class="w-full min-h-full">
+    <div id="root" class="w-full min-h-full">
       <AppRouter client:only="react" />
     </div>
   </body>
