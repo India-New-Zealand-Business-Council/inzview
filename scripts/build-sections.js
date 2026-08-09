@@ -56,12 +56,33 @@ const HERO_TIER = { landmark: 'landmark', hub: 'page', editorial: 'page', task: 
 //
 // Photography is for landmark and hub pages. A Join or Directory page does not need a hero
 // photograph, and giving it one is decoration standing in for content.
+// Uploaded to THIS site's Media Manager 9 Aug 2026 by scripts/upload-media.js, from the
+// originals in assets/from-live-site/. These are INZBC's own photographs, re-hosted rather
+// than hot-linked, so retiring inzbc.org cannot break them.
 const MEDIA = {
-  home: { src: '', alt: '', role: 'decorative', position: 'center 42%' },
-  fta: { src: '', alt: '', role: 'decorative', position: 'center 45%' },
-  tradeResources: { src: '', alt: '', role: 'decorative', position: 'center 50%' },
-  events: { src: '', alt: '', role: 'decorative', position: 'center 40%' },
-  membership: { src: '', alt: '', role: 'decorative', position: 'center 45%' },
+  // The photograph the live site actually leads with: a business networking room, not the
+  // harbour banner the repo had assumed. Commercial trade, people in it, on brief.
+  home: {
+    src: 'https://static.wixstatic.com/media/df219d_83e2d493f8b8499c8ef83fddd27208b8~mv2.jpg',
+    alt: '', role: 'decorative', position: 'center 40%',
+  },
+  // Auckland harbour at dusk: Sky Tower, port cranes, a ferry. Trade infrastructure.
+  fta: {
+    src: 'https://static.wixstatic.com/media/df219d_85f777cc8d624bc2b4ea81783f71df24~mv2.jpg',
+    alt: '', role: 'decorative', position: 'center 45%',
+  },
+  tradeResources: {
+    src: 'https://static.wixstatic.com/media/df219d_76fa4732467a4867bb224e174420cdcd~mv2.jpg',
+    alt: '', role: 'decorative', position: 'center 50%',
+  },
+  events: {
+    src: 'https://static.wixstatic.com/media/df219d_b0521b2a968344dd99be5c65d97ed464~mv2.jpg',
+    alt: '', role: 'decorative', position: 'center 35%',
+  },
+  membership: {
+    src: 'https://static.wixstatic.com/media/df219d_db36a6fb46a646c48e5d643c6ed3442a~mv2.jpg',
+    alt: '', role: 'decorative', position: 'center 45%',
+  },
 };
 
 for (const [key, m] of Object.entries(MEDIA)) {
