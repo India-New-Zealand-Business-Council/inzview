@@ -5,6 +5,7 @@ import ErrorPage from '@/integrations/errorHandlers/ErrorPage';
 import HomePage from '@/components/pages/HomePage';
 import FtaPage from '@/components/pages/FtaPage';
 import FtaExplainerPage from '@/components/pages/FtaExplainerPage';
+import EventsPage from '@/components/pages/EventsPage';
 import InnerPage from '@/components/inzbc/InnerPage';
 import { PAGES } from '@/components/inzbc/pages';
 
@@ -42,12 +43,17 @@ const router = createBrowserRouter(
           element: <FtaExplainerPage />,
           routeMetadata: { pageIdentifier: 'fta-explainer' },
         },
-        // /fta gets its own page component above; its entry stays in the PAGES table in
-        // pages.ts (NAV is a separate, hand-maintained list and doesn't read PAGES, so nothing
-        // else depends on this) and is filtered out only here, to avoid a second route
-        // registered for the same path. /fta/explainer was never in PAGES, so it needs no
-        // filtering of its own.
-        ...PAGES.filter((page) => page.path !== '/fta').map((page) => ({
+        {
+          path: 'events',
+          element: <EventsPage />,
+          routeMetadata: { pageIdentifier: 'events' },
+        },
+        // /fta, /fta/explainer and /events get their own page components above. /fta and
+        // /events stay in the PAGES table in pages.ts (NAV is a separate, hand-maintained list
+        // and doesn't read PAGES, so nothing else depends on either being there) and are
+        // filtered out only here, to avoid a second route registered for the same path.
+        // /fta/explainer was never in PAGES, so it needs no filtering of its own.
+        ...PAGES.filter((page) => page.path !== '/fta' && page.path !== '/events').map((page) => ({
           // react-router paths are relative to the parent, so the leading slash comes off.
           path: page.path.replace(/^\//, ''),
           element: <InnerPage page={page} />,
