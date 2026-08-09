@@ -518,6 +518,25 @@ ${FONT_LINKS}
 <style>
 ${TOKENS}
   *{box-sizing:border-box}
+  /* Every image reserves its space before it loads.
+     19 images carry loading="lazy" and none declared dimensions, so each occupied zero
+     height until it arrived and then pushed the document taller. Scrolling therefore grew
+     the page, the height reporter forwarded that, and the embed resized under the pointer:
+     the page appeared to shake near the top, where the most images sit.
+
+     aspect-ratio holds the box from first paint. The intrinsic ratios below are the real
+     ones, read from the uploaded files. */
+  .inz-post__art{aspect-ratio:16/10}
+  .inz-cover img,.inz-shelf__cover img{aspect-ratio:1700/2200}
+  .inz-shelf__item:nth-child(2) .inz-shelf__cover img{aspect-ratio:2464/3485}
+  .inz-pathway__art{aspect-ratio:1313/1050}
+  .inz-social img{aspect-ratio:1280/845}
+  .inz-wall img{aspect-ratio:1500/600}
+  .inz-device img{aspect-ratio:1593/818}
+  .inz-spread img{aspect-ratio:1048/861}
+  .inz-banner img{aspect-ratio:1280/721}
+  .inz-nav__brand img{aspect-ratio:400/114}
+
   /* No image may exceed its column. One rule, rather than discovering per image that a
      1593px mockup has pushed a band's text out of view. */
   img{max-width:100%;height:auto}
@@ -1346,21 +1365,57 @@ const PARALLAX_SCRIPT = `
   // page was clipped a few hundred pixels in. This document knows its own height; page code
   // receives this and sets $w('#html1').height, so the embed fits its content on every page
   // without anyone opening the Editor.
-  var lastH = 0;
+  var lastH = 0, settled = false;
   function reportHeight() {
-    var h = Math.ceil(document.documentElement.scrollHeight);
-    // Ignore sub-pixel churn, and the reflow the resize itself causes.
+    /* Measure the content, not the viewport.
+       documentElement.scrollHeight is at least the viewport height, and the viewport here
+       is the embed, whose height this function is what sets. So every report included the
+       last value it caused, and the pad compounded until it hit the cap. The last element's
+       bottom edge is the real content height and owes nothing to the embed. */
+    var last = document.body.lastElementChild;
+    var h = last ? Math.ceil(last.getBoundingClientRect().bottom + (window.pageYOffset || 0)) : 0;
     if (!h || Math.abs(h - lastH) < 12) return;
+    // Never shrink after the layout has settled. The reveal starts each card 26px lower
+    // than it lands, so a card entering view briefly makes the document taller and then
+    // shorter again. Reporting that made the embed resize mid-scroll, and an embed
+    // changing height under the pointer is exactly what reads as the page shaking.
+    // Growth still reports, because content genuinely arriving must not be clipped.
+    if (settled && h < lastH) return;
     lastH = h;
     try { parent.postMessage({ inzHeight: h }, '${SITE_ORIGIN}'); } catch (e) {}
   }
+  // Everything that legitimately changes height, fonts and lazy images included, has
+  // landed well before this. After it, only motion is moving.
+  setTimeout(function(){ settled = true; }, 2500);
   addEventListener('load', reportHeight);
   addEventListener('resize', reportHeight);
   if (document.readyState === 'complete') reportHeight();
   // Web fonts and the hero photograph both change layout after first paint.
   setTimeout(reportHeight, 300);
   setTimeout(reportHeight, 1200);
-  if (window.ResizeObserver) new ResizeObserver(reportHeight).observe(document.body);
+  // Observe a zero-height probe pinned to the end of the document, not the body itself.
+  //
+  // Observing the body created a feedback loop: the parallax layers are sized in percentages
+  // of their container, so moving them changed the body's box, which fired the observer,
+  // which reported a height, which resized the embed, which reflowed the body, which moved
+  // the layers again. The 12px threshold damped that without breaking it, so the page
+  // shivered near the top where the hero carries the most layers.
+  //
+  // The probe has no children and no percentage-sized descendants, so it only changes when
+  // the document genuinely grows or shrinks. rAF-coalesced as well, since a resize can
+  // still arrive mid-frame.
+  var probe = document.createElement('div');
+  probe.setAttribute('aria-hidden', 'true');
+  probe.style.cssText = 'height:0;margin:0;padding:0;border:0;pointer-events:none';
+  document.body.appendChild(probe);
+  if (window.ResizeObserver) {
+    var roPending = false;
+    new ResizeObserver(function(){
+      if (roPending) return;
+      roPending = true;
+      requestAnimationFrame(function(){ roPending = false; reportHeight(); });
+    }).observe(probe);
+  }
 
   if (!reduce) {
     document.documentElement.classList.add('js-motion');
@@ -1725,35 +1780,41 @@ ${TOKENS}
 </style>
 
 <script>
-/* Resizes the Embed element to fit its content.
+/* Sizes the Embed element to fit its content.
    The embed's height is set by hand in the Editor and was left at 500px, so every page was
-   clipped a few hundred pixels in. The document inside reports its own height; this listens
-   for that and applies it.
+   clipped. The document inside reports its own height and this applies it.
 
-   This runs in the parent page rather than in Velo page code because Wix Studio's responsive
-   layout engine owns element size, and $w('#html1').height = n is silently ignored there. It
-   sets no error, which is why that route looked like it worked. Setting the height on the
-   real elements is the only thing that takes. */
+   Grows only, and only in meaningful steps. Two things resize this element: page code, via
+   $w('#html1').height, and this script. When both ran ungated they chased each other and
+   every small increment during scroll became a visible resize under the pointer, which is
+   what read as the page shaking. This is now the only resizer, and it asks for the reported
+   height plus 5% so later increments are already absorbed.
+
+   It runs here rather than in Velo because Wix Studio's responsive layout engine silently
+   ignores $w('#html1').height = n, raising no error, which is why that route looked correct
+   while doing nothing. */
 (function(){
-  var MIN = 400, MAX = 12000, last = 0;
+  var MIN = 400, MAX = 14000, applied = 0;
   addEventListener('message', function(e){
     var h = e.data && e.data.inzHeight;
     if (typeof h !== 'number' || h < MIN) return;
     var f = document.querySelector('iframe[src^="data:text/html"]');
     if (!f) return;
     /* Identify the sender by window, not by origin. A data: URI has an opaque origin, so
-       e.origin is the string "null" and an origin equality check rejects every message.
-       Comparing against our own iframe's contentWindow is both correct and stricter. */
+       e.origin is the string "null" and an origin equality check rejects every message. */
     if (e.source !== f.contentWindow) return;
-    h = Math.min(h, MAX);
-    if (Math.abs(h - last) < 12) return;
-    last = h;
-    /* The iframe, its wrapper, and the Wix component that actually carries the height.
-       Walking up by structure rather than naming the hashed class names, which are
-       generated per build and would not survive a Wix release. */
+    /* A flat pad, not a ratio. Growing by 5% of the reported height fed the next
+       report, which grew 5% again, and it compounded to the 14000px cap with
+       thousands of pixels of empty space below the content. A fixed 200px absorbs
+       the observed increments, which were 25 to 79 pixels, without compounding. */
+    var want = Math.min(h + 200, MAX);
+    /* Ignore anything that is not a real change. Below this, the reflow costs more than
+       the extra pixels are worth. */
+    if (want <= applied + 120) return;
+    applied = want;
     var el = f, n = 0;
     while (el && n < 4) {
-      el.style.setProperty('height', h + 'px', 'important');
+      el.style.setProperty('height', want + 'px', 'important');
       if (el.id && el.id.indexOf('comp-') === 0) break;
       el = el.parentElement; n++;
     }
