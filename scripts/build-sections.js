@@ -578,12 +578,19 @@ ${TOKENS}
      1.75rem x12. The card radius is its own token: --inz-radius is the 100px
      button pill and would turn a card into a lozenge. Cards invert against their
      band so a mist card never sits on a mist section. */
-  .inz-card{background:var(--inz-mist);padding:1.75rem;border-radius:var(--inz-radius-card)}
+  /* A hairline and a real shadow. Pale mist on white had almost no edge, so a grid of
+     cards read as one flat area with text in it rather than as separate objects. The
+     shadow carries an offset and a soft blur; a zero-offset halo is decoration, not depth. */
+  .inz-card{
+    background:var(--inz-mist);padding:1.75rem;border-radius:var(--inz-radius-card);
+    border:1px solid var(--inz-line);box-shadow:0 1px 2px rgba(22,9,51,.04),0 8px 24px rgba(22,9,51,.06);
+  }
   .inz-card h3{font-size:1.35rem;margin-bottom:.5rem}
   .inz-card > :last-child{margin-bottom:0}
   .inz-section--mist .inz-card{background:var(--inz-white)}
   .inz-section--dark .inz-card{background:rgba(255,255,255,.06)}
   .inz-card--raised{background:var(--inz-white);box-shadow:0 4px 18px rgba(0,0,0,.07)}
+  .inz-section--dark .inz-card{border-color:var(--inz-rule-on-dark);box-shadow:none}
   /* Name plus role, x12 on the Executive Council. Denser than a content card: the name
      leads and the role sits tight beneath it. */
   .inz-person h3{font-size:1.25rem;margin-bottom:.15em}
@@ -796,19 +803,45 @@ ${TOKENS}
     background-size:cover,cover,220px 220px;
     mix-blend-mode:normal;
   }
-  /* The designed banner. It is finished artwork with its own logo and tagline, so it is
-     shown whole and nothing is laid over it. */
-  /* Capped and centred. At full container width it filled the entire first screen and the
-     headline below it never appeared without scrolling, which made the banner the page
-     rather than its opening. */
-  .inz-banner{margin:0 auto 2.5rem;max-width:min(100%,820px);border-radius:12px;
-    overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+  /* INZBC's designed banner. Finished artwork carrying its own logo and tagline, so it is
+     shown whole and nothing is laid over it. It lives on the FTA page, where its blue and
+     orange belong to the subject rather than fighting the purple and lime. */
+  .inz-banner{margin:0 auto 2.5rem;max-width:min(100%,880px);border-radius:12px;
+    overflow:hidden;box-shadow:0 18px 44px rgba(22,9,51,.18)}
   .inz-banner img{width:100%;height:auto;display:block}
-  /* A hero carrying a banner needs room for it, so the tier minimums do not apply. */
-  /* A hero carrying the banner does not also need a full-screen minimum: that produced a
-     band of empty dark above the artwork. The banner sets the height. */
-  .inz-hero--landmark:has(.inz-banner){min-height:0}
-  .inz-hero--landmark:has(.inz-banner) .inz-container{padding-block:clamp(1.75rem,4vw,3rem)}
+
+  /* ---- Wide hero -----------------------------------------------------------
+     Left-aligned, because every other band on this page is centred and a hero that matches
+     them gives the page no opening. The copy is held to the left so the photograph reads as
+     a photograph rather than as texture behind text.
+
+     The designed blue-and-orange banner that used to sit here has been removed. It is
+     INZBC's previous brand and it collided with the purple and lime it was sitting on. It
+     still ships on the FTA page, where the blue belongs to the subject rather than fighting
+     the palette. */
+  .inz-hero--wide > .inz-container{text-align:left}
+  .inz-hero--wide .inz-kick{justify-content:flex-start}
+  .inz-hero--wide h1{max-width:15ch;margin-inline:0}
+  .inz-hero--wide .inz-lede{max-width:48ch;margin-inline:0}
+  .inz-hero--wide .inz-actions{justify-content:flex-start}
+  @media (min-width:900px){
+    .inz-hero--wide > .inz-container > *{max-width:min(100%,62ch)}
+  }
+
+  /* Three facts under the buttons. The page states them again in full further down; here
+     they exist to give a cold visitor a reason to keep scrolling. */
+  .inz-hero__facts{
+    display:flex;flex-wrap:wrap;gap:1.25rem 2.75rem;margin:2.75rem 0 0;
+    padding-top:1.6rem;border-top:1px solid var(--inz-rule-on-dark);
+  }
+  .inz-hero__facts dt{
+    font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--inz-on-deep-muted);margin:0 0 .35rem;
+  }
+  .inz-hero__facts dd{
+    margin:0;font-size:clamp(1.35rem,2.4vw,1.9rem);font-weight:600;color:#fff;
+    line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+  }
 
   .inz-hero > .inz-container{position:relative;z-index:4}
   .inz-hero h1,.inz-hero h2,.inz-hero h3{color:#fff}
@@ -862,9 +895,15 @@ ${TOKENS}
      Second, restraint. Every .inz-section used to get the same entrance, which is a tell
      rather than a design. The hero parallax is the authored moment; elsewhere only card
      grids move, and they stagger their children rather than sliding as a slab. */
+  /* A spring, generated rather than guessed: 0.45s perceptual, bounce 0.15. The returned
+     800ms includes the settle, so siblings are timed off 0.45s, not 800ms. Opacity uses a
+     plain ease over the perceptual duration, because a fade that overshoots reads as a
+     flicker. */
   .js-motion .rv-stagger > *{
-    opacity:0;transform:translateY(18px);
-    transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1);
+    opacity:0;transform:translateY(26px);
+    transition:
+      opacity .45s cubic-bezier(.16,1,.3,1),
+      transform 800ms linear(0, 0.0523, 0.1708, 0.314, 0.4571, 0.5866, 0.6963, 0.7848, 0.8534, 0.9047, 0.9416, 0.9673, 0.9843, 0.9951, 1.0014, 1.0047, 1.0061, 1.0062, 1.0057, 1.0049, 1.004, 1.0031, 1.0023, 1.0017, 1.0012, 1.0008, 1);
   }
   .js-motion .rv-stagger.in > *{opacity:1;transform:none}
   /* 70ms reads as a sequence; much more and the last card feels late. */
