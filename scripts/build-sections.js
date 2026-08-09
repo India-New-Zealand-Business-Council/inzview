@@ -482,6 +482,9 @@ ${FONT_LINKS}
 <style>
 ${TOKENS}
   *{box-sizing:border-box}
+  /* No image may exceed its column. One rule, rather than discovering per image that a
+     1593px mockup has pushed a band's text out of view. */
+  img{max-width:100%;height:auto}
   html{scroll-behavior:smooth}
   body{
     margin:0;padding:0;background:var(--inz-white);color:var(--inz-body);
@@ -628,12 +631,16 @@ ${TOKENS}
   .inz-split > :first-child{flex:1 1 32rem}
   /* The trailing column is usually a single button. Without this it stretches and the
      button lands at an arbitrary height beside a tall paragraph. */
-  .inz-split > :last-child:not(:first-child){flex:0 0 auto;align-self:center}
+  /* Sized through a custom property, not a plain declaration. As a plain rule this is
+     specificity 0,3,0 because of the :not(), which beat every .inz-split--x > :last-child
+     modifier at 0,2,0 and collapsed the cover and device columns to their natural width.
+     A variable is read at use time, so the modifier below simply sets it and order and
+     specificity stop mattering. */
+  .inz-split > :last-child:not(:first-child){flex:var(--inz-split-last,0 0 auto);align-self:center}
   .inz-split .inz-actions{margin-top:0}
   /* Portrait or cover beside copy: the media column is fixed, the text takes the rest. */
-  .inz-split--media{align-items:flex-start;gap:2.5rem}
+  .inz-split--media{align-items:flex-start;gap:2.5rem;--inz-split-last:1 1 24rem}
   .inz-split--media > :first-child{flex:0 0 14rem;max-width:100%}
-  .inz-split--media > :last-child{flex:1 1 24rem}
   .inz-media{
     background:var(--inz-mist);border-radius:var(--inz-radius-card);aspect-ratio:1;
     display:grid;place-items:center;text-align:center;padding:1rem;
@@ -669,9 +676,12 @@ ${TOKENS}
 
   /* ---- Publication cover ---------------------------------------------------
      A real cover, given room and a shadow so it reads as a physical object. */
-  .inz-split--cover{align-items:center;gap:3rem}
+  .inz-split--cover{align-items:center;gap:3rem;--inz-split-last:1 1 26rem}
   .inz-split--cover > :first-child{flex:0 0 clamp(200px,26vw,320px)}
-  .inz-split--cover > :last-child{flex:1 1 26rem}
+  /* The cap belongs on the cover itself, not only on its column. A flip or a future layout
+     change can hand this element the flexible column, and a 2464px magazine scan then
+     renders at natural size and bleeds off the page. Belt and braces. */
+  .inz-cover{max-width:clamp(200px,26vw,320px)}
   .inz-cover img{
     width:100%;height:auto;display:block;border-radius:10px;
     box-shadow:0 18px 40px rgba(0,0,0,.18);
@@ -693,9 +703,10 @@ ${TOKENS}
      reads as an offer rather than as another section. */
   .inz-section--accent{background:var(--inz-orange);color:#fff}
   .inz-section--accent h2{color:#fff}
+  .inz-section--accent .inz-note{color:rgba(255,255,255,.85)}
   .inz-btn--onaccent{background:#fff;color:var(--inz-orange)}
   .inz-btn--onaccent-ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
-  .inz-split--device > :last-child{flex:0 0 clamp(220px,30vw,420px)}
+  .inz-split--device{--inz-split-last:0 0 clamp(220px,30vw,420px)}
   .inz-device{margin:0}
   .inz-device img{width:100%;height:auto;display:block}
 

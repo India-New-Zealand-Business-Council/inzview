@@ -1,8 +1,15 @@
 <!-- Paste into the Home or Newsletters page via Add > Embed > Embed HTML -->
-<!-- Kia Ora India, with its real cover. Mirrors report-feature, cover on the other side. -->
+<!-- Kia Ora India, with its real cover.
+     The cover is first in the markup, exactly as in report-feature, so it takes the same
+     fixed-width column. inz-split--flip reverses it visually so two feature bands in a row
+     do not read as one template. Putting the text first instead made the cover the last
+     child, which handed it the flexible text column and blew it up to its natural width. -->
 
 <section class="inz-section inz-section--mist">
   <div class="inz-container inz-split inz-split--cover inz-split--flip">
+    <div class="inz-cover par" data-p="0.08">
+      <img src="IMG_KIA_ORA_COVER" alt="Cover of Kia Ora India, the INZBC magazine, December 2023 issue" loading="lazy">
+    </div>
     <div>
       <p class="inz-kick">Voice of the industry</p>
       <h2>Kia Ora India</h2>
@@ -12,9 +19,6 @@
         <a href="/newsletters" onclick="inzNav(event, '/newsletters')" class="inz-btn inz-btn--primary">Read the latest issue</a>
         <a href="/newsletters" onclick="inzNav(event, '/newsletters')" class="inz-btn inz-btn--secondary">Browse the archive</a>
       </div>
-    </div>
-    <div class="inz-cover par" data-p="0.08">
-      <img src="IMG_KIA_ORA_COVER" alt="Cover of Kia Ora India, the INZBC magazine, December 2023 issue" loading="lazy">
     </div>
   </div>
 </section>
