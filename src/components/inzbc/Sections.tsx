@@ -1,0 +1,296 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Reveal, Parallax } from './motion';
+import { ART, LINKS } from './content';
+
+/**
+ * The sections the old inzbc.org had and the rebuild had been missing: the event
+ * highlights and gallery, the summit and mailing-list pair, the advertising route, the
+ * contact block with real people on it, and the newsletter archive.
+ *
+ * Everything factual here came off the live site. Where the old site stated something this
+ * one cannot verify — the next event, the member count — the gap is marked rather than
+ * filled.
+ */
+
+function Todo({ children }: { children: React.ReactNode }) {
+  return (
+    <mark className="rounded-sm bg-lime/25 px-1 text-inherit underline decoration-dashed underline-offset-4">
+      {children}
+    </mark>
+  );
+}
+
+/* --- Make Connections ------------------------------------------------------------------ */
+
+export function MakeConnections() {
+  return (
+    <section className="relative bg-white px-6 py-24">
+      <div className="mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-2">
+        <Reveal>
+          <p className="mb-3 text-xs uppercase tracking-[0.18em] text-plum">Make connections</p>
+          <h2 className="font-heading text-3xl text-ink md:text-4xl">
+            Highlights of INZBC events held in the past few years
+          </h2>
+          <p className="mt-5 text-foreground">
+            INZBC holds regular industry events, calling upon specialists and ministers,
+            representatives of NZTE, MFAT and others, for meaningful dialogues within the
+            business community.
+          </p>
+          <p className="mt-4 font-medium text-ink">
+            Be seen in the right place, at the right time and in the right company.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              to="/events"
+              className="rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy transition-transform active:scale-[0.97]"
+            >
+              Register
+            </Link>
+            <Link
+              to="/events/past"
+              className="rounded-full border border-ink/25 px-6 py-3 text-sm font-medium text-ink transition-colors hover:bg-mist"
+            >
+              Event reports
+            </Link>
+          </div>
+          <p className="mt-6 text-sm text-foreground">
+            View gallery:{' '}
+            <a href={LINKS.facebookAlbums} target="_blank" rel="noopener noreferrer" className="text-plum underline">
+              Facebook albums
+            </a>
+            {' · '}
+            <a href={LINKS.flickr} target="_blank" rel="noopener noreferrer" className="text-plum underline">
+              Flickr
+            </a>
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <Parallax speed={-0.1}>
+            <figure className="overflow-hidden rounded-2xl shadow-2xl">
+              <img
+                src={ART.ftaNewEra}
+                alt="Delegates at an INZBC event, photographed during a past programme"
+                loading="lazy"
+                className="aspect-[4/3] w-full object-cover"
+              />
+              <figcaption className="bg-ink px-5 py-3 text-xs text-white/70">
+                <Todo>[[Event photo carousel — supply a set from the Flickr archive.]]</Todo>
+              </figcaption>
+            </figure>
+          </Parallax>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* --- Summit and mailing list, side by side, as the old site had them ------------------- */
+
+export function SummitAndMailingList() {
+  return (
+    <section className="relative grid md:grid-cols-2">
+      <div className="relative overflow-hidden bg-navy px-6 py-20">
+        <Reveal>
+          <div className="mx-auto max-w-md">
+            <h2 className="font-heading text-2xl text-white md:text-3xl">INZBC Annual Summit</h2>
+            <p className="mt-4 text-white/75">
+              New Zealand&rsquo;s premier India trade event, bringing together business
+              leaders, policymakers and government representatives from both countries.
+            </p>
+            <a
+              href={LINKS.summitSite}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-7 inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy"
+            >
+              Visit website
+            </a>
+          </div>
+        </Reveal>
+      </div>
+      <div className="relative overflow-hidden bg-plum px-6 py-20">
+        <Reveal delay={0.08}>
+          <div className="mx-auto max-w-md">
+            <h2 className="font-heading text-2xl text-white md:text-3xl">
+              Subscribe to our mailing list
+            </h2>
+            <p className="mt-4 text-white/80">
+              INZBC publishes a monthly newsletter and a quarterly magazine. These
+              publications cover latest news and trade updates from India and New Zealand.
+            </p>
+            <a
+              href={LINKS.subscribe}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-7 inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy"
+            >
+              Subscribe
+            </a>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* --- Advertise ------------------------------------------------------------------------- */
+
+export function Advertise() {
+  return (
+    <section className="relative bg-white px-6 py-16">
+      <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl bg-plum">
+        <div className="flex flex-wrap items-center justify-between gap-8 px-8 py-10">
+          <Reveal>
+            <p className="text-xs uppercase tracking-[0.18em] text-lime">
+              Want to advertise with us?
+            </p>
+            <h2 className="mt-2 font-heading text-2xl text-white md:text-3xl">
+              Get seen in the right company
+            </h2>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <a
+              href={`${LINKS.email}?subject=Advertising%20enquiry`}
+              className="inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy"
+            >
+              Advertise with us
+            </a>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* --- Connect --------------------------------------------------------------------------- */
+
+export function ConnectBlock() {
+  return (
+    <section className="relative bg-mist px-6 py-24">
+      <div className="mx-auto grid max-w-6xl gap-14 md:grid-cols-2">
+        <Reveal>
+          <p className="mb-3 text-xs uppercase tracking-[0.18em] text-plum">Connect with us</p>
+          <h2 className="font-heading text-3xl text-ink md:text-4xl">Get in touch</h2>
+
+          <dl className="mt-8 space-y-6 text-sm">
+            <div>
+              <dt className="font-semibold text-ink">Chief Executive</dt>
+              <dd className="text-foreground">
+                Sunil Kaushal
+                <br />
+                <a href={LINKS.email} className="text-plum underline">
+                  Secretariat@inzbc.org
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-ink">Postal address</dt>
+              <dd className="text-foreground">
+                PO Box 26841, Epsom, Auckland 1344, New Zealand
+              </dd>
+            </div>
+          </dl>
+          <p className="mt-6 text-sm text-foreground">We prefer email contact.</p>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <div className="rounded-2xl bg-white p-8 shadow-sm">
+            <h3 className="font-heading text-xl text-ink">Drop us a message</h3>
+            <p className="mt-3 text-sm text-foreground">
+              <Todo>
+                [[Contact form — needs a Wix Form so submissions reach the Secretariat inbox.
+                A form posting nowhere is worse than none, so this links to email until it
+                exists.]]
+              </Todo>
+            </p>
+            <a
+              href={LINKS.email}
+              className="mt-7 inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy"
+            >
+              Email the Secretariat
+            </a>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* --- Newsletter and archive ------------------------------------------------------------- */
+
+export function NewsletterBand() {
+  return (
+    <section className="relative overflow-hidden bg-ink px-6 py-20">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
+        <Reveal>
+          <h2 className="font-heading text-2xl text-white md:text-3xl">
+            Subscribe to our newsletter
+          </h2>
+          <p className="mt-4 text-white/75">
+            Trade news, FTA developments and event announcements, straight to your inbox.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={LINKS.subscribe}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy"
+            >
+              Subscribe
+            </a>
+            <Link
+              to="/newsletters"
+              className="rounded-full border border-white/30 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
+            >
+              View the archive
+            </Link>
+          </div>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <Parallax speed={-0.12}>
+            <img
+              src={ART.newsletterMockup}
+              alt="The INZBC newsletter shown on a laptop and a tablet"
+              loading="lazy"
+              className="w-full"
+            />
+          </Parallax>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* --- Partners, including the India row the rebuild had dropped -------------------------- */
+
+export function Partners() {
+  return (
+    <section className="relative bg-white px-6 py-20">
+      <div className="mx-auto max-w-6xl">
+        <Reveal>
+          <h2 className="text-center font-heading text-2xl text-ink md:text-3xl">
+            Our partners and supporters
+          </h2>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <img
+            src={ART.partnerStrip}
+            alt="INZBC partners and supporters: BNZ and Zespri as strategic partners, Fonterra as partner, Slumberzone, the Auckland Institute of Studies and Trade Aid as associate partners, alongside government and industry stakeholders"
+            loading="lazy"
+            className="mt-10 w-full"
+          />
+        </Reveal>
+        <Reveal delay={0.14}>
+          <p className="mt-8 text-center text-sm text-foreground">
+            <Todo>
+              [[India Industry Partners row — FICCI, CII, PHD Chamber and others appear on
+              the old site as a separate strip. Supply the logo files and links.]]
+            </Todo>
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}

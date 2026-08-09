@@ -14,6 +14,14 @@ import {
   useHeroProgress,
 } from '@/components/inzbc/motion';
 import { LINKS, ART, PATHWAYS, BENEFITS, SOCIALS } from '@/components/inzbc/content';
+import {
+  MakeConnections,
+  SummitAndMailingList,
+  Advertise,
+  ConnectBlock,
+  NewsletterBand,
+  Partners,
+} from '@/components/inzbc/Sections';
 
 /**
  * INZBC homepage.
@@ -267,6 +275,8 @@ export default function HomePage() {
           </div>
         </section>
 
+        <MakeConnections />
+
         {/* FTA band */}
         <section className="relative overflow-hidden bg-navy px-6 py-24">
           <Fade to="#160933" />
@@ -290,39 +300,7 @@ export default function HomePage() {
         {/* The pinned journey — the section Studio could not build */}
         <PinnedJourney />
 
-        {/* Summit */}
-        <section className="relative overflow-hidden bg-navy px-6 py-24">
-          <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
-            <Reveal>
-              <p className="mb-3 text-xs uppercase tracking-[0.18em] text-lime">
-                INZBC Annual Summit
-              </p>
-              <h2 className="font-heading text-4xl text-white md:text-5xl">
-                New Zealand&rsquo;s premier India trade event
-              </h2>
-              <p className="mt-4 text-white/70">
-                Bringing together business leaders, policymakers and government
-                representatives from both countries.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Btn href="/events">See upcoming events</Btn>
-                <Btn href={LINKS.summitSite} variant="ghost" external>
-                  Summit website
-                </Btn>
-              </div>
-            </Reveal>
-            <Reveal delay={0.12}>
-              <Parallax speed={-0.1}>
-                <img
-                  src={ART.magazineSpread}
-                  alt="Spread from the INZBC report showing photography and articles from the annual summit"
-                  loading="lazy"
-                  className="w-full rounded-xl shadow-2xl"
-                />
-              </Parallax>
-            </Reveal>
-          </div>
-        </section>
+        <SummitAndMailingList />
 
         {/* Membership */}
         <section className="relative overflow-hidden bg-ink px-6 py-24">
@@ -496,24 +474,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Newsletter */}
-        <section className="relative bg-plum px-6 py-20">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-8">
-            <Reveal>
-              <h2 className="font-heading text-3xl text-white md:text-4xl">
-                Subscribe to the INZBC newsletter
-              </h2>
-              <p className="mt-3 max-w-lg text-white/80">
-                Trade news, FTA developments and event announcements, straight to your inbox.
-              </p>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <Btn href={LINKS.subscribe} external>
-                Subscribe
-              </Btn>
-            </Reveal>
-          </div>
-        </section>
+        <Advertise />
+
+        <NewsletterBand />
 
         {/* Social */}
         <section className="relative bg-navy px-6 py-20 text-center">
@@ -556,20 +519,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Partners */}
-        <section className="relative bg-white px-6 py-20">
-          <Fade to="#ffffff" />
-          <div className="mx-auto max-w-6xl">
-            <Reveal>
-              <img
-                src={ART.partnerStrip}
-                alt="INZBC partners and supporters, including BNZ, Zespri and Fonterra, alongside government and industry stakeholders"
-                loading="lazy"
-                className="w-full"
-              />
-            </Reveal>
-          </div>
-        </section>
+        <Partners />
+
+        <ConnectBlock />
 
         {/* Closing CTA */}
         <section className="relative bg-deep px-6 py-28 text-center">

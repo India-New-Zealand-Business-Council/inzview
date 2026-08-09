@@ -318,33 +318,39 @@ export function CountUp({ value, className = '' }: { value: string; className?: 
   const reduced = useReducedMotion();
   const [shown, setShown] = useState(value);
 
-  const match = value.match(/[\d.]+/);
+  // Derive primitives, not the match array.
+  //
+  // value.match() returns a fresh array on every render. Passing that array as an effect
+  // dependency compares it by reference, so it differed every time: the effect re-ran, set
+  // state, caused a render, produced a new array, and started again. The figure animated
+  // forever and never settled on the real number. Strings and numbers compare by value and
+  // end the loop.
+  const digits = value.match(/[\d.]+/)?.[0] ?? '';
+  const target = digits ? parseFloat(digits) : 0;
+  const decimals = (digits.split('.')[1] || '').length;
 
   useEffect(() => {
-    if (!inView || reduced || !match) return;
-    const target = parseFloat(match[0]);
-    const decimals = (match[0].split('.')[1] || '').length;
+    if (!inView || reduced || !digits) return;
     const controls = animate(0, target, {
       duration: 1.1,
       ease: [0.16, 1, 0.3, 1],
-      onUpdate: (v) => setShown(value.replace(match[0], v.toFixed(decimals))),
+      onUpdate: (v) => setShown(value.replace(digits, v.toFixed(decimals))),
       onComplete: () => setShown(value),
     });
     return () => {
       controls.stop();
-      // Whatever interrupts the count, the figure ends up correct rather than frozen
-      // partway.
+      // However the count ends, the figure ends up correct rather than frozen partway.
       setShown(value);
     };
-  }, [inView, reduced, value, match]);
+  }, [inView, reduced, value, digits, target, decimals]);
 
   return (
     <span ref={ref} className={className}>
-      {/* The animated figure is decorative and hidden from assistive technology, because
-          between the first frame and the last it reads as a number that is simply false.
-          The real value sits beside it, visually hidden and always correct, so a screen
-          reader announces NZ$3.95bn and never NZ$1.53bn. */}
-      <span aria-hidden="true">{reduced || !match ? value : shown}</span>
+      {/* The animated figure is decorative and hidden from assistive technology: between
+          the first frame and the last it reads as a number that is simply false. The real
+          value sits beside it, visually hidden and always correct, so a screen reader
+          announces NZ$3.95bn and never NZ$1.53bn. */}
+      <span aria-hidden="true">{reduced || !digits ? value : shown}</span>
       <span className="sr-only">{value}</span>
     </span>
   );
