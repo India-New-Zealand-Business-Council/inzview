@@ -488,12 +488,6 @@ const TOKENS = `  :root{
     --inz-note-text:${P.noteText}; --inz-stat-text:${P.statText};
 
     --inz-max-width:1240px; --inz-radius:100px; --inz-radius-card:14px;
-
-    /* RATCHET: retained only so not-yet-migrated inline styles still resolve. Delete when
-       Phase 1c finishes and the inline-style guard goes live. */
-    --inz-purple:${P.navy}; --inz-tangerine:${P.accent}; --inz-lavender:#9fb6e8;
-    --inz-forest:${P.second}; --inz-crimson:${P.warm}; --inz-lime:${P.accent};
-    --inz-light:${P.mist};
   }`;
 
 const BASE_CSS = `
@@ -518,7 +512,7 @@ ${TOKENS}
   /* Tracking and leading are size-specific. One letter-spacing across every heading is
      wrong somewhere: letters read too far apart as type grows, and too tight as it shrinks.
      Leading moves inversely to size, tight on display and looser as it approaches body. */
-  .inz-section h1,.inz-section h2,.inz-section h3,.inz-section .inz-heading{
+  .inz-section h1,.inz-section h2,.inz-section h3{
     font-family:inherit;font-weight:600;text-transform:none;
     margin:0 0 .45em;color:var(--inz-ink);
   }
@@ -660,15 +654,6 @@ ${TOKENS}
   .inz-grid + .inz-note,.inz-card + .inz-note{margin-top:1.5rem}
   .inz-section--dark .inz-note{color:var(--inz-on-deep-muted)}
 
-  /* ---- Sibling rail ---------------------------------------------------------
-     Phase 0 finding: the page set is organised by INZBC's org chart, not visitor
-     intent, so four pages publish things and three help you export. Slugs are
-     live 301 destinations and cannot be merged, so this routes sideways instead. */
-  .inz-rail{
-    display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;padding-top:1.6rem;
-    border-top:1px solid var(--inz-line);margin-top:2.5rem;font-size:.85rem;
-  }
-  .inz-section--dark .inz-rail{border-top-color:var(--inz-rule-on-dark)}
 
   /* ---- Credibility strip and split band ------------------------------------- */
   .inz-strip{
@@ -788,13 +773,6 @@ ${TOKENS}
     .inz-social a:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
   }
 
-  .inz-logos{display:flex;flex-wrap:wrap;gap:2rem;align-items:center;justify-content:center;margin-top:2rem}
-  .inz-logo{
-    width:9rem;height:5rem;display:grid;place-items:center;text-align:center;
-    background:var(--inz-mist);border-radius:8px;padding:.75rem;
-    font-size:.75rem;color:var(--inz-note-text);
-  }
-  .inz-section--mist .inz-logo{background:var(--inz-white)}
 
   /* ---- Browser surfaces -----------------------------------------------------
      Selection, caret and scrollbar ship with browser defaults that belong to no
