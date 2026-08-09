@@ -383,6 +383,15 @@ function darkenUntil(hex, bgHex, target) {
 // purpleGreen is the default because Sunil confirmed it on 9 Aug 2026. The other two stay
 // buildable so the decision can be revisited without a rewrite.
 const PALETTE = process.env.INZ_PALETTE || 'purpleGreen';
+
+// INZ_PREVIEW=1 tones the [[placeholder]] markers down to a faint underline instead of the
+// striped yellow. For showing the design to someone who is judging the design, where 63
+// highlighter blocks are the only thing they see.
+//
+// It does not hide them and it does not touch the release gate: INZ_RELEASE=1 still refuses
+// to build while any remain. The markers exist because every one is a fact INZBC owes, and
+// a site that quietly ships them as if answered is the failure this guard prevents.
+const PREVIEW = process.env.INZ_PREVIEW === '1';
 const P = PALETTES[PALETTE];
 if (!P) {
   throw new Error(
@@ -758,6 +767,32 @@ ${TOKENS}
 
   .inz-chapter__aside{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--inz-rule-on-dark)}
 
+  /* ---- Member network band --------------------------------------------------
+     The harbour photograph behind the membership pitch, so the band has a subject rather
+     than four numbers on empty navy. Same treatment as the hero: the photo drifts at a
+     depth, and a directional scrim keeps the copy readable across it. */
+  .inz-network{position:relative;overflow:hidden}
+  .inz-network__photo{
+    position:absolute;inset:-20% -10%;z-index:0;
+    background:url('${MEDIA.home.src}') center 55%/cover no-repeat;
+    opacity:.32;
+  }
+  .inz-network__scrim{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:
+      linear-gradient(90deg,var(--inz-ink) 0%,rgba(26,11,63,.86) 46%,rgba(26,11,63,.5) 100%),
+      linear-gradient(0deg,var(--inz-ink) 0%,transparent 42%);
+  }
+  .inz-network > .inz-container{position:relative;z-index:2}
+
+  /* What membership actually gets you, which the page had never said. */
+  .inz-benefits{list-style:none;margin:0;padding:0;display:grid;gap:1.1rem}
+  .inz-benefits li{
+    padding-left:1.1rem;border-left:2px solid var(--inz-gold);
+    font-size:.95rem;color:var(--inz-on-dark);
+  }
+  .inz-benefits strong{color:#fff;font-weight:600}
+
   /* ---- Figure row -----------------------------------------------------------
      Four numbers stated plainly. Deliberately not cards: the membership band already
      carries a call to action, and boxing the figures would make them compete with it. */
@@ -1087,9 +1122,11 @@ ${TOKENS}
      warning, not part of the design, and it should look wrong on the page. The release
      gate (INZ_RELEASE=1) refuses to build while any remain, so none of this ships. */
   .inz-ph{
-    background:repeating-linear-gradient(45deg,#ffe9a8 0 8px,#ffd970 8px 16px);
+    ${PREVIEW
+      ? `background:transparent;color:inherit;border-bottom:1px dashed currentColor;opacity:.7;`
+      : `background:repeating-linear-gradient(45deg,#ffe9a8 0 8px,#ffd970 8px 16px);
     color:#3a2c00;font-weight:500;padding:.05em .3em;border-radius:3px;
-    box-shadow:inset 0 0 0 1px #b98900;
+    box-shadow:inset 0 0 0 1px #b98900;`}
   }
 
   /* Eyebrow rule — the gold tick that opens each band. */
