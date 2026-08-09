@@ -79,6 +79,30 @@ const MEDIA = {
     src: 'https://static.wixstatic.com/media/df219d_85f777cc8d624bc2b4ea81783f71df24~mv2.jpg',
     alt: '', role: 'decorative', position: 'center 55%',
   },
+  fta: {
+    src: 'https://static.wixstatic.com/media/df219d_8fb4bb30e06840df8ed2d17a25ea8330~mv2.jpg',
+    alt: '', role: 'decorative', position: 'center 45%',
+  },
+};
+
+// INZBC's own artwork, re-hosted on this site. The blob illustrations and the hero banner
+// are commissioned pieces from the live site: not stock, not decoration, and the strongest
+// brand assets INZBC has. The first pass of this redesign shipped without them, which is
+// why it read as weaker than the site it replaces.
+const ART = {
+  logo: 'https://static.wixstatic.com/media/df219d_0b8e6333d53841efaf66f675038a0798~mv2.jpg',
+  // The designed hero lockup: logo, tagline, orange chevron, port and container ship, with
+  // circular insets of a NZ paddock and India Gate. It carries its own text, so it is shown
+  // whole rather than used as a bed for a headline.
+  heroBanner: 'https://static.wixstatic.com/media/df219d_83e2d493f8b8499c8ef83fddd27208b8~mv2.jpg',
+  reportCover: 'https://static.wixstatic.com/media/df219d_60093c58a989446681ae38ad6efe3a94~mv2.png',
+  partnerStrip: 'https://static.wixstatic.com/media/df219d_5350f10f4b714eddae1958abfd3c39d5~mv2.jpg',
+  iconEvents: 'https://static.wixstatic.com/media/df219d_161014de7ca0434ea61527a1d44455a2~mv2.png',
+  iconPublications: 'https://static.wixstatic.com/media/df219d_5660a14b9b3c457a801d7c5e2d6e4450~mv2.png',
+  iconMemberships: 'https://static.wixstatic.com/media/df219d_e722f1a99464408c987c16bec72791f4~mv2.png',
+  iconTrade: 'https://static.wixstatic.com/media/df219d_3f9c2e680dbb4de1964c21532decad7b~mv2.png',
+  kiaOraCover: 'https://static.wixstatic.com/media/df219d_3ac94d17fa9a42eeaef1597686fe952d~mv2.jpg',
+  newsletterMockup: 'https://static.wixstatic.com/media/df219d_29794fdc9e864b9997c3333499673a20~mv2.png',
 };
 
 for (const [key, m] of Object.entries(MEDIA)) {
@@ -103,7 +127,12 @@ for (const [key, m] of Object.entries(MEDIA)) {
 // what a tariff line means, so informational pages ask for the cheaper next step.
 const PAGES = {
   // Landmark
-  home: ['home-hero', 'fta-feature-band', 'trade-stats', 'credibility-strip', 'join-cta'],
+  // Band rhythm is the point, not the section count. Surfaces alternate deliberately:
+  // dark, dark strip, paper, dark, mist, paper, mist, accent, paper, dark. Two bands of
+  // the same surface never sit together, which is what stops a long page reading as one
+  // undifferentiated column.
+  home: ['home-hero', 'credibility-strip', 'pathways', 'fta-feature-band', 'trade-stats',
+    'report-feature', 'magazine-feature', 'newsletter-band', 'partners-wall', 'join-cta'],
   fta: ['fta-centre', 'cta-guidance'],
 
   // Hub
@@ -121,7 +150,7 @@ const PAGES = {
   newsletters: ['insights-newsletters', 'cta-subscribe'],
   digest: ['digest', 'cta-subscribe'],
   news: ['news', 'cta-subscribe'],
-  partners: ['partners', 'cta-sponsor'],
+  partners: ['partners', 'partners-wall', 'cta-sponsor'],
 
   // Task. No closing CTA: the page IS the action, and a second one competes with it.
   membershipJoin: ['membership-join'],
@@ -141,7 +170,9 @@ const PAGES = {
 // See ARCHITECTURE.md.
 const NAV = `
 <header class="inz-nav">
-  <a class="inz-nav__brand" href="/" onclick="inzNav(event, '/')">INZBC</a>
+  <a class="inz-nav__brand" href="/" onclick="inzNav(event, '/')" aria-label="India New Zealand Business Council, home">
+    <img src="${ART.logo}" alt="India New Zealand Business Council" width="200" height="57">
+  </a>
   <nav aria-label="Main">
     <ul class="inz-nav__list">
       <li><a href="/fta" onclick="inzNav(event, '/fta')">NZ&ndash;India FTA</a></li>
@@ -595,6 +626,10 @@ ${TOKENS}
   }
   .inz-split{display:flex;flex-wrap:wrap;align-items:center;gap:2rem;justify-content:space-between}
   .inz-split > :first-child{flex:1 1 32rem}
+  /* The trailing column is usually a single button. Without this it stretches and the
+     button lands at an arbitrary height beside a tall paragraph. */
+  .inz-split > :last-child:not(:first-child){flex:0 0 auto;align-self:center}
+  .inz-split .inz-actions{margin-top:0}
   /* Portrait or cover beside copy: the media column is fixed, the text takes the rest. */
   .inz-split--media{align-items:flex-start;gap:2.5rem}
   .inz-split--media > :first-child{flex:0 0 14rem;max-width:100%}
@@ -611,6 +646,58 @@ ${TOKENS}
     font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em;
     background:var(--inz-line);padding:.15em .4em;border-radius:4px;
   }
+
+  /* ---- Pathway cards -------------------------------------------------------
+     The four routes into the site, each led by one of INZBC's blob illustrations. The art
+     is the point, so it gets real size and the card is a link rather than a card with a
+     link inside it: the whole tile is the target. */
+  .inz-pathway{
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+    text-decoration:none;color:inherit;padding:2rem 1.5rem;
+  }
+  /* The art is the reason this section exists, so it gets real size. At the previous
+     clamp it rendered around 90px and read as a small icon rather than an illustration. */
+  .inz-pathway__art{
+    width:clamp(150px,17vw,210px);height:auto;margin-bottom:1.25rem;
+    transition:transform .35s cubic-bezier(.2,.8,.3,1);
+  }
+  .inz-pathway h3{color:var(--inz-ink);font-size:1.15rem}
+  .inz-pathway p{margin:0;font-size:.95rem;max-width:26ch}
+  /* The blob lifts and grows slightly; the card itself stays put, so the art leads. */
+  .inz-pathway:hover .inz-pathway__art{transform:translateY(-6px) scale(1.06)}
+  .inz-pathway:hover{transform:none}
+
+  /* ---- Publication cover ---------------------------------------------------
+     A real cover, given room and a shadow so it reads as a physical object. */
+  .inz-split--cover{align-items:center;gap:3rem}
+  .inz-split--cover > :first-child{flex:0 0 clamp(200px,26vw,320px)}
+  .inz-split--cover > :last-child{flex:1 1 26rem}
+  .inz-cover img{
+    width:100%;height:auto;display:block;border-radius:10px;
+    box-shadow:0 18px 40px rgba(0,0,0,.18);
+  }
+  /* Alternates which side the cover sits on, so two feature bands in a row do not read as
+     a template. row-reverse rather than reordering the markup, which keeps reading order
+     and tab order matching the source. */
+  .inz-split--flip{flex-direction:row-reverse}
+  @media (max-width:820px){.inz-split--flip{flex-direction:column}}
+
+  /* ---- Partner wall --------------------------------------------------------
+     Real partner logos, tiered. The strongest credibility asset INZBC has, and the reason
+     the Partners page should never have shipped with [[Logo]] placeholders. */
+  .inz-wall{margin:0}
+  .inz-wall img{width:100%;height:auto;display:block;border-radius:10px}
+
+  /* ---- Accent band ---------------------------------------------------------
+     The one warm band on the page. Used once, for the standing subscribe offer, so it
+     reads as an offer rather than as another section. */
+  .inz-section--accent{background:var(--inz-orange);color:#fff}
+  .inz-section--accent h2{color:#fff}
+  .inz-btn--onaccent{background:#fff;color:var(--inz-orange)}
+  .inz-btn--onaccent-ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
+  .inz-split--device > :last-child{flex:0 0 clamp(220px,30vw,420px)}
+  .inz-device{margin:0}
+  .inz-device img{width:100%;height:auto;display:block}
 
   /* ---- Partner logo tile ----------------------------------------------------
      width 9rem + height 5rem + radius 8px, x3 each. */
@@ -698,6 +785,20 @@ ${TOKENS}
     background-size:cover,cover,220px 220px;
     mix-blend-mode:normal;
   }
+  /* The designed banner. It is finished artwork with its own logo and tagline, so it is
+     shown whole and nothing is laid over it. */
+  /* Capped and centred. At full container width it filled the entire first screen and the
+     headline below it never appeared without scrolling, which made the banner the page
+     rather than its opening. */
+  .inz-banner{margin:0 auto 2.5rem;max-width:min(100%,820px);border-radius:12px;
+    overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+  .inz-banner img{width:100%;height:auto;display:block}
+  /* A hero carrying a banner needs room for it, so the tier minimums do not apply. */
+  /* A hero carrying the banner does not also need a full-screen minimum: that produced a
+     band of empty dark above the artwork. The banner sets the height. */
+  .inz-hero--landmark:has(.inz-banner){min-height:0}
+  .inz-hero--landmark:has(.inz-banner) .inz-container{padding-block:clamp(1.75rem,4vw,3rem)}
+
   .inz-hero > .inz-container{position:relative;z-index:4}
   .inz-hero h1,.inz-hero h2,.inz-hero h3{color:#fff}
   .inz-hero p{color:var(--inz-on-dark)}
@@ -787,7 +888,11 @@ ${TOKENS}
     transition:background .35s ease,backdrop-filter .35s ease;
   }
   .inz-nav.solid{background:${rgba(P.ink, 0.92)};backdrop-filter:blur(14px);padding:.95rem clamp(1.25rem,4vw,3rem)}
-  .inz-nav__brand{font-weight:700;font-size:1.1rem;color:#fff;text-decoration:none;letter-spacing:.01em}
+  /* The logo is dark purple on white, so on the navy nav it sits in a white pill. That is
+     how INZBC uses it on their own site, not an invention. */
+  .inz-nav__brand{display:inline-flex;align-items:center;background:#fff;border-radius:6px;
+    padding:.4rem .7rem;line-height:0;text-decoration:none;flex:0 0 auto}
+  .inz-nav__brand img{width:clamp(120px,14vw,180px);height:auto;display:block}
   .inz-nav__list{display:flex;flex-wrap:wrap;gap:.4rem 2rem;list-style:none;margin:0;padding:0}
   .inz-nav__list a{color:#fff;text-decoration:none;font-size:.82rem;opacity:.82;text-transform:lowercase}
   .inz-nav__list a:hover,.inz-nav__list a:focus-visible{opacity:1}
@@ -1036,6 +1141,17 @@ function readSnippet(name) {
   const raw = fs
     .readFileSync(file, 'utf8')
     .replace(/<!--[\s\S]*?-->/g, '') // drop the "paste here" instruction comments
+    // Art URLs live in ART, not in the snippets: the snippets are hand-edited and a pasted
+    // media URL there would be invisible to the guard that keeps them off the old site.
+    .replace(/IMG_ICON_EVENTS/g, ART.iconEvents)
+    .replace(/IMG_ICON_PUBLICATIONS/g, ART.iconPublications)
+    .replace(/IMG_ICON_MEMBERSHIPS/g, ART.iconMemberships)
+    .replace(/IMG_ICON_TRADE/g, ART.iconTrade)
+    .replace(/IMG_REPORT_COVER/g, ART.reportCover)
+    .replace(/IMG_PARTNER_STRIP/g, ART.partnerStrip)
+    .replace(/IMG_HERO_BANNER/g, ART.heroBanner)
+    .replace(/IMG_KIA_ORA_COVER/g, ART.kiaOraCover)
+    .replace(/IMG_NEWSLETTER_MOCKUP/g, ART.newsletterMockup)
     .trim();
 
   checkBanned(name, raw);
