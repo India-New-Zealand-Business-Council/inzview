@@ -116,6 +116,17 @@ const ART = {
   iconPublications: 'https://static.wixstatic.com/media/df219d_5660a14b9b3c457a801d7c5e2d6e4450~mv2.png',
   iconMemberships: 'https://static.wixstatic.com/media/df219d_e722f1a99464408c987c16bec72791f4~mv2.png',
   iconTrade: 'https://static.wixstatic.com/media/df219d_3f9c2e680dbb4de1964c21532decad7b~mv2.png',
+  // Social blobs, the same commissioned set as the pathway illustrations.
+  socialFacebook: 'https://static.wixstatic.com/media/df219d_1bfd392cd6be42959afc33895036d9eb~mv2.png',
+  socialLinkedin: 'https://static.wixstatic.com/media/df219d_bbc62087c9cd4b908787d3fe761e05e7~mv2.png',
+  socialYoutube: 'https://static.wixstatic.com/media/df219d_f0d2dc7f557c43aea100e778e904f3d8~mv2.png',
+  socialX: 'https://static.wixstatic.com/media/df219d_e31fcca7427c4eca88e40f376e1b8320~mv2.png',
+  // Sections the first pass skipped entirely.
+  summitBranding: 'https://static.wixstatic.com/media/df219d_3eb55b117478409b8d912ea9d312823b~mv2.png',
+  ftaFlyer: 'https://static.wixstatic.com/media/df219d_b5d766252f204d4a85f6d6b58784144c~mv2.png',
+  ftaNewEra: 'https://static.wixstatic.com/media/df219d_7e1445021137495297e56207da29fcaa~mv2.jpg',
+  magazineSpread: 'https://static.wixstatic.com/media/df219d_1b53b12ca8af4cfd970a2093bdee7009~mv2.png',
+  sponsorStrip: 'https://static.wixstatic.com/media/df219d_3b163b038da047fa89d4fbfcaef47301~mv2.jpg',
   kiaOraCover: 'https://static.wixstatic.com/media/df219d_3ac94d17fa9a42eeaef1597686fe952d~mv2.jpg',
   newsletterMockup: 'https://static.wixstatic.com/media/df219d_29794fdc9e864b9997c3333499673a20~mv2.png',
 };
@@ -146,9 +157,9 @@ const PAGES = {
   // dark, dark strip, paper, dark, mist, paper, mist, accent, paper, dark. Two bands of
   // the same surface never sit together, which is what stops a long page reading as one
   // undifferentiated column.
-  home: ['home-hero', 'credibility-strip', 'pathways', 'fta-feature-band', 'trade-stats',
-    'report-feature', 'magazine-feature', 'newsletter-band', 'partners-wall', 'social-band',
-    'join-cta'],
+  home: ['home-hero', 'credibility-strip', 'why-inzbc', 'pathways', 'fta-feature-band',
+    'trade-stats', 'summit-band', 'latest-insights', 'report-feature', 'magazine-feature',
+    'newsletter-band', 'social-band', 'partners-wall', 'join-cta'],
   fta: ['fta-centre', 'cta-guidance'],
 
   // Hub
@@ -742,6 +753,51 @@ ${TOKENS}
   .inz-split--flip{flex-direction:row-reverse}
   @media (max-width:820px){.inz-split--flip{flex-direction:column}}
 
+  /* ---- Social blobs ---------------------------------------------------------
+     The same commissioned illustration set as the pathway cards, so the two rows read as
+     one family rather than two visual systems on one page. */
+  .inz-social{
+    display:grid;gap:1.5rem;margin:2.5rem 0 1.5rem;
+    grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));
+  }
+  .inz-social a{
+    display:flex;flex-direction:column;align-items:center;gap:.9rem;
+    text-decoration:none;color:var(--inz-on-dark);font-size:.82rem;text-align:center;
+  }
+  .inz-social img{width:clamp(88px,11vw,124px);height:auto;
+    transition:transform .24s cubic-bezier(.2,.8,.3,1)}
+  @media (hover:hover) and (pointer:fine){
+    .inz-social a:hover img{transform:translateY(-6px) scale(1.06)}
+    .inz-social a:hover{color:#fff}
+  }
+  .inz-social a:active img{transform:scale(.97);transition-duration:.1s}
+
+  /* ---- Even split -----------------------------------------------------------
+     Two columns of equal weight, unlike .inz-split which pairs a wide column with a
+     narrow one. */
+  .inz-split--even{align-items:flex-start;gap:2.5rem;--inz-split-last:1 1 22rem}
+  .inz-split--even > :first-child{flex:1 1 22rem}
+
+  /* ---- Marked list ----------------------------------------------------------
+     The three claims under Why INZBC. A lime rule rather than a bullet glyph, since the
+     marker is structural and a drawn icon set does not exist here. */
+  .inz-marks{
+    list-style:none;margin:2.5rem 0 0;padding:0;display:grid;gap:1.25rem;
+    grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));
+  }
+  .inz-marks li{padding-top:.9rem;border-top:2px solid var(--inz-gold);font-size:.95rem}
+
+  /* ---- Report spread and article art ---------------------------------------- */
+  .inz-spread{margin:0}
+  .inz-spread img{width:100%;height:auto;display:block;border-radius:10px;
+    box-shadow:0 18px 44px rgba(0,0,0,.28)}
+  .inz-post{display:flex;flex-direction:column;align-items:flex-start;padding:0;overflow:hidden}
+  .inz-post__art{margin:0;width:100%;aspect-ratio:16/10;overflow:hidden;background:var(--inz-mist)}
+  .inz-post__art img{width:100%;height:100%;object-fit:cover;display:block}
+  .inz-post > :not(.inz-post__art){margin-left:1.5rem;margin-right:1.5rem}
+  .inz-post h3{margin-top:1.4rem}
+  .inz-post > :last-child{margin-bottom:1.6rem}
+
   /* ---- Partner wall --------------------------------------------------------
      Real partner logos, tiered. The strongest credibility asset INZBC has, and the reason
      the Partners page should never have shipped with [[Logo]] placeholders. */
@@ -1313,6 +1369,15 @@ function readSnippet(name) {
     .replace(/IMG_HERO_BANNER/g, ART.heroBanner)
     .replace(/IMG_KIA_ORA_COVER/g, ART.kiaOraCover)
     .replace(/IMG_NEWSLETTER_MOCKUP/g, ART.newsletterMockup)
+    .replace(/IMG_SOCIAL_FACEBOOK/g, ART.socialFacebook)
+    .replace(/IMG_SOCIAL_LINKEDIN/g, ART.socialLinkedin)
+    .replace(/IMG_SOCIAL_YOUTUBE/g, ART.socialYoutube)
+    .replace(/IMG_SOCIAL_X/g, ART.socialX)
+    .replace(/IMG_SUMMIT/g, ART.summitBranding)
+    .replace(/IMG_FTA_FLYER/g, ART.ftaFlyer)
+    .replace(/IMG_FTA_NEWERA/g, ART.ftaNewEra)
+    .replace(/IMG_MAGAZINE_SPREAD/g, ART.magazineSpread)
+    .replace(/IMG_SPONSOR_STRIP/g, ART.sponsorStrip)
     .replace(/LINK_JOIN/g, LINKS.join)
     .replace(/LINK_SUBSCRIBE/g, LINKS.subscribe)
     .replace(/LINK_REPORT_ISSUU/g, LINKS.reportIssuu)
