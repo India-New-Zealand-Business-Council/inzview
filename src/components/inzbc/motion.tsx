@@ -318,8 +318,6 @@ export function CountUp({ value, className = '' }: { value: string; className?: 
   const reduced = useReducedMotion();
   const [shown, setShown] = useState(value);
 
-  // Count the digits inside the string and leave everything else alone, so "NZ$3.95bn"
-  // animates its number without losing its currency or its unit.
   const match = value.match(/[\d.]+/);
 
   useEffect(() => {
@@ -330,13 +328,24 @@ export function CountUp({ value, className = '' }: { value: string; className?: 
       duration: 1.1,
       ease: [0.16, 1, 0.3, 1],
       onUpdate: (v) => setShown(value.replace(match[0], v.toFixed(decimals))),
+      onComplete: () => setShown(value),
     });
-    return () => controls.stop();
+    return () => {
+      controls.stop();
+      // Whatever interrupts the count, the figure ends up correct rather than frozen
+      // partway.
+      setShown(value);
+    };
   }, [inView, reduced, value, match]);
 
   return (
     <span ref={ref} className={className}>
-      {reduced || !match ? value : shown}
+      {/* The animated figure is decorative and hidden from assistive technology, because
+          between the first frame and the last it reads as a number that is simply false.
+          The real value sits beside it, visually hidden and always correct, so a screen
+          reader announces NZ$3.95bn and never NZ$1.53bn. */}
+      <span aria-hidden="true">{reduced || !match ? value : shown}</span>
+      <span className="sr-only">{value}</span>
     </span>
   );
 }
