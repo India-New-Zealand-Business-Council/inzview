@@ -1,295 +1,595 @@
-// HPI 1.7-V
-import React, { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { BaseCrudService } from '@/integrations';
-import { ContentItems } from '@/entities';
-import { Image } from '@/components/ui/image';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useInView, useReducedMotion } from 'framer-motion';
+import type { MotionValue } from 'framer-motion';
+import TradeRoute from '@/components/inzbc/TradeRoute';
+import PinnedJourney from '@/components/inzbc/PinnedJourney';
+import { LINKS, ART, PATHWAYS, BENEFITS, SOCIALS } from '@/components/inzbc/content';
 
-// --- Utility Components for Animation ---
+/**
+ * INZBC homepage.
+ *
+ * Bands alternate surface — dark, mist, white — so no two adjacent sections share one, and
+ * each carries a soft gradient edge rather than a hard horizontal rule. The trade route runs
+ * behind all of it as the page's one persistent object.
+ *
+ * Placeholders render visibly on purpose. Every [[...]] is a fact INZBC still owes and a
+ * visible gap is more honest than an invented number.
+ */
 
-const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => {
+/* --- small shared pieces ------------------------------------------------------------- */
+
+function Reveal({
+  children,
+  delay = 0,
+  className = '',
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-10%" });
+  const inView = useInView(ref, { once: true, margin: '-12%' });
+  const reduced = useReducedMotion();
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{ duration: 0.8, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+      initial={reduced ? false : { opacity: 0, y: 26 }}
+      animate={inView || reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 26 }}
+      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
       className={className}
     >
       {children}
     </motion.div>
   );
-};
+}
 
-const RevealLine = ({ className = "" }: { className?: string }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+/** A fact INZBC has not supplied yet. Deliberately visible. */
+function Todo({ children }: { children: React.ReactNode }) {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ scaleX: 0 }}
-      animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-      transition={{ duration: 1, ease: "easeInOut" }}
-      style={{ originX: 0 }}
-      className={`h-[1px] bg-primary w-full ${className}`}
+    <mark className="rounded-sm bg-lime/25 px-1 text-inherit underline decoration-dashed underline-offset-4">
+      {children}
+    </mark>
+  );
+}
+
+function Btn({
+  href,
+  children,
+  variant = 'primary',
+  external = false,
+}: {
+  href: string;
+  children: React.ReactNode;
+  variant?: 'primary' | 'ghost';
+  external?: boolean;
+}) {
+  const base =
+    'inline-flex items-center rounded-full px-6 py-3 text-sm font-medium transition-transform duration-200 active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
+  const skin =
+    variant === 'primary'
+      ? 'bg-lime text-navy hover:brightness-105'
+      : 'border border-white/30 text-white hover:bg-white/10';
+  return (
+    <a
+      href={href}
+      className={`${base} ${skin}`}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    >
+      {children}
+    </a>
+  );
+}
+
+/** Soft edge between bands, in the colour of the band it introduces. */
+function Fade({ to }: { to: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-x-0 -top-16 h-16"
+      style={{ background: `linear-gradient(to bottom, transparent, ${to})` }}
     />
   );
-};
+}
 
-export default function HomePage() {
-  const [items, setItems] = useState<ContentItems[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+/* --- hero ---------------------------------------------------------------------------- */
 
-  // --- Data Fetching (Preserved) ---
-  useEffect(() => {
-    loadContent();
-  }, []);
+function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
 
-  const loadContent = async () => {
-    try {
-      const result = await BaseCrudService.getAll<ContentItems>('contentitems', {}, { limit: 6 });
-      setItems(result.items);
-    } catch (error) {
-      console.error('Failed to load content:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // Three depth tiers. The background moves least against the scroll and so reads furthest
+  // away; the copy sits in front and barely moves at all.
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '26%']);
+  const midY = useTransform(scrollYProgress, [0, 1], ['0%', '14%']);
+  const copyY = useTransform(scrollYProgress, [0, 1], ['0%', '6%']);
+  const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  // --- Scroll Animations ---
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: heroScroll } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  });
-  
-  // Parallax for hero images
-  const y1 = useTransform(heroScroll, [0, 1], ["0%", "20%"]);
-  const y2 = useTransform(heroScroll, [0, 1], ["0%", "-10%"]);
-  const opacity = useTransform(heroScroll, [0, 0.8], [1, 0]);
+  const s = (v: MotionValue<string>) => (reduced ? undefined : v);
 
   return (
-    <div className="min-h-screen bg-background text-primary selection:bg-primary selection:text-background overflow-clip">
-      <Header />
-      
-      {/* --- HERO SECTION (Inspiration Layout) --- */}
-      <section ref={heroRef} className="relative w-full max-w-[120rem] mx-auto pt-24 md:pt-32 pb-20 px-6 md:px-12 lg:px-20 min-h-[90vh] flex flex-col justify-between">
-        
-        {/* Massive Headline */}
-        <motion.div style={{ opacity }} className="w-full mb-12 md:mb-24 z-10 relative">
-          <h1 className="font-heading text-[14vw] leading-[0.85] tracking-tight text-center w-full">
-            Crafting Excellence
+    <section ref={ref} className="relative flex min-h-[92vh] items-center overflow-hidden bg-deep">
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-cover bg-center"
+        style={{ backgroundImage: `url(${ART.heroPhoto})`, y: s(bgY), opacity: 0.42 }}
+      />
+      <motion.div
+        aria-hidden="true"
+        className="absolute -right-1/4 top-0 -z-10 h-[46rem] w-[46rem] rounded-full opacity-50 blur-3xl"
+        style={{
+          background: 'radial-gradient(closest-side, rgba(97,20,95,0.95), transparent)',
+          y: s(midY),
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            'linear-gradient(90deg, #0e0522 0%, rgba(14,5,34,0.86) 46%, rgba(14,5,34,0.45) 100%)',
+        }}
+      />
+
+      <motion.div className="mx-auto w-full max-w-6xl px-6 py-24" style={{ y: s(copyY) }}>
+        <Reveal>
+          <p className="mb-4 text-xs uppercase tracking-[0.2em] text-lime">
+            India &ndash; New Zealand trade since 1988
+          </p>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <h1 className="max-w-4xl font-heading text-5xl leading-[1.05] text-white md:text-7xl">
+            New Zealand&rsquo;s gateway to the India opportunity
           </h1>
-        </motion.div>
-
-        {/* Grid Layout matching inspiration */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-end flex-grow">
-          
-          {/* Left Content (Text & Button) */}
-          <div className="lg:col-span-4 flex flex-col justify-end pb-4 lg:pb-12 z-10">
-            <FadeIn delay={0.2}>
-              <p className="font-paragraph text-lg md:text-xl max-w-sm mb-10 leading-relaxed">
-                Step into a world of premium services where tradition meets innovation. Discover a curated collection of stories and insights.
-              </p>
-              <Link 
-                to="/content"
-                className="inline-flex items-center justify-center px-8 py-4 border border-primary bg-transparent text-primary font-paragraph text-sm uppercase tracking-widest hover:bg-primary hover:text-background transition-all duration-500 w-fit"
-              >
-                Explore Collection
-              </Link>
-            </FadeIn>
+        </Reveal>
+        <Reveal delay={0.16}>
+          <p className="mt-6 max-w-xl text-lg text-white/75">
+            The India New Zealand Business Council connects exporters, investors and
+            institutions across the NZ&ndash;India trade relationship &mdash; and leads the way
+            through the new NZ&ndash;India Free Trade Agreement.
+          </p>
+        </Reveal>
+        <Reveal delay={0.24}>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Btn href="/fta">Explore the FTA</Btn>
+            <Btn href={LINKS.join} variant="ghost" external>
+              Join INZBC
+            </Btn>
           </div>
+        </Reveal>
+      </motion.div>
 
-          {/* Right Images (Parallax) */}
-          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 h-[50vh] md:h-[60vh] lg:h-[70vh]">
-            <motion.div style={{ y: y1 }} className="relative w-full h-full overflow-hidden">
-              <Image 
-                src="https://static.wixstatic.com/media/dd8066_78f3677908cd4a679b0777346f30ae90~mv2.png?originWidth=768&originHeight=384"
-                alt="Premium service detail"
-                className="w-full h-full object-cover"
-                width={800}
-              />
-            </motion.div>
-            <motion.div style={{ y: y2 }} className="relative w-full h-full overflow-hidden hidden md:block mt-12 lg:mt-24">
-              <Image 
-                src="https://static.wixstatic.com/media/dd8066_0115d7fb77ae4aa6a018114bfb8e3e72~mv2.png?originWidth=768&originHeight=384"
-                alt="Craftsmanship in action"
-                className="w-full h-full object-cover"
-                width={800}
-              />
-            </motion.div>
+      <motion.div
+        aria-hidden="true"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[0.65rem] uppercase tracking-[0.3em] text-white/40"
+        style={{ opacity: reduced ? 1 : fade }}
+      >
+        Scroll
+      </motion.div>
+    </section>
+  );
+}
+
+/* --- page ---------------------------------------------------------------------------- */
+
+export default function HomePage() {
+  return (
+    <div className="relative bg-white font-paragraph text-foreground">
+      <TradeRoute />
+
+      <main className="relative z-10">
+        <Hero />
+
+        {/* Credibility strip */}
+        <section className="relative bg-navy px-6 py-6 text-center text-sm text-white/80">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-2">
+            <span>Established 1988</span>
+            <span aria-hidden="true" className="text-white/25">
+              &middot;
+            </span>
+            <span>
+              <Todo>[[member count &mdash; confirm with INZBC]]</Todo>
+            </span>
+            <span aria-hidden="true" className="text-white/25">
+              &middot;
+            </span>
+            <span>Recognised by the governments of New Zealand and India</span>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* --- THE PHILOSOPHY (Sticky Narrative Section) --- */}
-      <section className="w-full max-w-[120rem] mx-auto px-6 md:px-12 lg:px-20 py-32 lg:py-48">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative">
-          
-          {/* Sticky Title */}
-          <div className="lg:col-span-5 relative">
-            <div className="lg:sticky lg:top-40">
-              <FadeIn>
-                <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl leading-tight mb-6">
-                  A legacy of <br className="hidden lg:block" />
-                  <span className="italic">uncompromising</span> <br className="hidden lg:block" />
-                  quality.
-                </h2>
-                <RevealLine className="w-24 mb-8" />
-                <p className="font-paragraph text-lg opacity-70 max-w-md">
-                  We believe that true elegance lies in the details. Every interaction, every narrative, is meticulously crafted to inspire and elevate.
+        {/* Why INZBC */}
+        <section className="relative bg-mist px-6 py-24">
+          <Fade to="#f4f2f8" />
+          <div className="mx-auto max-w-6xl">
+            <Reveal>
+              <h2 className="text-center font-heading text-4xl text-ink md:text-5xl">
+                Why INZBC?
+              </h2>
+            </Reveal>
+            <div className="mt-10 grid gap-8 md:grid-cols-2">
+              <Reveal>
+                <p className="text-lg text-foreground">
+                  New Zealand&rsquo;s leading India trade and FTA platform, connecting
+                  businesses, government and investors since 1988.
                 </p>
-              </FadeIn>
+              </Reveal>
+              <Reveal delay={0.1}>
+                <p className="text-lg text-foreground">
+                  With the NZ&ndash;India Free Trade Agreement signed, members gain first-mover
+                  advantage through trade intelligence, policy access and business networks.
+                </p>
+              </Reveal>
+            </div>
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {[
+                'Advocate on trade policy and market access',
+                'Share market intelligence and FTA insights',
+                'Connect businesses across both countries',
+              ].map((claim, i) => (
+                <Reveal key={claim} delay={i * 0.08}>
+                  <p className="border-t-2 border-lime pt-4 font-medium text-ink">{claim}</p>
+                </Reveal>
+              ))}
             </div>
           </div>
+        </section>
 
-          {/* Scrolling Content */}
-          <div className="lg:col-span-7 space-y-24 lg:space-y-40 lg:pt-32">
-            <FadeIn>
-              <div className="aspect-[4/3] overflow-hidden relative group">
-                <Image 
-                  src="https://static.wixstatic.com/media/dd8066_62f4ed4e455f4e6a8bde4cfafa70eff8~mv2.png?originWidth=960&originHeight=704"
-                  alt="Philosophy visual 1"
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                  width={1000}
-                />
-              </div>
-            </FadeIn>
-            <FadeIn>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <p className="font-paragraph text-xl leading-relaxed md:order-2">
-                  Our approach is rooted in a deep respect for timeless techniques, seamlessly blended with contemporary vision.
-                </p>
-                <div className="aspect-square overflow-hidden relative md:order-1">
-                  <Image 
-                    src="https://static.wixstatic.com/media/dd8066_1c2fd61e23684dd9831fa44a7379890c~mv2.png?originWidth=960&originHeight=704"
-                    alt="Philosophy visual 2"
-                    className="w-full h-full object-cover"
-                    width={600}
-                  />
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* --- LATEST STORIES (Data Fidelity Section) --- */}
-      <section className="w-full max-w-[120rem] mx-auto px-6 md:px-12 lg:px-20 py-32">
-        <FadeIn>
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-            <div>
-              <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl mb-4">Latest Stories</h2>
-              <p className="font-paragraph text-lg opacity-70 max-w-xl">
-                Explore our carefully curated collection of articles, insights, and narratives.
-              </p>
+        {/* Pathways */}
+        <section className="relative bg-white px-6 py-24">
+          <Fade to="#ffffff" />
+          <div className="mx-auto max-w-6xl">
+            <Reveal>
+              <h2 className="text-center font-heading text-4xl text-ink md:text-5xl">
+                Where would you like to start?
+              </h2>
+            </Reveal>
+            <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {PATHWAYS.map((p, i) => (
+                <Reveal key={p.title} delay={i * 0.07}>
+                  <a
+                    href={p.href}
+                    className="group block h-full rounded-2xl bg-mist p-7 transition-transform duration-300 hover:-translate-y-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+                  >
+                    <img
+                      src={p.icon}
+                      alt=""
+                      aria-hidden="true"
+                      loading="lazy"
+                      className="mb-5 h-24 w-auto"
+                    />
+                    <h3 className="font-heading text-xl text-ink">{p.title}</h3>
+                    <p className="mt-2 text-sm text-foreground">{p.body}</p>
+                  </a>
+                </Reveal>
+              ))}
             </div>
-            <Link 
-              to="/content"
-              className="font-paragraph text-sm uppercase tracking-widest border-b border-primary pb-1 hover:opacity-50 transition-opacity whitespace-nowrap"
-            >
-              View All Content
-            </Link>
           </div>
-        </FadeIn>
+        </section>
 
-        <RevealLine className="mb-16 opacity-30" />
+        {/* FTA band */}
+        <section className="relative overflow-hidden bg-navy px-6 py-24">
+          <Fade to="#160933" />
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-8">
+            <Reveal className="max-w-2xl">
+              <h2 className="font-heading text-4xl text-white md:text-5xl">
+                The NZ&ndash;India FTA changes what&rsquo;s possible
+              </h2>
+              <p className="mt-4 text-white/70">
+                <Todo>
+                  [[FTA summary copy &mdash; pull from the FTA Overview page once drafted.]]
+                </Todo>
+              </p>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <Btn href="/fta">Understand the FTA</Btn>
+            </Reveal>
+          </div>
+        </section>
 
-        {/* Data Container - Always rendered to prevent hook crashes */}
-        <div className="min-h-[400px] relative">
-          <div className={`transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
-            
-            {items.length === 0 && !isLoading ? (
-              <div className="text-center py-32">
-                <p className="font-paragraph text-xl opacity-50">No narratives available at this time.</p>
+        {/* The pinned journey — the section Studio could not build */}
+        <PinnedJourney />
+
+        {/* Summit */}
+        <section className="relative overflow-hidden bg-navy px-6 py-24">
+          <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
+            <Reveal>
+              <p className="mb-3 text-xs uppercase tracking-[0.18em] text-lime">
+                INZBC Annual Summit
+              </p>
+              <h2 className="font-heading text-4xl text-white md:text-5xl">
+                New Zealand&rsquo;s premier India trade event
+              </h2>
+              <p className="mt-4 text-white/70">
+                Bringing together business leaders, policymakers and government
+                representatives from both countries.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Btn href="/events">See upcoming events</Btn>
+                <Btn href={LINKS.summitSite} variant="ghost" external>
+                  Summit website
+                </Btn>
               </div>
-            ) : (
-              <div className="flex flex-col">
-                {items.map((item, index) => (
-                  <FadeIn key={item._id} delay={index * 0.1}>
-                    <Link to={`/content/${item._id}`} className="group block">
-                      <article className="grid grid-cols-1 md:grid-cols-12 gap-8 py-12 border-b border-primary/20 items-center relative overflow-hidden">
-                        
-                        {/* Hover Background Effect */}
-                        <div className="absolute inset-0 bg-primary/5 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out -z-10" />
+            </Reveal>
+            <Reveal delay={0.12}>
+              <img
+                src={ART.magazineSpread}
+                alt="Spread from the INZBC report showing photography and articles from the annual summit"
+                loading="lazy"
+                className="w-full rounded-xl shadow-2xl"
+              />
+            </Reveal>
+          </div>
+        </section>
 
-                        {/* Meta */}
-                        <div className="md:col-span-3 flex flex-col gap-2">
-                          {item.publishDate && (
-                            <time className="font-paragraph text-xs uppercase tracking-widest opacity-60">
-                              {new Date(item.publishDate).toLocaleDateString('en-US', { 
-                                year: 'numeric', month: 'long', day: 'numeric' 
-                              })}
-                            </time>
-                          )}
-                          {item.author && (
-                            <span className="font-paragraph text-sm italic opacity-80">
-                              By {item.author}
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Content */}
-                        <div className="md:col-span-5 lg:col-span-6">
-                          <h3 className="font-heading text-3xl md:text-4xl mb-4 group-hover:italic transition-all duration-300">
-                            {item.title}
-                          </h3>
-                          {item.shortDescription && (
-                            <p className="font-paragraph text-base opacity-70 line-clamp-2">
-                              {item.shortDescription}
-                            </p>
-                          )}
-                        </div>
-
-                        {/* Image */}
-                        <div className="md:col-span-4 lg:col-span-3 h-48 md:h-40 overflow-hidden relative">
-                          <Image 
-                            src={item.mainImage || 'https://static.wixstatic.com/media/dd8066_b8bcffb68ddd44f6b6442c01362d7764~mv2.png?originWidth=384&originHeight=192'}
-                            alt={item.title || 'Content image'}
-                            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                            width={400}
-                          />
-                        </div>
-                      </article>
-                    </Link>
-                  </FadeIn>
+        {/* Membership */}
+        <section className="relative overflow-hidden bg-ink px-6 py-24">
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-cover bg-center opacity-25"
+            style={{ backgroundImage: `url(${ART.heroPhoto})` }}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(90deg, #1a0b3f 0%, rgba(26,11,63,0.86) 46%, rgba(26,11,63,0.5) 100%)',
+            }}
+          />
+          <div className="relative mx-auto grid max-w-6xl gap-12 md:grid-cols-2">
+            <Reveal>
+              <p className="mb-3 text-xs uppercase tracking-[0.18em] text-lime">The network</p>
+              <h2 className="font-heading text-4xl text-white md:text-5xl">
+                Who you meet by joining
+              </h2>
+              <p className="mt-4 text-white/70">
+                Exporters, importers, investors, universities and government agencies on both
+                sides of the corridor.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Btn href="/membership/directory">Explore the directory</Btn>
+                <Btn href={LINKS.join} variant="ghost" external>
+                  Become a member
+                </Btn>
+              </div>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <ul className="space-y-5">
+                {BENEFITS.map(([lead, rest]) => (
+                  <li key={lead} className="border-l-2 border-lime pl-4 text-white/80">
+                    <strong className="font-semibold text-white">{lead}</strong> {rest}
+                  </li>
                 ))}
-              </div>
-            )}
+              </ul>
+            </Reveal>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* --- CALL TO ACTION (Visual Breather & Footer Transition) --- */}
-      <section className="w-full bg-secondary text-secondary-foreground mt-20">
-        <div className="max-w-[120rem] mx-auto px-6 md:px-12 lg:px-20 py-32 md:py-48 flex flex-col items-center text-center relative overflow-hidden">
-          
-          {/* Background Texture/Noise (Simulated with CSS) */}
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
+        {/* Insights */}
+        <section className="relative bg-mist px-6 py-24">
+          <Fade to="#f4f2f8" />
+          <div className="mx-auto max-w-6xl">
+            <Reveal>
+              <h2 className="text-center font-heading text-4xl text-ink md:text-5xl">
+                Latest insights
+              </h2>
+            </Reveal>
+            <div className="mt-14 grid gap-6 md:grid-cols-3">
+              {[
+                {
+                  img: ART.ftaFlyer,
+                  alt: 'Event flyer for Inside the NZ India FTA with Vangelis Vitalis',
+                  title: 'Inside the NZ–India FTA with Vangelis Vitalis',
+                  body: "An Auckland event with New Zealand's chief trade negotiator.",
+                },
+                {
+                  img: ART.ftaNewEra,
+                  alt: 'Delegation photograph accompanying the FTA article',
+                  title: 'A new era for business',
+                  body: 'The agreement signals a new era for trade between the two countries.',
+                },
+                {
+                  img: ART.heroBanner,
+                  alt: 'INZBC banner showing a container port and India Gate',
+                  title: 'INZBC welcomes the landmark agreement',
+                  body: null,
+                },
+              ].map((post, i) => (
+                <Reveal key={post.title} delay={i * 0.08}>
+                  <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm">
+                    <img
+                      src={post.img}
+                      alt={post.alt}
+                      loading="lazy"
+                      className="aspect-[16/10] w-full object-cover"
+                    />
+                    <div className="flex flex-1 flex-col p-6">
+                      <h3 className="font-heading text-lg text-ink">{post.title}</h3>
+                      <p className="mt-2 flex-1 text-sm text-foreground">
+                        {post.body ?? (
+                          <Todo>[[Article summary &mdash; confirm with INZBC.]]</Todo>
+                        )}
+                      </p>
+                      <a href="/news" className="mt-4 text-sm font-medium text-plum underline">
+                        Read more
+                      </a>
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
 
-          <FadeIn className="relative z-10 max-w-4xl">
-            <h2 className="font-heading text-6xl md:text-8xl mb-8 leading-none">
-              Stay Inspired
-            </h2>
-            <p className="font-paragraph text-xl md:text-2xl opacity-80 mb-16 font-light">
-              Join our community and discover new perspectives, timeless wisdom, and innovative ideas that shape the future.
+        {/* Publications */}
+        <section className="relative overflow-hidden bg-ink px-6 py-24">
+          <Fade to="#1a0b3f" />
+          <div className="mx-auto max-w-6xl">
+            <Reveal>
+              <p className="mb-3 text-xs uppercase tracking-[0.18em] text-lime">
+                Voice of the industry
+              </p>
+              <h2 className="font-heading text-4xl text-white md:text-5xl">
+                What INZBC publishes
+              </h2>
+            </Reveal>
+            <div className="mt-14 grid gap-12 md:grid-cols-2">
+              {[
+                {
+                  cover: ART.reportCover,
+                  alt: 'Cover of Grow With India, the New Zealand India Trade Report 2025',
+                  title: 'Grow With India',
+                  sub: 'The New Zealand India Trade Report 2025',
+                  body: 'Where the trade relationship stands and where it can go.',
+                  href: LINKS.reportIssuu,
+                  lift: 'md:-translate-y-3',
+                },
+                {
+                  cover: ART.kiaOraCover,
+                  alt: 'Cover of Kia Ora India, the INZBC magazine',
+                  title: 'Kia Ora India',
+                  sub: 'The INZBC magazine',
+                  body: 'Member businesses and the people moving between the two markets.',
+                  href: LINKS.kiaOraIssuu,
+                  lift: 'md:translate-y-6',
+                },
+              ].map((pub, i) => (
+                <Reveal key={pub.title} delay={i * 0.12}>
+                  <article className={`flex gap-6 transition-transform duration-500 ${pub.lift}`}>
+                    <img
+                      src={pub.cover}
+                      alt={pub.alt}
+                      loading="lazy"
+                      className="h-auto w-32 flex-none rounded-lg shadow-2xl md:w-40"
+                    />
+                    <div>
+                      <h3 className="font-heading text-2xl text-white">{pub.title}</h3>
+                      <p className="mt-1 text-sm text-lime">{pub.sub}</p>
+                      <p className="mt-3 text-sm text-white/70">{pub.body}</p>
+                      <a
+                        href={pub.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-5 inline-block rounded-full bg-lime px-5 py-2 text-sm font-medium text-navy"
+                      >
+                        Read it
+                      </a>
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+            <p className="mt-16 border-t border-white/10 pt-6 text-sm text-white/60">
+              Kia Ora India carries advertising.{' '}
+              <a
+                href={`${LINKS.email}?subject=Advertising%20enquiry`}
+                className="text-lime underline"
+              >
+                Enquire about advertising
+              </a>
             </p>
-            <Link 
-              to="/content"
-              className="inline-flex items-center justify-center px-12 py-5 border border-secondary-foreground bg-transparent text-secondary-foreground font-paragraph text-sm uppercase tracking-widest hover:bg-secondary-foreground hover:text-secondary transition-all duration-500"
-            >
-              Explore Now
-            </Link>
-          </FadeIn>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <Footer />
+        {/* Newsletter */}
+        <section className="relative bg-plum px-6 py-20">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-8">
+            <Reveal>
+              <h2 className="font-heading text-3xl text-white md:text-4xl">
+                Subscribe to the INZBC newsletter
+              </h2>
+              <p className="mt-3 max-w-lg text-white/80">
+                Trade news, FTA developments and event announcements, straight to your inbox.
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <Btn href={LINKS.subscribe} external>
+                Subscribe
+              </Btn>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* Social */}
+        <section className="relative bg-navy px-6 py-20 text-center">
+          <div className="mx-auto max-w-6xl">
+            <Reveal>
+              <h2 className="font-heading text-3xl text-white md:text-4xl">
+                Follow the trade relationship
+              </h2>
+            </Reveal>
+            <div className="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4">
+              {SOCIALS.map((s, i) => (
+                <Reveal key={s.name} delay={i * 0.06}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex flex-col items-center gap-3 text-sm text-white/80 hover:text-white"
+                  >
+                    <img
+                      src={s.icon}
+                      alt=""
+                      aria-hidden="true"
+                      loading="lazy"
+                      className="w-28 transition-transform duration-300 group-hover:-translate-y-1.5"
+                    />
+                    <span>{s.label}</span>
+                  </a>
+                </Reveal>
+              ))}
+            </div>
+            <p className="mt-10 text-sm text-white/60">
+              <a href={LINKS.facebookAlbums} target="_blank" rel="noopener noreferrer" className="underline">
+                Event albums
+              </a>
+              {' · '}
+              <a href={LINKS.flickr} target="_blank" rel="noopener noreferrer" className="underline">
+                Photo galleries on Flickr
+              </a>
+            </p>
+          </div>
+        </section>
+
+        {/* Partners */}
+        <section className="relative bg-white px-6 py-20">
+          <Fade to="#ffffff" />
+          <div className="mx-auto max-w-6xl">
+            <Reveal>
+              <img
+                src={ART.partnerStrip}
+                alt="INZBC partners and supporters, including BNZ, Zespri and Fonterra, alongside government and industry stakeholders"
+                loading="lazy"
+                className="w-full"
+              />
+            </Reveal>
+          </div>
+        </section>
+
+        {/* Closing CTA */}
+        <section className="relative bg-deep px-6 py-28 text-center">
+          <Fade to="#0e0522" />
+          <div className="mx-auto max-w-3xl">
+            <Reveal>
+              <h2 className="font-heading text-4xl text-white md:text-5xl">
+                Ready to grow your business with India?
+              </h2>
+              <p className="mt-4 text-white/70">
+                Join INZBC, or talk to us about how we can help your organisation engage across
+                the corridor.
+              </p>
+              <div className="mt-10 flex flex-wrap justify-center gap-3">
+                <Btn href={LINKS.join} external>
+                  Join INZBC
+                </Btn>
+                <Btn href="/connect" variant="ghost">
+                  Contact us
+                </Btn>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
