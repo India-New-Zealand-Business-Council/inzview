@@ -750,8 +750,13 @@ ${TOKENS}
   .inz-card--raised:has(a):hover{box-shadow:0 10px 28px rgba(0,0,0,.1)}
 
   /* Navigation */
+  /* Static, not fixed. position:fixed inside an iframe pins to the IFRAME's viewport, not
+     the browser's, so this nav floated over the page content instead of sticking to the
+     top of the window. A sticky site header has to be Wix's own header, outside the embed;
+     it cannot be done from in here. */
   .inz-nav{
-    position:fixed;inset:0 0 auto 0;z-index:60;display:flex;align-items:center;
+    position:relative;z-index:60;display:flex;align-items:center;
+    background:${rgba(P.ink, 0.92)};
     justify-content:space-between;gap:1.5rem;padding:1.5rem clamp(1.25rem,4vw,3rem);
     /* padding is deliberately NOT transitioned. The .solid state shrinks it, and animating
        a layout property means recalculating this subtree every frame for 350ms, triggered
