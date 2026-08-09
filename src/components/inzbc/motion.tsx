@@ -9,6 +9,7 @@ import {
   animate,
 } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 /**
  * Motion primitives.
@@ -386,7 +387,7 @@ export function StickyHeader({
       transition={{ duration: 0.28, ease: 'easeOut' }}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
-        <a href="/" className="flex items-center">
+        <Link to="/" className="flex items-center">
           <motion.img
             src={logo}
             alt="India New Zealand Business Council"
@@ -394,16 +395,16 @@ export function StickyHeader({
             transition={{ duration: 0.28, ease: 'easeOut' }}
             className="w-auto"
           />
-        </a>
+        </Link>
         <nav className="hidden items-center gap-7 md:flex">
           {links.map((l) => (
-            <a
+            <Link
               key={l.href}
-              href={l.href}
+              to={l.href}
               className="text-sm text-white/75 transition-colors hover:text-white"
             >
               {l.label}
-            </a>
+            </Link>
           ))}
           <a
             href={cta.href}

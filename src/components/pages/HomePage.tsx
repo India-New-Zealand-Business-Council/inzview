@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useTransform, useReducedMotion } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import TradeRoute from '@/components/inzbc/TradeRoute';
 import PinnedJourney from '@/components/inzbc/PinnedJourney';
 import {
@@ -53,12 +54,16 @@ function Btn({
     variant === 'primary'
       ? 'bg-lime text-navy hover:brightness-105'
       : 'border border-white/30 text-white hover:bg-white/10';
+  // Internal destinations go through the router; anything off-site opens in a new tab.
+  if (!external && href.startsWith('/')) {
+    return (
+      <Link to={href} className={`${base} ${skin}`}>
+        {children}
+      </Link>
+    );
+  }
   return (
-    <a
-      href={href}
-      className={`${base} ${skin}`}
-      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-    >
+    <a href={href} className={`${base} ${skin}`} target="_blank" rel="noopener noreferrer">
       {children}
     </a>
   );
