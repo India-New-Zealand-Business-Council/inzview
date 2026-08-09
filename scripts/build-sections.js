@@ -89,6 +89,21 @@ const MEDIA = {
 // are commissioned pieces from the live site: not stock, not decoration, and the strongest
 // brand assets INZBC has. The first pass of this redesign shipped without them, which is
 // why it read as weaker than the site it replaces.
+// Real destinations, supplied by INZBC 9 Aug 2026. Kept here rather than pasted into the
+// snippets so a changed URL is one edit, and so the snippets stay free of long query
+// strings that are easy to corrupt by hand.
+const LINKS = {
+  join: 'https://inzbc.memberjungle.club/index.cfm?module=membership_v2&kat=add_register',
+  subscribe: 'https://emailoctopus.com/lists/442124e3-1caa-11eb-a3d0-06b4694bee2a/forms/subscribe',
+  reportIssuu: 'https://issuu.com/inzbc/docs/inzbc_report_2025_digital',
+  facebook: 'https://www.facebook.com/inzbc',
+  facebookAlbums: 'https://www.facebook.com/inzbc/photos?tab=albums',
+  flickr: 'https://www.flickr.com/photos/inzbc/',
+  youtube: 'https://www.youtube.com/channel/UC9MQW-VliLqOdT4GUktKfZQ',
+  linkedin: 'https://www.linkedin.com/company/india-new-zealand-business-council/',
+  x: 'https://x.com/inzbc',
+};
+
 const ART = {
   logo: 'https://static.wixstatic.com/media/df219d_0b8e6333d53841efaf66f675038a0798~mv2.jpg',
   // The designed hero lockup: logo, tagline, orange chevron, port and container ship, with
@@ -132,7 +147,8 @@ const PAGES = {
   // the same surface never sit together, which is what stops a long page reading as one
   // undifferentiated column.
   home: ['home-hero', 'credibility-strip', 'pathways', 'fta-feature-band', 'trade-stats',
-    'report-feature', 'magazine-feature', 'newsletter-band', 'partners-wall', 'join-cta'],
+    'report-feature', 'magazine-feature', 'newsletter-band', 'partners-wall', 'social-band',
+    'join-cta'],
   fta: ['fta-centre', 'cta-guidance'],
 
   // Hub
@@ -742,6 +758,21 @@ ${TOKENS}
 
   /* ---- Partner logo tile ----------------------------------------------------
      width 9rem + height 5rem + radius 8px, x3 each. */
+  /* ---- Social row ----------------------------------------------------------
+     Pill links rather than icon glyphs. An icon system has to be drawn and consistent;
+     unicode or emoji standing in for one is worse than naming the platform. */
+  .inz-social{
+    display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;
+    list-style:none;margin:2rem 0 1rem;padding:0;
+  }
+  .inz-social a{
+    display:inline-block;padding:.65em 1.4em;border-radius:var(--inz-radius);
+    text-decoration:none;color:#fff;font-size:.88rem;font-weight:500;
+    box-shadow:inset 0 0 0 1px var(--inz-on-deep-muted);
+    transition:background .2s ease,transform .2s ease;
+  }
+  .inz-social a:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
+
   .inz-logos{display:flex;flex-wrap:wrap;gap:2rem;align-items:center;justify-content:center;margin-top:2rem}
   .inz-logo{
     width:9rem;height:5rem;display:grid;place-items:center;text-align:center;
@@ -1240,6 +1271,15 @@ function readSnippet(name) {
     .replace(/IMG_HERO_BANNER/g, ART.heroBanner)
     .replace(/IMG_KIA_ORA_COVER/g, ART.kiaOraCover)
     .replace(/IMG_NEWSLETTER_MOCKUP/g, ART.newsletterMockup)
+    .replace(/LINK_JOIN/g, LINKS.join)
+    .replace(/LINK_SUBSCRIBE/g, LINKS.subscribe)
+    .replace(/LINK_REPORT_ISSUU/g, LINKS.reportIssuu)
+    .replace(/LINK_FACEBOOK_ALBUMS/g, LINKS.facebookAlbums)
+    .replace(/LINK_FACEBOOK/g, LINKS.facebook)
+    .replace(/LINK_FLICKR/g, LINKS.flickr)
+    .replace(/LINK_YOUTUBE/g, LINKS.youtube)
+    .replace(/LINK_LINKEDIN/g, LINKS.linkedin)
+    .replace(/LINK_X/g, LINKS.x)
     .trim();
 
   checkBanned(name, raw);
