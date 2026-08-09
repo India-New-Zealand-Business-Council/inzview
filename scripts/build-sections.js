@@ -851,8 +851,8 @@ ${TOKENS}
   .inz-hero__base{
     position:absolute;inset:0;z-index:2;pointer-events:none;
     background-image:
-      linear-gradient(180deg,rgba(6,5,26,.66) 0%,rgba(6,5,26,.42) 42%,rgba(6,5,26,.82) 100%),
-      radial-gradient(120% 95% at 50% 45%, transparent 38%, rgba(6,5,26,.55) 100%),
+      linear-gradient(90deg,rgba(6,5,26,.9) 0%,rgba(6,5,26,.74) 34%,rgba(6,5,26,.3) 62%,transparent 84%),
+      linear-gradient(0deg,rgba(6,5,26,.7) 0%,transparent 54%),
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
     background-size:cover,cover,220px 220px;
     mix-blend-mode:normal;
@@ -898,7 +898,10 @@ ${TOKENS}
   }
 
   .inz-hero > .inz-container{position:relative;z-index:4}
-  .inz-hero h1,.inz-hero h2,.inz-hero h3{color:#fff}
+  /* A whisper, not a drop shadow. Invisible as an effect; it does quiet work on edge
+     contrast where a letter crosses from sky into building. */
+  .inz-hero h1,.inz-hero h2,.inz-hero h3{color:#fff;text-shadow:0 1px 24px rgba(0,0,0,.35)}
+  .inz-hero .inz-lede,.inz-hero__facts dd{text-shadow:0 1px 18px rgba(0,0,0,.4)}
   .inz-hero p{color:var(--inz-on-dark)}
   /* Every dark context, not just the hero. Scoping this to .inz-hero alone left the
      secondary button navy-on-navy at 1.15:1 in the closing CTA band, which is
@@ -1280,6 +1283,16 @@ function readSnippet(name) {
     .replace(/LINK_YOUTUBE/g, LINKS.youtube)
     .replace(/LINK_LINKEDIN/g, LINKS.linkedin)
     .replace(/LINK_X/g, LINKS.x)
+    // Every off-site link opens in a new tab, applied here rather than in the markup so it
+    // cannot be forgotten on a new snippet. This is not a preference: the embed's sandbox
+    // is "allow-same-origin allow-forms allow-popups allow-modals allow-scripts
+    // allow-pointer-lock" with no allow-top-navigation, so a same-tab external link is
+    // silently swallowed exactly like target="_top" was. allow-popups is present, so
+    // _blank works. Without this the Join, Subscribe and Issuu buttons all do nothing.
+    .replace(/<a\s+href="(https?:\/\/|mailto:)([^"]*)"([^>]*)>/g, (tag, scheme, rest, attrs) =>
+      /target=/.test(attrs)
+        ? tag
+        : `<a href="${scheme}${rest}"${attrs} target="_blank" rel="noopener">`)
     .trim();
 
   checkBanned(name, raw);
