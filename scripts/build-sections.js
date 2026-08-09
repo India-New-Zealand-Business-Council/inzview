@@ -59,29 +59,25 @@ const HERO_TIER = { landmark: 'landmark', hub: 'page', editorial: 'page', task: 
 // Uploaded to THIS site's Media Manager 9 Aug 2026 by scripts/upload-media.js, from the
 // originals in assets/from-live-site/. These are INZBC's own photographs, re-hosted rather
 // than hot-linked, so retiring inzbc.org cannot break them.
+// Only Home carries a photograph, and that is a finding rather than a preference. Every
+// image in INZBC's library was opened and checked:
+//
+//   banner-wide-primary      Auckland harbour at dusk, Sky Tower, port cranes, a ferry.
+//                            The only frame that works behind white text. Used here.
+//   hero-tall                near-white abstract wave texture, and byte-identical to
+//                            home-top-banner, so those two are one file
+//   banner-wide-secondary    a flat orange gradient, not a photograph
+//   hero-event-networking    a collage with headline text baked into it, which fights
+//                            the page's own headline
+//   the rest                 covers, mockups, icons, logo strips
+//
+// So there is one usable hero photograph in the whole library. The other heroes keep the
+// synthesised plate, which is better than a bad photograph. Real photography for the FTA,
+// Trade and Events pages needs a commissioned or licensed shoot.
 const MEDIA = {
-  // The photograph the live site actually leads with: a business networking room, not the
-  // harbour banner the repo had assumed. Commercial trade, people in it, on brief.
   home: {
-    src: 'https://static.wixstatic.com/media/df219d_83e2d493f8b8499c8ef83fddd27208b8~mv2.jpg',
-    alt: '', role: 'decorative', position: 'center 40%',
-  },
-  // Auckland harbour at dusk: Sky Tower, port cranes, a ferry. Trade infrastructure.
-  fta: {
     src: 'https://static.wixstatic.com/media/df219d_85f777cc8d624bc2b4ea81783f71df24~mv2.jpg',
-    alt: '', role: 'decorative', position: 'center 45%',
-  },
-  tradeResources: {
-    src: 'https://static.wixstatic.com/media/df219d_76fa4732467a4867bb224e174420cdcd~mv2.jpg',
-    alt: '', role: 'decorative', position: 'center 50%',
-  },
-  events: {
-    src: 'https://static.wixstatic.com/media/df219d_b0521b2a968344dd99be5c65d97ed464~mv2.jpg',
-    alt: '', role: 'decorative', position: 'center 35%',
-  },
-  membership: {
-    src: 'https://static.wixstatic.com/media/df219d_db36a6fb46a646c48e5d643c6ed3442a~mv2.jpg',
-    alt: '', role: 'decorative', position: 'center 45%',
+    alt: '', role: 'decorative', position: 'center 55%',
   },
 };
 
@@ -676,12 +672,17 @@ ${TOKENS}
   }
   /* Grain + vignette. feTurbulence is the same fractal noise a film-grain filter uses;
      at low opacity it removes the plasticky banding that gives CSS gradients away. */
+  /* This layer sits above the photograph, so it is what keeps the headline legible over it.
+     The alpha is baked into each gradient rather than set as layer opacity, because opacity
+     would fade the legibility scrim and the grain together and the scrim has to stay
+     strong. Without this, white text over the harbour frame drops well under AA. */
   .inz-hero__base{
-    position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5;
+    position:absolute;inset:0;z-index:2;pointer-events:none;
     background-image:
-      radial-gradient(120% 95% at 50% 45%, transparent 42%, rgba(0,0,0,.72) 100%),
+      linear-gradient(180deg,rgba(6,5,26,.66) 0%,rgba(6,5,26,.42) 42%,rgba(6,5,26,.82) 100%),
+      radial-gradient(120% 95% at 50% 45%, transparent 38%, rgba(6,5,26,.55) 100%),
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-    background-size:cover,220px 220px;
+    background-size:cover,cover,220px 220px;
     mix-blend-mode:normal;
   }
   .inz-hero > .inz-container{position:relative;z-index:4}
@@ -701,7 +702,12 @@ ${TOKENS}
     content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.035;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
   }
-  .inz-section > *{position:relative;z-index:1}
+  /* :not(.inz-hero) matters. Without it this rule also hits the hero's own layer divs and
+     overrides their position:absolute, because it has the same specificity and is declared
+     later. A relative, empty div with no height collapses to 0x0, so the plate, the
+     photograph and the grain all rendered as nothing and the parallax had nothing to move.
+     The hero was a flat navy block for that reason alone. */
+  .inz-section:not(.inz-hero) > *{position:relative;z-index:1}
 
   /* [[placeholder]] markers. Deliberately outside both palettes: this is a build-state
      warning, not part of the design, and it should look wrong on the page. The release
