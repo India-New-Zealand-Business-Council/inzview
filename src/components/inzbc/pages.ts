@@ -1,0 +1,37 @@
+import { LINKS } from './content';
+
+/**
+ * The destinations the homepage links to.
+ *
+ * Titles and ledes are the real copy from the Wix Studio build, which INZBC reviewed; they
+ * are not rewritten here. Each page's body is still to come, so every one carries a visible
+ * marker rather than filler.
+ *
+ * Routes exist for all of them because a navigation item that goes nowhere is worse than a
+ * thin page: the Studio site had nineteen of twenty pages returning 404 for days and it was
+ * not obvious from looking at it.
+ */
+export type PageDef = { path: string; title: string; lede: string };
+
+export const PAGES: PageDef[] = [
+  { path: '/fta', title: "NZ\u2013India FTA Centre", lede: "Sourced, plain-language guidance on the New Zealand\u2013India Free Trade Agreement: what changes, who it affects, and what to do next." },
+  { path: '/events', title: "Events", lede: "Briefings, delegations, networking and the annual INZBC Summit \u2014 the main ways to engage with the NZ\u2013India trade community." },
+  { path: '/membership', title: "Join New Zealand's India trade network", lede: "INZBC membership gives companies and institutions a direct voice in the NZ\u2013India trade relationship, sourced market intelligence, and access to events, delegations and introductions." },
+  { path: '/connect', title: "Connect", lede: "Get in touch with INZBC, or talk to us about sponsorship." },
+  { path: '/news', title: "News", lede: "Updates from INZBC and the NZ\u2013India trade relationship." },
+  { path: '/partners', title: "Partners", lede: "Organisations that support INZBC's work across the NZ\u2013India corridor." },
+  { path: '/trade-resources', title: "Trade resources for the NZ\u2013India opportunity", lede: "Practical guidance for New Zealand businesses exporting to India, importing from India, and using the NZ\u2013India Free Trade Agreement." },
+  { path: '/membership/directory', title: "Member directory", lede: "The directory of INZBC members is hosted on Member Jungle, the provisional system of record for membership." },
+  { path: '/events/past', title: "Past events", lede: "Reports, recordings and summaries from previous INZBC events." },
+  { path: '/executive-council', title: "Executive Council", lede: "The governance and executive team leading INZBC." },
+];
+
+export const NAV = [
+  { label: 'The FTA', href: '/fta' },
+  { label: 'Events', href: '/events' },
+  { label: 'Membership', href: '/membership' },
+  { label: 'Publications', href: '/publications' },
+  { label: 'Connect', href: '/connect' },
+];
+
+export const JOIN = LINKS.join;

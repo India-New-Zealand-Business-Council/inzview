@@ -1,0 +1,21 @@
+# dependencies
+node_modules/
+.vscode/
+.idea/
+.wix/
+jsconfig.json
+devlog.txt
+
+# Build and publish artefacts
+pub*.txt
+design-preview/_*
+design-preview/*.log
+
+# Secrets. scripts/upload-media.js reads WIX_API_KEY from here.
+.env
+.env.*
+
+# Playwright MCP output
+.playwright-mcp/
+*.png
+!assets/**/*.png

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 Muted colors, featuring taupe and warm beige with accents of soft ivory, natural light, refined and calm atmosphere, professional camera
+=======
+Muted colors, featuring beige and soft taupe with accents of warm ivory, soft light, refined and calm atmosphere, professional camera
+>>>>>>> ab48f71ea6e72d5988225bc7313d4c4300cbadae

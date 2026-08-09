@@ -19,6 +19,7 @@ export default {
                 '9xl': ['8rem', { lineHeight: '1', letterSpacing: '-0.02em', fontWeight: '700' }],
             },
             fontFamily: {
+<<<<<<< HEAD
                 heading: "cormorantgaramond",
                 paragraph: "futura-lt-w01-book"
             },
@@ -32,6 +33,34 @@ export default {
                 'secondary-foreground': '#FFFFFF',
                 'primary-foreground': '#FFFFFF',
                 primary: '#000000'
+=======
+                heading: ['Poppins', 'system-ui', 'sans-serif'],
+                paragraph: ['Poppins', 'system-ui', 'sans-serif'],
+            },
+            colors: {
+                // INZBC. The purple and lime set Sunil confirmed, carried over from the
+                // Studio build where every pair was checked against WCAG AA.
+                ink: '#1a0b3f',
+                deep: '#0e0522',
+                navy: '#160933',
+                forest: '#1b4640',
+                lime: '#b8f07c',
+                plum: '#61145f',
+                mist: '#f4f2f8',
+
+                // shadcn's semantic names, pointed at the palette above so the generated
+                // ui/ components inherit the brand instead of Contentify's beige.
+                background: '#ffffff',
+                foreground: '#3a3742',
+                primary: '#b8f07c',
+                'primary-foreground': '#160933',
+                secondary: '#160933',
+                'secondary-foreground': '#ffffff',
+                buttonbackground: '#b8f07c',
+                buttonborder: '#160933',
+                destructive: '#DF3131',
+                destructiveforeground: '#FFFFFF',
+>>>>>>> ab48f71ea6e72d5988225bc7313d4c4300cbadae
             },
         },
     },
