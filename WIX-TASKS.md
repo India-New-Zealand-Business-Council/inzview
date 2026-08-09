@@ -25,14 +25,41 @@ Estimated: 45–60 minutes total.
 
 ---
 
-## Task 1 — Set the page slugs (the blocker) — ❌ NOT DONE
+## Task 1 — Set the page slugs — ⚠️ SET IN THE EDITOR, NOT LIVE
 
-**This was marked done on 6 August 2026. It was not done.** Checked against the live site on
-9 August: 19 of the 20 pages return 404, and `/my-site/pages-sitemap.xml` shows why — every
-page still carries its default slug. Only the home page resolves.
+Checked against the live site on 9 August: 19 of the 20 pages return 404, and
+`/my-site/pages-sitemap.xml` still lists `blank` through `blank-18`. Only the home page
+resolves.
 
-This is the single largest blocker on the site. Every navigation link, in the nav, the
-footer and in-body, points at a slug that does not exist.
+**The slugs may well be set in the Editor.** The problem is that they have never been
+published. Every `wix publish --source local` run reports:
+
+```
+  UI version: 13
+  Caution: The Editor contains newer design changes.
+```
+
+Slugs are UI state, not code. `--source local` ships the code plus whatever UI version was
+last synced down, so an Editor change made after UI 13 never reaches production no matter
+how many times the code is published. `--source remote` does not help either: its choices
+are only `local` and `remote`, and both mean *where the code comes from*, not which UI
+version ships.
+
+**To fix, pick either:**
+
+1. Publish from the Wix Editor directly. Simplest, and it ships the current UI version.
+2. Or run `wix dev`, click **Save** in the Local Editor to sync the newer UI down to this
+   working copy, then `npx wix publish --source local -y`. `wix dev` opens a browser and
+   has to be run by a person.
+
+Until that happens, every navigation link, in the nav, the footer and in-body, points at a
+slug that does not exist on the published site. Nothing in the code can fix it.
+
+Confirm afterwards by loading `/my-site/pages-sitemap.xml`: no `blank` should remain.
+
+Page code itself is fine, and was verified separately: `/my-site/blank` renders the About
+INZBC content, and the embed auto-resized to 2046px, so the height bridge works on pages
+other than Home.
 
 **Use this mapping.** The left column is what the page is called today; read it from the
 sitemap, not from the page name, since the page names are already correct and the slugs are
