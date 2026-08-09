@@ -402,7 +402,7 @@ export function StickyHeader({
       transition={{ duration: 0.28, ease: 'easeOut' }}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center rounded-md py-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime">
           <motion.img
             src={logo}
             alt="India New Zealand Business Council"
@@ -416,7 +416,9 @@ export function StickyHeader({
             <Link
               key={l.href}
               to={l.href}
-              className="text-sm text-white/75 transition-colors hover:text-white"
+              // py-3 takes the link from an 18px box to a 44px one without moving the
+              // text, so it can be hit on a touch screen.
+              className="rounded-md px-1 py-3 text-sm text-white/75 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
             >
               {l.label}
             </Link>
@@ -425,7 +427,7 @@ export function StickyHeader({
             href={cta.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full bg-lime px-5 py-2 text-sm font-medium text-navy transition-transform active:scale-95"
+            className="rounded-full bg-lime px-5 py-3 text-sm font-medium text-navy transition-transform active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
           >
             {cta.label}
           </a>

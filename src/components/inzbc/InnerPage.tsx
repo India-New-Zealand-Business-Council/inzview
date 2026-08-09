@@ -49,7 +49,7 @@ export default function InnerPage({ page }: { page: PageDef }) {
               </p>
               <Link
                 to="/"
-                className="mt-10 inline-flex items-center rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy transition-transform active:scale-[0.97]"
+                className="mt-10 inline-flex items-center rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy transition-transform active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
               >
                 Back to the homepage
               </Link>

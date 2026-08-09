@@ -1,4 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+
+// One focus treatment for the whole file, so keyboard users get the same ring everywhere.
+const FOCUS =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
 import { Link } from 'react-router-dom';
 import { Reveal, Parallax } from './motion';
 import { ART, LINKS } from './content';
@@ -55,7 +59,10 @@ function EventCarousel() {
         ))}
       </div>
       <div className="mt-4 flex items-center justify-between">
-        <div className="flex gap-2">
+        <div className="-ml-3 flex">
+          {/* The dot stays 10px because that is the right size to look at; the button
+              around it is 44px, the smallest target a thumb can reliably hit. Two different
+              requirements, so two different boxes rather than a compromise between them. */}
           {EVENT_PHOTOS.map((p, i) => (
             <button
               key={p.src}
@@ -66,10 +73,14 @@ function EventCarousel() {
               }}
               aria-label={`Show photo ${i + 1} of ${EVENT_PHOTOS.length}`}
               aria-current={i === index}
-              className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                i === index ? 'bg-plum' : 'bg-ink/25 hover:bg-ink/40'
-              }`}
-            />
+              className={`group grid h-11 w-11 place-items-center rounded-full ${FOCUS}`}
+            >
+              <span
+                className={`block h-2.5 w-2.5 rounded-full transition-colors ${
+                  i === index ? 'bg-plum' : 'bg-ink/25 group-hover:bg-ink/40'
+                }`}
+              />
+            </button>
           ))}
         </div>
         <p className="text-xs text-foreground/70">INZBC Summit 2018, Auckland</p>
@@ -108,24 +119,24 @@ export function MakeConnections() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               to="/events"
-              className="rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy transition-transform active:scale-[0.97]"
+              className="rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy transition-transform active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
             >
               Register
             </Link>
             <Link
               to="/events/past"
-              className="rounded-full border border-ink/25 px-6 py-3 text-sm font-medium text-ink transition-colors hover:bg-mist"
+              className="rounded-full border border-ink/25 px-6 py-3 text-sm font-medium text-ink transition-colors hover:bg-mist focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
             >
               Event reports
             </Link>
           </div>
           <p className="mt-6 text-sm text-foreground">
             View gallery:{' '}
-            <a href={LINKS.facebookAlbums} target="_blank" rel="noopener noreferrer" className="text-plum underline">
+            <a href={LINKS.facebookAlbums} target="_blank" rel="noopener noreferrer" className="text-plum underline rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime">
               Facebook albums
             </a>
             {' · '}
-            <a href={LINKS.flickr} target="_blank" rel="noopener noreferrer" className="text-plum underline">
+            <a href={LINKS.flickr} target="_blank" rel="noopener noreferrer" className="text-plum underline rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime">
               Flickr
             </a>
           </p>
@@ -156,7 +167,7 @@ export function SummitAndMailingList() {
               href={LINKS.summitSite}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-7 inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy"
+              className="mt-7 inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
             >
               Visit website
             </a>
@@ -177,7 +188,7 @@ export function SummitAndMailingList() {
               href={LINKS.subscribe}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-7 inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy"
+              className="mt-7 inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
             >
               Subscribe
             </a>
@@ -206,7 +217,7 @@ export function Advertise() {
           <Reveal delay={0.08}>
             <a
               href={`${LINKS.email}?subject=Advertising%20enquiry`}
-              className="inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy"
+              className="inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
             >
               Advertise with us
             </a>
@@ -233,7 +244,7 @@ export function ConnectBlock() {
               <dd className="text-foreground">
                 Sunil Kaushal
                 <br />
-                <a href={LINKS.email} className="text-plum underline">
+                <a href={LINKS.email} className="text-plum underline rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime">
                   Secretariat@inzbc.org
                 </a>
               </dd>
@@ -260,7 +271,7 @@ export function ConnectBlock() {
             </p>
             <a
               href={LINKS.email}
-              className="mt-7 inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy"
+              className="mt-7 inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
             >
               Email the Secretariat
             </a>
@@ -295,7 +306,7 @@ export function NewsletterBand() {
             </a>
             <Link
               to="/newsletters"
-              className="rounded-full border border-white/30 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
+              className="rounded-full border border-white/30 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
             >
               View the archive
             </Link>
