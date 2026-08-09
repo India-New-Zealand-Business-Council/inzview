@@ -907,6 +907,27 @@ const PARALLAX_SCRIPT = `
   // .js-motion is added here rather than sitting in the markup, so the hidden state exists
   // only while this script is alive to remove it. Under reduced motion it is never added
   // at all, which is why no separate reduced-motion rule is needed for the reveal.
+  // ---- Report our height to the parent -------------------------------------------------
+  // The Embed element's height is set by hand in the Editor and was left at 500px, so every
+  // page was clipped a few hundred pixels in. This document knows its own height; page code
+  // receives this and sets $w('#html1').height, so the embed fits its content on every page
+  // without anyone opening the Editor.
+  var lastH = 0;
+  function reportHeight() {
+    var h = Math.ceil(document.documentElement.scrollHeight);
+    // Ignore sub-pixel churn, and the reflow the resize itself causes.
+    if (!h || Math.abs(h - lastH) < 12) return;
+    lastH = h;
+    try { parent.postMessage({ inzHeight: h }, '${SITE_ORIGIN}'); } catch (e) {}
+  }
+  addEventListener('load', reportHeight);
+  addEventListener('resize', reportHeight);
+  if (document.readyState === 'complete') reportHeight();
+  // Web fonts and the hero photograph both change layout after first paint.
+  setTimeout(reportHeight, 300);
+  setTimeout(reportHeight, 1200);
+  if (window.ResizeObserver) new ResizeObserver(reportHeight).observe(document.body);
+
   if (!reduce) {
     document.documentElement.classList.add('js-motion');
 
@@ -1166,7 +1187,55 @@ ${TOKENS}
     position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
     clip:rect(0,0,0,0);white-space:nowrap;border:0;
   }
+
+  /* Hides Wix's own unconfigured header and footer. The header reads "Business Name" above
+     a placeholder logo and duplicates the navy INZBC nav; the footer reads "© 2035 by
+     Business Name". There is exactly one of each in the page document. This stylesheet
+     lives in the parent page and cannot reach inside the iframe, so the embed's own header
+     and footer are unaffected.
+
+     TEMPORARY. The durable fix is configuring the real Wix header with the INZBC logo and
+     menu, which also restores a genuinely sticky site header. An iframe cannot provide one.
+     Delete the custom embed to undo this. */
+  header,footer{display:none !important}
 </style>
+
+<script>
+/* Resizes the Embed element to fit its content.
+   The embed's height is set by hand in the Editor and was left at 500px, so every page was
+   clipped a few hundred pixels in. The document inside reports its own height; this listens
+   for that and applies it.
+
+   This runs in the parent page rather than in Velo page code because Wix Studio's responsive
+   layout engine owns element size, and $w('#html1').height = n is silently ignored there. It
+   sets no error, which is why that route looked like it worked. Setting the height on the
+   real elements is the only thing that takes. */
+(function(){
+  var MIN = 400, MAX = 12000, last = 0;
+  addEventListener('message', function(e){
+    var h = e.data && e.data.inzHeight;
+    if (typeof h !== 'number' || h < MIN) return;
+    var f = document.querySelector('iframe[src^="data:text/html"]');
+    if (!f) return;
+    /* Identify the sender by window, not by origin. A data: URI has an opaque origin, so
+       e.origin is the string "null" and an origin equality check rejects every message.
+       Comparing against our own iframe's contentWindow is both correct and stricter. */
+    if (e.source !== f.contentWindow) return;
+    h = Math.min(h, MAX);
+    if (Math.abs(h - last) < 12) return;
+    last = h;
+    /* The iframe, its wrapper, and the Wix component that actually carries the height.
+       Walking up by structure rather than naming the hashed class names, which are
+       generated per build and would not survive a Wix release. */
+    var el = f, n = 0;
+    while (el && n < 4) {
+      el.style.setProperty('height', h + 'px', 'important');
+      if (el.id && el.id.indexOf('comp-') === 0) break;
+      el = el.parentElement; n++;
+    }
+  });
+})();
+</script>
 `;
 
 fs.writeFileSync(path.join(SNIPPETS, 'site-head.html'), SITE_HEAD, 'utf8');

@@ -49,8 +49,22 @@ $w.onReady(function () {
     // Wix's sandbox silently swallows). This is the receiving half: wix-location actually
     // moves the top-level page. See EDITING.md and build-sections.js's NAV_SCRIPT.
     $w('#html1').onMessage((event) => {
-        if (event.data && event.data.path) {
+        if (!event.data) {
+            return;
+        }
+        if (event.data.path) {
             wixLocation.to(event.data.path);
+        }
+        // The embed's height is set by hand in the Editor and was left at 500px, which
+        // clipped every page. The document inside reports its own height (see
+        // build-sections.js's reportHeight) and this resizes the element to match, so the
+        // page fits its content without anyone opening the Editor. Clamped because a bad
+        // measurement should not produce a 100,000px page.
+        if (typeof event.data.inzHeight === 'number') {
+            const h = Math.min(Math.max(event.data.inzHeight, 400), 12000);
+            if (Math.abs(($w('#html1').height || 0) - h) > 12) {
+                $w('#html1').height = h;
+            }
         }
     });
 
