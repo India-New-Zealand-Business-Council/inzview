@@ -753,7 +753,11 @@ ${TOKENS}
   .inz-nav{
     position:fixed;inset:0 0 auto 0;z-index:60;display:flex;align-items:center;
     justify-content:space-between;gap:1.5rem;padding:1.5rem clamp(1.25rem,4vw,3rem);
-    transition:padding .35s ease,background .35s ease,backdrop-filter .35s ease;
+    /* padding is deliberately NOT transitioned. The .solid state shrinks it, and animating
+       a layout property means recalculating this subtree every frame for 350ms, triggered
+       by scrolling, which is the worst possible moment. The size change snaps while the
+       background fades, and the fade is what the eye actually reads. */
+    transition:background .35s ease,backdrop-filter .35s ease;
   }
   .inz-nav.solid{background:${rgba(P.ink, 0.92)};backdrop-filter:blur(14px);padding:.95rem clamp(1.25rem,4vw,3rem)}
   .inz-nav__brand{font-weight:700;font-size:1.1rem;color:#fff;text-decoration:none;letter-spacing:.01em}
