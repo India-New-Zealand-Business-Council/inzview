@@ -772,6 +772,7 @@ ${TOKENS}
   @media (hover:hover) and (pointer:fine){
     .inz-social a:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
   }
+  .inz-social a:active{transform:scale(.97);transition-duration:.1s}
 
 
   /* ---- Browser surfaces -----------------------------------------------------
@@ -1022,7 +1023,15 @@ ${TOKENS}
   .inz-nav__list a{color:#fff;text-decoration:none;font-size:.82rem;opacity:.82;text-transform:lowercase}
   .inz-nav__list a:hover,.inz-nav__list a:focus-visible{opacity:1}
   .inz-nav__cta{padding:.72em 1.5em;font-size:.8rem}
-  @media (max-width:900px){.inz-nav__list{display:none}}
+  /* Wrap, never hide. This was display:none below 900px, and since the custom embed also
+     hides Wix's own header there was no navigation at all on a phone: logo and Join only.
+     Eight items wrap to a few rows, which is worse than a menu and far better than nothing.
+     A disclosure toggle is the real fix and needs its own markup and focus handling. */
+  @media (max-width:900px){
+    .inz-nav{flex-wrap:wrap;gap:.75rem 1rem;padding-block:1rem}
+    .inz-nav__list{width:100%;order:3;gap:.35rem 1.1rem;justify-content:center}
+    .inz-nav__list a{font-size:.78rem}
+  }
 
   /* Footer */
   .inz-footer{background:var(--inz-deep);color:var(--inz-on-deep);
@@ -1169,7 +1178,7 @@ const PARALLAX_SCRIPT = `
   if (!reduce) {
     document.documentElement.classList.add('js-motion');
 
-    var grids = [].slice.call(document.querySelectorAll('.inz-grid, .inz-logos'));
+    var grids = [].slice.call(document.querySelectorAll('.inz-grid, .inz-social'));
     var seen = false;
     var io = new IntersectionObserver(function(es){
       seen = true;
