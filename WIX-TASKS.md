@@ -25,9 +25,50 @@ Estimated: 45–60 minutes total.
 
 ---
 
-## Task 1 — Set the page slugs (the blocker) — ✅ Done 6 August 2026
+## Task 1 — Set the page slugs (the blocker) — ❌ NOT DONE
 
-### 1a. Turn off URL hierarchy flattening FIRST
+**This was marked done on 6 August 2026. It was not done.** Checked against the live site on
+9 August: 19 of the 20 pages return 404, and `/my-site/pages-sitemap.xml` shows why — every
+page still carries its default slug. Only the home page resolves.
+
+This is the single largest blocker on the site. Every navigation link, in the nav, the
+footer and in-body, points at a slug that does not exist.
+
+**Use this mapping.** The left column is what the page is called today; read it from the
+sitemap, not from the page name, since the page names are already correct and the slugs are
+not.
+
+| Current slug | Page name in the Editor | Slug to set |
+|---|---|---|
+| `blank` | About INZBC | `about-inzbc` |
+| `blank-1` | Membership | `membership` |
+| `blank-2` | Join | `join`, parent page **Membership** |
+| `blank-3` | Member Directory | `directory`, parent page **Membership** |
+| `blank-4` | Events | `events` |
+| `blank-5` | Past Events | `past`, parent page **Events** |
+| `blank-6` | Trade Missions | `trade-missions` |
+| `blank-7` | India Market Opportunities | `india-market-opportunities` |
+| `blank-8` | Publications | `publications` |
+| `blank-9` | Newsletters | `newsletters` |
+| `blank-10` | News | `news` |
+| `blank-11` | Partners | `partners` |
+| `blank-12` | Connect | `connect` |
+| `blank-13` | Executive Council | `executive-council` |
+| `blank-14` | Our Patron | `our-patron` |
+| `blank-15` | FTA | `fta` |
+| `blank-16` | FTA Explainer | `explainer`, parent page **FTA** |
+| `blank-17` | Trade Resources | `trade-resources` |
+| `blank-18` | Digest | `digest` |
+
+Verify afterwards by loading `/my-site/pages-sitemap.xml`: no `blank` should remain.
+
+### 1a. URL hierarchy flattening — ✅ verified off, 9 August 2026
+
+Confirmed through the SEO User Config API rather than the Editor:
+`shouldFlattenUrlHierarchy: false`, `shouldUsePartialRouteMatch: false`. That is the setting
+this site needs, so the nested slugs above will resolve as written. Nothing to do here.
+
+The original instructions follow, for reference only.
 
 If you skip this, `/membership/join` silently becomes `/join` and four nested-page
 redirects miss (`membership/join`, `membership/directory`, `events/past`,
