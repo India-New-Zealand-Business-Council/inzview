@@ -407,6 +407,9 @@ const CONTRAST_PAIRS = [
   // .8125rem, which is normal text at 4.5:1 however small it looks.
   ['stat figure on paper', P.statText, P.paper, 3],
   ['stat figure on mist', P.statText, P.mist, 3],
+  // The inverted stat tile: accent figure and body text on the ink surface.
+  ['stat figure on ink', P.accent, P.ink, 3],
+  ['stat label on ink', P.onDark, P.ink, 4.5],
   ['note on paper', P.noteText, P.paper, 4.5],
   ['note on mist', P.noteText, P.mist, 4.5],
   ['focus ring on paper', P.focusLight, P.paper, 3],
@@ -538,8 +541,12 @@ ${TOKENS}
      scroll reveal, so renaming it would silently kill every animation on every
      page. These are modifiers on it, not a replacement.
      Padding: clamp(3rem,6vw,4.5rem) x23, clamp(4rem,10vw,6rem) x18. */
+  /* Band height is a rhythm decision, not one shared number. A page where every band is
+     the same height reads as a single column however well the surfaces alternate. */
   .inz-section{padding:clamp(3rem,6vw,4.5rem) 0}
   .inz-section--tall{padding:clamp(4rem,10vw,6rem) 0}
+  .inz-section--compact{padding:clamp(1.75rem,3vw,2.5rem) 0}
+  .inz-section--generous{padding:clamp(5rem,9vw,7.5rem) 0}
   .inz-section--paper{background:var(--inz-white);color:var(--inz-body)}
   .inz-section--mist{background:var(--inz-mist);color:var(--inz-body)}
   .inz-section--dark{background:var(--inz-ink);color:var(--inz-on-dark)}
@@ -599,11 +606,18 @@ ${TOKENS}
   /* ---- Stat ----------------------------------------------------------------
      font-size 2.5rem + weight 800 + colour + margin, x4 each. tabular-nums so a
      column of figures aligns; proportional digits make NZ$3.95bn ragged. */
+  /* Inverted: dark tiles on the light band, with the figure in lime. These are proof
+     points, and as pale cards with purple numerals they read like form fields. Dark tiles
+     make them the focus of their band instead of the quietest thing in it. */
+  /* .inz-card.inz-stat, not .inz-stat. The surface modifiers use .inz-section--mist
+     .inz-card at 0,2,0 and would otherwise repaint these tiles white. */
+  .inz-card.inz-stat{background:var(--inz-ink);border-color:transparent;color:var(--inz-on-dark)}
   .inz-stat__figure{
-    font-size:clamp(2rem,4vw,2.75rem);font-weight:700;line-height:1;
-    color:var(--inz-stat-text);margin:0 0 .25em;letter-spacing:-.02em;
+    font-size:clamp(2.1rem,4.2vw,3rem);font-weight:700;line-height:1;
+    color:var(--inz-gold);margin:0 0 .35em;letter-spacing:-.03em;
     font-variant-numeric:tabular-nums;
   }
+  .inz-stat p:not(.inz-stat__figure){color:var(--inz-on-dark)}
   .inz-stat > :last-child{margin-bottom:0}
 
   /* ---- Action rows ----------------------------------------------------------
@@ -671,8 +685,17 @@ ${TOKENS}
   }
   /* The art is the reason this section exists, so it gets real size. At the previous
      clamp it rendered around 90px and read as a small icon rather than an illustration. */
+  /* The blob sits in a tinted well across the top of the card rather than floating as an
+     icon above text. It is illustration, so it gets the room illustration needs. */
+  .inz-pathway{padding:0 0 1.75rem;overflow:hidden}
+  .inz-pathway__well{
+    width:100%;padding:1.5rem 1rem 1rem;margin-bottom:1.25rem;
+    background:radial-gradient(70% 90% at 50% 40%,rgba(27,20,100,.07),transparent 70%);
+    display:grid;place-items:center;
+  }
+  .inz-pathway h3,.inz-pathway p{padding-inline:1.5rem}
   .inz-pathway__art{
-    width:clamp(150px,17vw,210px);height:auto;margin-bottom:1.25rem;
+    width:clamp(150px,17vw,200px);height:auto;display:block;
     transition:transform .35s cubic-bezier(.2,.8,.3,1);
   }
   .inz-pathway h3{color:var(--inz-ink);font-size:1.15rem}
@@ -866,6 +889,21 @@ ${TOKENS}
      photograph and the grain all rendered as nothing and the parallax had nothing to move.
      The hero was a flat navy block for that reason alone. */
   .inz-section:not(.inz-hero) > *{position:relative;z-index:1}
+
+  /* ---- Drifting glow -------------------------------------------------------
+     A slow colour pool behind a band, moving at its own rate. This is where extra motion
+     belongs: it is a depth layer with nothing to read on it, so it adds life without
+     dragging the text around, which is what parallax on a reading surface does.
+     Sits at z-index 0, under the band's own content. */
+  .inz-glow{
+    position:absolute;inset:-30% -15%;z-index:0;pointer-events:none;
+    background:radial-gradient(45% 45% at var(--glow-x,25%) 50%,var(--glow-c,var(--inz-orange)) 0%,transparent 70%);
+    opacity:.13;filter:blur(30px);
+  }
+  .inz-section--dark .inz-glow{opacity:.4}
+  .inz-glow--right{--glow-x:78%}
+  .inz-glow--blue{--glow-c:var(--inz-blue)}
+  .inz-glow--accent{--glow-c:var(--inz-gold)}
 
   /* [[placeholder]] markers. Deliberately outside both palettes: this is a build-state
      warning, not part of the design, and it should look wrong on the page. The release
