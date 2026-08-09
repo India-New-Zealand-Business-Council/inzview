@@ -873,6 +873,68 @@ ${TOKENS}
   .inz-hero::before{display:none}
 
   /* ---- The trade route ------------------------------------------------------
+     The page's persistent object: one line leaving the hero and arriving at the closing
+     call to action, drawn as the visitor scrolls.
+
+     Three stacked strokes of the same path, because the route crosses both dark and light
+     bands and no single colour reads on both. The halo is a dark blur that only shows on
+     pale surfaces; the glow is lime and only shows on dark ones; the crisp line sits on top
+     and is always visible. Together the line stays legible the whole way down without
+     needing to know which band it is currently over.
+
+     preserveAspectRatio="none" stretches a fixed viewBox to whatever height the page turns
+     out to be, so the path never needs to know it. non-scaling-stroke keeps the stroke an
+     even width despite that distortion. */
+  .inz-route{position:absolute;inset:0;z-index:0;pointer-events:none}
+  .inz-route__svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .inz-route__halo,.inz-route__glow,.inz-route__line{
+    fill:none;stroke-linecap:round;vector-effect:non-scaling-stroke;
+    stroke-dasharray:var(--route-len,4000);
+    stroke-dashoffset:calc(var(--route-len,4000) * (1 - var(--route-progress,0)));
+    transition:stroke-dashoffset .5s cubic-bezier(.16,1,.3,1);
+  }
+  .inz-route__halo{stroke:rgba(12,5,28,.5);stroke-width:9;filter:blur(6px)}
+  .inz-route__glow{stroke:var(--inz-gold);stroke-width:7;filter:blur(8px);opacity:.55}
+  .inz-route__line{stroke:var(--inz-gold);stroke-width:2.5;opacity:.95}
+
+  /* The head of the route, sitting wherever the drawing has reached. Positioned as a
+     percentage by script rather than as an SVG circle, because the non-uniform viewBox
+     scale would stretch a circle into a tall ellipse. */
+  .inz-route__head{
+    position:absolute;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;
+    background:var(--inz-gold);opacity:0;
+    box-shadow:0 0 0 5px rgba(184,240,124,.22), 0 0 22px 6px rgba(184,240,124,.55);
+    transition:top .5s cubic-bezier(.16,1,.3,1),left .5s cubic-bezier(.16,1,.3,1),opacity .4s ease;
+  }
+  .inz-route--live .inz-route__head{opacity:1}
+
+  .inz-page{position:relative}
+  .inz-page > .inz-section{position:relative;z-index:1}
+  @media (prefers-reduced-motion:reduce){
+    .inz-route__halo,.inz-route__glow,.inz-route__line{transition:none;stroke-dashoffset:0}
+    .inz-route__head{transition:none}
+  }
+
+  /* ---- Band transitions ----------------------------------------------------
+     Bands used to butt against each other on a hard horizontal line, which is what made
+     the page read as a stack of rectangles. Each band now carries a soft edge in its own
+     surface colour, so one dissolves into the next instead of stopping dead.
+
+     The gradient is drawn on a pseudo-element rather than the band itself, because a
+     background-image on the band would paint over the glow layers behind its content. */
+  .inz-section--dark::before,
+  .inz-section--mist::before,
+  .inz-section--paper::before{
+    content:"";position:absolute;left:0;right:0;top:-3.5rem;height:3.5rem;
+    z-index:0;pointer-events:none;
+  }
+  .inz-section--dark::before{background:linear-gradient(180deg,transparent,var(--inz-ink))}
+  .inz-section--mist::before{background:linear-gradient(180deg,transparent,var(--inz-mist))}
+  .inz-section--paper::before{background:linear-gradient(180deg,transparent,var(--inz-white))}
+  /* The hero opens the page, so it has nothing above it to blend into. */
+  .inz-hero::before{display:none}
+
+  /* ---- The trade route ------------------------------------------------------
      Mid-ground: behind every band's content, in front of the background glows. The three
      depth tiers on this page are the slow glows furthest back, the route between, and the
      text and cards in front, static. */
@@ -1438,7 +1500,10 @@ const PARALLAX_SCRIPT = `
     var line = document.querySelector('.inz-route__line');
     if (line && line.getTotalLength) {
       var len = Math.ceil(line.getTotalLength());
-      line.style.setProperty('--route-len', len);
+      var route = document.querySelector('.inz-route');
+      var head = document.querySelector('.inz-route__head');
+      var strokes = [].slice.call(document.querySelectorAll('.inz-route__halo,.inz-route__glow,.inz-route__line'));
+      strokes.forEach(function(el){ el.style.setProperty('--route-len', len); });
       var bands = [].slice.call(document.querySelectorAll('.inz-page > .inz-section'));
       var reached = 0;
       var ro = new IntersectionObserver(function(es){
@@ -1447,7 +1512,18 @@ const PARALLAX_SCRIPT = `
           var idx = bands.indexOf(es[i].target) + 1;
           if (idx > reached) reached = idx;
         }
-        line.style.setProperty('--route-progress', (reached / bands.length).toFixed(3));
+        var prog = reached / bands.length;
+        line.style.setProperty('--route-progress', prog.toFixed(3));
+        route.style.setProperty('--route-progress', prog.toFixed(3));
+        // Park the head wherever the drawing has reached. getPointAtLength returns userspace
+        // coordinates, so convert to percentages of the viewBox; the element is a plain div
+        // and therefore escapes the non-uniform scale that would distort an SVG circle.
+        if (head) {
+          var pt = line.getPointAtLength(len * prog);
+          head.style.left = (pt.x / 100 * 100).toFixed(2) + '%';
+          head.style.top = (pt.y / 1000 * 100).toFixed(2) + '%';
+          route.classList.add('inz-route--live');
+        }
       }, { rootMargin: '0px 0px -35% 0px' });
       bands.forEach(function(b){ ro.observe(b); });
     }
@@ -1615,10 +1691,17 @@ function readSnippet(name) {
 // preserveAspectRatio="none" lets a fixed 0 0 100 1000 viewBox stretch to whatever the
 // page turns out to be, so the path never has to know the document height. The draw is
 // pure stroke-dashoffset, which is compositor-friendly and costs one custom property.
+const ROUTE_D = 'M 18 0 C 18 90, 82 130, 82 220 S 18 330, 18 430 S 82 540, 82 640 S 22 760, 22 860 L 22 1000';
+
 const ROUTE = `
-<svg class="inz-route" viewBox="0 0 100 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-  <path class="inz-route__line" d="M 18 0 C 18 90, 82 130, 82 220 S 18 330, 18 430 S 82 540, 82 640 S 22 760, 22 860 L 22 1000"/>
-</svg>`;
+<div class="inz-route" aria-hidden="true">
+  <svg class="inz-route__svg" viewBox="0 0 100 1000" preserveAspectRatio="none" focusable="false">
+    <path class="inz-route__halo" d="${ROUTE_D}"/>
+    <path class="inz-route__glow" d="${ROUTE_D}"/>
+    <path class="inz-route__line" d="${ROUTE_D}"/>
+  </svg>
+  <span class="inz-route__head"></span>
+</div>`;
 
 const HERO_LAYERS =
   '<div class="inz-hero__plate par" data-p="0.34" data-scale="1.1"></div>' +
