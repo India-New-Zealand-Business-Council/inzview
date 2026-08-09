@@ -237,6 +237,17 @@ const PALETTES = {
     // used for the horizon and perspective grid.
     pool: '#61145f', hairline: '#9fb6e8',
   },
+  // CONFIRMED by Sunil, 9 Aug 2026. The purple-and-green set recorded as the repo palette
+  // in docs/live-site-extract.md: purple #61145f, lime #b8f07c, forest #1b4640 over a
+  // #160933 base, with lavender #c1acfb as the hairline. ink, deep, body, muted and line
+  // are derived from those, since that document names only the brand colours.
+  purpleGreen: {
+    navy: '#160933', ink: '#1a0b3f', deep: '#0e0522',
+    second: '#1b4640', accent: '#b8f07c', warm: '#61145f',
+    body: '#3a3742', muted: '#655f73',
+    paper: '#ffffff', mist: '#f4f2f8', line: '#e6e1ee',
+    pool: '#61145f', hairline: '#c1acfb',
+  },
   // PROVISIONAL, not approved. The three brand colours are from docs/live-site-extract.md;
   // ink, deep, body, muted and line are derived here because that document names only the
   // three. If INZBC adopts this set, those five need confirming too.
@@ -308,7 +319,9 @@ function darkenUntil(hex, bgHex, target) {
   return c;
 }
 
-const PALETTE = process.env.INZ_PALETTE || 'live';
+// purpleGreen is the default because Sunil confirmed it on 9 Aug 2026. The other two stay
+// buildable so the decision can be revisited without a rewrite.
+const PALETTE = process.env.INZ_PALETTE || 'purpleGreen';
 const P = PALETTES[PALETTE];
 if (!P) {
   throw new Error(
@@ -748,6 +761,9 @@ ${TOKENS}
   .js-motion .rv-stagger.in > :nth-child(4){transition-delay:210ms}
   .js-motion .rv-stagger.in > :nth-child(5){transition-delay:280ms}
   .js-motion .rv-stagger.in > :nth-child(n+6){transition-delay:350ms}
+  /* Printing and full-page capture do not scroll, so the observer never reveals anything
+     below the fold and the page prints with holes where its content should be. */
+  @media print{.js-motion .rv-stagger > *{opacity:1 !important;transform:none !important}}
 
   /* Only cards that actually go somewhere respond to the pointer. A lift on a card with
      no link promises an interaction that does not exist. */
@@ -895,7 +911,9 @@ const PARALLAX_SCRIPT = `
     document.documentElement.classList.add('js-motion');
 
     var grids = [].slice.call(document.querySelectorAll('.inz-grid, .inz-logos'));
+    var seen = false;
     var io = new IntersectionObserver(function(es){
+      seen = true;
       es.forEach(function(e){
         if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
       });
@@ -903,9 +921,13 @@ const PARALLAX_SCRIPT = `
 
     grids.forEach(function(el){ el.classList.add('rv-stagger'); io.observe(el); });
 
-    // The observer fires on its own for anything already in view at load, so there is no
-    // safety-net timeout. If this whole block never runs, .js-motion is absent and every
-    // grid is simply visible.
+    // Failsafe. IntersectionObserver normally invokes its callback once per target soon
+    // after observe(), so this should never fire. If it does, the observer is not working
+    // and every grid below the fold would stay at opacity 0 forever. Dropping .js-motion
+    // reverts the whole page to visible rather than leaving the statistics invisible.
+    setTimeout(function(){
+      if (!seen) document.documentElement.classList.remove('js-motion');
+    }, 2000);
   }
 })();
 </script>`;
