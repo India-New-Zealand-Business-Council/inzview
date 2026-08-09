@@ -9,6 +9,24 @@ $w.onReady(function () {
     // The embed's own code box stays empty — this sets its source. See EDITING.md.
     $w('#html1').src = pageSrc('membershipJoin');
 
+    // The Home page still carries an empty Custom Element from the abandoned React route;
+    // its type file lists #customElement1. Custom elements do not render on this plan, so
+    // it painted a 140px placeholder and collapsed to nothing about eleven seconds in,
+    // shoving the page up. Measured before the fix: one layout shift, CLS 0.0447, the
+    // browser naming that element going from 270,140 to 0,0.
+    //
+    // collapse() takes it out of layout flow through the supported API rather than by
+    // styling around it. Guarded, because 19 of the 20 pages have no such element.
+    // Deleting it in the Editor is still the real fix; this stops it costing anything.
+    try {
+        const stray = $w('#customElement1');
+        if (stray && typeof stray.collapse === 'function') {
+            stray.collapse();
+        }
+    } catch (err) {
+        // No custom element on this page. Expected, and not worth logging.
+    }
+
     // The embed is a sandboxed iframe with no direct page access, so its nav links call
     // inzNav(), which posts { path } to the parent instead of using target="_top" (which
     // Wix's sandbox silently swallows). This is the receiving half: wix-location actually

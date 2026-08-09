@@ -1494,6 +1494,19 @@ ${TOKENS}
      menu, which also restores a genuinely sticky site header. An iframe cannot provide one.
      Delete the custom embed to undo this. */
   header,footer{display:none !important}
+
+  /* The Home page still carries an empty Wix Custom Element left over from the abandoned
+     React route; the page's own type file still lists #customElement1. Custom elements do
+     not render on this plan, so it paints a 140px placeholder and then collapses to zero
+     about eleven seconds in, shoving everything below it upward. Measured: one layout
+     shift, CLS 0.0447, sourced to that element going from 270,140 to 0,0. That collapse is
+     the jolt on first load.
+
+     Hiding it here means the space is never reserved, so nothing moves. The parent has an
+     explicit height, so the wrapper has to go too, not just the element. Deleting the
+     element in the Editor is the real fix; this stops it being visible in the meantime. */
+  wix-default-custom-element{display:none !important}
+  *:has(> wix-default-custom-element){display:none !important}
 </style>
 
 <script>
