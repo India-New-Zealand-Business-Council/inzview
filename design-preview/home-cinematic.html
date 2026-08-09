@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en-NZ">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INZBC — cinematic home concept</title>
+<!--
+  DESIGN CONCEPT — full parallax. Open directly in a browser and scroll.
+
+  Reference: wearebrand.io. What is copied — one full-bleed photograph carrying the first
+  screen, very large lowercase geometric sans, tight leading, short body copy set right as
+  a counterweight, almost no chrome, depth from layered movement rather than decoration.
+  What is NOT copied: their washed pastel palette. INZBC keeps navy #1b1464 and gold
+  #f8c70c so this stays on-brand rather than an agency pastiche.
+
+  TYPEFACE IS A PROPOSAL. Poppins (geometric, reads well lowercase) instead of Big
+  Shoulders (condensed, uppercase-only in our current system). The reference look does not
+  survive in a condensed uppercase face. Needs INZBC sign-off — docs/live-site-extract.md
+  already records an unresolved typography conflict.
+
+  PARALLAX: every depth layer carries data-p (0 = fixed to page, 1 = moves with scroll).
+  Values are smoothed with a lerp so motion settles rather than snapping — that damping is
+  most of what separates this from a jittery scroll effect. All transforms are translate3d
+  or scale, so they stay on the compositor and never trigger layout.
+
+  Honours prefers-reduced-motion: all parallax and count-up are skipped, content is static.
+
+  Images are local originals from assets/from-live-site/ (INZBC's own, pulled from
+  inzbc.org). Hero is the Auckland harbour frame — Sky Tower, port cranes, a ferry:
+  commercial trade, not tourism. Before go-live they must be uploaded to the new site's
+  Media Manager and these paths swapped for the new URLs.
+
+  ON THE LIVE SITE this must scroll INSIDE its embed: each page is a fixed-height sandboxed
+  iframe, so if the iframe is as tall as its content nothing inside it ever scrolls and no
+  scroll-linked effect fires. Set the Embed Code element to ~100vh. See EDITING.md.
+
+  Content per CLAUDE.md: nothing invented. [[placeholders]] are real gaps INZBC must fill.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1b1464; --ink:#12103a; --deep:#0c0a2c; --blue:#097bb8; --gold:#f8c70c;
+  --paper:#fff; --mist:#f2f3f7; --line:#e4e6ee; --muted:#6b7086;
+  --max:1240px;
+  --f:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--f);color:var(--ink);background:var(--paper);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+/* line-height 1 clears Poppins' descenders — at .88 the g/y of "gateway" hit the line below. */
+h1,h2,h3,h4{margin:0;font-weight:600;letter-spacing:-.03em;line-height:1;text-transform:none}
+p{margin:0}
+.wrap{width:min(90%,var(--max));margin-inline:auto}
+a{color:inherit}
+.par{will-change:transform}
+
+/* ---------- chrome ---------- */
+.nav{position:fixed;inset:0 0 auto 0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+  padding:1.6rem clamp(1.25rem,4vw,3rem);transition:padding .35s ease,background .35s ease,backdrop-filter .35s ease}
+.nav.solid{background:rgba(18,16,58,.9);backdrop-filter:blur(14px);padding:1rem clamp(1.25rem,4vw,3rem)}
+.mark{font-weight:700;font-size:1.1rem;color:#fff;text-decoration:none}
+.mark i{color:var(--gold);font-style:normal}
+.navlinks{display:flex;gap:2rem;list-style:none;margin:0;padding:0}
+.navlinks a{color:#fff;text-decoration:none;font-size:.82rem;opacity:.82}
+.navlinks a:hover{opacity:1}
+@media(max-width:860px){.navlinks{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:100svh;min-height:620px;overflow:hidden;background:var(--ink)}
+.hero__ph{position:absolute;inset:-18% 0 0;height:136%;
+  background:url('../assets/from-live-site/banner-wide-primary.jpg') center 42%/cover no-repeat}
+.hero__v{position:absolute;inset:0;background:linear-gradient(100deg,rgba(18,16,58,.95) 0%,rgba(18,16,58,.6) 44%,rgba(27,20,100,.18) 100%)}
+.hero__b{position:absolute;inset:auto 0 0;height:44%;background:linear-gradient(180deg,transparent,rgba(18,16,58,.97))}
+.hero__grid{position:relative;z-index:3;height:100%;display:grid;align-content:center;
+  grid-template-columns:minmax(0,1fr) minmax(0,.6fr);gap:3rem;width:min(90%,var(--max));margin-inline:auto;padding-top:4rem}
+.kick{display:flex;align-items:center;gap:.85rem;color:var(--gold);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;margin-bottom:1.7rem}
+.kick::before{content:"";width:44px;height:1px;background:var(--gold)}
+.hero h1{color:#fff;font-size:clamp(2.7rem,6.8vw,6rem)}
+.hero h1 .lite{font-weight:300;color:rgba(255,255,255,.7)}
+.hero__side{align-self:end;padding-bottom:.6rem}
+.hero__side p{color:rgba(255,255,255,.8);font-size:clamp(.95rem,1.15vw,1.06rem);font-weight:300;max-width:34ch}
+.hero__act{display:flex;gap:.9rem;margin-top:2.4rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;text-decoration:none;font-size:.86rem;font-weight:500;
+  padding:1em 1.9em;border-radius:100px;transition:transform .2s ease,background .2s ease}
+/* Navy on gold = 9.89:1, AA. Never white on gold (3.4:1). */
+.btn--g{background:var(--gold);color:var(--navy)}
+.btn--o{color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.42)}
+.btn--o:hover{background:rgba(255,255,255,.1)}
+.btn:hover{transform:translateY(-2px)}
+.cue{position:absolute;z-index:3;right:clamp(1.25rem,4vw,3rem);bottom:2.2rem;color:rgba(255,255,255,.6);
+  font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:.8rem}
+.cue span{width:1px;height:46px;background:linear-gradient(rgba(255,255,255,.55),transparent);animation:fall 2s ease-in-out infinite}
+@keyframes fall{0%,100%{opacity:.25;transform:scaleY(.55);transform-origin:top}50%{opacity:1;transform:scaleY(1);transform-origin:top}}
+@media(max-width:860px){.hero__grid{grid-template-columns:1fr}.hero__side{align-self:start;margin-top:1.4rem}}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(32px);transition:opacity .85s cubic-bezier(.2,.7,.25,1),transform .85s cubic-bezier(.2,.7,.25,1)}
+.rv.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+
+/* ---------- statement ---------- */
+.say{padding:clamp(6rem,13vw,11rem) 0;background:var(--paper);position:relative;overflow:hidden}
+.say h2{font-size:clamp(1.9rem,4.1vw,3.4rem);font-weight:400;max-width:20ch;line-height:1.08}
+.say h2 b{font-weight:600;color:var(--navy)}
+.say .meta{margin-top:3rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:2.4rem;border-top:1px solid var(--line);padding-top:2.4rem}
+.say .meta p{font-size:.9rem;color:var(--muted);font-weight:300}
+.say .meta b{display:block;color:var(--ink);font-weight:500;margin-bottom:.3rem;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+/* Oversized ghost numeral drifting behind the statement — pure depth, no meaning. */
+.ghost{position:absolute;right:-4%;top:8%;font-size:clamp(14rem,30vw,26rem);font-weight:700;color:var(--mist);z-index:0;line-height:1;pointer-events:none;user-select:none}
+.say .wrap{position:relative;z-index:2}
+
+/* ---------- figures ---------- */
+.fig{background:var(--ink);color:#fff;padding:clamp(5rem,10vw,8.5rem) 0;position:relative;overflow:hidden}
+.fig__art{position:absolute;inset:-16% 0;height:132%;opacity:.15;background:url('../assets/from-live-site/banner-wide-secondary.jpg') center/cover no-repeat}
+.fig .wrap{position:relative;z-index:2}
+.fig h3{font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:3rem}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(13.5rem,1fr));gap:2.6rem}
+.num{padding-top:1.4rem;border-top:1px solid rgba(255,255,255,.18)}
+.num b{display:block;font-size:clamp(2.5rem,5.2vw,4rem);font-weight:600;letter-spacing:-.04em;line-height:1;color:#fff}
+.num p{margin-top:.9rem;font-size:.9rem;font-weight:300;color:rgba(255,255,255,.66);max-width:30ch}
+.fig .src{margin-top:3.4rem;font-size:.76rem;color:rgba(255,255,255,.4);font-weight:300}
+
+/* ---------- pinned FTA ---------- */
+.pin{position:relative;height:190vh}
+.pin__s{position:sticky;top:0;height:100svh;display:grid;place-items:center;overflow:hidden;background:var(--navy)}
+.pin__art{position:absolute;inset:-16% 0;height:132%;opacity:.32;background:url('../assets/from-live-site/fta-new-era-for-business.jpg') center/cover no-repeat;filter:saturate(.6)}
+.pin__v{position:absolute;inset:0;background:linear-gradient(160deg,rgba(27,20,100,.88),rgba(18,16,58,.96))}
+.pin__c{position:relative;z-index:3;text-align:center;width:min(90%,780px);color:#fff}
+.tag{display:inline-block;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+  border:1px solid rgba(248,199,12,.55);color:var(--gold);padding:.5em 1.1em;border-radius:100px;margin-bottom:1.8rem}
+.pin__c h2{font-size:clamp(2rem,4.6vw,3.5rem);font-weight:500;line-height:1.04}
+.pin__c p{margin-top:1.3rem;color:rgba(255,255,255,.78);font-weight:300;max-width:52ch;margin-inline:auto}
+
+/* ---------- pathways ---------- */
+.rows{padding:clamp(5rem,10vw,8rem) 0}
+.rows h3{font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:2.6rem}
+.row{display:grid;grid-template-columns:4rem minmax(0,1fr) minmax(0,1.15fr);gap:2rem;align-items:baseline;
+  padding:2.2rem 0;border-top:1px solid var(--line);transition:padding-left .35s ease,background .35s ease}
+.row:last-child{border-bottom:1px solid var(--line)}
+.row:hover{padding-left:1.1rem;background:linear-gradient(90deg,var(--mist),transparent)}
+.row .n{font-size:.78rem;color:var(--muted)}
+.row h4{font-size:clamp(1.25rem,2.4vw,1.8rem);font-weight:500;color:var(--ink)}
+.row p{font-size:.92rem;color:var(--muted);font-weight:300}
+@media(max-width:760px){.row{grid-template-columns:2.5rem 1fr;gap:1rem}.row p{grid-column:2}}
+
+/* ---------- partners ---------- */
+.pt{background:var(--mist);padding:clamp(4.5rem,9vw,7rem) 0;text-align:center;overflow:hidden}
+.pt h3{font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:2rem}
+.pt img{max-width:min(100%,800px);height:auto;border-radius:12px}
+
+/* ---------- close ---------- */
+.end{position:relative;overflow:hidden;background:var(--ink);color:#fff;padding:clamp(6rem,12vw,9.5rem) 0}
+.end__art{position:absolute;inset:-16% 0;height:132%;opacity:.22;background:url('../assets/from-live-site/banner-wide-primary.jpg') center/cover no-repeat}
+.end .wrap{position:relative;z-index:2}
+.end h2{font-size:clamp(2.1rem,5.2vw,3.9rem);font-weight:500;max-width:16ch}
+.end p{margin-top:1.2rem;color:rgba(255,255,255,.74);font-weight:300;max-width:46ch}
+.end .btns{margin-top:2.6rem;display:flex;gap:.9rem;flex-wrap:wrap}
+
+/* ---------- footer ---------- */
+.ft{background:var(--deep);color:rgba(255,255,255,.66);padding:4rem 0 2.2rem;font-size:.88rem;font-weight:300}
+.ftg{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:2.4rem}
+@media(max-width:820px){.ftg{grid-template-columns:1fr 1fr}}
+.ft h5{margin:0 0 1rem;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.ft ul{list-style:none;margin:0;padding:0}
+.ft li{margin-bottom:.55rem}
+.ft a{text-decoration:none}
+.ft a:hover{color:#fff}
+.ftn{border-top:1px solid rgba(255,255,255,.1);margin-top:3rem;padding-top:1.4rem;font-size:.76rem;color:rgba(255,255,255,.4)}
+
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .cue span{animation:none}
+  html{scroll-behavior:auto}
+  .par{transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="mark" href="#top">inzbc<i>.</i></a>
+  <nav aria-label="Main"><ul class="navlinks">
+    <li><a href="#fta">the fta</a></li>
+    <li><a href="#numbers">trade</a></li>
+    <li><a href="#ways">membership</a></li>
+    <li><a href="#partners">partners</a></li>
+  </ul></nav>
+  <a class="btn btn--g" href="#join" style="padding:.72em 1.5em;font-size:.8rem">join inzbc</a>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero__ph par" data-p="0.5" data-scale="1.12"></div>
+  <div class="hero__v"></div>
+  <div class="hero__b"></div>
+  <div class="hero__grid par" data-p="-0.22" data-fade="1" id="hgrid">
+    <div>
+      <p class="kick">India – New Zealand trade since 1988</p>
+      <h1>new zealand's<br>gateway to the<br><span class="lite">india opportunity</span></h1>
+      <div class="hero__act">
+        <a class="btn btn--g" href="#fta">explore the fta</a>
+        <a class="btn btn--o" href="#join">become a member</a>
+      </div>
+    </div>
+    <div class="hero__side">
+      <p>We connect exporters, investors and institutions across the NZ–India trade relationship — and lead the way through the new Free Trade Agreement.</p>
+    </div>
+  </div>
+  <div class="cue">scroll <span></span></div>
+</section>
+
+<section class="say">
+  <div class="ghost par" data-p="0.16">88</div>
+  <div class="wrap">
+    <h2 class="rv">A trade relationship <b>entering its most consequential decade.</b></h2>
+    <div class="meta">
+      <p class="rv"><b>Established</b>1988. New Zealand's longstanding member body for commercial ties with India.</p>
+      <p class="rv d1"><b>Recognised</b>By the governments of New Zealand and India.</p>
+      <p class="rv d2"><b>Members</b>[[More than 200 — confirm with INZBC before publish.]]</p>
+    </div>
+  </div>
+</section>
+
+<section class="fig" id="numbers">
+  <div class="fig__art par" data-p="0.22" data-scale="1.08"></div>
+  <div class="wrap">
+    <h3 class="rv">the opportunity, in numbers</h3>
+    <div class="nums">
+      <div class="num rv"><b data-c="3.95" data-pre="NZ$" data-post="bn" data-d="2">NZ$3.95bn</b><p>Two-way trade with India, year ended December 2025.</p></div>
+      <div class="num rv d1"><b data-c="95" data-post="%">95%</b><p>Of NZ exports to India receiving tariff elimination or reduction over time.</p></div>
+      <div class="num rv d2"><b data-c="57" data-post="%">57%</b><p>Duty-free from day one, rising to 82% once fully implemented.</p></div>
+      <div class="num rv d3"><b>[[TBD]]</b><p>[[NZ Indian diaspora population — source and confirm before publish.]]</p></div>
+    </div>
+    <p class="src rv">Figures sourced from MFAT. Verified 22 July 2026.</p>
+  </div>
+</section>
+
+<section class="pin" id="fta">
+  <div class="pin__s">
+    <div class="pin__art par" data-p="0.3" data-scale="1.1"></div>
+    <div class="pin__v"></div>
+    <div class="pin__c">
+      <span class="tag">signed 27 april 2026 — not yet in force</span>
+      <h2>The FTA changes what's possible</h2>
+      <p>The agreement was signed on 27 April 2026 and awaits domestic ratification in both countries. INZBC is tracking what it means sector by sector, so members can prepare before it enters into force.</p>
+      <p style="margin-top:2.2rem"><a class="btn btn--g" href="#">understand the fta</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="rows" id="ways">
+  <div class="wrap">
+    <h3 class="rv">where to start</h3>
+    <div class="row rv"><span class="n">01</span><h4>Export to India</h4><p>Practical guidance for New Zealand businesses preparing to export and use FTA opportunities.</p></div>
+    <div class="row rv d1"><span class="n">02</span><h4>Import from India</h4><p>Sourcing products and services under the evolving trade relationship.</p></div>
+    <div class="row rv d2"><span class="n">03</span><h4>Attend an event</h4><p>Briefings, delegations, networking and the annual INZBC Summit.</p></div>
+    <div class="row rv d3"><span class="n">04</span><h4>Become a member</h4><p>Advocacy, market intelligence, networks and access across the corridor.</p></div>
+  </div>
+</section>
+
+<section class="pt" id="partners">
+  <div class="wrap">
+    <h3 class="rv">supported by</h3>
+    <img class="rv d1 par" data-p="0.08" src="../assets/from-live-site/partner-logo-strip.jpg" alt="[[Replace with individual partner logos and links — real alt text required per accessibility audit]]">
+  </div>
+</section>
+
+<section class="end" id="join">
+  <div class="end__art par" data-p="0.2" data-scale="1.08"></div>
+  <div class="wrap">
+    <h2 class="rv">Ready to grow your business with India?</h2>
+    <p class="rv d1">Join INZBC, or talk to us about how we can help your organisation engage across the NZ–India corridor.</p>
+    <div class="btns rv d2">
+      <a class="btn btn--g" href="#">join inzbc</a>
+      <a class="btn btn--o" href="#">contact us</a>
+    </div>
+  </div>
+</section>
+
+<footer class="ft">
+  <div class="wrap ftg">
+    <div>
+      <p style="color:#fff;font-weight:500;margin-bottom:.7rem">India New Zealand Business Council</p>
+      <p style="max-width:30ch">Connecting New Zealand and India through trade, investment and commercial diplomacy since 1988.</p>
+    </div>
+    <div><h5>explore</h5><ul><li><a href="#">NZ–India FTA</a></li><li><a href="#">Trade missions</a></li><li><a href="#">Market opportunities</a></li><li><a href="#">Events</a></li></ul></div>
+    <div><h5>membership</h5><ul><li><a href="#">Why join</a></li><li><a href="#">Become a member</a></li><li><a href="#">Member directory</a></li><li><a href="#">Executive Council</a></li></ul></div>
+    <div><h5>connect</h5><ul><li><a href="#">Contact us</a></li><li><a href="#">Partners</a></li><li><a href="#">Newsletters</a></li><li><a href="#">News</a></li></ul></div>
+  </div>
+  <div class="wrap ftn">Design concept, 6 August 2026. Typeface (Poppins) is a proposal, not approved. [[Placeholders]] must be resolved by INZBC before publication.</div>
+</footer>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var nav = document.getElementById('nav');
+  var items = [].slice.call(document.querySelectorAll('.par')).map(function(el){
+    return {
+      el: el,
+      p: parseFloat(el.getAttribute('data-p')) || 0,
+      scale: parseFloat(el.getAttribute('data-scale')) || 0,
+      fade: el.hasAttribute('data-fade'),
+      cur: 0            // smoothed offset, chases the target each frame
+    };
+  });
+
+  // Every layer's target offset is a fraction of how far its own centre sits from the
+  // viewport centre. Lower data-p = further away = moves less. That difference IS the depth.
+  function targetFor(it){
+    var r = it.el.getBoundingClientRect();
+    var centreDelta = (r.top + r.height / 2) - (innerHeight / 2);
+    return -centreDelta * it.p;
+  }
+
+  var running = false;
+  function loop(){
+    var y = pageYOffset || document.documentElement.scrollTop;
+    nav.classList.toggle('solid', y > 80);
+
+    var moving = false;
+    for (var i = 0; i < items.length; i++){
+      var it = items[i];
+      var r = it.el.getBoundingClientRect();
+      if (r.bottom < -300 || r.top > innerHeight + 300) continue;   // offscreen: skip
+
+      var t = targetFor(it);
+      // Lerp toward the target. 0.1 is the damping — lower is heavier, more cinematic.
+      it.cur += (t - it.cur) * 0.1;
+      if (Math.abs(t - it.cur) > 0.4) moving = true;
+
+      var tf = 'translate3d(0,' + it.cur.toFixed(2) + 'px,0)';
+      if (it.scale) tf += ' scale(' + it.scale + ')';
+      it.el.style.transform = tf;
+
+      if (it.fade && y < innerHeight){
+        it.el.style.opacity = Math.max(0, 1 - y / (innerHeight * 0.72)).toFixed(3);
+      }
+    }
+    // Keep animating while anything is still settling, so motion eases out instead of
+    // stopping dead the moment the wheel does.
+    if (moving) requestAnimationFrame(loop); else running = false;
+  }
+  function kick(){ if (!running && !reduce){ running = true; requestAnimationFrame(loop); } }
+
+  if (!reduce){
+    addEventListener('scroll', kick, {passive:true});
+    addEventListener('resize', kick);
+    // Prime each layer at its resting offset so nothing jumps on the first scroll.
+    items.forEach(function(it){ it.cur = targetFor(it); });
+    kick();
+  }
+  nav.classList.toggle('solid', (pageYOffset||0) > 80);
+
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.15, rootMargin:'0px 0px -6% 0px'});
+  [].slice.call(document.querySelectorAll('.rv')).forEach(function(el){ io.observe(el); });
+
+  // Count-up always settles on the exact sourced figure — the animation must never
+  // change the number that ends up on screen.
+  var done = false, fig = document.querySelector('.fig');
+  var cio = new IntersectionObserver(function(es){
+    if (done || !es[0].isIntersecting) return;
+    done = true;
+    [].slice.call(document.querySelectorAll('[data-c]')).forEach(function(el){
+      var end = parseFloat(el.getAttribute('data-c')),
+          d = parseInt(el.getAttribute('data-d') || '0', 10),
+          pre = el.getAttribute('data-pre') || '',
+          post = el.getAttribute('data-post') || '';
+      if (reduce){ el.textContent = pre + end.toFixed(d) + post; return; }
+      var t0 = null;
+      requestAnimationFrame(function step(ts){
+        if (!t0) t0 = ts;
+        var p = Math.min(1, (ts - t0) / 1200), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = pre + (end * e).toFixed(d) + post;
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = pre + end.toFixed(d) + post;
+      });
+    });
+  }, {threshold:.35});
+  if (fig) cio.observe(fig);
+})();
+</script>
+</body>
+</html>
