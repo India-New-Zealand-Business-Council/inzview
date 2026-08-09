@@ -756,13 +756,19 @@ ${TOKENS}
   /* ---- Social blobs ---------------------------------------------------------
      The same commissioned illustration set as the pathway cards, so the two rows read as
      one family rather than two visual systems on one page. */
+  /* Explicit counts, not auto-fit. auto-fit with minmax(11rem,1fr) gave three columns for
+     four items, because a grid item's automatic minimum is its content, and labels like
+     "Watch our videos on YouTube" are wider than the track minimum. The fourth blob wrapped
+     onto a row of its own. min-width:0 lets the label wrap instead of widening the track. */
   .inz-social{
     display:grid;gap:1.5rem;margin:2.5rem 0 1.5rem;
-    grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
+  @media (min-width:760px){.inz-social{grid-template-columns:repeat(4,minmax(0,1fr))}}
   .inz-social a{
     display:flex;flex-direction:column;align-items:center;gap:.9rem;
     text-decoration:none;color:var(--inz-on-dark);font-size:.82rem;text-align:center;
+    min-width:0;
   }
   .inz-social img{width:clamp(88px,11vw,124px);height:auto;
     transition:transform .24s cubic-bezier(.2,.8,.3,1)}
@@ -785,7 +791,7 @@ ${TOKENS}
     list-style:none;margin:2.5rem 0 0;padding:0;display:grid;gap:1.25rem;
     grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));
   }
-  .inz-marks li{padding-top:.9rem;border-top:2px solid var(--inz-gold);font-size:.95rem}
+  .inz-marks li{padding-top:1rem;border-top:2px solid var(--inz-gold);font-size:1.02rem;font-weight:500}
 
   /* ---- Report spread and article art ---------------------------------------- */
   .inz-spread{margin:0}
@@ -818,25 +824,6 @@ ${TOKENS}
 
   /* ---- Partner logo tile ----------------------------------------------------
      width 9rem + height 5rem + radius 8px, x3 each. */
-  /* ---- Social row ----------------------------------------------------------
-     Pill links rather than icon glyphs. An icon system has to be drawn and consistent;
-     unicode or emoji standing in for one is worse than naming the platform. */
-  .inz-social{
-    display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;
-    list-style:none;margin:2rem 0 1rem;padding:0;
-  }
-  .inz-social a{
-    display:inline-block;padding:.65em 1.4em;border-radius:var(--inz-radius);
-    text-decoration:none;color:#fff;font-size:.88rem;font-weight:500;
-    box-shadow:inset 0 0 0 1px var(--inz-on-deep-muted);
-    transition:background .2s ease,transform .2s ease;
-  }
-  @media (hover:hover) and (pointer:fine){
-    .inz-social a:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
-  }
-  .inz-social a:active{transform:scale(.97);transition-duration:.1s}
-
-
   /* ---- Browser surfaces -----------------------------------------------------
      Selection, caret and scrollbar ship with browser defaults that belong to no
      design system. Cheap to theme, conspicuous when nobody has. */
