@@ -538,7 +538,7 @@ ${TOKENS}
     display:inline-flex;align-items:center;font-family:inherit;font-weight:500;
     text-transform:none;letter-spacing:0;text-decoration:none;font-size:.88rem;
     padding:1em 1.9em;border-radius:var(--inz-radius);
-    transition:transform .2s ease,background .2s ease;
+    transition:transform .18s cubic-bezier(.2,.8,.3,1),background-color .18s cubic-bezier(.2,.8,.3,1);
   }
   /* Focus is visible on both surfaces or it is not an accessibility feature. The dark
      override has to come after, and has to cover every dark context: hero, nav, footer,
@@ -548,7 +548,7 @@ ${TOKENS}
   .inz-band--dark :focus-visible{outline-color:var(--inz-focus-dark)}
   .inz-btn--primary{background-color:var(--inz-gold);color:var(--inz-navy)}
   .inz-btn--secondary{background-color:transparent;color:var(--inz-navy);box-shadow:inset 0 0 0 1px currentColor}
-  .inz-btn:hover{transform:translateY(-2px)}
+  @media (hover:hover) and (pointer:fine){.inz-btn:hover{transform:translateY(-2px)}}
   /* Feedback on press, not on release. Acknowledging only on click is the moment
      directness falls away, and it costs nothing to fix. */
   .inz-btn:active{transform:translateY(0) scale(.97);transition-duration:.1s}
@@ -723,13 +723,15 @@ ${TOKENS}
   .inz-pathway h3,.inz-pathway p{padding-inline:1.5rem}
   .inz-pathway__art{
     width:clamp(150px,17vw,200px);height:auto;display:block;
-    transition:transform .35s cubic-bezier(.2,.8,.3,1);
+    transition:transform .24s cubic-bezier(.2,.8,.3,1);
   }
   .inz-pathway h3{color:var(--inz-ink);font-size:1.15rem}
   .inz-pathway p{margin:0;font-size:.95rem;max-width:26ch}
   /* The blob lifts and grows slightly; the card itself stays put, so the art leads. */
-  .inz-pathway:hover .inz-pathway__art{transform:translateY(-6px) scale(1.06)}
-  .inz-pathway:hover{transform:none}
+  @media (hover:hover) and (pointer:fine){
+    .inz-pathway:hover .inz-pathway__art{transform:translateY(-6px) scale(1.06)}
+    .inz-pathway:hover{transform:none}
+  }
 
   /* ---- Publication cover ---------------------------------------------------
      A real cover, given room and a shadow so it reads as a physical object. */
@@ -782,7 +784,9 @@ ${TOKENS}
     box-shadow:inset 0 0 0 1px var(--inz-on-deep-muted);
     transition:background .2s ease,transform .2s ease;
   }
-  .inz-social a:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
+  @media (hover:hover) and (pointer:fine){
+    .inz-social a:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
+  }
 
   .inz-logos{display:flex;flex-wrap:wrap;gap:2rem;align-items:center;justify-content:center;margin-top:2rem}
   .inz-logo{
@@ -1001,9 +1005,13 @@ ${TOKENS}
 
   /* Only cards that actually go somewhere respond to the pointer. A lift on a card with
      no link promises an interaction that does not exist. */
-  .inz-card{transition:transform .18s cubic-bezier(.2,.8,.3,1),box-shadow .18s ease}
-  .inz-card:has(a):hover{transform:translateY(-3px)}
-  .inz-card--raised:has(a):hover{box-shadow:0 10px 28px rgba(0,0,0,.1)}
+  .inz-card{transition:transform .18s cubic-bezier(.2,.8,.3,1)}
+  /* Hover motion is gated: on a touch screen :hover sticks after a tap, leaving a card
+     lifted with no way to put it down. box-shadow is not transitioned, being a paint
+     property; the lift alone carries the affordance. */
+  @media (hover:hover) and (pointer:fine){
+    .inz-card:has(a):hover{transform:translateY(-3px)}
+  }
 
   /* Navigation */
   /* Static, not fixed. position:fixed inside an iframe pins to the IFRAME's viewport, not
@@ -1463,7 +1471,7 @@ ${TOKENS}
   }
   .inz-btn--primary{background-color:var(--inz-gold);color:var(--inz-navy)}
   .inz-btn--secondary{background-color:transparent;color:var(--inz-navy);box-shadow:inset 0 0 0 1px currentColor}
-  .inz-btn:hover{transform:translateY(-2px)}
+  @media (hover:hover) and (pointer:fine){.inz-btn:hover{transform:translateY(-2px)}}
   .inz-btn:focus-visible{outline:3px solid var(--inz-focus-light);outline-offset:3px}
   .inz-sr-only{
     position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
