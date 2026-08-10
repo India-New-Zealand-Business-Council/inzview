@@ -1,7 +1,7 @@
 # INZVIEW handover
 
-Written 10 August 2026. Everything below was measured on the running site, not assumed.
-Where something is unverified it says so.
+Written 10 August 2026, revised after the inner page bodies landed. Everything below was
+measured on the running site, not assumed. Where something is unverified it says so.
 
 ## What this is
 
@@ -15,8 +15,9 @@ NZ&ndash;India Free Trade Agreement.
 | Repo | `India-New-Zealand-Business-Council/inzview` (private) |
 | Vibe project | `f7cde676-7f27-464a-bbec-c2920efd7398` |
 | Live | `https://my-site-9qksqx7j-inzbcsecretariat.wix-vibe-site.com/` |
-| Head | `2a39d95` |
-| History | 93 commits, back to 5 August 2026 |
+| Head | `88d70e2`, published |
+| History | 95 commits, back to 5 August 2026 |
+| Routes | 12, all returning 200, each with a migrated body |
 
 ## How to work on it
 
@@ -59,6 +60,21 @@ not built and can be deleted once its content has been migrated; the commits sta
 either way.
 
 ## Rules that are not negotiable
+
+**This has already gone wrong twice, in the same field.** The Connect page's postal address
+was written three different ways: `PO Box 26061, Glen Eden, Auckland 0641` in the sourced
+Studio snippet, `PO Box 20092` by one agent, and `PO Box 26841, Epsom, Auckland 1344` by
+another. Two of the three were invented, and one of those was live on the published site for
+several commits before anyone checked. Neither agent flagged any uncertainty; both wrote a
+plausible address with complete confidence.
+
+The lesson is not "be careful". It is that a fact which looks like a fact is the hardest kind
+to catch, because nothing about it reads as wrong. Before writing any address, phone number,
+date, name or figure, find it in `legacy/wix-studio/src/public/wix-studio-snippets/` and copy
+it. If it is not there, mark it. Do not reconstruct it from memory of the old site.
+
+INZBC should confirm that address against their own records. The snippet surviving does not
+make it correct; it makes it the only version with a source.
 
 **Never invent a fact.** Member counts, event dates, venues, article summaries, testimonials
 and company names are all things INZBC has to supply. Where one is missing the page renders
@@ -120,6 +136,32 @@ headline and both buttons never appeared. Content is now visible by default and 
 after the client confirms it can animate. Do not reintroduce an animation that stands between
 the reader and the words.
 
+## Finish the last step
+
+A previous agent wrote `bodies.tsx` in full, twelve components and a route map, correct and
+faithful to the source. It imported nothing and nothing imported it, so every inner page
+still rendered the "still to be migrated" marker. The work was complete and invisible.
+
+New code that nothing calls is not done. Before stopping, grep for an import of whatever you
+just wrote. The same pass turned up two routes, `/publications` and `/newsletters`, that the
+header linked to and the router had no entry for: the catch-all sent both home, silently.
+Adding a nav item and adding its route are one job, not two.
+
+## Verifying without a browser
+
+The Chrome extension and Playwright both drop out sometimes, and there is no local build
+here. HTTP still works and is enough for most checks:
+
+```
+curl -s -o /dev/null -w "%{http_code}" https://<site>/fta        # route resolves
+curl -s https://<site>/connect | grep -oE '/_astro/[^"]+\.js'    # find the bundles
+curl -s https://<site>/_astro/<bundle>.js | grep -c "PO Box"     # content actually shipped
+```
+
+Everything is client-rendered, so the HTML is a shell. The strings live in the bundle. This
+proves content shipped; it does not prove it lays out correctly, so say which of the two you
+checked.
+
 ## Measurement traps
 
 Three times in this project a working feature was nearly reported as broken because the
@@ -145,12 +187,10 @@ Needs INZBC to supply something:
 
 Code work that can start now:
 
-5. **Inner page bodies.** Ten routes have real titles and ledes but no body. The sourced copy
-   is in `legacy/wix-studio/src/public/wix-studio-snippets/*.html`, 42 files.
-6. **Individual partner logos.** The wall is one flattened JPEG, so no logo is clickable.
-7. **36 tap targets under 44px.** Mostly nav links at 42px and inline text links inside
+5. **Individual partner logos.** The wall is one flattened JPEG, so no logo is clickable.
+6. **36 tap targets under 44px.** Mostly nav links at 42px and inline text links inside
    paragraphs, where a 44px box would break line spacing. A real trade, worth revisiting.
-8. **A screenshot timeout after scrolling**, roughly 30 seconds of unresponsive renderer.
+7. **A screenshot timeout after scrolling**, roughly 30 seconds of unresponsive renderer.
    Never chased. Suspect the parallax springs plus the 300vh pinned section. Worth profiling.
 
 ## Content parity
