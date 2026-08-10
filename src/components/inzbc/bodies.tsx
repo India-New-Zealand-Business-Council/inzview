@@ -10,10 +10,14 @@ import { ART, BENEFITS, LINKS } from './content';
  * because a visible gap is more honest than filler nobody has checked.
  *
  * Old routes that have no equivalent here are folded into their hub rather than linked:
- * /trade-missions and /india-market-opportunities are sections of /trade-resources, the
- * /membership/join next steps are part of /membership, and the digest lives with
- * /newsletters. The FTA Explainer was a placeholder around an app that does not exist in
- * this build, so it stays a visible marker.
+ * /trade-missions is a section of /trade-resources, the /membership/join next steps are
+ * part of /membership, and the digest lives with /newsletters. The FTA Explainer was a
+ * placeholder around an app that does not exist in this build, so it stays a visible marker.
+ *
+ * /india-market-opportunities is its own page below, not folded into /trade-resources — an
+ * earlier version of this file and legacy/wix-studio/docs/parity-matrix.md both stated it
+ * was, which was wrong: Sunil's migration guide (§4/§5) treats it as a separate "Replace"
+ * migration from Trade Bazaar, not a merge into Trade Shows/Missions.
  */
 
 // One focus treatment for the whole file, so keyboard users get the same ring everywhere.
@@ -871,7 +875,7 @@ function TradeResourcesBody() {
     {
       title: 'Export to India',
       body: 'A practical guide for NZ businesses preparing to export, build partnerships and use FTA opportunities.',
-      href: '#sectors',
+      href: '/india-market-opportunities',
       label: 'Explore sectors',
     },
     {
@@ -904,9 +908,18 @@ function TradeResourcesBody() {
                 <Card title={card.title}>
                   <p>{card.body}</p>
                   <p className="mt-4">
-                    <a href={card.href} className={`rounded-sm font-medium text-plum underline ${FOCUS}`}>
-                      {card.label}
-                    </a>
+                    {/* TextLink assumes a non-"/" href is external and opens a new tab, wrong
+                        for the two in-page "#missions"/"#intelligence" anchors here, so this
+                        stays a plain Link/anchor split rather than reusing that helper. */}
+                    {card.href.startsWith('/') ? (
+                      <Link to={card.href} className={`rounded-sm font-medium text-plum underline ${FOCUS}`}>
+                        {card.label}
+                      </Link>
+                    ) : (
+                      <a href={card.href} className={`rounded-sm font-medium text-plum underline ${FOCUS}`}>
+                        {card.label}
+                      </a>
+                    )}
                   </p>
                 </Card>
               </Reveal>
@@ -915,35 +928,7 @@ function TradeResourcesBody() {
         </div>
       </section>
 
-      <section id="sectors" className="scroll-mt-24 bg-mist px-6 py-20">
-        <div className="mx-auto max-w-6xl">
-          <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">Sector priorities</h2>
-            <p className="mt-4 max-w-2xl text-foreground">
-              <Todo>
-                [[Sector-specific guidance &mdash; forestry, horticulture, seafood, wine and
-                industrial goods are flagged as priority sectors for tariff outcomes content;
-                the full guide is still to be drafted.]]
-              </Todo>
-            </p>
-          </Reveal>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {['Forestry', 'Horticulture', 'Seafood', 'Wine', 'Industrial goods'].map(
-              (sector, i) => (
-                <Reveal key={sector} delay={i * 0.06}>
-                  <Card title={sector} on="mist">
-                    <p>
-                      <Todo>[[FTA outcome summary]]</Todo>
-                    </p>
-                  </Card>
-                </Reveal>
-              ),
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section id="missions" className="scroll-mt-24 bg-white px-6 py-20">
+      <section id="missions" className="scroll-mt-24 bg-mist px-6 py-20">
         <div className="mx-auto max-w-3xl">
           <Reveal>
             <h2 className="font-heading text-3xl text-ink md:text-4xl">
@@ -956,15 +941,14 @@ function TradeResourcesBody() {
             <p className="mt-4 text-foreground">
               <Todo>
                 [[Current trade mission/show listings to confirm &mdash; this merges the
-                former &ldquo;Trade Shows&rdquo; and &ldquo;Trade Bazaar&rdquo; pages per the
-                migration plan.]]
+                former &ldquo;Trade Shows&rdquo; page per the migration plan.]]
               </Todo>
             </p>
           </Reveal>
         </div>
       </section>
 
-      <section id="intelligence" className="scroll-mt-24 bg-mist px-6 py-20">
+      <section id="intelligence" className="scroll-mt-24 bg-white px-6 py-20">
         <div className="mx-auto max-w-3xl">
           <Reveal>
             <h2 className="font-heading text-3xl text-ink md:text-4xl">Market intelligence</h2>
@@ -1019,6 +1003,71 @@ function TradeResourcesBody() {
               <Btn href="/connect">Talk to the secretariat</Btn>
               <Btn href="/fta" variant="ghost">
                 Visit the FTA Centre
+              </Btn>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </>
+  );
+}
+
+/* --- India market opportunities --------------------------------------------------------- */
+
+/**
+ * Migrated from legacy/wix-studio/src/public/wix-studio-snippets/india-market-opportunities.html.
+ *
+ * Sunil's migration guide (INZBC Website Stocktake, Migration Plan and Wix Implementation
+ * Guide v1.0, §4/§5) treats Trade Bazaar and Trade Shows as two separate migrations: Trade
+ * Bazaar "Replace"s to India Market Opportunities (with a /trade-bazaar redirect here), while
+ * Trade Shows merges into Trade Missions and Shows (TradeResourcesBody's #missions section,
+ * untouched by this). parity-matrix.md and this file previously stated Trade Bazaar merged
+ * into Trade Missions too — that was wrong, corrected alongside this page.
+ *
+ * This content used to be duplicated inside TradeResourcesBody's #sectors section; that
+ * section is removed in favour of this page, with Trade Resources' "Export to India" card
+ * now linking here instead.
+ */
+function IndiaMarketOpportunitiesBody() {
+  return (
+    <>
+      <section className="bg-white px-6 py-20">
+        <div className="mx-auto max-w-6xl">
+          <Reveal>
+            <h2 className="font-heading text-3xl text-ink md:text-4xl">Sector priorities</h2>
+            <p className="mt-4 max-w-2xl text-foreground">
+              <Todo>
+                [[Sector-specific guidance &mdash; forestry, horticulture, seafood, wine and
+                industrial goods are flagged as priority sectors for tariff outcomes content;
+                the full guide is still to be drafted.]]
+              </Todo>
+            </p>
+          </Reveal>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {['Forestry', 'Horticulture', 'Seafood', 'Wine', 'Industrial goods'].map(
+              (sector, i) => (
+                <Reveal key={sector} delay={i * 0.06}>
+                  <Card title={sector}>
+                    <p>
+                      <Todo>[[FTA outcome summary]]</Todo>
+                    </p>
+                  </Card>
+                </Reveal>
+              ),
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-mist px-6 py-16 text-center">
+        <div className="mx-auto max-w-2xl">
+          <Reveal>
+            <p className="text-foreground">
+              Looking for exporting, importing or trade mission guidance instead?
+            </p>
+            <div className="mt-6 flex justify-center">
+              <Btn href="/trade-resources" variant="outline">
+                Visit trade resources
               </Btn>
             </div>
           </Reveal>
@@ -1216,6 +1265,7 @@ export const BODIES: Record<string, React.ComponentType> = {
   '/newsletters': NewslettersBody,
   '/partners': PartnersBody,
   '/trade-resources': TradeResourcesBody,
+  '/india-market-opportunities': IndiaMarketOpportunitiesBody,
   '/membership/directory': DirectoryBody,
   '/events/past': EventsPastBody,
   '/executive-council': CouncilBody,
