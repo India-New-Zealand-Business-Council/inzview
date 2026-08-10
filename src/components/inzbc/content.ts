@@ -42,11 +42,11 @@ export const ART = {
 } as const;
 
 /* The only three numbers this site may state. Each carries its own source line, because a
-   figure without a source is a claim. Sourced from MFAT's NZ-India FTA outcomes summary. */
+   figure without a source is a claim. Sourced from MFAT's National Interest Analysis. */
 export const STATS = [
   { figure: 'NZ$3.95bn', label: 'Two-way trade', note: 'Year ended December 2025.' },
   { figure: '95%', label: 'Of NZ exports covered', note: 'Receiving tariff elimination or reduction.' },
-  { figure: '57%', label: 'Duty free from day one', note: 'Rising to 82% once fully implemented.' },
+  { figure: '57%', label: 'Duty free from day one', note: "At the agreement's entry into force." },
 ] as const;
 
 export const PATHWAYS = [

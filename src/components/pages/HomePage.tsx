@@ -1,552 +1,797 @@
-import React, { useRef } from 'react';
-import { motion, useTransform, useReducedMotion } from 'framer-motion';
-import type { MotionValue } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import TradeRoute from '@/components/inzbc/TradeRoute';
-import PinnedJourney from '@/components/inzbc/PinnedJourney';
 import {
-  Reveal,
-  WordReveal,
-  Parallax,
-  TiltCard,
-  ScrollProgress,
-  StickyHeader,
-  useHeroProgress,
-} from '@/components/inzbc/motion';
-import { LINKS, ART, PATHWAYS, BENEFITS, SOCIALS } from '@/components/inzbc/content';
-import {
-  MakeConnections,
-  SummitAndMailingList,
-  Advertise,
-  ConnectBlock,
-  NewsletterBand,
-  Partners,
-} from '@/components/inzbc/Sections';
+  ArrowRight,
+  ArrowUpRight,
+  BookOpenText,
+  CalendarDays,
+  Globe2,
+  Mail,
+  Menu,
+  UsersRound,
+  X,
+} from 'lucide-react';
+import { ART, BENEFITS, LINKS, SOCIALS, STATS } from '@/components/inzbc/content';
+import './HomePage.css';
 
 /**
  * INZBC homepage.
  *
- * Bands alternate surface — dark, mist, white — so no two adjacent sections share one, and
- * each carries a soft gradient edge rather than a hard horizontal rule. The trade route runs
- * behind all of it as the page's one persistent object.
- *
- * Placeholders render visibly on purpose. Every [[...]] is a fact INZBC still owes and a
- * visible gap is more honest than an invented number.
+ * This file deliberately owns its visual and motion system. Inner routes retain their
+ * established shell while the homepage can be art-directed as one editorial experience.
+ * Every [[...]] marker remains visible until INZBC supplies the missing fact or asset.
  */
 
-/* --- small shared pieces ------------------------------------------------------------- */
+const HOME_NAV = [
+  { label: 'The FTA', href: '/fta' },
+  { label: 'Events', href: '/events' },
+  { label: 'Membership', href: '/membership' },
+  { label: 'Intelligence', href: '/publications' },
+  { label: 'Connect', href: '/connect' },
+] as const;
 
-/** A fact INZBC has not supplied yet. Deliberately visible. */
+const HOME_PATHWAYS = [
+  {
+    number: '01',
+    title: 'Understand the FTA',
+    body: 'The agreement, its status and the implications for New Zealand businesses.',
+    href: '/fta',
+    icon: Globe2,
+    featured: true,
+  },
+  {
+    number: '02',
+    title: 'Enter the network',
+    body: 'Advocacy, introductions, market intelligence and a bilateral member community.',
+    href: '/membership',
+    icon: UsersRound,
+    featured: false,
+  },
+  {
+    number: '03',
+    title: 'Meet the market',
+    body: 'Briefings, delegations, networking and the annual INZBC Summit.',
+    href: '/events',
+    icon: CalendarDays,
+    featured: false,
+  },
+  {
+    number: '04',
+    title: 'Read the relationship',
+    body: 'Reports, news, magazines and trade intelligence from both sides of the corridor.',
+    href: '/publications',
+    icon: BookOpenText,
+    featured: false,
+  },
+] as const;
+
+const HOME_STATS = [
+  {
+    figure: STATS[0].figure,
+    label: STATS[0].label,
+    note: 'Year ended December 2025.',
+  },
+  {
+    figure: STATS[1].figure,
+    label: STATS[1].label,
+    note: 'Receiving tariff elimination or reduction.',
+  },
+  {
+    figure: STATS[2].figure,
+    label: STATS[2].label,
+    note: "At the agreement's entry into force.",
+  },
+] as const;
+
+const EVENT_PHOTOS = [
+  {
+    src: '/events/summit-group.jpg',
+    alt: 'Delegates and speakers at the INZBC Summit 2018 in Auckland',
+  },
+  {
+    src: '/events/summit-speakers.jpg',
+    alt: 'Speakers at the INZBC Summit 2018 in Auckland',
+  },
+  {
+    src: '/events/summit-conversation.jpg',
+    alt: 'Attendees in conversation at the INZBC Summit 2018 in Auckland',
+  },
+] as const;
+
 function Todo({ children }: { children: React.ReactNode }) {
-  return (
-    <mark className="rounded-sm bg-lime/25 px-1 text-inherit underline decoration-dashed underline-offset-4">
-      {children}
-    </mark>
-  );
+  return <mark className="home-todo">{children}</mark>;
 }
 
-function Btn({
+function Action({
   href,
   children,
   variant = 'primary',
-  external = false,
+  className = '',
 }: {
   href: string;
   children: React.ReactNode;
-  variant?: 'primary' | 'ghost';
-  external?: boolean;
+  variant?: 'primary' | 'outline-dark' | 'outline-light' | 'text';
+  className?: string;
 }) {
-  const base =
-    'inline-flex items-center rounded-full px-6 py-3 text-sm font-medium transition-transform duration-200 active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
-  const skin =
-    variant === 'primary'
-      ? 'bg-lime text-navy hover:brightness-105'
-      : 'border border-white/30 text-white hover:bg-white/10';
-  // Internal destinations go through the router; anything off-site opens in a new tab.
-  if (!external && href.startsWith('/')) {
+  const classes = `home-action home-action--${variant} ${className}`.trim();
+  const content = (
+    <>
+      <span>{children}</span>
+      {variant === 'text' ? (
+        <ArrowUpRight aria-hidden="true" size={17} strokeWidth={1.8} />
+      ) : (
+        <ArrowRight aria-hidden="true" size={17} strokeWidth={1.8} />
+      )}
+    </>
+  );
+
+  if (href.startsWith('/')) {
     return (
-      <Link to={href} className={`${base} ${skin}`}>
-        {children}
+      <Link to={href} className={classes}>
+        {content}
       </Link>
     );
   }
+
+  const isWebLink = href.startsWith('http');
   return (
-    <a href={href} className={`${base} ${skin}`} target="_blank" rel="noopener noreferrer">
-      {children}
+    <a
+      href={href}
+      className={classes}
+      {...(isWebLink ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    >
+      {content}
     </a>
   );
 }
 
-/** Soft edge between bands, in the colour of the band it introduces. */
-function Fade({ to }: { to: string }) {
+function Eyebrow({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
+  return <p className={`home-eyebrow${light ? ' home-eyebrow--light' : ''}`}>{children}</p>;
+}
+
+function HomeReveal({
+  children,
+  className = '',
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return <div className={`home-reveal ${className}`.trim()}>{children}</div>;
+}
+
+function HomeHeader() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape' || !menuOpen) return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [menuOpen]);
+
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 -top-16 h-16"
-      style={{ background: `linear-gradient(to bottom, transparent, ${to})` }}
-    />
+    <header className="home-header">
+      <div className="home-header__bar">
+        <Link to="/" className="home-logo-link home-focus-light" aria-label="INZBC home">
+          <img
+            src={ART.logo}
+            width="400"
+            height="114"
+            alt="India New Zealand Business Council"
+            className="home-logo"
+          />
+        </Link>
+
+        <nav className="home-nav" aria-label="Primary navigation">
+          {HOME_NAV.map((item) => (
+            <Link key={item.href} to={item.href} className="home-nav__link home-focus-light">
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <a
+          href={LINKS.join}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="home-header__join home-focus-light"
+        >
+          Join INZBC
+          <ArrowUpRight aria-hidden="true" size={16} strokeWidth={1.8} />
+        </a>
+
+        <div className="home-mobile-menu">
+          <button
+            ref={menuButtonRef}
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="home-mobile-navigation"
+            onClick={() => setMenuOpen((current) => !current)}
+            className="home-mobile-menu__trigger home-focus-light"
+          >
+            <span>Menu</span>
+            {menuOpen ? (
+              <X aria-hidden="true" size={20} />
+            ) : (
+              <Menu aria-hidden="true" size={20} />
+            )}
+          </button>
+          <div
+            id="home-mobile-navigation"
+            className="home-mobile-menu__panel"
+            hidden={!menuOpen}
+          >
+            <nav aria-label="Mobile navigation">
+              {HOME_NAV.map((item, index) => (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={closeMenu}
+                  className="home-mobile-menu__link home-focus-light"
+                >
+                  <span aria-hidden="true">0{index + 1}</span>
+                  {item.label}
+                  <ArrowRight aria-hidden="true" size={18} strokeWidth={1.8} />
+                </Link>
+              ))}
+            </nav>
+            <a
+              href={LINKS.join}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={closeMenu}
+              className="home-mobile-menu__cta home-focus-light"
+            >
+              Join INZBC
+              <ArrowUpRight aria-hidden="true" size={18} />
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
   );
 }
 
-/* --- hero ---------------------------------------------------------------------------- */
-
 function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
-  const scrollYProgress = useHeroProgress(ref);
-
-  // Three depth tiers. The background moves least against the scroll and so reads furthest
-  // away; the copy sits in front and barely moves at all.
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '26%']);
-  const midY = useTransform(scrollYProgress, [0, 1], ['0%', '14%']);
-  const copyY = useTransform(scrollYProgress, [0, 1], ['0%', '6%']);
-  const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-
-  const s = (v: MotionValue<string>) => (reduced ? undefined : v);
-
   return (
-    <section ref={ref} className="relative flex min-h-[92vh] items-center overflow-hidden bg-deep">
-      <motion.div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-cover bg-center"
-        style={{ backgroundImage: `url(${ART.heroPhoto})`, y: s(bgY), opacity: 0.42 }}
-      />
-      <motion.div
-        aria-hidden="true"
-        className="absolute -right-1/4 top-0 -z-10 h-[46rem] w-[46rem] rounded-full opacity-50 blur-3xl"
-        style={{
-          background: 'radial-gradient(closest-side, rgba(97,20,95,0.95), transparent)',
-          y: s(midY),
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            'linear-gradient(90deg, #0e0522 0%, rgba(14,5,34,0.86) 46%, rgba(14,5,34,0.45) 100%)',
-        }}
-      />
-
-      <motion.div className="mx-auto w-full max-w-6xl px-6 py-24" style={{ y: s(copyY) }}>
-        <Reveal>
-          <p className="mb-4 text-xs uppercase tracking-[0.2em] text-lime">
-            India &ndash; New Zealand trade since 1988
-          </p>
-        </Reveal>
-        <Reveal delay={0.08}>
-          <h1 className="max-w-4xl font-heading text-5xl leading-[1.05] text-white md:text-7xl">
-            <WordReveal text="New Zealand's gateway to the India opportunity" delay={0.15} />
-          </h1>
-        </Reveal>
-        <Reveal delay={0.16}>
-          <p className="mt-6 max-w-xl text-lg text-white/75">
-            The India New Zealand Business Council connects exporters, investors and
-            institutions across the NZ&ndash;India trade relationship &mdash; and leads the way
-            through the new NZ&ndash;India Free Trade Agreement.
-          </p>
-        </Reveal>
-        <Reveal delay={0.24}>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Btn href="/fta">Explore the FTA</Btn>
-            <Btn href={LINKS.join} variant="ghost" external>
-              Join INZBC
-            </Btn>
+    <section className="home-hero" aria-labelledby="home-hero-title">
+      <div className="home-hero__grid" aria-hidden="true" />
+      <div className="home-shell home-hero__layout">
+        <div className="home-hero__copy">
+          <div className="home-hero__status">
+            <span className="home-hero__status-dot" aria-hidden="true" />
+            FTA signed 27 April 2026
+            <span aria-hidden="true">/</span>
+            Ratification pending
           </div>
-        </Reveal>
-      </motion.div>
+          <Eyebrow light>India &ndash; New Zealand trade since 1988</Eyebrow>
+          <h1 id="home-hero-title" className="home-display home-hero__title">
+            New Zealand&rsquo;s gateway to the India opportunity.
+          </h1>
+          <p className="home-hero__lede">
+            INZBC connects exporters, investors, institutions and government across the
+            NZ&ndash;India trade relationship &mdash; with the intelligence and access to move
+            from interest to action.
+          </p>
+          <div className="home-hero__actions">
+            <Action href="/fta">Explore the FTA</Action>
+            <Action href={LINKS.join} variant="outline-light">
+              Join the council
+            </Action>
+          </div>
+        </div>
 
-      <motion.div
-        aria-hidden="true"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[0.65rem] uppercase tracking-[0.3em] text-white/40"
-        style={{ opacity: reduced ? 1 : fade }}
-      >
-        Scroll
-      </motion.div>
+        <div className="home-hero__visual">
+          <div className="home-hero__image-wrap">
+            <img
+              src={ART.heroPhoto}
+              alt="Auckland city skyline and harbour"
+              loading="eager"
+              fetchPriority="high"
+              className="home-hero__image"
+            />
+            <div className="home-hero__image-shade" aria-hidden="true" />
+            <svg
+              aria-hidden="true"
+              className="home-hero__route"
+              viewBox="0 0 540 300"
+              fill="none"
+              focusable="false"
+            >
+              <path d="M42 240C166 245 210 74 356 83C420 87 455 126 500 55" />
+              <circle cx="42" cy="240" r="5" />
+              <circle cx="500" cy="55" r="5" />
+            </svg>
+            <div className="home-hero__route-label home-hero__route-label--start">
+              New Zealand
+            </div>
+            <div className="home-hero__route-label home-hero__route-label--end">India</div>
+          </div>
+          <div className="home-hero__year-card">
+            <span>Established</span>
+            <strong>1988</strong>
+          </div>
+          <div className="home-hero__caption">
+            <span>Bilateral trade</span>
+            <span aria-hidden="true">NZ &harr; India</span>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
 
-/* --- page ---------------------------------------------------------------------------- */
-
 export default function HomePage() {
   return (
-    <div className="relative bg-white font-paragraph text-foreground">
-      <ScrollProgress />
-      <StickyHeader
-        logo={ART.logo}
-        links={[
-          { label: 'The FTA', href: '/fta' },
-          { label: 'Events', href: '/events' },
-          { label: 'Membership', href: '/membership' },
-          { label: 'Publications', href: '/publications' },
-          { label: 'Connect', href: '/connect' },
-        ]}
-        cta={{ label: 'Join', href: LINKS.join }}
-      />
-      <TradeRoute />
+    <div className="home-page">
+      <a href="#main-content" className="home-skip-link">
+        Skip to main content
+      </a>
+      <HomeHeader />
 
-      <main className="relative z-10">
+      <main id="main-content" tabIndex={-1}>
         <Hero />
 
-        {/* Credibility strip */}
-        <section className="relative bg-navy px-6 py-6 text-center text-sm text-white/80">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-2">
-            <span>Established 1988</span>
-            <span aria-hidden="true" className="text-white/25">
-              &middot;
-            </span>
-            <span>
-              <Todo>[[member count &mdash; confirm with INZBC]]</Todo>
-            </span>
-            <span aria-hidden="true" className="text-white/25">
-              &middot;
-            </span>
-            <span>Recognised by the governments of New Zealand and India</span>
-          </div>
-        </section>
-
-        {/* Why INZBC */}
-        <section className="relative bg-mist px-6 py-24">
-          <Fade to="#f4f2f8" />
-          <div className="mx-auto max-w-6xl">
-            <Reveal>
-              <h2 className="text-center font-heading text-4xl text-ink md:text-5xl">
-                Why INZBC?
-              </h2>
-            </Reveal>
-            <div className="mt-10 grid gap-8 md:grid-cols-2">
-              <Reveal>
-                <p className="text-lg text-foreground">
-                  New Zealand&rsquo;s leading India trade and FTA platform, connecting
-                  businesses, government and investors since 1988.
-                </p>
-              </Reveal>
-              <Reveal delay={0.1}>
-                <p className="text-lg text-foreground">
-                  With the NZ&ndash;India Free Trade Agreement signed, members gain first-mover
-                  advantage through trade intelligence, policy access and business networks.
-                </p>
-              </Reveal>
+        <section className="home-proof" aria-label="INZBC at a glance">
+          <div className="home-shell home-proof__grid">
+            <div className="home-proof__item">
+              <span className="home-proof__index">01</span>
+              <p>Established</p>
+              <strong>1988</strong>
             </div>
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {[
-                'Advocate on trade policy and market access',
-                'Share market intelligence and FTA insights',
-                'Connect businesses across both countries',
-              ].map((claim, i) => (
-                <Reveal key={claim} delay={i * 0.08}>
-                  <p className="border-t-2 border-lime pt-4 font-medium text-ink">{claim}</p>
-                </Reveal>
-              ))}
+            <div className="home-proof__item">
+              <span className="home-proof__index">02</span>
+              <p>Recognised by</p>
+              <strong>New Zealand and India</strong>
+            </div>
+            <div className="home-proof__item">
+              <span className="home-proof__index">03</span>
+              <p>Member network</p>
+              <strong>
+                <Todo>[[member count &mdash; confirm with INZBC]]</Todo>
+              </strong>
             </div>
           </div>
         </section>
 
-        {/* Pathways */}
-        <section className="relative bg-white px-6 py-24">
-          <Fade to="#ffffff" />
-          <div className="mx-auto max-w-6xl">
-            <Reveal>
-              <h2 className="text-center font-heading text-4xl text-ink md:text-5xl">
-                Where would you like to start?
+        <section className="home-intro home-section">
+          <div className="home-shell home-intro__layout">
+            <HomeReveal>
+              <Eyebrow>Why INZBC</Eyebrow>
+              <h2 className="home-heading home-intro__title">
+                The relationship is moving. Be in the room where it becomes practical.
               </h2>
-            </Reveal>
-            <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {PATHWAYS.map((p, i) => (
-                <Reveal key={p.title} delay={i * 0.07}>
-                  <TiltCard
-                    href={p.href}
-                    className="group block h-full rounded-2xl bg-mist p-7 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
-                  >
-                    <img
-                      src={p.icon}
-                      alt=""
-                      aria-hidden="true"
-                      loading="lazy"
-                      className="mb-5 h-24 w-auto"
-                    />
-                    <h3 className="font-heading text-xl text-ink">{p.title}</h3>
-                    <p className="mt-2 text-sm text-foreground">{p.body}</p>
-                  </TiltCard>
-                </Reveal>
-              ))}
+            </HomeReveal>
+            <HomeReveal className="home-intro__copy">
+              <p className="home-lede-dark">
+                New Zealand&rsquo;s leading India trade and FTA platform, connecting business,
+                government and investors since 1988.
+              </p>
+              <p>
+                Members gain trade intelligence, policy access and the business networks to
+                engage with confidence across both countries.
+              </p>
+              <Action href="/executive-council" variant="text">
+                Meet the executive council
+              </Action>
+            </HomeReveal>
+          </div>
+          <div className="home-shell home-capabilities">
+            {[
+              ['Advocate', 'Trade policy and market access'],
+              ['Interpret', 'Market intelligence and FTA insight'],
+              ['Connect', 'Businesses across both countries'],
+            ].map(([title, body], index) => (
+              <HomeReveal key={title} className="home-capability">
+                <span>0{index + 1}</span>
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </HomeReveal>
+            ))}
+          </div>
+        </section>
+
+        <section className="home-pathways home-section" aria-labelledby="pathways-title">
+          <div className="home-shell">
+            <HomeReveal className="home-section-head">
+              <div>
+                <Eyebrow>Your starting point</Eyebrow>
+                <h2 id="pathways-title" className="home-heading">
+                  One relationship. Four ways in.
+                </h2>
+              </div>
+              <p>
+                Start with the question in front of you. The council connects each pathway
+                to the wider bilateral opportunity.
+              </p>
+            </HomeReveal>
+
+            <div className="home-pathways__grid">
+              {HOME_PATHWAYS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <HomeReveal key={item.href}>
+                    <Link
+                      to={item.href}
+                      className={`home-pathway home-focus-dark${
+                        item.featured ? ' home-pathway--featured' : ''
+                      }`}
+                    >
+                      <div className="home-pathway__top">
+                        <span>{item.number}</span>
+                        <Icon aria-hidden="true" size={28} strokeWidth={1.45} />
+                      </div>
+                      <div>
+                        <h3>{item.title}</h3>
+                        <p>{item.body}</p>
+                      </div>
+                      <span className="home-pathway__link">
+                        Explore
+                        <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
+                      </span>
+                    </Link>
+                  </HomeReveal>
+                );
+              })}
             </div>
           </div>
         </section>
 
-        <MakeConnections />
+        <section className="home-fta home-section" aria-labelledby="fta-title">
+          <div className="home-fta__orb" aria-hidden="true" />
+          <div className="home-shell">
+            <HomeReveal className="home-fta__head">
+              <div>
+                <Eyebrow light>The new operating context</Eyebrow>
+                <h2 id="fta-title" className="home-heading home-heading--light">
+                  A signed agreement. A new field of possibility.
+                </h2>
+              </div>
+              <div className="home-fta__status-card">
+                <span>Current status</span>
+                <strong>Signed, not yet in force</strong>
+                <p>Awaiting domestic ratification in both countries.</p>
+              </div>
+            </HomeReveal>
 
-        {/* FTA band */}
-        <section className="relative overflow-hidden bg-navy px-6 py-24">
-          <Fade to="#160933" />
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-8">
-            <Reveal className="max-w-2xl">
-              <h2 className="font-heading text-4xl text-white md:text-5xl">
-                The NZ&ndash;India FTA changes what&rsquo;s possible
-              </h2>
-              <p className="mt-4 text-white/70">
+            <div className="home-fta__summary">
+              <p>
                 <Todo>
                   [[FTA summary copy &mdash; pull from the FTA Overview page once drafted.]]
                 </Todo>
               </p>
-            </Reveal>
-            <Reveal delay={0.12}>
-              <Btn href="/fta">Understand the FTA</Btn>
-            </Reveal>
+              <Action href="/fta">Understand the agreement</Action>
+            </div>
+
+            <div className="home-fta__stats">
+              {HOME_STATS.map((stat, index) => (
+                <div key={stat.label} className="home-stat">
+                  <span className="home-stat__index">0{index + 1}</span>
+                  <strong>{stat.figure}</strong>
+                  <h3>{stat.label}</h3>
+                  <p>{stat.note}</p>
+                </div>
+              ))}
+            </div>
+            <p className="home-fta__source">
+              Source: MFAT&rsquo;s National Interest Analysis.
+            </p>
           </div>
         </section>
 
-        {/* The pinned journey — the section Studio could not build */}
-        <PinnedJourney />
-
-        <SummitAndMailingList />
-
-        {/* Membership */}
-        <section className="relative overflow-hidden bg-ink px-6 py-24">
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-cover bg-center opacity-25"
-            style={{ backgroundImage: `url(${ART.heroPhoto})` }}
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background:
-                'linear-gradient(90deg, #1a0b3f 0%, rgba(26,11,63,0.86) 46%, rgba(26,11,63,0.5) 100%)',
-            }}
-          />
-          <div className="relative mx-auto grid max-w-6xl gap-12 md:grid-cols-2">
-            <Reveal>
-              <p className="mb-3 text-xs uppercase tracking-[0.18em] text-lime">The network</p>
-              <h2 className="font-heading text-4xl text-white md:text-5xl">
-                Who you meet by joining
+        <section className="home-events home-section" aria-labelledby="events-title">
+          <div className="home-shell home-events__layout">
+            <HomeReveal className="home-events__copy">
+              <Eyebrow>Make connections</Eyebrow>
+              <h2 id="events-title" className="home-heading">
+                The bilateral relationship is built face to face.
               </h2>
-              <p className="mt-4 text-white/70">
-                Exporters, importers, investors, universities and government agencies on both
-                sides of the corridor.
+              <p className="home-lede-dark">
+                INZBC brings specialists, ministers, NZTE, MFAT and the business community
+                together for meaningful dialogue.
               </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Btn href="/membership/directory">Explore the directory</Btn>
-                <Btn href={LINKS.join} variant="ghost" external>
-                  Become a member
-                </Btn>
+              <p>Be seen in the right place, at the right time and in the right company.</p>
+              <div className="home-events__actions">
+                <Action href="/events">View events</Action>
+                <Action href="/events/past" variant="outline-dark">
+                  Event reports
+                </Action>
               </div>
-            </Reveal>
-            <Reveal delay={0.12}>
-              <ul className="space-y-5">
-                {BENEFITS.map(([lead, rest]) => (
-                  <li key={lead} className="border-l-2 border-lime pl-4 text-white/80">
-                    <strong className="font-semibold text-white">{lead}</strong> {rest}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* Insights */}
-        <section className="relative bg-mist px-6 py-24">
-          <Fade to="#f4f2f8" />
-          <div className="mx-auto max-w-6xl">
-            <Reveal>
-              <h2 className="text-center font-heading text-4xl text-ink md:text-5xl">
-                Latest insights
-              </h2>
-            </Reveal>
-            <div className="mt-14 grid gap-6 md:grid-cols-3">
-              {[
-                {
-                  img: ART.ftaFlyer,
-                  alt: 'Event flyer for Inside the NZ India FTA with Vangelis Vitalis',
-                  title: 'Inside the NZ–India FTA with Vangelis Vitalis',
-                  body: "An Auckland event with New Zealand's chief trade negotiator.",
-                },
-                {
-                  img: ART.ftaNewEra,
-                  alt: 'Delegation photograph accompanying the FTA article',
-                  title: 'A new era for business',
-                  body: 'The agreement signals a new era for trade between the two countries.',
-                },
-                {
-                  img: ART.heroBanner,
-                  alt: 'INZBC banner showing a container port and India Gate',
-                  title: 'INZBC welcomes the landmark agreement',
-                  body: null,
-                },
-              ].map((post, i) => (
-                <Reveal key={post.title} delay={i * 0.08}>
-                  <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm">
-                    <img
-                      src={post.img}
-                      alt={post.alt}
-                      loading="lazy"
-                      className="aspect-[16/10] w-full object-cover"
-                    />
-                    <div className="flex flex-1 flex-col p-6">
-                      <h3 className="font-heading text-lg text-ink">{post.title}</h3>
-                      <p className="mt-2 flex-1 text-sm text-foreground">
-                        {post.body ?? (
-                          <Todo>[[Article summary &mdash; confirm with INZBC.]]</Todo>
-                        )}
-                      </p>
-                      <a href="/news" className="mt-4 text-sm font-medium text-plum underline">
-                        Read more
-                      </a>
-                    </div>
-                  </article>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Publications */}
-        <section className="relative overflow-hidden bg-ink px-6 py-24">
-          <Fade to="#1a0b3f" />
-          <div className="mx-auto max-w-6xl">
-            <Reveal>
-              <p className="mb-3 text-xs uppercase tracking-[0.18em] text-lime">
-                Voice of the industry
-              </p>
-              <h2 className="font-heading text-4xl text-white md:text-5xl">
-                What INZBC publishes
-              </h2>
-            </Reveal>
-            <div className="mt-14 grid gap-12 md:grid-cols-2">
-              {[
-                {
-                  cover: ART.reportCover,
-                  alt: 'Cover of Grow With India, the New Zealand India Trade Report 2025',
-                  title: 'Grow With India',
-                  sub: 'The New Zealand India Trade Report 2025',
-                  body: 'Where the trade relationship stands and where it can go.',
-                  href: LINKS.reportIssuu,
-                  lift: 'md:-translate-y-3',
-                },
-                {
-                  cover: ART.kiaOraCover,
-                  alt: 'Cover of Kia Ora India, the INZBC magazine',
-                  title: 'Kia Ora India',
-                  sub: 'The INZBC magazine',
-                  body: 'Member businesses and the people moving between the two markets.',
-                  href: LINKS.kiaOraIssuu,
-                  lift: 'md:translate-y-6',
-                },
-              ].map((pub, i) => (
-                <Reveal key={pub.title} delay={i * 0.12}>
-                  <article className={`flex gap-6 ${pub.lift}`}>
-                    <Parallax speed={i === 0 ? -0.12 : -0.22} className="flex-none">
-                      <img
-                        src={pub.cover}
-                        alt={pub.alt}
-                        loading="lazy"
-                        className="h-auto w-32 rounded-lg shadow-2xl md:w-40"
-                      />
-                    </Parallax>
-                    <div>
-                      <h3 className="font-heading text-2xl text-white">{pub.title}</h3>
-                      <p className="mt-1 text-sm text-lime">{pub.sub}</p>
-                      <p className="mt-3 text-sm text-white/70">{pub.body}</p>
-                      <a
-                        href={pub.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-5 inline-block rounded-full bg-lime px-5 py-2 text-sm font-medium text-navy"
-                      >
-                        Read it
-                      </a>
-                    </div>
-                  </article>
-                </Reveal>
-              ))}
-            </div>
-            <p className="mt-16 border-t border-white/10 pt-6 text-sm text-white/60">
-              Kia Ora India carries advertising.{' '}
               <a
-                href={`${LINKS.email}?subject=Advertising%20enquiry`}
-                className="text-lime underline"
+                href={LINKS.summitSite}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="home-summit-link home-focus-dark"
               >
+                <span>
+                  <small>Annual flagship</small>
+                  INZBC Summit
+                </span>
+                <ArrowUpRight aria-hidden="true" size={20} />
+              </a>
+            </HomeReveal>
+
+            <HomeReveal className="home-events__gallery">
+              <figure className="home-events__photo home-events__photo--main">
+                <img
+                  src={EVENT_PHOTOS[0].src}
+                  alt={EVENT_PHOTOS[0].alt}
+                  width="1024"
+                  height="683"
+                  loading="lazy"
+                />
+              </figure>
+              <figure className="home-events__photo home-events__photo--small-one">
+                <img
+                  src={EVENT_PHOTOS[1].src}
+                  alt={EVENT_PHOTOS[1].alt}
+                  width="1024"
+                  height="683"
+                  loading="lazy"
+                />
+              </figure>
+              <figure className="home-events__photo home-events__photo--small-two">
+                <img
+                  src={EVENT_PHOTOS[2].src}
+                  alt={EVENT_PHOTOS[2].alt}
+                  width="1024"
+                  height="683"
+                  loading="lazy"
+                />
+              </figure>
+              <p className="home-events__gallery-caption">INZBC Summit 2018, Auckland</p>
+            </HomeReveal>
+          </div>
+        </section>
+
+        <section className="home-membership home-section" aria-labelledby="membership-title">
+          <div className="home-membership__line" aria-hidden="true" />
+          <div className="home-shell home-membership__layout">
+            <HomeReveal className="home-membership__copy">
+              <Eyebrow light>The network</Eyebrow>
+              <h2 id="membership-title" className="home-heading home-heading--light">
+                Access is useful. The right access changes outcomes.
+              </h2>
+              <p>
+                Meet exporters, importers, investors, universities and government agencies
+                working across the corridor.
+              </p>
+              <div className="home-membership__actions">
+                <Action href="/membership/directory">Explore the directory</Action>
+                <Action href={LINKS.join} variant="outline-light">
+                  Become a member
+                </Action>
+              </div>
+            </HomeReveal>
+            <div className="home-membership__benefits">
+              {BENEFITS.map(([lead, rest], index) => (
+                <HomeReveal key={lead} className="home-benefit">
+                  <span>0{index + 1}</span>
+                  <div>
+                    <h3>{lead}</h3>
+                    <p>{rest}</p>
+                  </div>
+                </HomeReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="home-intelligence home-section" aria-labelledby="intelligence-title">
+          <div className="home-shell">
+            <HomeReveal className="home-section-head home-section-head--wide">
+              <div>
+                <Eyebrow>Intelligence for the corridor</Eyebrow>
+                <h2 id="intelligence-title" className="home-heading">
+                  Read what is changing &mdash; and what it means.
+                </h2>
+              </div>
+              <Action href="/publications" variant="outline-dark">
+                All publications
+              </Action>
+            </HomeReveal>
+
+            <div className="home-intelligence__grid">
+              <HomeReveal className="home-publication home-publication--report">
+                <div className="home-publication__cover">
+                  <img
+                    src={ART.reportCover}
+                    alt="Cover of Grow With India, the New Zealand India Trade Report 2025"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="home-publication__copy">
+                  <span className="home-card-kicker">Flagship report / 2025</span>
+                  <h3>Grow With India</h3>
+                  <p>The New Zealand India Trade Report: where the relationship stands and where it can go.</p>
+                  <Action href={LINKS.reportIssuu} variant="text">
+                    Read the report
+                  </Action>
+                </div>
+              </HomeReveal>
+
+              <HomeReveal className="home-publication home-publication--magazine">
+                <div className="home-publication__copy">
+                  <span className="home-card-kicker">The INZBC magazine</span>
+                  <h3>Kia Ora India</h3>
+                  <p>Member businesses and the people moving between the two markets.</p>
+                  <Action href={LINKS.kiaOraIssuu} variant="text">
+                    Open the magazine
+                  </Action>
+                </div>
+                <div className="home-publication__cover">
+                  <img
+                    src={ART.kiaOraCover}
+                    alt="Cover of Kia Ora India, the INZBC magazine"
+                    loading="lazy"
+                  />
+                </div>
+              </HomeReveal>
+
+              <div className="home-news-card">
+                <img
+                  src={ART.ftaNewEra}
+                  alt="Delegation photograph accompanying an INZBC FTA article"
+                  loading="lazy"
+                />
+                <div className="home-news-card__copy">
+                  <span className="home-card-kicker">Latest insight</span>
+                  <h3>INZBC welcomes the landmark agreement</h3>
+                  <p>
+                    <Todo>[[Article summary &mdash; confirm with INZBC.]]</Todo>
+                  </p>
+                  <Action href="/news" variant="text">
+                    View all news
+                  </Action>
+                </div>
+              </div>
+            </div>
+
+            <p className="home-advertise-note">
+              Kia Ora India carries advertising.{' '}
+              <a href={`${LINKS.email}?subject=Advertising%20enquiry`} className="home-focus-dark">
                 Enquire about advertising
               </a>
+              .
             </p>
           </div>
         </section>
 
-        <Advertise />
-
-        <NewsletterBand />
-
-        {/* Social */}
-        <section className="relative bg-navy px-6 py-20 text-center">
-          <div className="mx-auto max-w-6xl">
-            <Reveal>
-              <h2 className="font-heading text-3xl text-white md:text-4xl">
-                Follow the trade relationship
+        <section className="home-partners home-section" aria-labelledby="partners-title">
+          <div className="home-shell">
+            <HomeReveal className="home-partners__head">
+              <Eyebrow>Backed by the relationship</Eyebrow>
+              <h2 id="partners-title" className="home-heading">
+                Partners and supporters
               </h2>
-            </Reveal>
-            <div className="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4">
-              {SOCIALS.map((s, i) => (
-                <Reveal key={s.name} delay={i * 0.06}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex flex-col items-center gap-3 text-sm text-white/80 hover:text-white"
-                  >
-                    <img
-                      src={s.icon}
-                      alt=""
-                      aria-hidden="true"
-                      loading="lazy"
-                      className="w-28 transition-transform duration-300 group-hover:-translate-y-1.5"
-                    />
-                    <span>{s.label}</span>
-                  </a>
-                </Reveal>
-              ))}
+              <p>Organisations supporting INZBC&rsquo;s work across the NZ&ndash;India corridor.</p>
+            </HomeReveal>
+            <HomeReveal className="home-partners__wall">
+              <img
+                src={ART.partnerStrip}
+                alt="INZBC partners and supporters: BNZ and Zespri as strategic partners, Fonterra as partner, Slumberzone, the Auckland Institute of Studies and NZ Trade Aid as associate partners, alongside government and industry stakeholders"
+                loading="lazy"
+                width="1500"
+                height="600"
+              />
+            </HomeReveal>
+            <div className="home-partners__pending">
+              <Todo>
+                [[India Industry Partners row &mdash; FICCI, CII, PHD Chamber and others appear
+                on the old site as a separate strip. Supply the logo files and links.]]
+              </Todo>
             </div>
-            <p className="mt-10 text-sm text-white/60">
-              <a href={LINKS.facebookAlbums} target="_blank" rel="noopener noreferrer" className="underline">
-                Event albums
-              </a>
-              {' · '}
-              <a href={LINKS.flickr} target="_blank" rel="noopener noreferrer" className="underline">
-                Photo galleries on Flickr
-              </a>
-            </p>
+            <div className="home-partners__action">
+              <Action href="/partners" variant="outline-dark">
+                View partnerships
+              </Action>
+            </div>
           </div>
         </section>
 
-        <Partners />
-
-        <ConnectBlock />
-
-        {/* Closing CTA */}
-        <section className="relative bg-deep px-6 py-28 text-center">
-          <Fade to="#0e0522" />
-          <div className="mx-auto max-w-3xl">
-            <Reveal>
-              <h2 className="font-heading text-4xl text-white md:text-5xl">
-                Ready to grow your business with India?
+        <section className="home-conversion" aria-labelledby="conversion-title">
+          <div className="home-shell">
+            <HomeReveal className="home-conversion__lead">
+              <Eyebrow light>Move with the relationship</Eyebrow>
+              <h2 id="conversion-title" className="home-display home-conversion__title">
+                Your next India conversation can start here.
               </h2>
-              <p className="mt-4 text-white/70">
-                Join INZBC, or talk to us about how we can help your organisation engage across
-                the corridor.
-              </p>
-              <div className="mt-10 flex flex-wrap justify-center gap-3">
-                <Btn href={LINKS.join} external>
-                  Join INZBC
-                </Btn>
-                <Btn href="/connect" variant="ghost">
-                  Contact us
-                </Btn>
+            </HomeReveal>
+
+            <div className="home-conversion__grid">
+              <HomeReveal className="home-conversion-card home-conversion-card--lime">
+                <span className="home-card-kicker">Membership</span>
+                <h3>Join the council</h3>
+                <p>Connect your organisation to the people and intelligence shaping the corridor.</p>
+                <Action href={LINKS.join} variant="outline-dark">
+                  Become a member
+                </Action>
+              </HomeReveal>
+
+              <HomeReveal className="home-conversion-card home-conversion-card--plum">
+                <span className="home-card-kicker">Stay informed</span>
+                <h3>Trade updates, in your inbox</h3>
+                <p>FTA developments, council news and event announcements.</p>
+                <Action href={LINKS.subscribe} variant="outline-light">
+                  Subscribe
+                </Action>
+              </HomeReveal>
+
+              <div className="home-conversion-card home-conversion-card--contact">
+                <div className="home-contact-intro">
+                  <span className="home-card-kicker">Contact</span>
+                  <h3>Speak with the Secretariat</h3>
+                  <p>
+                    Sunil Kaushal<br />
+                    <a href={LINKS.email} className="home-focus-light">
+                      Secretariat@inzbc.org
+                    </a>
+                  </p>
+                </div>
+                <p className="home-conversion-card__marker">
+                  <Todo>
+                    [[Contact form &mdash; needs a Wix Form so submissions reach the Secretariat
+                    inbox. A form posting nowhere is worse than none, so this links to email
+                    until it exists.]]
+                  </Todo>
+                </p>
+                <Action href={LINKS.email} variant="outline-light">
+                  Email the Secretariat
+                </Action>
               </div>
-            </Reveal>
+            </div>
           </div>
         </section>
       </main>
+
+      <footer className="home-footer">
+        <div className="home-shell home-footer__top">
+          <Link to="/" className="home-footer__logo home-focus-light" aria-label="INZBC home">
+            <img
+              src={ART.logo}
+              width="400"
+              height="114"
+              alt="India New Zealand Business Council"
+            />
+          </Link>
+          <nav className="home-footer__nav" aria-label="Footer navigation">
+            {HOME_NAV.map((item) => (
+              <Link key={item.href} to={item.href} className="home-focus-light">
+                {item.label}
+              </Link>
+            ))}
+            <Link to="/partners" className="home-focus-light">
+              Partners
+            </Link>
+          </nav>
+        </div>
+        <div className="home-shell home-footer__bottom">
+          <p>India New Zealand Business Council / Established 1988</p>
+          <nav className="home-footer__socials" aria-label="Social media">
+            {SOCIALS.map((social) => (
+              <a
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="home-focus-light"
+              >
+                {social.name}
+              </a>
+            ))}
+          </nav>
+          <a href={LINKS.email} className="home-footer__email home-focus-light">
+            <Mail aria-hidden="true" size={16} />
+            Secretariat@inzbc.org
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
