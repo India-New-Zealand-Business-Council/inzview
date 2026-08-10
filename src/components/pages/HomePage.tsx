@@ -26,7 +26,7 @@ const HOME_NAV = [
   { label: 'The FTA', href: '/fta' },
   { label: 'Events', href: '/events' },
   { label: 'Membership', href: '/membership' },
-  { label: 'Intelligence', href: '/publications' },
+  { label: 'Publications', href: '/publications' },
   { label: 'Connect', href: '/connect' },
 ] as const;
 
