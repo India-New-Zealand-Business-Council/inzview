@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Reveal } from './motion';
-import { ART, LINKS } from './content';
+import { ART, BENEFITS, LINKS } from './content';
 
 /**
  * The migrated bodies for the inner routes, carried over from the Studio build's section
@@ -269,6 +269,17 @@ function EventsBody() {
 
 /* --- Membership ---------------------------------------------------------------------- */
 
+/**
+ * Section order follows legacy/wix-studio/ARCHITECTURE.md's nav table for Membership: Why
+ * Join, Membership Plans, Member Benefits, Member Directory, Join INZBC. "Why members join"
+ * below is Why Join; "Membership tiers" is Membership Plans. Member Benefits and Member
+ * Directory were missing entirely until now — both are migrated from
+ * member-network.html, which also supplies the member/industry counts staying [[placeholder]]
+ * ("inventing a member number is exactly the claim this site must not make," per that
+ * snippet's own comment). No dedicated "network" photo exists in ART, and the general rule
+ * for this pass is not to reintroduce parallax, so the band is a plain dark surface rather
+ * than member-network.html's parallax photo treatment.
+ */
 function MembershipBody() {
   const reasons = [
     ['Advocacy', 'A direct voice with government on trade policy and market access affecting NZ–India trade.'],
@@ -312,6 +323,77 @@ function MembershipBody() {
               <Btn href={LINKS.join} external>
                 See membership options
               </Btn>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-ink px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid items-start gap-12 md:grid-cols-2">
+            <Reveal>
+              <p className="mb-3 text-xs uppercase tracking-[0.18em] text-lime">The network</p>
+              <h2 className="font-heading text-3xl text-white md:text-4xl">
+                Who you meet by joining
+              </h2>
+              <p className="mt-5 max-w-md text-white/75">
+                Exporters, importers, investors, universities and government agencies on both
+                sides of the corridor. Membership is an introduction to the people already
+                doing it.
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <ul className="space-y-4 text-white/85">
+                {BENEFITS.map(([label, rest]) => (
+                  <li key={label}>
+                    <strong className="text-white">{label}</strong> {rest}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.16}>
+            <dl className="mt-16 grid grid-cols-2 gap-8 border-t border-white/15 pt-10 sm:grid-cols-4">
+              <div>
+                <dt className="text-sm text-white/60">Members</dt>
+                <dd className="mt-1 font-heading text-3xl text-lime">
+                  <Todo>[[count]]</Todo>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm text-white/60">Industries</dt>
+                <dd className="mt-1 font-heading text-3xl text-lime">
+                  <Todo>[[count]]</Todo>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm text-white/60">Chapters</dt>
+                <dd className="mt-1 font-heading text-3xl text-lime">5</dd>
+              </div>
+              <div>
+                <dt className="text-sm text-white/60">Since</dt>
+                <dd className="mt-1 font-heading text-3xl text-lime">1988</dd>
+              </div>
+            </dl>
+            <p className="mt-4 text-sm text-white/50">
+              Chapters in Auckland, Wellington, Christchurch, Mumbai and Delhi.{' '}
+              <Todo>[[Confirm member and industry counts with INZBC before publish.]]</Todo>
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-mist px-6 py-20 text-center">
+        <div className="mx-auto max-w-2xl">
+          <Reveal>
+            <h2 className="font-heading text-3xl text-ink md:text-4xl">Member directory</h2>
+            <p className="mt-4 text-foreground">
+              See who is already trading across the corridor &mdash; exporters, importers,
+              investors, universities and government agencies.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Btn href="/membership/directory">Explore the directory</Btn>
             </div>
           </Reveal>
         </div>
