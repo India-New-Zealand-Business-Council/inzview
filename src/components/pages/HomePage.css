@@ -649,6 +649,16 @@
   line-height: 1.35;
 }
 
+.home-proof__source {
+  display: inline-block;
+  margin-top: 0.55rem;
+  border-radius: 0.2rem;
+  color: rgba(58, 55, 66, 0.72);
+  font-size: 0.6rem;
+  line-height: 1.4;
+  text-underline-offset: 0.18em;
+}
+
 .home-proof__item .home-todo {
   font-size: 0.86rem;
   font-weight: 500;
@@ -1402,28 +1412,176 @@
   line-height: 1.65;
 }
 
-.home-partners__wall {
+.home-partners__groups {
+  display: grid;
+  gap: 1rem;
   margin-top: clamp(3rem, 6vw, 5.5rem);
-  overflow: hidden;
+}
+
+.home-partners__group {
   border: 1px solid rgba(26, 11, 63, 0.1);
-  border-radius: 1.25rem;
+  border-radius: 1.4rem;
   background: #fff;
-  padding: clamp(1.5rem, 4vw, 3.5rem);
+  padding: clamp(1.4rem, 3vw, 2.4rem);
 }
 
-.home-partners__wall img {
+.home-partners__group--india {
+  background: var(--home-mist);
+}
+
+.home-partners__group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.home-partners__group-head > span,
+.home-partners__stakeholders > span {
+  color: var(--home-plum);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home-partners__group-head p {
+  margin: 0;
+  color: rgba(58, 55, 66, 0.7);
+  font-size: 0.76rem;
+}
+
+.home-partners__logo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.home-partner-mark,
+.home-india-mark {
+  color: var(--home-body);
+  text-decoration: none;
+}
+
+.home-partner-mark {
+  display: flex;
+  min-height: 178px;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  border: 1px solid rgba(26, 11, 63, 0.09);
+  border-radius: 1rem;
+  background: var(--home-mist);
+  padding: 1.25rem;
+  transition:
+    border-color 180ms var(--home-ease-out),
+    transform 220ms var(--home-ease-out);
+}
+
+.home-partner-mark__art {
+  display: grid;
+  min-height: 90px;
+  place-items: center;
+}
+
+.home-partner-mark__art img {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: min(100%, 220px);
   height: auto;
+  max-height: 86px;
+  object-fit: contain;
 }
 
-.home-partners__pending {
-  max-width: 900px;
-  margin: 1.6rem auto 0;
+.home-partner-mark__art strong,
+.home-india-mark__art strong {
+  color: var(--home-ink);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
   text-align: center;
+}
+
+.home-partner-mark__meta,
+.home-india-mark > span:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: rgba(58, 55, 66, 0.71);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.home-partners__india-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.home-india-mark {
+  display: grid;
+  min-height: 156px;
+  grid-template-rows: 1fr auto;
+  gap: 1rem;
+  border: 1px solid rgba(26, 11, 63, 0.09);
+  border-radius: 1rem;
+  background: #fff;
+  padding: 1.1rem;
+  transition:
+    border-color 180ms var(--home-ease-out),
+    transform 220ms var(--home-ease-out);
+}
+
+.home-india-mark__art {
+  display: grid;
+  min-height: 82px;
+  place-items: center;
+}
+
+.home-india-mark__art img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 82px;
+  object-fit: contain;
+}
+
+.home-partners__stakeholders {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem 2rem;
+  margin-top: 1rem;
+  border-block: 1px solid rgba(26, 11, 63, 0.1);
+  padding-block: 1.25rem;
+}
+
+.home-partners__stakeholders > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.home-partners__stakeholders a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  border: 1px solid rgba(26, 11, 63, 0.1);
+  border-radius: 999px;
   color: rgba(58, 55, 66, 0.78);
-  font-size: 0.8rem;
-  line-height: 1.7;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.55rem 0.9rem;
+  text-decoration: none;
+  transition:
+    border-color 180ms var(--home-ease-out),
+    color 180ms var(--home-ease-out);
 }
 
 .home-partners__action {
@@ -1512,8 +1670,8 @@
 .home-conversion-card--contact {
   display: grid;
   min-height: 300px;
-  grid-template-columns: 0.6fr 1fr auto;
-  align-items: center;
+  grid-template-columns: minmax(220px, 0.55fr) minmax(0, 1.45fr);
+  align-items: start;
   gap: clamp(2rem, 5vw, 5rem);
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.055);
@@ -1525,17 +1683,11 @@
   padding-top: 0.77rem;
 }
 
-.home-conversion-card--contact > .home-action {
-  align-self: center;
-  margin-top: 0;
-}
-
 .home-contact-intro h3 {
   margin-top: 0.55rem;
 }
 
-.home-contact-intro > p,
-.home-conversion-card--contact > p {
+.home-contact-intro > p {
   margin: 0;
 }
 
@@ -1552,10 +1704,145 @@
   text-underline-offset: 0.22em;
 }
 
-.home-conversion-card__marker {
-  max-width: 48ch;
-  font-size: 0.74rem !important;
-  line-height: 1.65 !important;
+.home-contact-form {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 1.1rem;
+  background: rgba(14, 5, 34, 0.42);
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.home-contact-form__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.home-contact-form__head h4 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.home-contact-form__head > span {
+  border: 1px solid rgba(184, 240, 124, 0.34);
+  border-radius: 999px;
+  color: var(--home-lime);
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  padding: 0.42rem 0.7rem;
+  text-transform: uppercase;
+}
+
+.home-contact-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.home-contact-form fieldset {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.home-contact-form label {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.home-contact-form label > span {
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.home-contact-form__wide {
+  grid-column: 1 / -1;
+}
+
+.home-contact-form input,
+.home-contact-form textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0.7rem;
+  outline: none;
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  font: inherit;
+  font-size: 0.86rem;
+  padding: 0.78rem 0.9rem;
+}
+
+.home-contact-form textarea {
+  min-height: 118px;
+  resize: vertical;
+}
+
+.home-contact-form input::placeholder,
+.home-contact-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.home-contact-form input:disabled,
+.home-contact-form textarea:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.home-contact-form input:focus,
+.home-contact-form textarea:focus {
+  border-color: var(--home-lime);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(184, 240, 124, 0.2);
+}
+
+.home-contact-form__footer {
+  display: flex;
+  align-items: center;
+  gap: 1rem 1.4rem;
+  margin-top: 1.25rem;
+}
+
+.home-contact-form__footer button {
+  display: inline-flex;
+  min-height: 48px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.64);
+  cursor: not-allowed;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.7rem 1.25rem;
+}
+
+.home-contact-form__footer p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.7rem;
+  line-height: 1.6;
+}
+
+.home-contact-form__footer a {
+  display: inline-block;
+  border-radius: 0.2rem;
+  color: #fff;
+  text-underline-offset: 0.2em;
 }
 
 .home-footer {
@@ -1685,6 +1972,17 @@
   .home-publication--magazine .home-action--text:hover {
     color: #fff;
   }
+
+  .home-partner-mark:hover,
+  .home-india-mark:hover {
+    border-color: rgba(97, 20, 95, 0.26);
+    transform: translate3d(0, -3px, 0);
+  }
+
+  .home-partners__stakeholders a:hover {
+    border-color: rgba(97, 20, 95, 0.3);
+    color: var(--home-plum);
+  }
 }
 
 @media (max-width: 1100px) {
@@ -1710,13 +2008,7 @@
   }
 
   .home-conversion-card--contact {
-    grid-template-columns: 0.65fr 1fr;
-  }
-
-  .home-conversion-card--contact > .home-action {
-    grid-column: 2;
-    margin-top: 0;
-    justify-self: start;
+    grid-template-columns: minmax(200px, 0.65fr) minmax(0, 1.35fr);
   }
 }
 
@@ -1850,6 +2142,19 @@
 
   .home-partners__head {
     grid-template-columns: 1fr;
+  }
+
+  .home-partners__logo-grid,
+  .home-partners__india-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-partners__stakeholders {
+    grid-template-columns: 1fr;
+  }
+
+  .home-partners__stakeholders > div {
+    justify-content: flex-start;
   }
 
   .home-footer__bottom {
@@ -2105,8 +2410,13 @@
     aspect-ratio: 1.35;
   }
 
-  .home-partners__wall {
+  .home-partners__group {
     border-radius: 0.9rem;
+  }
+
+  .home-partners__group-head {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .home-conversion__grid {
@@ -2129,9 +2439,30 @@
     gap: 1.4rem;
   }
 
-  .home-conversion-card--contact > .home-action {
+  .home-contact-form {
     width: 100%;
-    margin-top: 0.5rem;
+  }
+
+  .home-contact-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-contact-form__wide {
+    grid-column: auto;
+  }
+
+  .home-contact-form input,
+  .home-contact-form textarea {
+    font-size: 1rem;
+  }
+
+  .home-contact-form__footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .home-contact-form__footer button {
+    width: 100%;
   }
 
   .home-footer__top,
@@ -2161,6 +2492,17 @@
   }
 }
 
+@media (max-width: 480px) {
+  .home-partners__logo-grid,
+  .home-partners__india-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-partners__stakeholders a {
+    width: 100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-page *,
   .home-page *::before,
@@ -2173,7 +2515,12 @@
   .home-header__join,
   .home-pathway,
   .home-pathway__link svg,
-  .home-summit-link svg {
+  .home-summit-link svg,
+  .home-partner-mark,
+  .home-india-mark,
+  .home-partners__stakeholders a,
+  .home-contact-form input,
+  .home-contact-form textarea {
     transition-duration: 0ms;
   }
 
@@ -2182,7 +2529,9 @@
   .home-action:hover svg,
   .home-pathway:hover,
   .home-pathway:hover .home-pathway__link svg,
-  .home-summit-link:hover svg {
+  .home-summit-link:hover svg,
+  .home-partner-mark:hover,
+  .home-india-mark:hover {
     transform: none;
   }
 }

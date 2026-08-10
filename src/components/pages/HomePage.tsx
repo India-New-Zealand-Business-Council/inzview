@@ -85,17 +85,117 @@ const HOME_STATS = [
 
 const EVENT_PHOTOS = [
   {
-    src: '/events/summit-group.jpg',
-    alt: 'Delegates and speakers at the INZBC Summit 2018 in Auckland',
+    src: '/events/modi-luxon-delegation-auckland-2026.jpeg',
+    alt: 'Prime Ministers Narendra Modi and Christopher Luxon with the New Zealand and India delegations in Auckland',
+    width: 2048,
+    height: 1366,
   },
   {
-    src: '/events/summit-speakers.jpg',
-    alt: 'Speakers at the INZBC Summit 2018 in Auckland',
+    src: '/events/modi-luxon-address-auckland-2026.jpeg',
+    alt: 'Prime Ministers Narendra Modi and Christopher Luxon addressing guests in Auckland',
+    width: 1600,
+    height: 1200,
   },
   {
-    src: '/events/summit-conversation.jpg',
-    alt: 'Attendees in conversation at the INZBC Summit 2018 in Auckland',
+    src: '/events/inzbc-welcome-auckland-2026.jpeg',
+    alt: 'INZBC Chief Executive Sunil Kaushal and delegates at the welcome for the Indian Prime Minister in Auckland',
+    width: 2048,
+    height: 1536,
   },
+] as const;
+
+type PartnerMark = {
+  name: string;
+  href: string;
+  logo?: string;
+  relationship: string;
+};
+
+const BUSINESS_PARTNERS: readonly PartnerMark[] = [
+  {
+    name: 'Bank of New Zealand',
+    href: 'https://www.bnz.co.nz/',
+    logo: '/partners/bnz.png',
+    relationship: 'Strategic partner',
+  },
+  {
+    name: 'High Commission of India, Wellington',
+    href: 'https://www.hciwellington.gov.in/',
+    relationship: 'Strategic partner',
+  },
+  {
+    name: 'University of Auckland',
+    href: 'https://www.auckland.ac.nz/',
+    relationship: 'Strategic partner',
+  },
+  {
+    name: 'Duco Consultancy',
+    href: 'https://www.ducoconsultancy.com/',
+    relationship: 'Strategic partner / Gold',
+  },
+  {
+    name: 'Zespri',
+    href: 'https://www.zespri.com/en-NZ',
+    logo: '/partners/zespri.png',
+    relationship: 'Strategic partner',
+  },
+  {
+    name: 'Fonterra',
+    href: 'https://www.fonterra.com/nz/en.html',
+    logo: '/partners/fonterra.png',
+    relationship: 'Partner',
+  },
+  {
+    name: 'Slumberzone New Zealand',
+    href: 'https://slumberzone.co.nz/',
+    relationship: 'Associate partner',
+  },
+  {
+    name: 'Auckland Institute of Studies',
+    href: 'https://www.ais.ac.nz/',
+    logo: '/partners/ais.png',
+    relationship: 'Associate partner',
+  },
+  {
+    name: 'New Zealand Airline Academy',
+    href: 'https://www.nzaal.co.nz/',
+    logo: '/partners/nzaal.webp',
+    relationship: 'Associate partner',
+  },
+];
+
+const INDIA_NETWORK: readonly PartnerMark[] = [
+  {
+    name: 'FICCI',
+    href: 'https://www.ficci.in/',
+    logo: '/partners/ficci.png',
+    relationship: 'India industry network',
+  },
+  {
+    name: 'Confederation of Indian Industry',
+    href: 'https://www.cii.in/',
+    relationship: 'India industry network',
+  },
+  {
+    name: 'PHD Chamber of Commerce and Industry',
+    href: 'https://www.phdcci.in/',
+    logo: '/partners/phdcci.png',
+    relationship: 'India industry network',
+  },
+  {
+    name: 'ASSOCHAM',
+    href: 'https://www.assocham.org/',
+    logo: '/partners/assocham.jpg',
+    relationship: '2026 MoU partner',
+  },
+];
+
+const PUBLIC_SECTOR_NETWORK = [
+  ['MFAT', 'https://www.mfat.govt.nz/'],
+  ['New Zealand Trade & Enterprise', 'https://www.nzte.govt.nz/'],
+  ['Business Canterbury', 'https://www.businesscanterbury.co.nz/'],
+  ['BusinessNZ', 'https://businessnz.org.nz/'],
+  ['ExportNZ', 'https://exportnz.org.nz/'],
 ] as const;
 
 function Todo({ children }: { children: React.ReactNode }) {
@@ -290,8 +390,10 @@ function Hero() {
         <div className="home-hero__visual">
           <div className="home-hero__image-wrap">
             <img
-              src={ART.heroPhoto}
-              alt="Auckland city skyline and harbour"
+              src="/events/modi-luxon-auckland-2026.jpeg"
+              alt="Prime Ministers Narendra Modi and Christopher Luxon in conversation during the Indian Prime Minister's official visit to Auckland"
+              width="1200"
+              height="1600"
               loading="eager"
               fetchPriority="high"
               className="home-hero__image"
@@ -318,8 +420,8 @@ function Hero() {
             <strong>1988</strong>
           </div>
           <div className="home-hero__caption">
-            <span>Bilateral trade</span>
-            <span aria-hidden="true">NZ &harr; India</span>
+            <span>Auckland / July 2026</span>
+            <span>Historic official visit</span>
           </div>
         </div>
       </div>
@@ -353,9 +455,15 @@ export default function HomePage() {
             <div className="home-proof__item">
               <span className="home-proof__index">03</span>
               <p>Member network</p>
-              <strong>
-                <Todo>[[member count &mdash; confirm with INZBC]]</Todo>
-              </strong>
+              <strong>200+ members</strong>
+              <a
+                href="https://www.inzbc.org/post/india-new-zealand-business-council-welcomes-landmark-nz-india-free-trade-agreement"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="home-proof__source home-focus-dark"
+              >
+                INZBC published figure / Dec 2025
+              </a>
             </div>
           </div>
         </section>
@@ -462,9 +570,10 @@ export default function HomePage() {
 
             <div className="home-fta__summary">
               <p>
-                <Todo>
-                  [[FTA summary copy &mdash; pull from the FTA Overview page once drafted.]]
-                </Todo>
+                Signed in New Delhi, the agreement will eliminate or reduce tariffs across
+                95% of New Zealand&rsquo;s current export trade with India. Around 57% will
+                become duty-free when the agreement enters into force. Domestic implementation
+                is still underway.
               </p>
               <Action href="/fta">Understand the agreement</Action>
             </div>
@@ -480,7 +589,25 @@ export default function HomePage() {
               ))}
             </div>
             <p className="home-fta__source">
-              Source: MFAT&rsquo;s National Interest Analysis.
+              Sources:{' '}
+              <a
+                href="https://www.mfat.govt.nz/assets/Trade-agreements/NZ-India-FTA/NZ-India-FTA-National-Interest-Analysis-NIA.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="home-focus-light"
+              >
+                MFAT National Interest Analysis
+              </a>{' '}
+              and{' '}
+              <a
+                href="https://bills.parliament.nz/v/6/94E55470-B881-4492-302A-08DED017BCBD"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="home-focus-light"
+              >
+                New Zealand Parliament
+              </a>
+              .
             </p>
           </div>
         </section>
@@ -522,8 +649,8 @@ export default function HomePage() {
                 <img
                   src={EVENT_PHOTOS[0].src}
                   alt={EVENT_PHOTOS[0].alt}
-                  width="1024"
-                  height="683"
+                  width={EVENT_PHOTOS[0].width}
+                  height={EVENT_PHOTOS[0].height}
                   loading="lazy"
                 />
               </figure>
@@ -531,8 +658,8 @@ export default function HomePage() {
                 <img
                   src={EVENT_PHOTOS[1].src}
                   alt={EVENT_PHOTOS[1].alt}
-                  width="1024"
-                  height="683"
+                  width={EVENT_PHOTOS[1].width}
+                  height={EVENT_PHOTOS[1].height}
                   loading="lazy"
                 />
               </figure>
@@ -540,12 +667,14 @@ export default function HomePage() {
                 <img
                   src={EVENT_PHOTOS[2].src}
                   alt={EVENT_PHOTOS[2].alt}
-                  width="1024"
-                  height="683"
+                  width={EVENT_PHOTOS[2].width}
+                  height={EVENT_PHOTOS[2].height}
                   loading="lazy"
                 />
               </figure>
-              <p className="home-events__gallery-caption">INZBC Summit 2018, Auckland</p>
+              <p className="home-events__gallery-caption">
+                Indian Prime Minister Narendra Modi&rsquo;s official visit / Auckland / 10&ndash;11 July 2026
+              </p>
             </HomeReveal>
           </div>
         </section>
@@ -642,12 +771,17 @@ export default function HomePage() {
                 />
                 <div className="home-news-card__copy">
                   <span className="home-card-kicker">Latest insight</span>
-                  <h3>INZBC welcomes the landmark agreement</h3>
+                  <h3>FTA signals a new era for business</h3>
                   <p>
-                    <Todo>[[Article summary &mdash; confirm with INZBC.]]</Todo>
+                    INZBC says the agreement improves market access and certainty, while
+                    long-term commercial gains will still depend on trusted partnerships and
+                    sustained engagement.
                   </p>
-                  <Action href="/news" variant="text">
-                    View all news
+                  <Action
+                    href="https://www.inzbc.org/post/india-new-zealand-free-trade-agreement-signals-new-era-for-business-inzbc"
+                    variant="text"
+                  >
+                    Read the announcement
                   </Action>
                 </div>
               </div>
@@ -672,21 +806,85 @@ export default function HomePage() {
               </h2>
               <p>Organisations supporting INZBC&rsquo;s work across the NZ&ndash;India corridor.</p>
             </HomeReveal>
-            <HomeReveal className="home-partners__wall">
-              <img
-                src={ART.partnerStrip}
-                alt="INZBC partners and supporters: BNZ and Zespri as strategic partners, Fonterra as partner, Slumberzone, the Auckland Institute of Studies and NZ Trade Aid as associate partners, alongside government and industry stakeholders"
-                loading="lazy"
-                width="1500"
-                height="600"
-              />
-            </HomeReveal>
-            <div className="home-partners__pending">
-              <Todo>
-                [[India Industry Partners row &mdash; FICCI, CII, PHD Chamber and others appear
-                on the old site as a separate strip. Supply the logo files and links.]]
-              </Todo>
+
+            <div className="home-partners__groups">
+              <HomeReveal className="home-partners__group">
+                <div className="home-partners__group-head">
+                  <span>Business network</span>
+                  <p>Strategic, partner and associate relationships</p>
+                </div>
+                <div className="home-partners__logo-grid">
+                  {BUSINESS_PARTNERS.map((partner) => (
+                    <a
+                      key={partner.name}
+                      href={partner.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="home-partner-mark home-focus-dark"
+                    >
+                      <span className="home-partner-mark__art">
+                        {partner.logo ? (
+                          <img src={partner.logo} alt={`${partner.name} logo`} loading="lazy" />
+                        ) : (
+                          <strong>{partner.name}</strong>
+                        )}
+                      </span>
+                      <span className="home-partner-mark__meta">
+                        {partner.relationship}
+                        <ArrowUpRight aria-hidden="true" size={14} />
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </HomeReveal>
+
+              <HomeReveal className="home-partners__group home-partners__group--india">
+                <div className="home-partners__group-head">
+                  <span>India industry network</span>
+                  <p>Relationships that extend the council&rsquo;s reach on the ground</p>
+                </div>
+                <div className="home-partners__india-grid">
+                  {INDIA_NETWORK.map((partner) => (
+                    <a
+                      key={partner.name}
+                      href={partner.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="home-india-mark home-focus-dark"
+                    >
+                      <span className="home-india-mark__art">
+                        {partner.logo ? (
+                          <img src={partner.logo} alt={`${partner.name} logo`} loading="lazy" />
+                        ) : (
+                          <strong>CII</strong>
+                        )}
+                      </span>
+                      <span>
+                        {partner.relationship}
+                        <ArrowUpRight aria-hidden="true" size={14} />
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </HomeReveal>
             </div>
+
+            <section className="home-partners__stakeholders" aria-label="Public sector and industry stakeholders">
+              <span>Also working alongside</span>
+              <div>
+                {PUBLIC_SECTOR_NETWORK.map(([name, href]) => (
+                  <a
+                    key={name}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="home-focus-dark"
+                  >
+                    {name}
+                  </a>
+                ))}
+              </div>
+            </section>
             <div className="home-partners__action">
               <Action href="/partners" variant="outline-dark">
                 View partnerships
@@ -734,16 +932,55 @@ export default function HomePage() {
                     </a>
                   </p>
                 </div>
-                <p className="home-conversion-card__marker">
-                  <Todo>
-                    [[Contact form &mdash; needs a Wix Form so submissions reach the Secretariat
-                    inbox. A form posting nowhere is worse than none, so this links to email
-                    until it exists.]]
-                  </Todo>
-                </p>
-                <Action href={LINKS.email} variant="outline-light">
-                  Email the Secretariat
-                </Action>
+                <form
+                  className="home-contact-form"
+                  aria-labelledby="home-contact-form-title"
+                  aria-describedby="home-contact-form-status"
+                >
+                  <div className="home-contact-form__head">
+                    <h4 id="home-contact-form-title">Send an enquiry</h4>
+                    <span>Preview</span>
+                  </div>
+                  <fieldset disabled>
+                    <div className="home-contact-form__grid">
+                      <label>
+                        <span>Name</span>
+                        <input type="text" name="name" autoComplete="name" placeholder="Your name" />
+                      </label>
+                      <label>
+                        <span>Work email</span>
+                        <input type="email" name="email" autoComplete="email" placeholder="you@company.com" />
+                      </label>
+                      <label className="home-contact-form__wide">
+                        <span>Organisation</span>
+                        <input
+                          type="text"
+                          name="organisation"
+                          autoComplete="organization"
+                          placeholder="Company or organisation"
+                        />
+                      </label>
+                      <label className="home-contact-form__wide">
+                        <span>How can we help?</span>
+                        <textarea name="message" rows={4} placeholder="Tell us what you are working on" />
+                      </label>
+                    </div>
+                  </fieldset>
+                  <div className="home-contact-form__footer">
+                    <button type="submit" disabled aria-describedby="home-contact-form-status">
+                      Send enquiry
+                      <ArrowRight aria-hidden="true" size={17} />
+                    </button>
+                    <p id="home-contact-form-status">
+                      <Todo>[[Form connection pending.]]</Todo>{' '}
+                      For now,{' '}
+                      <a href={LINKS.email} className="home-focus-light">
+                        email the Secretariat
+                      </a>
+                      .
+                    </p>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
