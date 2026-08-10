@@ -66,7 +66,7 @@ a content and functionality migration.
 |---|---|---|
 | Trade With India | live | `/trade-resources`, pathway card |
 | Trade Shows | **gap** | Folded into `/trade-missions`; the label is gone |
-| `/trade-bazaar` | **gap** | Merged per the migration plan, no redirect surface |
+| `/trade-bazaar` | live | Replaced by `/india-market-opportunities` per the migration plan (§4/§5); `/trade-bazaar` redirects there. Corrected 11 August 2026 — this row previously said it merged into Trade Shows/Missions, which was wrong; that merge is Trade Shows only |
 
 ## Contact and social
 
