@@ -37,6 +37,13 @@ const router = createBrowserRouter(
           routeMetadata: { pageIdentifier: page.path.replace(/^\//, '') },
         })),
         {
+          // Sunil's migration guide (§5, Redirects): "/trade-bazaar → /india-market-opportunities".
+          // Trade Bazaar never had a route in this rebuild, but the guide names the redirect
+          // explicitly, so it's honoured rather than left to the catch-all below.
+          path: 'trade-bazaar',
+          element: <Navigate to="/india-market-opportunities" replace />,
+        },
+        {
           path: '*',
           element: <Navigate to="/" replace />,
         },
