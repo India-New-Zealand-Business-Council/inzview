@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Reveal, ScrollProgress, StickyHeader } from './motion';
 import { ART, LINKS } from './content';
 import { NAV, type PageDef } from './pages';
+import { BODIES } from './bodies';
 
 /**
  * Every destination other than the homepage.
@@ -11,7 +12,11 @@ import { NAV, type PageDef } from './pages';
  * body is not written yet, and rather than fill it the page says so: an obviously unfinished
  * page is honest, whereas plausible filler would read as content nobody has checked.
  */
+const FOCUS =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
+
 export default function InnerPage({ page }: { page: PageDef }) {
+  const Body = BODIES[page.path];
   return (
     <div className="min-h-screen bg-white font-paragraph text-foreground">
       <ScrollProgress />
@@ -38,24 +43,31 @@ export default function InnerPage({ page }: { page: PageDef }) {
           </div>
         </section>
 
-        <section className="bg-mist px-6 py-20">
-          <div className="mx-auto max-w-4xl">
-            <Reveal>
-              <p className="text-foreground">
-                <mark className="rounded-sm bg-lime/30 px-1 underline decoration-dashed underline-offset-4">
-                  [[Page body still to be migrated from the Studio build &mdash; the sourced
-                  copy exists at legacy/wix-studio/src/public/wix-studio-snippets.]]
-                </mark>
-              </p>
-              <Link
-                to="/"
-                className="mt-10 inline-flex items-center rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy transition-transform active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
-              >
-                Back to the homepage
-              </Link>
-            </Reveal>
-          </div>
-        </section>
+        {/* The migrated body, where one exists. Pages without one say so rather than
+            showing an empty band, so an unfinished page is obvious instead of looking
+            like a page that simply has nothing on it. */}
+        {Body ? (
+          <Body />
+        ) : (
+          <section className="bg-mist px-6 py-20">
+            <div className="mx-auto max-w-4xl">
+              <Reveal>
+                <p className="text-foreground">
+                  <mark className="rounded-sm bg-lime/30 px-1 underline decoration-dashed underline-offset-4">
+                    [[Page body still to be migrated from the Studio build &mdash; the sourced
+                    copy exists at legacy/wix-studio/src/public/wix-studio-snippets.]]
+                  </mark>
+                </p>
+                <Link
+                  to="/"
+                  className={`mt-10 inline-flex items-center rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy transition-transform active:scale-[0.97] ${FOCUS}`}
+                >
+                  Back to the homepage
+                </Link>
+              </Reveal>
+            </div>
+          </section>
+        )}
       </main>
     </div>
   );

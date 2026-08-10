@@ -252,7 +252,7 @@ export function ConnectBlock() {
             <div>
               <dt className="font-semibold text-ink">Postal address</dt>
               <dd className="text-foreground">
-                PO Box 26841, Epsom, Auckland 1344, New Zealand
+                PO Box 26061, Glen Eden, Auckland 0641, New Zealand
               </dd>
             </div>
           </dl>

@@ -14,6 +14,8 @@ import { LINKS } from './content';
 export type PageDef = { path: string; title: string; lede: string };
 
 export const PAGES: PageDef[] = [
+  { path: '/publications', title: "Publications", lede: "The India Report, Kia Ora India and the Trade Intelligence Digest: research, sector analysis and the stories of businesses already trading across the corridor." },
+  { path: '/newsletters', title: "Newsletters", lede: "Trade news, FTA developments and event announcements, with every past edition kept in the archive." },
   { path: '/fta', title: "NZ\u2013India FTA Centre", lede: "Sourced, plain-language guidance on the New Zealand\u2013India Free Trade Agreement: what changes, who it affects, and what to do next." },
   { path: '/events', title: "Events", lede: "Briefings, delegations, networking and the annual INZBC Summit \u2014 the main ways to engage with the NZ\u2013India trade community." },
   { path: '/membership', title: "Join New Zealand's India trade network", lede: "INZBC membership gives companies and institutions a direct voice in the NZ\u2013India trade relationship, sourced market intelligence, and access to events, delegations and introductions." },
