@@ -1210,7 +1210,7 @@ function IndiaMarketOpportunitiesBody() {
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">Sector priorities</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Sector priorities</h2>
             <p className="mt-4 max-w-2xl text-foreground">
               <Todo>
                 [[Sector-specific guidance &mdash; forestry, horticulture, seafood, wine and
