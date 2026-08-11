@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -290,6 +296,127 @@ function HeroRoute() {
   );
 }
 
+function EventsGallery() {
+  const photoClasses = [
+    'home-events__photo--main',
+    'home-events__photo--small-one',
+    'home-events__photo--small-two',
+  ] as const;
+
+  return (
+    <figure className="home-events__gallery">
+      {EVENT_PHOTOS.map((photo, index) => (
+        <div
+          key={photo.src}
+          className={`home-events__photo ${photoClasses[index]}`}
+        >
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            width={photo.width}
+            height={photo.height}
+            loading="lazy"
+          />
+        </div>
+      ))}
+      <figcaption className="home-events__gallery-caption">
+        Indian Prime Minister Narendra Modi&rsquo;s official visit / Auckland / 10&ndash;11 July 2026
+      </figcaption>
+    </figure>
+  );
+}
+
+const CONVERSION_ROUTE_TRUNK = 'M600 0 C600 36 600 54 600 72';
+const CONVERSION_ROUTE_LEFT = 'M600 72 C600 112 300 98 300 160';
+const CONVERSION_ROUTE_RIGHT = 'M600 72 C600 112 900 98 900 160';
+const CONVERSION_ROUTE_MOBILE = 'M600 0 C600 48 600 108 600 160';
+
+function ConversionRoute() {
+  const routeRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion() === true;
+  const { scrollYProgress } = useScroll({
+    target: routeRef,
+    offset: ['start 90%', 'end 42%'],
+  });
+  const trunkLength = useTransform(scrollYProgress, [0.04, 0.42], [0, 1], {
+    clamp: true,
+  });
+  const branchLength = useTransform(scrollYProgress, [0.3, 0.86], [0, 1], {
+    clamp: true,
+  });
+  const routeOpacity = useTransform(scrollYProgress, [0.02, 0.2], [0.2, 1], {
+    clamp: true,
+  });
+  const nodeOpacity = useTransform(scrollYProgress, [0.72, 0.9], [0, 1], {
+    clamp: true,
+  });
+  const nodeTransform = useTransform(
+    scrollYProgress,
+    [0.72, 0.92],
+    [
+      'translate3d(0, 0, 0) scale(0.72)',
+      'translate3d(0, 0, 0) scale(1)',
+    ],
+    { clamp: true },
+  );
+  const trunkStyle = shouldReduceMotion
+    ? { opacity: 1, pathLength: 1 }
+    : { opacity: routeOpacity, pathLength: trunkLength };
+  const branchStyle = shouldReduceMotion
+    ? { opacity: 1, pathLength: 1 }
+    : { opacity: routeOpacity, pathLength: branchLength };
+  const nodeStyle = shouldReduceMotion
+    ? { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' }
+    : { opacity: nodeOpacity, transform: nodeTransform };
+
+  return (
+    <div ref={routeRef} className="home-conversion-route" aria-hidden="true">
+      <svg viewBox="0 0 1200 160" preserveAspectRatio="none" focusable="false">
+        <g className="home-conversion-route__desktop">
+          <path className="home-conversion-route__track" d={CONVERSION_ROUTE_TRUNK} />
+          <path className="home-conversion-route__track" d={CONVERSION_ROUTE_LEFT} />
+          <path className="home-conversion-route__track" d={CONVERSION_ROUTE_RIGHT} />
+          <motion.path
+            className="home-conversion-route__active"
+            d={CONVERSION_ROUTE_TRUNK}
+            style={trunkStyle}
+          />
+          <motion.path
+            className="home-conversion-route__active"
+            d={CONVERSION_ROUTE_LEFT}
+            style={branchStyle}
+          />
+          <motion.path
+            className="home-conversion-route__active"
+            d={CONVERSION_ROUTE_RIGHT}
+            style={branchStyle}
+          />
+        </g>
+        <g className="home-conversion-route__mobile">
+          <path className="home-conversion-route__track" d={CONVERSION_ROUTE_MOBILE} />
+          <motion.path
+            className="home-conversion-route__active"
+            d={CONVERSION_ROUTE_MOBILE}
+            style={branchStyle}
+          />
+        </g>
+      </svg>
+      <motion.span
+        className="home-conversion-route__node home-conversion-route__node--left"
+        style={nodeStyle}
+      />
+      <motion.span
+        className="home-conversion-route__node home-conversion-route__node--right"
+        style={nodeStyle}
+      />
+      <motion.span
+        className="home-conversion-route__node home-conversion-route__node--mobile"
+        style={nodeStyle}
+      />
+    </div>
+  );
+}
+
 function openContactDraft(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault();
   const data = new FormData(event.currentTarget);
@@ -544,8 +671,10 @@ export default function HomePage() {
           stats={HOME_STATS}
           action={<Action href="/fta">Understand the agreement</Action>}
           portal={{
-            imageSrc: '/events/modi-luxon-auckland-2026.jpeg',
-            imagePosition: '62% center',
+            imageSrc: '/events/auckland-skyline-trade-corridor.webp',
+            imagePosition: '63% center',
+            imageWidth: 640,
+            imageHeight: 270,
             originLabel: 'Aotearoa New Zealand',
             destinationLabel: 'India',
           }}
@@ -685,38 +814,7 @@ export default function HomePage() {
               </a>
             </HomeBlock>
 
-            <figure className="home-events__gallery">
-              <div className="home-events__photo home-events__photo--main">
-                <img
-                  src={EVENT_PHOTOS[0].src}
-                  alt={EVENT_PHOTOS[0].alt}
-                  width={EVENT_PHOTOS[0].width}
-                  height={EVENT_PHOTOS[0].height}
-                  loading="lazy"
-                />
-              </div>
-              <div className="home-events__photo home-events__photo--small-one">
-                <img
-                  src={EVENT_PHOTOS[1].src}
-                  alt={EVENT_PHOTOS[1].alt}
-                  width={EVENT_PHOTOS[1].width}
-                  height={EVENT_PHOTOS[1].height}
-                  loading="lazy"
-                />
-              </div>
-              <div className="home-events__photo home-events__photo--small-two">
-                <img
-                  src={EVENT_PHOTOS[2].src}
-                  alt={EVENT_PHOTOS[2].alt}
-                  width={EVENT_PHOTOS[2].width}
-                  height={EVENT_PHOTOS[2].height}
-                  loading="lazy"
-                />
-              </div>
-              <figcaption className="home-events__gallery-caption">
-                Indian Prime Minister Narendra Modi&rsquo;s official visit / Auckland / 10&ndash;11 July 2026
-              </figcaption>
-            </figure>
+            <EventsGallery />
           </div>
         </section>
 
@@ -937,6 +1035,8 @@ export default function HomePage() {
                 Your next India conversation can start here.
               </h2>
             </HomeBlock>
+
+            <ConversionRoute />
 
             <div className="home-conversion__grid">
               <HomeBlock className="home-conversion-card home-conversion-card--lime">
