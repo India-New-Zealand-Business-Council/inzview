@@ -898,7 +898,7 @@ function NewslettersBody() {
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">Kia Ora India</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Kia Ora India</h2>
             <div className="mt-6 flex gap-6">
               <img
                 src={ART.kiaOraCover}
@@ -927,7 +927,7 @@ function NewslettersBody() {
           </Reveal>
 
           <Reveal delay={0.08}>
-            <h2 className="mt-16 font-heading text-3xl text-ink md:text-4xl">
+            <h2 className="mt-16 font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
               Trade Intelligence Digest
             </h2>
             <p className="mt-4 text-foreground">
@@ -948,7 +948,7 @@ function NewslettersBody() {
           </Reveal>
 
           <Reveal delay={0.12}>
-            <h2 className="mt-16 font-heading text-3xl text-ink md:text-4xl">
+            <h2 className="mt-16 font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
               Newsletter archive
             </h2>
             <p className="mt-4 text-foreground">
