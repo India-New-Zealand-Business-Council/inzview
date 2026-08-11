@@ -758,10 +758,15 @@ function NewsBody() {
         </div>
       </section>
 
-      <section className="bg-ink px-6 py-24 text-center">
-        <div className="mx-auto max-w-3xl">
+      <section className="relative overflow-hidden bg-ink px-6 py-24 text-center">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-0 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-35 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgba(97,20,95,0.9), transparent)' }}
+        />
+        <div className="relative mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-white md:text-4xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-white md:text-4xl">
               Get this in your inbox
             </h2>
             <p className="mt-4 text-white/75">
