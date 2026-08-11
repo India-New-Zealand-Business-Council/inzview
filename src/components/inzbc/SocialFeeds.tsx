@@ -75,12 +75,7 @@ function TwitterTimeline() {
       'https://platform.twitter.com/widgets.js',
       'twitter-wjs',
       () => {
-        if (cancelled) return;
-        setState('ready');
-        // widgets.js auto-scans the DOM once, at its own load time — which may be before
-        // this anchor exists (a later mount, script already loaded by an earlier one), so
-        // this re-scan is required, not just belt-and-braces.
-        (window as any).twttr?.widgets?.load();
+        if (!cancelled) setState('ready');
       },
       () => {
         if (!cancelled) setState('error');
@@ -90,6 +85,16 @@ function TwitterTimeline() {
       cancelled = true;
     };
   }, []);
+
+  // Separate effect, not called inline from the script's onload above: onload can fire
+  // before React has committed the render that removes the anchor's display:none (setState
+  // is async), and widgets.js needs to measure a visible element to replace it. A useEffect
+  // keyed on `state` is guaranteed to run after that commit, so the anchor is actually
+  // visible by the time this scans for it. Also covers the remount case (widgets.js auto-
+  // scans once at its own load time, which may be before this anchor exists at all).
+  useEffect(() => {
+    if (state === 'ready') (window as any).twttr?.widgets?.load();
+  }, [state]);
 
   if (state === 'error') return <FeedFallback platform="X" href={LINKS.x} />;
 
@@ -121,10 +126,7 @@ function FacebookPage() {
       'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0',
       'facebook-jssdk',
       () => {
-        if (cancelled) return;
-        setState('ready');
-        // Same reasoning as the Twitter re-scan above: xfbml=1 parses at load time only.
-        (window as any).FB?.XFBML?.parse();
+        if (!cancelled) setState('ready');
       },
       () => {
         if (!cancelled) setState('error');
@@ -134,6 +136,13 @@ function FacebookPage() {
       cancelled = true;
     };
   }, []);
+
+  // Same reasoning as TwitterTimeline's separate effect above: this has to run after React
+  // commits the render that removes the fb-page div's display:none, not inline from the
+  // script's onload, or XFBML.parse() measures a hidden element.
+  useEffect(() => {
+    if (state === 'ready') (window as any).FB?.XFBML?.parse();
+  }, [state]);
 
   if (state === 'error') return <FeedFallback platform="Facebook" href={LINKS.facebook} />;
 
