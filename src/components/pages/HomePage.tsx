@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -12,6 +13,7 @@ import {
   X,
 } from 'lucide-react';
 import { ART, BENEFITS, LINKS, SOCIALS, STATS } from '@/components/inzbc/content';
+import TradeThread from '@/components/home/TradeThread';
 import './HomePage.css';
 
 /**
@@ -19,7 +21,7 @@ import './HomePage.css';
  *
  * This file deliberately owns its visual and motion system. Inner routes retain their
  * established shell while the homepage can be art-directed as one editorial experience.
- * Every [[...]] marker remains visible until INZBC supplies the missing fact or asset.
+ * Factual claims stay sourced, and unfinished integrations are presented honestly.
  */
 
 const HOME_NAV = [
@@ -198,10 +200,6 @@ const PUBLIC_SECTOR_NETWORK = [
   ['ExportNZ', 'https://exportnz.org.nz/'],
 ] as const;
 
-function Todo({ children }: { children: React.ReactNode }) {
-  return <mark className="home-todo">{children}</mark>;
-}
-
 function Action({
   href,
   children,
@@ -245,18 +243,73 @@ function Action({
   );
 }
 
-function Eyebrow({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
-  return <p className={`home-eyebrow${light ? ' home-eyebrow--light' : ''}`}>{children}</p>;
-}
-
-function HomeReveal({
+function HomeBlock({
   children,
   className = '',
 }: {
   children: React.ReactNode;
   className?: string;
 }) {
-  return <div className={`home-reveal ${className}`.trim()}>{children}</div>;
+  return <div className={className || undefined}>{children}</div>;
+}
+
+function HeroRoute() {
+  const shouldReduceMotion = useReducedMotion();
+  const route = 'M42 240C166 245 210 74 356 83C420 87 455 126 500 55';
+
+  return (
+    <svg
+      aria-hidden="true"
+      className="home-hero__route"
+      viewBox="0 0 540 300"
+      fill="none"
+      focusable="false"
+    >
+      <path className="home-hero__route-track" d={route} />
+      <motion.path
+        className="home-hero__route-active"
+        d={route}
+        initial={shouldReduceMotion ? false : { pathLength: 0, opacity: 0.45 }}
+        animate={{ pathLength: 1, opacity: 1 }}
+        transition={{
+          pathLength: { duration: 1.2, delay: 0.35, ease: [0.23, 1, 0.32, 1] },
+          opacity: { duration: 0.3, delay: 0.25, ease: [0.23, 1, 0.32, 1] },
+        }}
+      />
+      <circle className="home-hero__route-origin" cx="42" cy="240" r="5" />
+      <motion.circle
+        className="home-hero__route-destination"
+        cx="500"
+        cy="55"
+        r="5"
+        initial={shouldReduceMotion ? false : { opacity: 0, transform: 'scale(0.92)' }}
+        animate={{ opacity: 1, transform: 'scale(1)' }}
+        transition={{ duration: 0.45, delay: 1.25, ease: [0.23, 1, 0.32, 1] }}
+      />
+    </svg>
+  );
+}
+
+function openContactDraft(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  const name = String(data.get('name') ?? '').trim();
+  const email = String(data.get('email') ?? '').trim();
+  const organisation = String(data.get('organisation') ?? '').trim();
+  const message = String(data.get('message') ?? '').trim();
+  const recipient = LINKS.email.replace(/^mailto:/, '');
+  const subject = organisation ? `INZBC enquiry from ${organisation}` : 'INZBC website enquiry';
+  const body = [
+    `Name: ${name}`,
+    `Email: ${email}`,
+    organisation ? `Organisation: ${organisation}` : '',
+    '',
+    message,
+  ]
+    .filter((line, index) => line || index === 3)
+    .join('\n');
+
+  window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 function HomeHeader() {
@@ -361,7 +414,6 @@ function HomeHeader() {
 function Hero() {
   return (
     <section className="home-hero" aria-labelledby="home-hero-title">
-      <div className="home-hero__grid" aria-hidden="true" />
       <div className="home-shell home-hero__layout">
         <div className="home-hero__copy">
           <div className="home-hero__status">
@@ -370,9 +422,9 @@ function Hero() {
             <span aria-hidden="true">/</span>
             Ratification pending
           </div>
-          <Eyebrow light>India &ndash; New Zealand trade since 1988</Eyebrow>
           <h1 id="home-hero-title" className="home-display home-hero__title">
-            New Zealand&rsquo;s gateway to the India opportunity.
+            <span>New Zealand&rsquo;s gateway</span>
+            <span>to the India opportunity.</span>
           </h1>
           <p className="home-hero__lede">
             INZBC connects exporters, investors, institutions and government across the
@@ -385,6 +437,10 @@ function Hero() {
               Join the council
             </Action>
           </div>
+          <a href="#fta-title" className="home-hero__corridor-cue home-focus-light">
+            <span>Follow the corridor</span>
+            <span className="home-hero__corridor-line" aria-hidden="true" />
+          </a>
         </div>
 
         <div className="home-hero__visual">
@@ -399,25 +455,13 @@ function Hero() {
               className="home-hero__image"
             />
             <div className="home-hero__image-shade" aria-hidden="true" />
-            <svg
-              aria-hidden="true"
-              className="home-hero__route"
-              viewBox="0 0 540 300"
-              fill="none"
-              focusable="false"
-            >
-              <path d="M42 240C166 245 210 74 356 83C420 87 455 126 500 55" />
-              <circle cx="42" cy="240" r="5" />
-              <circle cx="500" cy="55" r="5" />
-            </svg>
-            <div className="home-hero__route-label home-hero__route-label--start">
+            <HeroRoute />
+            <div aria-hidden="true" className="home-hero__route-label home-hero__route-label--start">
               New Zealand
             </div>
-            <div className="home-hero__route-label home-hero__route-label--end">India</div>
-          </div>
-          <div className="home-hero__year-card">
-            <span>Established</span>
-            <strong>1988</strong>
+            <div aria-hidden="true" className="home-hero__route-label home-hero__route-label--end">
+              India
+            </div>
           </div>
           <div className="home-hero__caption">
             <span>Auckland / July 2026</span>
@@ -443,17 +487,14 @@ export default function HomePage() {
         <section className="home-proof" aria-label="INZBC at a glance">
           <div className="home-shell home-proof__grid">
             <div className="home-proof__item">
-              <span className="home-proof__index">01</span>
               <p>Established</p>
               <strong>1988</strong>
             </div>
             <div className="home-proof__item">
-              <span className="home-proof__index">02</span>
               <p>Recognised by</p>
               <strong>New Zealand and India</strong>
             </div>
             <div className="home-proof__item">
-              <span className="home-proof__index">03</span>
               <p>Member network</p>
               <strong>200+ members</strong>
               <a
@@ -468,127 +509,26 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="home-intro home-section">
-          <div className="home-shell home-intro__layout">
-            <HomeReveal>
-              <Eyebrow>Why INZBC</Eyebrow>
-              <h2 className="home-heading home-intro__title">
-                The relationship is moving. Be in the room where it becomes practical.
-              </h2>
-            </HomeReveal>
-            <HomeReveal className="home-intro__copy">
-              <p className="home-lede-dark">
-                New Zealand&rsquo;s leading India trade and FTA platform, connecting business,
-                government and investors since 1988.
-              </p>
-              <p>
-                Members gain trade intelligence, policy access and the business networks to
-                engage with confidence across both countries.
-              </p>
-              <Action href="/executive-council" variant="text">
-                Meet the executive council
-              </Action>
-            </HomeReveal>
-          </div>
-          <div className="home-shell home-capabilities">
-            {[
-              ['Advocate', 'Trade policy and market access'],
-              ['Interpret', 'Market intelligence and FTA insight'],
-              ['Connect', 'Businesses across both countries'],
-            ].map(([title, body], index) => (
-              <HomeReveal key={title} className="home-capability">
-                <span>0{index + 1}</span>
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </HomeReveal>
-            ))}
-          </div>
-        </section>
-
-        <section className="home-pathways home-section" aria-labelledby="pathways-title">
-          <div className="home-shell">
-            <HomeReveal className="home-section-head">
-              <div>
-                <Eyebrow>Your starting point</Eyebrow>
-                <h2 id="pathways-title" className="home-heading">
-                  One relationship. Four ways in.
-                </h2>
-              </div>
-              <p>
-                Start with the question in front of you. The council connects each pathway
-                to the wider bilateral opportunity.
-              </p>
-            </HomeReveal>
-
-            <div className="home-pathways__grid">
-              {HOME_PATHWAYS.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <HomeReveal key={item.href}>
-                    <Link
-                      to={item.href}
-                      className={`home-pathway home-focus-dark${
-                        item.featured ? ' home-pathway--featured' : ''
-                      }`}
-                    >
-                      <div className="home-pathway__top">
-                        <span>{item.number}</span>
-                        <Icon aria-hidden="true" size={28} strokeWidth={1.45} />
-                      </div>
-                      <div>
-                        <h3>{item.title}</h3>
-                        <p>{item.body}</p>
-                      </div>
-                      <span className="home-pathway__link">
-                        Explore
-                        <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
-                      </span>
-                    </Link>
-                  </HomeReveal>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="home-fta home-section" aria-labelledby="fta-title">
-          <div className="home-fta__orb" aria-hidden="true" />
-          <div className="home-shell">
-            <HomeReveal className="home-fta__head">
-              <div>
-                <Eyebrow light>The new operating context</Eyebrow>
-                <h2 id="fta-title" className="home-heading home-heading--light">
-                  A signed agreement. A new field of possibility.
-                </h2>
-              </div>
-              <div className="home-fta__status-card">
-                <span>Current status</span>
-                <strong>Signed, not yet in force</strong>
-                <p>Awaiting domestic ratification in both countries.</p>
-              </div>
-            </HomeReveal>
-
-            <div className="home-fta__summary">
-              <p>
-                Signed in New Delhi, the agreement will eliminate or reduce tariffs across
-                95% of New Zealand&rsquo;s current export trade with India. Around 57% will
-                become duty-free when the agreement enters into force. Domestic implementation
-                is still underway.
-              </p>
-              <Action href="/fta">Understand the agreement</Action>
-            </div>
-
-            <div className="home-fta__stats">
-              {HOME_STATS.map((stat, index) => (
-                <div key={stat.label} className="home-stat">
-                  <span className="home-stat__index">0{index + 1}</span>
-                  <strong>{stat.figure}</strong>
-                  <h3>{stat.label}</h3>
-                  <p>{stat.note}</p>
-                </div>
-              ))}
-            </div>
-            <p className="home-fta__source">
+        <TradeThread
+          headingId="fta-title"
+          title="A signed agreement. A new field of possibility."
+          summary={
+            <p>
+              Signed in New Delhi, the agreement will eliminate or reduce tariffs across
+              95% of New Zealand&rsquo;s current export trade with India. Around 57% will
+              become duty-free when the agreement enters into force. Domestic implementation
+              is still underway.
+            </p>
+          }
+          status={{
+            label: 'Current status',
+            value: 'Signed, not yet in force',
+            note: 'Awaiting domestic ratification in both countries.',
+          }}
+          stats={HOME_STATS}
+          action={<Action href="/fta">Understand the agreement</Action>}
+          source={
+            <>
               Sources:{' '}
               <a
                 href="https://www.mfat.govt.nz/assets/Trade-agreements/NZ-India-FTA/NZ-India-FTA-National-Interest-Analysis-NIA.pdf"
@@ -608,14 +548,93 @@ export default function HomePage() {
                 New Zealand Parliament
               </a>
               .
-            </p>
+            </>
+          }
+        />
+
+        <section className="home-intro home-section">
+          <div className="home-shell home-intro__layout">
+            <HomeBlock>
+              <h2 className="home-heading home-intro__title">
+                The relationship is moving. Be in the room where it becomes practical.
+              </h2>
+            </HomeBlock>
+            <HomeBlock className="home-intro__copy">
+              <p className="home-lede-dark">
+                New Zealand&rsquo;s leading India trade and FTA platform, connecting business,
+                government and investors since 1988.
+              </p>
+              <p>
+                Members gain trade intelligence, policy access and the business networks to
+                engage with confidence across both countries.
+              </p>
+              <Action href="/executive-council" variant="text">
+                Meet the executive council
+              </Action>
+            </HomeBlock>
+          </div>
+          <div className="home-shell home-capabilities">
+            {[
+              ['Advocate', 'Trade policy and market access'],
+              ['Interpret', 'Market intelligence and FTA insight'],
+              ['Connect', 'Businesses across both countries'],
+            ].map(([title, body]) => (
+              <HomeBlock key={title} className="home-capability">
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </HomeBlock>
+            ))}
+          </div>
+        </section>
+
+        <section className="home-pathways home-section" aria-labelledby="pathways-title">
+          <div className="home-shell">
+            <HomeBlock className="home-section-head">
+              <div>
+                <h2 id="pathways-title" className="home-heading">
+                  One relationship. Four ways in.
+                </h2>
+              </div>
+              <p>
+                Start with the question in front of you. The council connects each pathway
+                to the wider bilateral opportunity.
+              </p>
+            </HomeBlock>
+
+            <div className="home-pathways__grid">
+              {HOME_PATHWAYS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <HomeBlock key={item.href}>
+                    <Link
+                      to={item.href}
+                      className={`home-pathway home-focus-dark${
+                        item.featured ? ' home-pathway--featured' : ''
+                      }`}
+                    >
+                      <div className="home-pathway__top">
+                        <span>{item.number}</span>
+                        <Icon aria-hidden="true" size={28} strokeWidth={1.45} />
+                      </div>
+                      <div>
+                        <h3>{item.title}</h3>
+                        <p>{item.body}</p>
+                      </div>
+                      <span className="home-pathway__link">
+                        Explore
+                        <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.8} />
+                      </span>
+                    </Link>
+                  </HomeBlock>
+                );
+              })}
+            </div>
           </div>
         </section>
 
         <section className="home-events home-section" aria-labelledby="events-title">
           <div className="home-shell home-events__layout">
-            <HomeReveal className="home-events__copy">
-              <Eyebrow>Make connections</Eyebrow>
+            <HomeBlock className="home-events__copy">
               <h2 id="events-title" className="home-heading">
                 The bilateral relationship is built face to face.
               </h2>
@@ -642,10 +661,10 @@ export default function HomePage() {
                 </span>
                 <ArrowUpRight aria-hidden="true" size={20} />
               </a>
-            </HomeReveal>
+            </HomeBlock>
 
-            <HomeReveal className="home-events__gallery">
-              <figure className="home-events__photo home-events__photo--main">
+            <figure className="home-events__gallery">
+              <div className="home-events__photo home-events__photo--main">
                 <img
                   src={EVENT_PHOTOS[0].src}
                   alt={EVENT_PHOTOS[0].alt}
@@ -653,8 +672,8 @@ export default function HomePage() {
                   height={EVENT_PHOTOS[0].height}
                   loading="lazy"
                 />
-              </figure>
-              <figure className="home-events__photo home-events__photo--small-one">
+              </div>
+              <div className="home-events__photo home-events__photo--small-one">
                 <img
                   src={EVENT_PHOTOS[1].src}
                   alt={EVENT_PHOTOS[1].alt}
@@ -662,8 +681,8 @@ export default function HomePage() {
                   height={EVENT_PHOTOS[1].height}
                   loading="lazy"
                 />
-              </figure>
-              <figure className="home-events__photo home-events__photo--small-two">
+              </div>
+              <div className="home-events__photo home-events__photo--small-two">
                 <img
                   src={EVENT_PHOTOS[2].src}
                   alt={EVENT_PHOTOS[2].alt}
@@ -671,19 +690,18 @@ export default function HomePage() {
                   height={EVENT_PHOTOS[2].height}
                   loading="lazy"
                 />
-              </figure>
-              <p className="home-events__gallery-caption">
+              </div>
+              <figcaption className="home-events__gallery-caption">
                 Indian Prime Minister Narendra Modi&rsquo;s official visit / Auckland / 10&ndash;11 July 2026
-              </p>
-            </HomeReveal>
+              </figcaption>
+            </figure>
           </div>
         </section>
 
         <section className="home-membership home-section" aria-labelledby="membership-title">
           <div className="home-membership__line" aria-hidden="true" />
           <div className="home-shell home-membership__layout">
-            <HomeReveal className="home-membership__copy">
-              <Eyebrow light>The network</Eyebrow>
+            <HomeBlock className="home-membership__copy">
               <h2 id="membership-title" className="home-heading home-heading--light">
                 Access is useful. The right access changes outcomes.
               </h2>
@@ -697,16 +715,15 @@ export default function HomePage() {
                   Become a member
                 </Action>
               </div>
-            </HomeReveal>
+            </HomeBlock>
             <div className="home-membership__benefits">
-              {BENEFITS.map(([lead, rest], index) => (
-                <HomeReveal key={lead} className="home-benefit">
-                  <span>0{index + 1}</span>
+              {BENEFITS.map(([lead, rest]) => (
+                <HomeBlock key={lead} className="home-benefit">
                   <div>
                     <h3>{lead}</h3>
                     <p>{rest}</p>
                   </div>
-                </HomeReveal>
+                </HomeBlock>
               ))}
             </div>
           </div>
@@ -714,9 +731,8 @@ export default function HomePage() {
 
         <section className="home-intelligence home-section" aria-labelledby="intelligence-title">
           <div className="home-shell">
-            <HomeReveal className="home-section-head home-section-head--wide">
+            <HomeBlock className="home-section-head home-section-head--wide">
               <div>
-                <Eyebrow>Intelligence for the corridor</Eyebrow>
                 <h2 id="intelligence-title" className="home-heading">
                   Read what is changing &mdash; and what it means.
                 </h2>
@@ -724,10 +740,10 @@ export default function HomePage() {
               <Action href="/publications" variant="outline-dark">
                 All publications
               </Action>
-            </HomeReveal>
+            </HomeBlock>
 
             <div className="home-intelligence__grid">
-              <HomeReveal className="home-publication home-publication--report">
+              <HomeBlock className="home-publication home-publication--report">
                 <div className="home-publication__cover">
                   <img
                     src={ART.reportCover}
@@ -743,9 +759,9 @@ export default function HomePage() {
                     Read the report
                   </Action>
                 </div>
-              </HomeReveal>
+              </HomeBlock>
 
-              <HomeReveal className="home-publication home-publication--magazine">
+              <HomeBlock className="home-publication home-publication--magazine">
                 <div className="home-publication__copy">
                   <span className="home-card-kicker">The INZBC magazine</span>
                   <h3>Kia Ora India</h3>
@@ -761,7 +777,7 @@ export default function HomePage() {
                     loading="lazy"
                   />
                 </div>
-              </HomeReveal>
+              </HomeBlock>
 
               <div className="home-news-card">
                 <img
@@ -799,16 +815,15 @@ export default function HomePage() {
 
         <section className="home-partners home-section" aria-labelledby="partners-title">
           <div className="home-shell">
-            <HomeReveal className="home-partners__head">
-              <Eyebrow>Backed by the relationship</Eyebrow>
+            <HomeBlock className="home-partners__head">
               <h2 id="partners-title" className="home-heading">
                 Partners and supporters
               </h2>
               <p>Organisations supporting INZBC&rsquo;s work across the NZ&ndash;India corridor.</p>
-            </HomeReveal>
+            </HomeBlock>
 
             <div className="home-partners__groups">
-              <HomeReveal className="home-partners__group">
+              <HomeBlock className="home-partners__group">
                 <div className="home-partners__group-head">
                   <span>Business network</span>
                   <p>Strategic, partner and associate relationships</p>
@@ -836,9 +851,9 @@ export default function HomePage() {
                     </a>
                   ))}
                 </div>
-              </HomeReveal>
+              </HomeBlock>
 
-              <HomeReveal className="home-partners__group home-partners__group--india">
+              <HomeBlock className="home-partners__group home-partners__group--india">
                 <div className="home-partners__group-head">
                   <span>India industry network</span>
                   <p>Relationships that extend the council&rsquo;s reach on the ground</p>
@@ -866,7 +881,7 @@ export default function HomePage() {
                     </a>
                   ))}
                 </div>
-              </HomeReveal>
+              </HomeBlock>
             </div>
 
             <section className="home-partners__stakeholders" aria-label="Public sector and industry stakeholders">
@@ -895,31 +910,30 @@ export default function HomePage() {
 
         <section className="home-conversion" aria-labelledby="conversion-title">
           <div className="home-shell">
-            <HomeReveal className="home-conversion__lead">
-              <Eyebrow light>Move with the relationship</Eyebrow>
+            <HomeBlock className="home-conversion__lead">
               <h2 id="conversion-title" className="home-display home-conversion__title">
                 Your next India conversation can start here.
               </h2>
-            </HomeReveal>
+            </HomeBlock>
 
             <div className="home-conversion__grid">
-              <HomeReveal className="home-conversion-card home-conversion-card--lime">
+              <HomeBlock className="home-conversion-card home-conversion-card--lime">
                 <span className="home-card-kicker">Membership</span>
                 <h3>Join the council</h3>
                 <p>Connect your organisation to the people and intelligence shaping the corridor.</p>
                 <Action href={LINKS.join} variant="outline-dark">
                   Become a member
                 </Action>
-              </HomeReveal>
+              </HomeBlock>
 
-              <HomeReveal className="home-conversion-card home-conversion-card--plum">
+              <HomeBlock className="home-conversion-card home-conversion-card--plum">
                 <span className="home-card-kicker">Stay informed</span>
                 <h3>Trade updates, in your inbox</h3>
                 <p>FTA developments, council news and event announcements.</p>
                 <Action href={LINKS.subscribe} variant="outline-light">
                   Subscribe
                 </Action>
-              </HomeReveal>
+              </HomeBlock>
 
               <div className="home-conversion-card home-conversion-card--contact">
                 <div className="home-contact-intro">
@@ -936,48 +950,63 @@ export default function HomePage() {
                   className="home-contact-form"
                   aria-labelledby="home-contact-form-title"
                   aria-describedby="home-contact-form-status"
+                  onSubmit={openContactDraft}
                 >
                   <div className="home-contact-form__head">
                     <h4 id="home-contact-form-title">Send an enquiry</h4>
-                    <span>Preview</span>
+                    <span>Email draft</span>
                   </div>
-                  <fieldset disabled>
-                    <div className="home-contact-form__grid">
-                      <label>
-                        <span>Name</span>
-                        <input type="text" name="name" autoComplete="name" placeholder="Your name" />
-                      </label>
-                      <label>
-                        <span>Work email</span>
-                        <input type="email" name="email" autoComplete="email" placeholder="you@company.com" />
-                      </label>
-                      <label className="home-contact-form__wide">
-                        <span>Organisation</span>
-                        <input
-                          type="text"
-                          name="organisation"
-                          autoComplete="organization"
-                          placeholder="Company or organisation"
-                        />
-                      </label>
-                      <label className="home-contact-form__wide">
-                        <span>How can we help?</span>
-                        <textarea name="message" rows={4} placeholder="Tell us what you are working on" />
-                      </label>
-                    </div>
-                  </fieldset>
+                  <div className="home-contact-form__grid">
+                    <label>
+                      <span>Name</span>
+                      <input
+                        type="text"
+                        name="name"
+                        autoComplete="name"
+                        maxLength={80}
+                        placeholder="Your name"
+                        required
+                      />
+                    </label>
+                    <label>
+                      <span>Work email</span>
+                      <input
+                        type="email"
+                        name="email"
+                        autoComplete="email"
+                        maxLength={254}
+                        placeholder="you@company.com"
+                        required
+                      />
+                    </label>
+                    <label className="home-contact-form__wide">
+                      <span>Organisation</span>
+                      <input
+                        type="text"
+                        name="organisation"
+                        autoComplete="organization"
+                        maxLength={120}
+                        placeholder="Company or organisation"
+                      />
+                    </label>
+                    <label className="home-contact-form__wide">
+                      <span>How can we help?</span>
+                      <textarea
+                        name="message"
+                        rows={4}
+                        maxLength={600}
+                        placeholder="Tell us what you are working on"
+                        required
+                      />
+                    </label>
+                  </div>
                   <div className="home-contact-form__footer">
-                    <button type="submit" disabled aria-describedby="home-contact-form-status">
-                      Send enquiry
+                    <button type="submit" aria-describedby="home-contact-form-status">
+                      Prepare email
                       <ArrowRight aria-hidden="true" size={17} />
                     </button>
                     <p id="home-contact-form-status">
-                      <Todo>[[Form connection pending.]]</Todo>{' '}
-                      For now,{' '}
-                      <a href={LINKS.email} className="home-focus-light">
-                        email the Secretariat
-                      </a>
-                      .
+                      Opens your email app with these details ready to review and send.
                     </p>
                   </div>
                 </form>
