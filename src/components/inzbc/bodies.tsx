@@ -457,17 +457,9 @@ function MembershipBody() {
 /* --- Connect -------------------------------------------------------------------------- */
 
 function ConnectBody() {
-  const socials = [
-    { name: 'LinkedIn', href: LINKS.linkedin },
-    { name: 'Facebook', href: LINKS.facebook },
-    { name: 'YouTube', href: LINKS.youtube },
-    { name: 'X', href: LINKS.x },
-    { name: 'Flickr', href: LINKS.flickr },
-  ];
-
   return (
     <>
-      <section className="bg-white px-6 py-20">
+      <section className="bg-white px-6 pb-8 pt-20">
         <div className="mx-auto grid max-w-6xl gap-14 md:grid-cols-2">
           <Reveal>
             <h2 className="font-heading text-3xl text-ink md:text-4xl">Contact</h2>
@@ -507,17 +499,6 @@ function ConnectBody() {
             <p className="mt-6 text-sm text-foreground">
               Email is the preferred way to reach the secretariat.
             </p>
-
-            <h3 className="mt-10 font-heading text-xl text-ink">Follow INZBC</h3>
-            <ul className="mt-3 space-y-2 text-sm">
-              {socials.map((s) => (
-                <li key={s.name}>
-                  <TextLink href={s.href} external>
-                    {s.name}
-                  </TextLink>
-                </li>
-              ))}
-            </ul>
           </Reveal>
 
           <Reveal delay={0.1}>
@@ -546,8 +527,13 @@ function ConnectBody() {
           icons (Facebook/Linkedin/Twitter/Youtube) are marked deprecated upstream but present
           and working in the pinned lucide-react@0.487.0 (verified against that version's
           published types), so used as-is rather than hand-drawing inline SVGs for four
-          standard glyphs. */}
-      <section className="bg-white px-6 py-20">
+          standard glyphs.
+
+          pt-8, not py-20 like the section above it: both are bg-white with no visual seam
+          between them, so their two py-20s stacked (160px) read as one big dead gap rather
+          than two padded sections — tightened just this shared edge, not the section's own
+          bottom padding. */}
+      <section className="bg-white px-6 pb-20 pt-8">
         <div className="mx-auto max-w-5xl">
           <Reveal>
             <h2 className="text-center font-heading text-3xl text-ink md:text-4xl">
