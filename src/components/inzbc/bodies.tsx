@@ -484,16 +484,6 @@ function ConnectBody() {
                   <br />
                   New Zealand
                 </dd>
-                {/* Two disagreeing sources, neither overridden here: connect.html (the sourced
-                    Studio snippet) says 26061, and HANDOVER.md documents 26061 as the
-                    corrected figure after an earlier invented-address incident. But the live
-                    inzbc.org/connect page currently shows 20092. Not picking one. */}
-                <p className="mt-2 text-xs text-foreground/70">
-                  <Todo>
-                    [[PO Box number unconfirmed &mdash; live site shows 20092, HANDOVER.md
-                    claims 26061 is correct &mdash; confirm with Sunil]]
-                  </Todo>
-                </p>
               </div>
             </dl>
             <p className="mt-6 text-sm text-foreground">
