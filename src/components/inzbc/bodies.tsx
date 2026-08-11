@@ -472,6 +472,17 @@ function ConnectBody() {
                   <br />
                   <TextLink href={LINKS.email}>Secretariat@inzbc.org</TextLink>
                 </dd>
+                {/* Live inzbc.org/connect currently shows different titles/contacts entirely
+                    ("General Manager: Sunil Kaushal, Gm@inzbc.org, +64 9 574 5220" and a
+                    second contact, "Edwin Paul, Chair@inzbc.org"). Not changing the sourced
+                    Sunil/Secretariat details above — flagging the conflict instead, same
+                    treatment as the postal address conflict. */}
+                <p className="mt-2 text-xs text-foreground/70">
+                  <Todo>
+                    [[Contact title/email inconsistency on live site &mdash; confirm current
+                    correct details with Sunil]]
+                  </Todo>
+                </p>
               </div>
               <div>
                 <dt className="font-semibold text-ink">Postal address</dt>
