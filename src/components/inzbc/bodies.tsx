@@ -1,5 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {
+  Facebook as FacebookIcon,
+  Linkedin as LinkedinIcon,
+  Twitter as TwitterIcon,
+  Youtube as YoutubeIcon,
+} from 'lucide-react';
 import { Reveal } from './motion';
 import { ART, BENEFITS, LINKS } from './content';
 
@@ -529,6 +535,48 @@ function ConnectBody() {
               </p>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* Blob-shaped icon cards, modernised from the live site's dated blue-gradient version:
+          current palette tokens instead (navy/plum/forest/ink, all dark enough for a white
+          icon+label per HANDOVER.md's rule that lime never carries light text/icons, so lime
+          isn't one of the four). Labels are the live site's own real copy. Lucide's brand
+          icons (Facebook/Linkedin/Twitter/Youtube) are marked deprecated upstream but present
+          and working in the pinned lucide-react@0.487.0 (verified against that version's
+          published types), so used as-is rather than hand-drawing inline SVGs for four
+          standard glyphs. */}
+      <section className="bg-white px-6 py-20">
+        <div className="mx-auto max-w-5xl">
+          <Reveal>
+            <h2 className="text-center font-heading text-3xl text-ink md:text-4xl">
+              Follow INZBC
+            </h2>
+          </Reveal>
+          <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4">
+            {[
+              { name: 'Twitter', Icon: TwitterIcon, href: LINKS.x, label: 'Follow us on Twitter', bg: 'bg-navy' },
+              { name: 'LinkedIn', Icon: LinkedinIcon, href: LINKS.linkedin, label: 'Connect with us on LinkedIn', bg: 'bg-plum' },
+              { name: 'YouTube', Icon: YoutubeIcon, href: LINKS.youtube, label: 'Watch our videos on YouTube', bg: 'bg-forest' },
+              { name: 'Facebook', Icon: FacebookIcon, href: LINKS.facebook, label: 'Find us on Facebook', bg: 'bg-ink' },
+            ].map((social, i) => (
+              <Reveal key={social.name} delay={i * 0.06}>
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`group flex flex-col items-center gap-4 rounded-sm ${FOCUS}`}
+                >
+                  <span
+                    className={`flex h-24 w-24 items-center justify-center rounded-[60%_40%_30%_70%/60%_30%_70%_40%] transition-transform duration-300 group-hover:scale-105 group-hover:rounded-[40%_60%_70%_30%/50%_60%_30%_50%] ${social.bg}`}
+                  >
+                    <social.Icon aria-hidden="true" size={30} strokeWidth={1.8} className="text-white" />
+                  </span>
+                  <span className="text-center text-sm font-medium text-ink">{social.label}</span>
+                </a>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
