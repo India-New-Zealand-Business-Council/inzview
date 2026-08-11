@@ -1266,13 +1266,13 @@ function DirectoryBody() {
             </Btn>
           </p>
 
-          <h2 className="mt-14 font-heading text-3xl text-ink md:text-4xl">For members</h2>
+          <h2 className="mt-14 font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">For members</h2>
           <p className="mt-4 text-foreground">
             Log in to Member Jungle to update your profile, manage renewals and access
             member-only resources. This site does not store membership data.
           </p>
 
-          <h2 className="mt-14 font-heading text-3xl text-ink md:text-4xl">
+          <h2 className="mt-14 font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
             Not a member yet?
           </h2>
           <p className="mt-4 text-foreground">
@@ -1305,7 +1305,7 @@ function EventsPastBody() {
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">Event archive</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Event archive</h2>
             <p className="mt-4 text-foreground">
               <Todo>
                 [[Confirm which past event reports (2017&ndash;2021) carry over. Link to
