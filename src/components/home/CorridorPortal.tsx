@@ -5,6 +5,8 @@ import './CorridorPortal.css';
 export type CorridorPortalProps = Readonly<{
   imageSrc: string;
   imagePosition?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   originLabel: string;
   destinationLabel: string;
 }>;
@@ -23,6 +25,8 @@ const RESOLVED_TRANSFORM = 'translate3d(0, 0, 0) scale(1)';
 export default function CorridorPortal({
   imageSrc,
   imagePosition = 'center',
+  imageWidth = 1200,
+  imageHeight = 1600,
   originLabel,
   destinationLabel,
 }: CorridorPortalProps) {
@@ -37,9 +41,9 @@ export default function CorridorPortal({
     scrollYProgress,
     [0.06, 0.24, 0.58],
     [
-      'inset(0% 0% 0% 0% round 28px)',
-      'inset(0% 0% 0% 0% round 28px)',
-      'inset(45% 46% 45% 46% round 999px)',
+      'circle(75% at 50% 50%)',
+      'circle(75% at 50% 50%)',
+      'circle(6% at 50% 50%)',
     ],
     { clamp: true },
   );
@@ -85,7 +89,7 @@ export default function CorridorPortal({
 
   const photoStyle = reducedMotion
     ? {
-        clipPath: 'inset(45% 46% 45% 46% round 999px)',
+        clipPath: 'circle(6% at 50% 50%)',
         transform: 'translate3d(0, 0, 0) scale(1.06)',
       }
     : { clipPath: photoClip, transform: photoTransform };
@@ -108,17 +112,19 @@ export default function CorridorPortal({
     <div ref={portalRef} className="home-corridor-portal" aria-hidden="true">
       <div className="home-shell home-corridor-portal__frame">
         <div className="home-corridor-portal__canvas">
-          <motion.div className="home-corridor-portal__photo" style={photoStyle}>
-            <img
-              src={imageSrc}
-              alt=""
-              width="1200"
-              height="1600"
-              loading="lazy"
-              style={{ objectPosition: imagePosition }}
-            />
-            <span className="home-corridor-portal__photo-shade" />
-          </motion.div>
+          <div className="home-corridor-portal__photo-anchor">
+            <motion.div className="home-corridor-portal__photo" style={photoStyle}>
+              <img
+                src={imageSrc}
+                alt=""
+                width={imageWidth}
+                height={imageHeight}
+                loading="lazy"
+                style={{ objectPosition: imagePosition }}
+              />
+              <span className="home-corridor-portal__photo-shade" />
+            </motion.div>
+          </div>
 
           <motion.div className="home-corridor-portal__field" style={fieldStyle}>
             <svg
@@ -132,14 +138,6 @@ export default function CorridorPortal({
                 className="home-corridor-portal__route-active"
                 d={DESKTOP_ROUTE}
                 style={routeStyle}
-              />
-              <circle className="home-corridor-portal__origin-ring" cx="320" cy="240" r="34" />
-              <motion.circle
-                className="home-corridor-portal__destination"
-                cx="1015"
-                cy="145"
-                r="7"
-                style={destinationStyle}
               />
             </svg>
 
@@ -155,15 +153,13 @@ export default function CorridorPortal({
                 d={MOBILE_ROUTE}
                 style={routeStyle}
               />
-              <circle className="home-corridor-portal__origin-ring" cx="209" cy="150" r="23" />
-              <motion.circle
-                className="home-corridor-portal__destination"
-                cx="580"
-                cy="304"
-                r="6"
-                style={destinationStyle}
-              />
             </svg>
+
+            <span className="home-corridor-portal__origin-marker" />
+            <motion.span
+              className="home-corridor-portal__destination-marker"
+              style={destinationStyle}
+            />
 
             <motion.span
               className="home-corridor-portal__country home-corridor-portal__country--origin"
