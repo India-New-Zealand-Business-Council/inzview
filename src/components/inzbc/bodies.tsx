@@ -222,7 +222,7 @@ function EventsBody() {
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">Upcoming events</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Upcoming events</h2>
             <p className="mt-4 max-w-2xl text-foreground">
               <Todo>
                 [[Event listings &mdash; title, date, venue and a register link for each.
@@ -264,7 +264,7 @@ function EventsBody() {
       <section className="bg-mist px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">Past events</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Past events</h2>
             <p className="mt-4 max-w-2xl text-foreground">
               Reports, recordings and photographs from previous INZBC events.
             </p>
