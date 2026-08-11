@@ -590,14 +590,47 @@ function ConnectBody() {
         </div>
       </section>
 
-      {/* No sourced snippet mentions promotional videos, and no video component exists
-          anywhere in this codebase (motion.tsx, Sections.tsx) to build one against — this is
-          a marker, not a build, per the instruction not to stand up a video system for one
-          page. */}
-      <section className="bg-white px-6 py-10 text-center">
-        <p className="text-sm text-foreground/70">
-          <Todo>[[Promotional videos &mdash; future addition, no video component built yet.]]</Todo>
-        </p>
+      {/* No legacy/wix-studio snippet mentions promotional videos, so these are sourced
+          directly from the live page's own schema.org VideoObject structured data (real IDs
+          and titles, not invented) rather than left as a marker, now that real content is
+          available. Linked thumbnail + "Watch on YouTube" rather than a live iframe: no
+          embed pattern exists anywhere in this codebase to build against, four autoplaying
+          iframes would be a real page-weight cost, and thumbnails can be verified statically
+          where iframe rendering cannot be, in an environment with no browser access. */}
+      <section className="bg-white px-6 py-20">
+        <div className="mx-auto max-w-6xl">
+          <Reveal>
+            <h2 className="text-center font-heading text-3xl text-ink md:text-4xl">
+              INZBC on YouTube
+            </h2>
+          </Reveal>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { id: 'sQ2vE96V7s8', title: 'INZBC SUMMIT 2018 - Highlights' },
+              { id: 'D82PuQR--hU', title: 'Summit 2019 Highlights' },
+              { id: '-8TjFht41p4', title: 'INZBC Video Events Highlights 2014-17' },
+              { id: 'mlRXLKGi4cE', title: 'Economic impact of COVID19 on NZ India trade relations.' },
+            ].map((video, i) => (
+              <Reveal key={video.id} delay={i * 0.06}>
+                <a
+                  href={`https://www.youtube.com/watch?v=${video.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`block rounded-2xl bg-mist p-4 transition-transform hover:scale-[1.02] ${FOCUS}`}
+                >
+                  <img
+                    src={`https://i.ytimg.com/vi/${video.id}/mqdefault.jpg`}
+                    alt=""
+                    loading="lazy"
+                    className="w-full rounded-lg"
+                  />
+                  <p className="mt-3 text-sm font-medium text-ink">{video.title}</p>
+                  <p className="mt-1 text-xs text-plum">Watch on YouTube</p>
+                </a>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </section>
     </>
   );
