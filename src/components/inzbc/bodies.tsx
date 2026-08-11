@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Facebook as FacebookIcon,
@@ -120,6 +120,80 @@ function TextLink({ href, children, external = false }: { href: string; children
     <a href={href} className={cls} target="_blank" rel="noopener noreferrer">
       {children}
     </a>
+  );
+}
+
+/**
+ * The real contact form's replacement until a Wix Form exists: real, labelled fields (First
+ * name, Last name, Email, Subject, Message — the exact set connect.html's own sourced snippet
+ * specifies), submitted via a mailto: link built from what was actually typed, rather than a
+ * flat "email us" button that discards it. This is not a real submission — nothing reaches
+ * the secretariat until they open their own mail client and hit send — so it stays truthful
+ * about that in its one line of copy, rather than implying the message has already gone
+ * anywhere.
+ */
+function ContactForm() {
+  const [fields, setFields] = useState({ firstName: '', lastName: '', email: '', subject: '', message: '' });
+  const set = (key: keyof typeof fields) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setFields((f) => ({ ...f, [key]: e.target.value }));
+
+  const body = [
+    `${fields.firstName} ${fields.lastName}`.trim(),
+    fields.email ? `Reply to: ${fields.email}` : '',
+    '',
+    fields.message,
+  ]
+    .filter(Boolean)
+    .join('\n');
+  const mailto = `${LINKS.email}?subject=${encodeURIComponent(fields.subject || 'Message from inzbc.org')}&body=${encodeURIComponent(body)}`;
+
+  const inputCls =
+    'mt-1 w-full rounded-md border border-ink/15 bg-white px-3 py-2 text-sm text-ink placeholder:text-foreground/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
+  const labelCls = 'text-xs font-medium text-ink';
+
+  return (
+    <form
+      className="mt-3 space-y-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+        window.location.href = mailto;
+      }}
+    >
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className={labelCls}>
+          First name
+          <input type="text" required value={fields.firstName} onChange={set('firstName')} className={inputCls} />
+        </label>
+        <label className={labelCls}>
+          Last name
+          <input type="text" required value={fields.lastName} onChange={set('lastName')} className={inputCls} />
+        </label>
+      </div>
+      <label className={`block ${labelCls}`}>
+        Email
+        <input type="email" required value={fields.email} onChange={set('email')} className={inputCls} />
+      </label>
+      <label className={`block ${labelCls}`}>
+        Subject
+        <input type="text" required value={fields.subject} onChange={set('subject')} className={inputCls} />
+      </label>
+      <label className={`block ${labelCls}`}>
+        Message
+        <textarea required rows={4} value={fields.message} onChange={set('message')} className={inputCls} />
+      </label>
+      <p className="text-xs text-foreground/60">
+        <Todo>
+          [[Not a real submission yet &mdash; needs a Wix Form so this reaches the Secretariat
+          inbox directly. For now, sending opens your own email client with this pre-filled.]]
+        </Todo>
+      </p>
+      <button
+        type="submit"
+        className={`inline-flex items-center rounded-full border border-ink/25 px-6 py-3 text-sm font-medium text-ink transition-transform duration-200 hover:bg-mist active:scale-[0.97] ${FOCUS}`}
+      >
+        Send message
+      </button>
+    </form>
   );
 }
 
@@ -526,16 +600,9 @@ function ConnectBody() {
           <Reveal delay={0.1}>
             <div className="rounded-2xl bg-mist p-8">
               <h2 className="font-heading text-2xl text-ink">Send a message</h2>
-              <p className="mt-3 text-sm text-foreground">
-                <Todo>
-                  [[Contact form &mdash; needs a Wix Form so submissions reach the
-                  Secretariat inbox. Fields: First name, Last name, Email, Subject, Message.
-                  A form posting nowhere is worse than none, so this links to email until it
-                  exists.]]
-                </Todo>
-              </p>
-              <p className="mt-7">
-                <Btn href={LINKS.email}>Email the secretariat</Btn>
+              <ContactForm />
+              <p className="mt-5 text-sm text-foreground">
+                Prefer email directly? <TextLink href={LINKS.email}>Email the secretariat</TextLink>.
               </p>
             </div>
           </Reveal>
