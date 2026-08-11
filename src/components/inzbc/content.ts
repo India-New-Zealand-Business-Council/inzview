@@ -15,7 +15,7 @@ export const LINKS = {
   facebookAlbums: 'https://www.facebook.com/inzbc/photos?tab=albums',
   flickr: 'https://www.flickr.com/photos/inzbc/',
   youtube: 'https://www.youtube.com/channel/UC9MQW-VliLqOdT4GUktKfZQ',
-  linkedin: 'https://www.linkedin.com/company/india-new-zealand-business-council/',
+  linkedin: 'https://www.linkedin.com/company/inzbc/posts/?feedView=all',
   x: 'https://x.com/inzbc',
   email: 'mailto:Secretariat@inzbc.org',
 } as const;
