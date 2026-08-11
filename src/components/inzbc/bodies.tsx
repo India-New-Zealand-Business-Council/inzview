@@ -880,6 +880,17 @@ function PublicationsBody() {
       body: 'Member businesses and the people moving between the two markets.',
       href: LINKS.kiaOraIssuu,
     },
+    {
+      // Sourced from inzbc.org/publications (12 Aug 2026) - a real, distinct sector report
+      // cover, not previously in ART. No Issuu link or description found for it, so those
+      // stay [[placeholder]] below rather than guessed.
+      cover: ART.pharmaReportCover,
+      alt: 'Cover of an INZBC pharmaceutical sector report',
+      title: 'Pharma sector report',
+      sub: null,
+      body: null,
+      href: null,
+    },
   ];
 
   return (
@@ -907,25 +918,44 @@ function PublicationsBody() {
                   />
                   <div>
                     <h3 className="font-heading text-2xl text-ink">{pub.title}</h3>
-                    <p className="mt-1 text-sm text-plum">{pub.sub}</p>
-                    <p className="mt-3 text-sm text-foreground">{pub.body}</p>
-                    <p className="mt-5">
-                      <Btn href={pub.href} external>
-                        Read on Issuu
-                      </Btn>
+                    {pub.sub ? <p className="mt-1 text-sm text-plum">{pub.sub}</p> : null}
+                    <p className="mt-3 text-sm text-foreground">
+                      {pub.body ?? (
+                        <Todo>[[Description and where to read it &mdash; confirm with INZBC before publish.]]</Todo>
+                      )}
                     </p>
+                    {pub.href ? (
+                      <p className="mt-5">
+                        <Btn href={pub.href} external>
+                          Read on Issuu
+                        </Btn>
+                      </p>
+                    ) : null}
                   </div>
                 </article>
               </Reveal>
             ))}
             <Reveal delay={0.16}>
-              <article className="rounded-2xl bg-mist p-7">
-                <h3 className="font-heading text-xl text-ink">India Report 2.0</h3>
-                <p className="mt-2 text-sm text-foreground">
-                  <Todo>
-                    [[Description, date and file &mdash; confirm with INZBC before publish.]]
-                  </Todo>
-                </p>
+              <article className="flex gap-6 rounded-2xl bg-mist p-7">
+                {/* Sourced from inzbc.org/publications (12 Aug 2026) - "INZBC Report 2025
+                    Digital-001.png", a different file than ART.reportCover, so likely this
+                    report's real cover rather than a duplicate. Not certain, hence still
+                    [[placeholder]] below rather than asserting it as confirmed. */}
+                <img
+                  src={ART.reportCover2025}
+                  alt="Cover of India Report 2.0"
+                  loading="lazy"
+                  className="h-auto w-20 flex-none rounded-lg shadow-lg"
+                />
+                <div>
+                  <h3 className="font-heading text-xl text-ink">India Report 2.0</h3>
+                  <p className="mt-2 text-sm text-foreground">
+                    <Todo>
+                      [[Description, date and file &mdash; confirm with INZBC before publish.
+                      Cover image found on the live site; not confirmed as final.]]
+                    </Todo>
+                  </p>
+                </div>
               </article>
             </Reveal>
           </div>

@@ -25,6 +25,8 @@ export const ART = {
   heroPhoto: 'https://static.wixstatic.com/media/df219d_85f777cc8d624bc2b4ea81783f71df24~mv2.jpg',
   heroBanner: 'https://static.wixstatic.com/media/df219d_83e2d493f8b8499c8ef83fddd27208b8~mv2.jpg',
   reportCover: 'https://static.wixstatic.com/media/df219d_60093c58a989446681ae38ad6efe3a94~mv2.png',
+  reportCover2025: 'https://static.wixstatic.com/media/df219d_4ffc59bcc17b482ba5850f648d232e29~mv2.png',
+  pharmaReportCover: 'https://static.wixstatic.com/media/df219d_08ef7a8c3e724d6783a24cd1c5dbcc4f~mv2.jpg',
   kiaOraCover: 'https://static.wixstatic.com/media/df219d_3ac94d17fa9a42eeaef1597686fe952d~mv2.jpg',
   partnerStrip: 'https://static.wixstatic.com/media/df219d_5350f10f4b714eddae1958abfd3c39d5~mv2.jpg',
   magazineSpread: 'https://static.wixstatic.com/media/df219d_1b53b12ca8af4cfd970a2093bdee7009~mv2.png',
