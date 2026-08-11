@@ -4,6 +4,7 @@ import { Reveal, ScrollProgress, StickyHeader } from './motion';
 import { ART, LINKS } from './content';
 import { NAV, type PageDef } from './pages';
 import { BODIES } from './bodies';
+import Footer from './Footer';
 
 /**
  * Every destination other than the homepage.
@@ -69,6 +70,8 @@ export default function InnerPage({ page }: { page: PageDef }) {
           </section>
         )}
       </main>
+
+      <Footer />
     </div>
   );
 }
