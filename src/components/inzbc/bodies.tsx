@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Reveal } from './motion';
 import { ART, BENEFITS, LINKS } from './content';
+import SocialFeeds from './SocialFeeds';
 
 /**
  * The migrated bodies for the inner routes, carried over from the Studio build's section
@@ -580,37 +581,13 @@ function ConnectBody() {
         </div>
       </section>
 
-      {/* Fallback for where the live Twitter/Facebook feed boxes would go on the reference.
-          Not building the real embeds: no browser access this session to verify either
-          renders, and X's timeline widget specifically has a documented reliability problem
-          industry-wide since 2023, independent of implementation. A verifiable static link
-          beats an unverifiable live one. Same blob treatment as the row above, same colours
-          per platform (navy for Twitter, ink for Facebook), just larger. */}
+      {/* Real, live Twitter/X and Facebook embeds — official public embed methods
+          (SocialFeeds.tsx), not the old site's POWr app. Not visually verified this session;
+          see that file's own comment for the full reasoning and what the fallback state is
+          if either script fails to load. */}
       <section className="bg-mist px-6 py-20">
-        <div className="mx-auto grid max-w-3xl gap-8 sm:grid-cols-2">
-          {[
-            { name: 'Twitter', Icon: TwitterIcon, href: LINKS.x, bg: 'bg-navy' },
-            { name: 'Facebook', Icon: FacebookIcon, href: LINKS.facebook, bg: 'bg-ink' },
-          ].map((social, i) => (
-            <Reveal key={social.name} delay={i * 0.08}>
-              <a
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group flex flex-col items-center gap-5 rounded-2xl bg-white p-10 text-center shadow-sm transition-shadow hover:shadow-md ${FOCUS}`}
-              >
-                <span
-                  className={`flex h-32 w-32 items-center justify-center rounded-[60%_40%_30%_70%/60%_30%_70%_40%] transition-transform duration-300 group-hover:scale-105 group-hover:rounded-[40%_60%_70%_30%/50%_60%_30%_50%] ${social.bg}`}
-                >
-                  <social.Icon aria-hidden="true" size={40} strokeWidth={1.8} className="text-white" />
-                </span>
-                <span>
-                  <span className="block font-heading text-lg text-ink">Follow us on {social.name}</span>
-                  <span className="mt-1 block text-sm text-plum">View our latest posts</span>
-                </span>
-              </a>
-            </Reveal>
-          ))}
+        <div className="mx-auto max-w-3xl">
+          <SocialFeeds />
         </div>
       </section>
 
