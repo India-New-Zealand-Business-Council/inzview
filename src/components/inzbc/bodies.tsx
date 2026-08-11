@@ -311,7 +311,7 @@ function MembershipBody() {
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <h2 className="text-center font-heading text-3xl text-ink md:text-4xl">
+            <h2 className="text-center font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
               Why members join
             </h2>
           </Reveal>
@@ -330,7 +330,7 @@ function MembershipBody() {
       <section className="bg-mist px-6 py-20 text-center">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">Membership tiers</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Membership tiers</h2>
             <p className="mt-4 text-foreground">
               <Todo>
                 [[New fee structure from 1 Jan 2026 &mdash; request final tiers/pricing from
@@ -346,12 +346,17 @@ function MembershipBody() {
         </div>
       </section>
 
-      <section className="bg-ink px-6 py-24">
-        <div className="mx-auto max-w-6xl">
+      <section className="relative overflow-hidden bg-ink px-6 py-24">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-1/4 top-0 h-[30rem] w-[30rem] rounded-full opacity-35 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgba(97,20,95,0.9), transparent)' }}
+        />
+        <div className="relative mx-auto max-w-6xl">
           <div className="grid items-start gap-12 md:grid-cols-2">
             <Reveal>
               <p className="mb-3 text-xs uppercase tracking-[0.18em] text-lime">The network</p>
-              <h2 className="font-heading text-3xl text-white md:text-4xl">
+              <h2 className="font-heading text-3xl font-semibold tracking-tight text-white md:text-4xl">
                 Who you meet by joining
               </h2>
               <p className="mt-5 max-w-md text-white/75">
@@ -405,7 +410,7 @@ function MembershipBody() {
       <section className="bg-mist px-6 py-20 text-center">
         <div className="mx-auto max-w-2xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">Member directory</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Member directory</h2>
             <p className="mt-4 text-foreground">
               See who is already trading across the corridor &mdash; exporters, importers,
               investors, universities and government agencies.
@@ -420,7 +425,7 @@ function MembershipBody() {
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">What happens next</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">What happens next</h2>
             <ol className="mt-6 list-decimal space-y-3 pl-6 text-foreground">
               <li>Select the tier that matches your organisation.</li>
               <li>Submit the application through Member Jungle.</li>
@@ -436,10 +441,15 @@ function MembershipBody() {
         </div>
       </section>
 
-      <section className="bg-deep px-6 py-24 text-center">
-        <div className="mx-auto max-w-3xl">
+      <section className="relative overflow-hidden bg-deep px-6 py-24 text-center">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-0 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgba(97,20,95,0.9), transparent)' }}
+        />
+        <div className="relative mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-white md:text-4xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-white md:text-4xl">
               Ready to grow your business with India?
             </h2>
             <p className="mt-4 text-white/75">
