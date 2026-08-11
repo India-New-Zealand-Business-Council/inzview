@@ -92,11 +92,16 @@ function Card({
 }
 
 /** A person tile for the council grid: a name and a role. */
-function Person({ name, role }: { name: string; role: string }) {
+function Person({ name, role, photo }: { name: string; role: string; photo?: string }) {
   return (
-    <div className="h-full rounded-2xl bg-mist p-6">
-      <h3 className="font-heading text-lg text-ink">{name}</h3>
-      <p className="mt-1 text-sm text-foreground">{role}</p>
+    <div className="h-full overflow-hidden rounded-2xl bg-mist">
+      {photo ? (
+        <img src={photo} alt="" loading="lazy" className="aspect-square w-full object-cover" />
+      ) : null}
+      <div className="p-6">
+        <h3 className="font-heading text-lg text-ink">{name}</h3>
+        <p className="mt-1 text-sm text-foreground">{role}</p>
+      </div>
     </div>
   );
 }
@@ -1372,24 +1377,35 @@ function EventsPastBody() {
  * embarrassment rather than a content bug. Do not add, drop or reorder a name.
  */
 function CouncilBody() {
+  // Photos found on inzbc.org/executive-council (12 Aug 2026), matched to the sourced names
+  // below by filename and downloaded to public/council/ rather than hot-linked (per
+  // live-site-extract.md's rule: this is a separate Wix account, so its media URLs are not
+  // guaranteed stable). The combined "Board Members" entry (six names in one card) is split
+  // into six individual cards here so each can carry its own photo — same six names, same
+  // order, nothing added or dropped, per this file's own rule above. Four people (Kanwaljit
+  // Singh Bakshi, Clive Antony, Bharat Joshi, Dr Pushpa Wood) had no matching photo found;
+  // they keep the text-only card. Sreedhar Venkatram's photo filename was just "Sree.jpeg" —
+  // a reasonable but not certain match, worth confirming.
   const board = [
-    { name: 'Edwin Paul', role: 'Chair' },
-    { name: 'Tony Martin', role: 'Deputy Chair' },
-    { name: 'Bharat Chawla', role: 'Treasurer' },
-    {
-      name: 'Antje Fiedler, Prince Kumar, Jonathan Manuel, Rachel Lynch, Jenny McGregor, Sumant Khedkar',
-      role: 'Board Members',
-    },
+    { name: 'Edwin Paul', role: 'Chair', photo: '/council/edwin-paul.png' },
+    { name: 'Tony Martin', role: 'Deputy Chair', photo: '/council/tony-martin.png' },
+    { name: 'Bharat Chawla', role: 'Treasurer', photo: '/council/bharat-chawla.jpg' },
+    { name: 'Antje Fiedler', role: 'Board Member', photo: '/council/antje-fiedler.jpg' },
+    { name: 'Prince Kumar', role: 'Board Member', photo: '/council/prince-kumar.png' },
+    { name: 'Jonathan Manuel', role: 'Board Member', photo: '/council/jonathan-manuel.png' },
+    { name: 'Rachel Lynch', role: 'Board Member', photo: '/council/rachel-lynch.jpg' },
+    { name: 'Jenny McGregor', role: 'Board Member', photo: '/council/jenny-mcgregor.jpg' },
+    { name: 'Sumant Khedkar', role: 'Board Member', photo: '/council/sumant-khedkar.jpg' },
   ];
   const team = [
-    { name: 'Sunil Kaushal', role: 'Chief Executive' },
+    { name: 'Sunil Kaushal', role: 'Chief Executive', photo: '/council/sunil-kaushal.png' },
     { name: 'Kanwaljit Singh Bakshi', role: 'Ex-Officio' },
     { name: 'Clive Antony', role: 'Strategic Communications Officer' },
-    { name: 'Sandeep Sharma', role: 'Strategy and Trade Officer' },
-    { name: 'Sreedhar Venkatram', role: 'Mumbai Chapter Head' },
+    { name: 'Sandeep Sharma', role: 'Strategy and Trade Officer', photo: '/council/sandeep-sharma.png' },
+    { name: 'Sreedhar Venkatram', role: 'Mumbai Chapter Head', photo: '/council/sreedhar-venkatram.jpeg' },
     { name: 'Bharat Joshi', role: 'Delhi Chapter Head' },
     { name: 'Dr Pushpa Wood', role: 'Wellington Chapter Head' },
-    { name: 'Michael Henstock', role: 'Christchurch Chapter Head' },
+    { name: 'Michael Henstock', role: 'Christchurch Chapter Head', photo: '/council/michael-henstock.jpg' },
   ];
 
   return (
@@ -1400,8 +1416,8 @@ function CouncilBody() {
         </Reveal>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {board.map((p, i) => (
-            <Reveal key={p.role} delay={i * 0.06}>
-              <Person name={p.name} role={p.role} />
+            <Reveal key={p.name} delay={i * 0.06}>
+              <Person name={p.name} role={p.role} photo={p.photo} />
             </Reveal>
           ))}
         </div>
@@ -1412,7 +1428,7 @@ function CouncilBody() {
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((p, i) => (
             <Reveal key={p.name} delay={i * 0.05}>
-              <Person name={p.name} role={p.role} />
+              <Person name={p.name} role={p.role} photo={p.photo} />
             </Reveal>
           ))}
         </div>
