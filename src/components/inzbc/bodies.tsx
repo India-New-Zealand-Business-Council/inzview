@@ -1329,7 +1329,7 @@ function EventsPastBody() {
       <section className="bg-mist px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
               Summit 2018, Auckland
             </h2>
             <p className="mt-4 max-w-2xl text-foreground">
@@ -1396,7 +1396,7 @@ function CouncilBody() {
     <section className="bg-white px-6 py-20">
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <h2 className="font-heading text-3xl text-ink md:text-4xl">Board</h2>
+          <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Board</h2>
         </Reveal>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {board.map((p, i) => (
@@ -1407,7 +1407,7 @@ function CouncilBody() {
         </div>
 
         <Reveal>
-          <h2 className="mt-16 font-heading text-3xl text-ink md:text-4xl">Executive team</h2>
+          <h2 className="mt-16 font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Executive team</h2>
         </Reveal>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((p, i) => (
