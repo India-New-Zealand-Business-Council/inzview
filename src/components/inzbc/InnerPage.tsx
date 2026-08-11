@@ -24,15 +24,25 @@ export default function InnerPage({ page }: { page: PageDef }) {
       <StickyHeader logo={ART.logo} links={NAV} cta={{ label: 'Join', href: LINKS.join }} />
 
       <main>
+        {/* Layered ambient glow, matching the depth Home's TradeThread/CorridorPortal build
+            with two-three overlapping radial gradients rather than one flat blur circle —
+            same technique (CSS-only, no new dependency), applied here so every inner page
+            gets it via this one shared hero, not copy-pasted per page. Tighter heading
+            tracking (tracking-tight) matches Home's .home-heading letter-spacing choice. */}
         <section className="relative overflow-hidden bg-deep px-6 pb-20 pt-40">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-1/4 top-0 h-[34rem] w-[34rem] rounded-full opacity-45 blur-3xl"
             style={{ background: 'radial-gradient(closest-side, rgba(97,20,95,0.9), transparent)' }}
           />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-1/3 bottom-0 h-[26rem] w-[26rem] rounded-full opacity-30 blur-3xl"
+            style={{ background: 'radial-gradient(closest-side, rgba(184,240,124,0.5), transparent)' }}
+          />
           <div className="relative mx-auto max-w-4xl">
             <Reveal>
-              <h1 className="font-heading text-4xl leading-tight text-white md:text-6xl">
+              <h1 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-white md:text-6xl">
                 {page.title}
               </h1>
             </Reveal>
