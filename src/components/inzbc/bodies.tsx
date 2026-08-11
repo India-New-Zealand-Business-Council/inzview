@@ -1097,7 +1097,7 @@ function TradeResourcesBody() {
       <section id="missions" className="scroll-mt-24 bg-mist px-6 py-20">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
               Trade missions and shows
             </h2>
             <p className="mt-4 text-foreground">
@@ -1117,7 +1117,7 @@ function TradeResourcesBody() {
       <section id="intelligence" className="scroll-mt-24 bg-white px-6 py-20">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">Market intelligence</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Market intelligence</h2>
             <p className="mt-4 text-foreground">
               The Trade Intelligence Digest is a weekly, LLM-summarised, human-reviewed digest
               of India&ndash;NZ trade news, with source citations.
@@ -1137,10 +1137,15 @@ function TradeResourcesBody() {
         </div>
       </section>
 
-      <section className="bg-navy px-6 py-20">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-8">
+      <section className="relative overflow-hidden bg-navy px-6 py-20">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-1/4 top-0 h-[26rem] w-[26rem] rounded-full opacity-30 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgba(184,240,124,0.5), transparent)' }}
+        />
+        <div className="relative mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-8">
           <Reveal className="max-w-2xl">
-            <h2 className="font-heading text-3xl text-white md:text-4xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-white md:text-4xl">
               NZ&ndash;India FTA opportunity
             </h2>
             <p className="mt-4 text-white/75">
@@ -1155,10 +1160,15 @@ function TradeResourcesBody() {
         </div>
       </section>
 
-      <section className="bg-deep px-6 py-24 text-center">
-        <div className="mx-auto max-w-3xl">
+      <section className="relative overflow-hidden bg-deep px-6 py-24 text-center">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-0 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgba(97,20,95,0.9), transparent)' }}
+        />
+        <div className="relative mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-white md:text-4xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-white md:text-4xl">
               Not sure what this means for your business?
             </h2>
             <p className="mt-4 text-white/75">
