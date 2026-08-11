@@ -518,7 +518,7 @@ function ConnectBody() {
               <p className="mt-3 text-sm text-foreground">
                 <Todo>
                   [[Contact form &mdash; needs a Wix Form so submissions reach the
-                  Secretariat inbox. Fields: first name, last name, email, subject, message.
+                  Secretariat inbox. Fields: First name, Last name, Email, Subject, Message.
                   A form posting nowhere is worse than none, so this links to email until it
                   exists.]]
                 </Todo>
@@ -526,6 +526,32 @@ function ConnectBody() {
               <p className="mt-7">
                 <Btn href={LINKS.email}>Email the secretariat</Btn>
               </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Sourced from newsletter-band.html (written for Home, but the copy is generic
+          newsletter promotion, not Home-specific) — its own comment calls this "deliberately
+          the only warm band on the page", which is why it's the one dark/ink section here
+          rather than mist. No Parallax on the mockup image, per the no-heavy-motion rule;
+          this drops the image rather than keep it static and pointless. */}
+      <section className="bg-ink px-6 py-16 text-center">
+        <div className="mx-auto max-w-2xl">
+          <Reveal>
+            <h2 className="font-heading text-2xl text-white md:text-3xl">
+              Subscribe to the INZBC newsletter
+            </h2>
+            <p className="mt-4 text-white/75">
+              Trade news, FTA developments and event announcements, straight to your inbox.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Btn href={LINKS.subscribe} external>
+                Subscribe
+              </Btn>
+              <Btn href="/newsletters" variant="ghost">
+                View the archive
+              </Btn>
             </div>
           </Reveal>
         </div>
@@ -552,6 +578,16 @@ function ConnectBody() {
             </div>
           </Reveal>
         </div>
+      </section>
+
+      {/* No sourced snippet mentions promotional videos, and no video component exists
+          anywhere in this codebase (motion.tsx, Sections.tsx) to build one against — this is
+          a marker, not a build, per the instruction not to stand up a video system for one
+          page. */}
+      <section className="bg-white px-6 py-10 text-center">
+        <p className="text-sm text-foreground/70">
+          <Todo>[[Promotional videos &mdash; future addition, no video component built yet.]]</Todo>
+        </p>
       </section>
     </>
   );
