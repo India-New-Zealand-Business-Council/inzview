@@ -1,0 +1,319 @@
+.home-trade-thread {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--home-deep, #0e0522);
+  color: #fff;
+  padding-block: clamp(6rem, 9vw, 9rem);
+}
+
+.home-trade-thread__ambient {
+  position: absolute;
+  inset: -20% -15% auto auto;
+  z-index: -1;
+  width: min(52rem, 75vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(97, 20, 95, 0.62),
+    rgba(97, 20, 95, 0.12) 42%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.home-trade-thread__layout {
+  display: grid;
+  width: min(1240px, calc(100% - 48px));
+  grid-template-columns: minmax(0, 0.88fr) minmax(340px, 0.7fr);
+  align-items: start;
+  gap: clamp(4rem, 9vw, 9rem);
+  margin-inline: auto;
+}
+
+.home-trade-thread__intro {
+  max-width: 720px;
+}
+
+.home-trade-thread__title {
+  max-width: 13ch;
+  scroll-margin-top: 7.5rem;
+}
+
+.home-trade-thread__summary {
+  max-width: 62ch;
+  margin-top: 2rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.96rem;
+  line-height: 1.72;
+}
+
+.home-trade-thread__summary > :first-child {
+  margin-top: 0;
+}
+
+.home-trade-thread__summary > :last-child {
+  margin-bottom: 0;
+}
+
+.home-trade-thread__action {
+  margin-top: 2rem;
+}
+
+.home-trade-thread__journey {
+  min-width: 0;
+}
+
+.home-trade-thread__status {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 0.42fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  margin: 0 0 clamp(2.75rem, 5vw, 4.5rem);
+  border-block: 1px solid rgba(255, 255, 255, 0.14);
+  padding-block: 1.25rem;
+}
+
+.home-trade-thread__status dt {
+  color: var(--home-lime, #b8f07c);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.home-trade-thread__status dd {
+  margin: 0;
+}
+
+.home-trade-thread__status strong,
+.home-trade-thread__status span {
+  display: block;
+}
+
+.home-trade-thread__status strong {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.home-trade-thread__status span {
+  margin-top: 0.35rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.home-trade-thread__stats-wrap {
+  position: relative;
+}
+
+.home-trade-thread__stats {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0 0 0 4.75rem;
+  list-style: none;
+}
+
+.home-trade-thread__rail {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2.25rem;
+  contain: paint;
+  pointer-events: none;
+}
+
+.home-trade-thread__rail-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.home-trade-thread__rail-svg path {
+  fill: none;
+  stroke: var(--home-lime, #b8f07c);
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
+.home-trade-thread__rail-track {
+  opacity: 0.17;
+  stroke-dasharray: 2 7;
+}
+
+.home-trade-thread__rail-svg--active {
+  clip-path: inset(0 0 100% 0);
+}
+
+.home-trade-thread__rail-svg--active path {
+  opacity: 0.96;
+}
+
+.home-trade-thread__stat {
+  position: relative;
+  min-height: 170px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 1.35rem 0 2rem;
+}
+
+.home-trade-thread__stat:last-child {
+  min-height: 150px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.home-trade-thread__node {
+  position: absolute;
+  top: 1.4rem;
+  left: -4.2rem;
+  width: 0.78rem;
+  height: 0.78rem;
+  border: 2px solid var(--home-deep, #0e0522);
+  border-radius: 50%;
+  background: var(--home-lime, #b8f07c);
+  box-shadow: 0 0 0 4px rgba(184, 240, 124, 0.16);
+  transform: translate3d(0, 0, 0) scale(1);
+  transform-origin: center;
+}
+
+.home-trade-thread__index {
+  display: block;
+  color: rgba(255, 255, 255, 0.46);
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.home-trade-thread__figure {
+  display: block;
+  margin-top: 1.35rem;
+  color: var(--home-lime, #b8f07c);
+  font-size: clamp(3.25rem, 6vw, 5.4rem);
+  font-weight: 600;
+  letter-spacing: -0.075em;
+  line-height: 0.92;
+}
+
+.home-trade-thread__stat h3 {
+  margin: 1rem 0 0;
+  color: #fff;
+  font-size: 1.03rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+.home-trade-thread__stat p {
+  max-width: 34ch;
+  margin: 0.4rem 0 0;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.home-trade-thread__source {
+  margin-top: 1.5rem;
+  color: rgba(255, 255, 255, 0.54);
+  font-size: 0.67rem;
+  line-height: 1.6;
+}
+
+.home-trade-thread__source a {
+  border-radius: 0.2rem;
+  color: rgba(255, 255, 255, 0.78);
+  text-underline-offset: 0.2em;
+}
+
+.home-page .home-trade-thread a:focus-visible,
+.home-page .home-trade-thread button:focus-visible {
+  outline: 3px solid var(--home-lime, #b8f07c);
+  outline-offset: 4px;
+}
+
+@media (max-width: 940px) {
+  .home-trade-thread__layout {
+    grid-template-columns: 1fr;
+    gap: 4.5rem;
+  }
+
+  .home-trade-thread__intro,
+  .home-trade-thread__journey {
+    max-width: 720px;
+  }
+}
+
+@media (max-width: 720px) {
+  .home-trade-thread__layout {
+    width: min(100% - 32px, 1240px);
+    gap: 3.5rem;
+  }
+
+  .home-trade-thread__status {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .home-trade-thread__stats {
+    padding-left: 3.5rem;
+  }
+
+  .home-trade-thread__rail {
+    width: 1.75rem;
+  }
+
+  .home-trade-thread__node {
+    left: -3.1rem;
+  }
+
+  .home-trade-thread__stat {
+    min-height: 155px;
+  }
+
+  .home-trade-thread__figure {
+    font-size: clamp(3.1rem, 17vw, 4.8rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-trade-thread__rail-svg--active {
+    clip-path: inset(0 0 0% 0);
+  }
+
+  .home-trade-thread__node {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (prefers-contrast: more) {
+  .home-trade-thread__rail-track {
+    opacity: 0.5;
+  }
+
+  .home-trade-thread__rail-svg path {
+    stroke-width: 3;
+  }
+
+  .home-trade-thread__status,
+  .home-trade-thread__stat,
+  .home-trade-thread__stat:last-child {
+    border-color: rgba(255, 255, 255, 0.42);
+  }
+}
+
+@media (forced-colors: active) {
+  .home-trade-thread__rail,
+  .home-trade-thread__node,
+  .home-trade-thread__ambient {
+    display: none;
+  }
+
+  .home-trade-thread__stats {
+    padding-left: 0;
+  }
+}
