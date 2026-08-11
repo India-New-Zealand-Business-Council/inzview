@@ -535,10 +535,11 @@ function ConnectBody() {
       {/* Sourced from newsletter-band.html (written for Home, but the copy is generic
           newsletter promotion, not Home-specific) — its own comment calls this "deliberately
           the only warm band on the page", which is why it's the one dark/ink section here
-          rather than mist. No Parallax on the mockup image, per the no-heavy-motion rule;
-          this drops the image rather than keep it static and pointless. */}
-      <section className="bg-ink px-6 py-16 text-center">
-        <div className="mx-auto max-w-2xl">
+          rather than mist. The mockup image is ART.newsletterMockup, already sourced
+          (content.ts) and confirmed against the live site's own asset for this — no Parallax
+          on it, per the no-heavy-motion rule, just a plain image. */}
+      <section className="bg-ink px-6 py-16">
+        <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
           <Reveal>
             <h2 className="font-heading text-2xl text-white md:text-3xl">
               Subscribe to the INZBC newsletter
@@ -546,7 +547,7 @@ function ConnectBody() {
             <p className="mt-4 text-white/75">
               Trade news, FTA developments and event announcements, straight to your inbox.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               <Btn href={LINKS.subscribe} external>
                 Subscribe
               </Btn>
@@ -554,6 +555,14 @@ function ConnectBody() {
                 View the archive
               </Btn>
             </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <img
+              src={ART.newsletterMockup}
+              alt="The INZBC newsletter shown on a laptop and a tablet"
+              loading="lazy"
+              className="w-full"
+            />
           </Reveal>
         </div>
       </section>
