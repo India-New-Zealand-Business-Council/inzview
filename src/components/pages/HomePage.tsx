@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -315,6 +315,7 @@ function openContactDraft(event: React.FormEvent<HTMLFormElement>) {
 function HomeHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const shouldReduceMotion = useReducedMotion() === true;
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -375,36 +376,55 @@ function HomeHeader() {
               <Menu aria-hidden="true" size={20} />
             )}
           </button>
-          <div
-            id="home-mobile-navigation"
-            className="home-mobile-menu__panel"
-            hidden={!menuOpen}
-          >
-            <nav aria-label="Mobile navigation">
-              {HOME_NAV.map((item, index) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
+          <AnimatePresence initial={false}>
+            {menuOpen ? (
+              <motion.div
+                id="home-mobile-navigation"
+                className="home-mobile-menu__panel"
+                initial={
+                  shouldReduceMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, transform: 'translate3d(0, -8px, 0) scale(0.975)' }
+                }
+                animate={{ opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' }}
+                exit={
+                  shouldReduceMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, transform: 'translate3d(0, -6px, 0) scale(0.985)' }
+                }
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0.16, ease: [0.23, 1, 0.32, 1] }
+                    : { type: 'spring', duration: 0.24, bounce: 0 }
+                }
+              >
+                <nav aria-label="Mobile navigation">
+                  {HOME_NAV.map((item, index) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      onClick={closeMenu}
+                      className="home-mobile-menu__link home-focus-light"
+                    >
+                      <span aria-hidden="true">0{index + 1}</span>
+                      {item.label}
+                      <ArrowRight aria-hidden="true" size={18} strokeWidth={1.8} />
+                    </Link>
+                  ))}
+                </nav>
+                <a
+                  href={LINKS.join}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={closeMenu}
-                  className="home-mobile-menu__link home-focus-light"
+                  className="home-mobile-menu__cta home-focus-light"
                 >
-                  <span aria-hidden="true">0{index + 1}</span>
-                  {item.label}
-                  <ArrowRight aria-hidden="true" size={18} strokeWidth={1.8} />
-                </Link>
-              ))}
-            </nav>
-            <a
-              href={LINKS.join}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={closeMenu}
-              className="home-mobile-menu__cta home-focus-light"
-            >
-              Join INZBC
-              <ArrowUpRight aria-hidden="true" size={18} />
-            </a>
-          </div>
+                  Join INZBC
+                  <ArrowUpRight aria-hidden="true" size={18} />
+                </a>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </div>
       </div>
     </header>
@@ -428,8 +448,8 @@ function Hero() {
           </h1>
           <p className="home-hero__lede">
             INZBC connects exporters, investors, institutions and government across the
-            NZ&ndash;India trade relationship &mdash; with the intelligence and access to move
-            from interest to action.
+            NZ-India trade relationship, with the intelligence and access to move from interest
+            to action.
           </p>
           <div className="home-hero__actions">
             <Action href="/fta">Explore the FTA</Action>
@@ -437,10 +457,6 @@ function Hero() {
               Join the council
             </Action>
           </div>
-          <a href="#fta-title" className="home-hero__corridor-cue home-focus-light">
-            <span>Follow the corridor</span>
-            <span className="home-hero__corridor-line" aria-hidden="true" />
-          </a>
         </div>
 
         <div className="home-hero__visual">
@@ -527,6 +543,12 @@ export default function HomePage() {
           }}
           stats={HOME_STATS}
           action={<Action href="/fta">Understand the agreement</Action>}
+          portal={{
+            imageSrc: '/events/modi-luxon-auckland-2026.jpeg',
+            imagePosition: '62% center',
+            originLabel: 'Aotearoa New Zealand',
+            destinationLabel: 'India',
+          }}
           source={
             <>
               Sources:{' '}

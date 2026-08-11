@@ -1,6 +1,8 @@
 import React, { useId, useRef } from 'react';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
+import CorridorPortal from './CorridorPortal';
+import type { CorridorPortalProps } from './CorridorPortal';
 import './TradeThread.css';
 
 export type TradeThreadStat = Readonly<{
@@ -29,6 +31,7 @@ export type TradeThreadProps = Readonly<{
   statsLabel?: string;
   action?: React.ReactNode;
   source?: React.ReactNode;
+  portal?: CorridorPortalProps;
 }>;
 
 type ThreadNodeProps = Readonly<{
@@ -111,14 +114,15 @@ export default function TradeThread({
   statsLabel = 'The agreement in numbers',
   action,
   source,
+  portal,
 }: TradeThreadProps) {
-  const sectionRef = useRef<HTMLElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
   const generatedHeadingId = useId();
   const resolvedHeadingId = headingId ?? `home-trade-thread-${generatedHeadingId.replace(/:/g, '')}`;
   const reducedMotion = useReducedMotion() === true;
 
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: statsRef,
     offset: ['start 82%', 'end 42%'],
   });
   const activeClip = useTransform(
@@ -128,17 +132,17 @@ export default function TradeThread({
     { clamp: true },
   );
 
-  const classes = `home-trade-thread home-section ${className}`.trim();
+  const classes = `home-trade-thread home-section${portal ? ' home-trade-thread--has-portal' : ''} ${className}`.trim();
 
   return (
     <section
-      ref={sectionRef}
       id={id}
       className={classes}
       aria-labelledby={resolvedHeadingId}
       data-reduced-motion={reducedMotion ? 'true' : 'false'}
     >
       <div className="home-trade-thread__ambient" aria-hidden="true" />
+      {portal ? <CorridorPortal {...portal} /> : null}
       <div className="home-shell home-trade-thread__layout">
         <header className="home-trade-thread__intro">
           <h2
@@ -162,7 +166,7 @@ export default function TradeThread({
             </dl>
           ) : null}
 
-          <div className="home-trade-thread__stats-wrap">
+          <div ref={statsRef} className="home-trade-thread__stats-wrap">
             <span className="home-trade-thread__rail" aria-hidden="true">
               <svg
                 className="home-trade-thread__rail-svg"
