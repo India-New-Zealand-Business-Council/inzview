@@ -168,9 +168,11 @@ function FtaBody() {
                   agreement, including its status while it awaits ratification.
                 </p>
                 <p className="mt-3">
-                  <TextLink href={LINKS.mfatFta} external>
-                    MFAT: New Zealand–India FTA
-                  </TextLink>
+                  {/* LINKS.mfatFta was referenced here but never defined in content.ts - an
+                      undefined href, i.e. a genuinely broken link on the published page. No
+                      legacy snippet or doc in this repo has the real MFAT URL sourced, so
+                      this is a marker, not an invented link. */}
+                  <Todo>[[MFAT&rsquo;s official NZ&ndash;India FTA page URL &mdash; not yet sourced.]]</Todo>
                 </p>
               </Card>
             </Reveal>
@@ -183,10 +185,15 @@ function FtaBody() {
         </div>
       </section>
 
-      <section className="bg-deep px-6 py-24 text-center">
-        <div className="mx-auto max-w-3xl">
+      <section className="relative overflow-hidden bg-deep px-6 py-24 text-center">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-0 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgba(97,20,95,0.9), transparent)' }}
+        />
+        <div className="relative mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-white md:text-4xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-white md:text-4xl">
               Not sure what this means for your business?
             </h2>
             <p className="mt-4 text-white/75">
