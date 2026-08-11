@@ -972,7 +972,7 @@ function PartnersBody() {
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-ink md:text-4xl">Who INZBC works with</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Who INZBC works with</h2>
             <p className="mt-4 max-w-2xl text-foreground">
               Strategic partners, associate partners, and government and industry stakeholders
               across both markets. The wall below is INZBC&rsquo;s current tiered lineup.
@@ -1003,10 +1003,15 @@ function PartnersBody() {
         </div>
       </section>
 
-      <section className="bg-plum px-6 py-24 text-center">
-        <div className="mx-auto max-w-3xl">
+      <section className="relative overflow-hidden bg-plum px-6 py-24 text-center">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-0 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgba(26,11,63,0.8), transparent)' }}
+        />
+        <div className="relative mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl text-white md:text-4xl">Partner with INZBC</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-white md:text-4xl">Partner with INZBC</h2>
             <p className="mt-4 text-white/80">
               Sponsorship supports the trade missions, briefings and research INZBC publishes
               across the NZ&ndash;India corridor.
