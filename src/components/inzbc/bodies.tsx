@@ -91,6 +91,35 @@ function Card({
   );
 }
 
+/**
+ * An organic "blob" icon badge, same silhouette family as the live site's old social-icon
+ * graphics but built as a real SVG path (same technique TradeRoute.tsx already uses for
+ * organic curves in this codebase) rather than a CSS border-radius approximation, which reads
+ * as a rounded rectangle rather than a true blob. One diagonal gradient per instance, using
+ * this project's own brand hex values (from tailwind.config.mjs) rather than the old site's
+ * blue — the shape is what's being matched here, not that palette, per the standing
+ * "modernised, not the old blue gradient" instruction.
+ */
+const BLOB_PATH =
+  'M64 6C79 9 91 22 93 38C95 54 87 66 76 76C68 83 58 90 46 88C36 86 30 78 21 71C11 63 3 54 4 42C5 30 15 25 19 15C24 4 37 8 48 5C53 4 59 5 64 6Z';
+
+function Blob({ id, from, to, size = 96 }: { id: string; from: string; to: string; size?: number }) {
+  return (
+    <svg viewBox="0 0 100 100" width={size} height={size} aria-hidden="true">
+      <defs>
+        <linearGradient id={id} x1="10%" y1="0%" x2="90%" y2="100%">
+          <stop offset="0%" stopColor={from} />
+          <stop offset="100%" stopColor={to} />
+        </linearGradient>
+      </defs>
+      {/* The small satellite circle is the same detail the reference blobs have at one edge -
+          a separate dot, not part of the main path, so it can float slightly outside it. */}
+      <circle cx="90" cy="34" r="5" fill={`url(#${id})`} />
+      <path d={BLOB_PATH} fill={`url(#${id})`} />
+    </svg>
+  );
+}
+
 /** A person tile for the council grid: a name and a role. */
 function Person({ name, role, photo }: { name: string; role: string; photo?: string }) {
   return (
@@ -631,10 +660,10 @@ function ConnectBody() {
           </Reveal>
           <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4">
             {[
-              { name: 'Twitter', Icon: TwitterIcon, href: LINKS.x, label: 'Follow us on Twitter', bg: 'bg-navy' },
-              { name: 'LinkedIn', Icon: LinkedinIcon, href: LINKS.linkedin, label: 'Connect with us on LinkedIn', bg: 'bg-plum' },
-              { name: 'YouTube', Icon: YoutubeIcon, href: LINKS.youtube, label: 'Watch our videos on YouTube', bg: 'bg-forest' },
-              { name: 'Facebook', Icon: FacebookIcon, href: LINKS.facebook, label: 'Find us on Facebook', bg: 'bg-ink' },
+              { name: 'Twitter', Icon: TwitterIcon, href: LINKS.x, label: 'Follow us on Twitter', from: '#3d2a66', to: '#160933' },
+              { name: 'LinkedIn', Icon: LinkedinIcon, href: LINKS.linkedin, label: 'Connect with us on LinkedIn', from: '#8a3d87', to: '#61145f' },
+              { name: 'YouTube', Icon: YoutubeIcon, href: LINKS.youtube, label: 'Watch our videos on YouTube', from: '#2f6b62', to: '#1b4640' },
+              { name: 'Facebook', Icon: FacebookIcon, href: LINKS.facebook, label: 'Find us on Facebook', from: '#402d66', to: '#1a0b3f' },
             ].map((social, i) => (
               <Reveal key={social.name} delay={i * 0.06}>
                 <a
@@ -643,10 +672,14 @@ function ConnectBody() {
                   rel="noopener noreferrer"
                   className={`group flex flex-col items-center gap-4 rounded-sm ${FOCUS}`}
                 >
-                  <span
-                    className={`flex h-24 w-24 items-center justify-center rounded-[60%_40%_30%_70%/60%_30%_70%_40%] transition-transform duration-300 group-hover:scale-105 group-hover:rounded-[40%_60%_70%_30%/50%_60%_30%_50%] ${social.bg}`}
-                  >
-                    <social.Icon aria-hidden="true" size={30} strokeWidth={1.8} className="text-white" />
+                  <span className="relative flex h-24 w-24 items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                    <Blob id={`blob-${social.name}`} from={social.from} to={social.to} size={96} />
+                    <social.Icon
+                      aria-hidden="true"
+                      size={30}
+                      strokeWidth={1.8}
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white"
+                    />
                   </span>
                   <span className="text-center text-sm font-medium text-ink">{social.label}</span>
                 </a>
