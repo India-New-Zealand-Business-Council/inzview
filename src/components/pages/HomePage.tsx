@@ -132,16 +132,19 @@ const BUSINESS_PARTNERS: readonly PartnerMark[] = [
   {
     name: 'High Commission of India, Wellington',
     href: 'https://www.hciwellington.gov.in/',
+    logo: '/partners/hci-wellington.webp',
     relationship: 'Strategic partner',
   },
   {
     name: 'University of Auckland',
     href: 'https://www.auckland.ac.nz/',
+    logo: '/partners/auckland.svg',
     relationship: 'Strategic partner',
   },
   {
     name: 'Duco Consultancy',
     href: 'https://www.ducoconsultancy.com/',
+    logo: '/partners/duco.svg',
     relationship: 'Strategic partner / Gold',
   },
   {
@@ -159,6 +162,7 @@ const BUSINESS_PARTNERS: readonly PartnerMark[] = [
   {
     name: 'Slumberzone New Zealand',
     href: 'https://slumberzone.co.nz/',
+    logo: '/partners/slumberzone.webp',
     relationship: 'Associate partner',
   },
   {
@@ -185,6 +189,7 @@ const INDIA_NETWORK: readonly PartnerMark[] = [
   {
     name: 'Confederation of Indian Industry',
     href: 'https://www.cii.in/',
+    logo: '/partners/cii.svg',
     relationship: 'India industry network',
   },
   {
@@ -408,7 +413,7 @@ function useEffectsReel(rootRef: React.RefObject<HTMLDivElement>) {
           element.style.transform = '';
         };
         element.addEventListener('pointerenter', onPointerEnter);
-        element.addEventListener('pointermove', onPointerMove);
+        element.addEventListener('pointermove', onPointerMove, { passive: true });
         element.addEventListener('pointerleave', onPointerLeave);
         tiltCleanups.push(() => {
           element.removeEventListener('pointerenter', onPointerEnter);
@@ -447,7 +452,7 @@ function useEffectsReel(rootRef: React.RefObject<HTMLDivElement>) {
           element.style.removeProperty('--spotlight-y');
         };
         element.addEventListener('pointerenter', onPointerEnter);
-        element.addEventListener('pointermove', onPointerMove);
+        element.addEventListener('pointermove', onPointerMove, { passive: true });
         element.addEventListener('pointerleave', onPointerLeave);
         spotlightCleanups.push(() => {
           element.removeEventListener('pointerenter', onPointerEnter);
@@ -489,7 +494,7 @@ function useEffectsReel(rootRef: React.RefObject<HTMLDivElement>) {
           element.style.removeProperty('--magnet-y');
         };
         element.addEventListener('pointerenter', onPointerEnter);
-        element.addEventListener('pointermove', onPointerMove);
+        element.addEventListener('pointermove', onPointerMove, { passive: true });
         element.addEventListener('pointerleave', reset);
         magnetCleanups.push(() => {
           element.removeEventListener('pointerenter', onPointerEnter);
@@ -1329,6 +1334,7 @@ export default function HomePage() {
                       rel="noopener noreferrer"
                       className="home-partner-mark home-focus-dark"
                       data-reel="rise"
+                      data-logo={partner.logo ? 'true' : 'false'}
                       style={{ '--reel-delay': `${index * 38}ms` } as React.CSSProperties}
                     >
                       <span className="home-partner-mark__art">
@@ -1365,13 +1371,14 @@ export default function HomePage() {
                       rel="noopener noreferrer"
                       className="home-india-mark home-focus-dark"
                       data-reel="rise"
+                      data-logo={partner.logo ? 'true' : 'false'}
                       style={{ '--reel-delay': `${index * 58}ms` } as React.CSSProperties}
                     >
                       <span className="home-india-mark__art">
                         {partner.logo ? (
                           <img src={partner.logo} alt={`${partner.name} logo`} loading="lazy" />
                         ) : (
-                          <strong>CII</strong>
+                          <strong>{partner.name}</strong>
                         )}
                       </span>
                       <span>
