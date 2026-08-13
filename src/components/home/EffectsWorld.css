@@ -93,31 +93,46 @@
   z-index: 2;
 }
 
-@media (max-width: 940px) {
-  .home-effects-world {
-    position: absolute;
-    height: 900px;
+/* Phones run the real scene now, so this applies only when WebGL is genuinely refused
+   (save-data, <4GB RAM, context failure) -- and then it is the whole world the visitor
+   gets. It was previously 0.12--0.16 opacity inside a 780px box on a ~17,000px page,
+   i.e. invisible. Scoped to [data-status='fallback'] so a live canvas keeps the fixed
+   full-viewport container. */
+@media (max-width: 720px) {
+  .home-effects-world[data-status='fallback'] {
+    height: 1100px;
   }
 
-  .home-effects-world__fallback {
-    top: 7rem;
-    right: -12rem;
-    width: min(36rem, 90vw);
-    opacity: 0.16;
+  .home-effects-world[data-status='fallback'] .home-effects-world__fallback {
+    top: 6rem;
+    right: -9rem;
+    width: min(30rem, 96vw);
+    opacity: 0.34;
+    transform: perspective(900px) rotateX(8deg) rotateY(-14deg) rotateZ(8deg);
   }
 }
 
-@media (max-width: 720px) {
-  .home-effects-world {
-    height: 780px;
+@supports (animation-timeline: view()) {
+  @media (max-width: 720px) and (prefers-reduced-motion: no-preference) {
+    .home-effects-world[data-status='fallback'] .home-effects-world__fallback {
+      animation: home-effects-world-drift 1ms linear both;
+      animation-range: entry 0% exit 100%;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes home-effects-world-drift {
+  from {
+    opacity: 0.16;
+    transform: perspective(900px) translate3d(2rem, 1.5rem, 0) rotateX(8deg) rotateY(-14deg)
+      rotateZ(8deg);
   }
 
-  .home-effects-world__fallback {
-    top: 8rem;
-    right: -13.5rem;
-    width: 31rem;
-    opacity: 0.12;
-    transform: perspective(900px) rotateX(8deg) rotateY(-14deg) rotateZ(8deg);
+  to {
+    opacity: 0.4;
+    transform: perspective(900px) translate3d(-2rem, -1.5rem, 0) rotateX(8deg) rotateY(-22deg)
+      rotateZ(4deg);
   }
 }
 
