@@ -90,15 +90,25 @@ export default function FtaPage() {
       <StickyHeader logo={ART.logo} links={NAV} cta={{ label: 'Join', href: LINKS.join }} />
 
       <main>
-        <section className="relative overflow-hidden bg-deep px-6 pb-24 pt-44 text-center">
+        <section
+          className="relative overflow-hidden bg-deep px-6 pb-24 pt-44 text-center"
+          aria-labelledby="fta-hero-title"
+        >
+          <img
+            src="/events/modi-luxon-address-auckland-2026.jpeg"
+            alt=""
+            aria-hidden="true"
+            loading="eager"
+            fetchPriority="high"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-1/4 top-0 h-[34rem] w-[34rem] rounded-full opacity-45 blur-3xl"
-            style={{ background: 'radial-gradient(closest-side, rgba(97,20,95,0.9), transparent)' }}
+            className="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/70 to-deep"
           />
           <div className="relative mx-auto max-w-3xl">
             <Reveal>
-              <h1 className="font-heading text-5xl leading-tight text-white md:text-7xl">
+              <h1 id="fta-hero-title" className="font-heading text-5xl leading-tight text-white md:text-7xl">
                 <WordReveal text="NZ–India FTA Centre" delay={0.1} />
               </h1>
             </Reveal>
@@ -124,14 +134,17 @@ export default function FtaPage() {
         {/* At a glance. Two large, true claims set side by side at display scale, not four
             identical boxes. Everything else on this band is a quiet single line underneath,
             so the two claims stay the loudest thing here. */}
-        <section className="bg-ink px-6 py-24 text-white md:py-32">
+        <section className="bg-ink px-6 py-24 text-white md:py-32" aria-labelledby="fta-status-title">
           <div className="mx-auto grid max-w-5xl gap-16 md:grid-cols-2 md:items-end md:gap-8">
             <Reveal>
-              <p className="font-heading text-4xl leading-[1.05] tracking-tight md:text-5xl">
+              <h2
+                id="fta-status-title"
+                className="font-heading text-4xl leading-[1.05] tracking-tight md:text-5xl"
+              >
                 Signed.
                 <br />
                 Not yet in force.
-              </p>
+              </h2>
               <p className="mt-5 max-w-sm text-white/70">
                 27 April 2026. Awaiting domestic ratification in both countries before it
                 takes effect.
@@ -201,10 +214,13 @@ export default function FtaPage() {
           </Reveal>
         </section>
 
-        <section className="bg-white px-6 py-24">
+        <section className="bg-white px-6 py-24" aria-labelledby="fta-timeline-title">
           <div className="mx-auto max-w-3xl">
             <Reveal>
-              <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              <h2
+                id="fta-timeline-title"
+                className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl"
+              >
                 How it phases in
               </h2>
               <p className="mt-4 text-lg text-foreground">
@@ -240,7 +256,7 @@ export default function FtaPage() {
 
         {/* One large photo carries the moment; a smaller supporting pair sits underneath.
             Not a grid of three equal thumbnails. */}
-        <section className="bg-mist pb-4 pt-24">
+        <section className="bg-mist pb-4 pt-24" aria-labelledby="fta-photos-title">
           <Reveal>
             <div className="relative">
               <img
@@ -252,9 +268,12 @@ export default function FtaPage() {
                 className="max-h-[36rem] w-full object-cover"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 to-transparent px-6 pb-6 pt-20 md:px-10">
-                <p className="mx-auto max-w-5xl font-heading text-xl text-white md:text-2xl">
+                <h2
+                  id="fta-photos-title"
+                  className="mx-auto max-w-5xl font-heading text-xl text-white md:text-2xl"
+                >
                   Signed face to face
-                </p>
+                </h2>
                 <p className="mx-auto mt-1 max-w-5xl text-sm text-white/75">
                   Indian Prime Minister Narendra Modi&rsquo;s official visit to Auckland, July
                   2026.
@@ -263,25 +282,15 @@ export default function FtaPage() {
             </div>
           </Reveal>
 
-          <div className="mx-auto mt-4 grid max-w-5xl gap-4 px-6 pb-20 sm:grid-cols-2">
+          <div className="mx-auto mt-4 max-w-5xl px-6 pb-20">
             <Reveal delay={0.05}>
-              <img
-                src="/events/modi-luxon-address-auckland-2026.jpeg"
-                alt="Prime Ministers Narendra Modi and Christopher Luxon addressing guests in Auckland"
-                width={1600}
-                height={1200}
-                loading="lazy"
-                className="w-full object-cover"
-              />
-            </Reveal>
-            <Reveal delay={0.1}>
               <img
                 src="/events/modi-luxon-delegation-auckland-2026.jpeg"
                 alt="Prime Ministers Narendra Modi and Christopher Luxon with the New Zealand and India delegations in Auckland"
                 width={2048}
                 height={1366}
                 loading="lazy"
-                className="w-full object-cover"
+                className="max-h-[22rem] w-full object-cover"
               />
             </Reveal>
           </div>
@@ -289,7 +298,7 @@ export default function FtaPage() {
 
         {/* Ink panel instead of a white card, so it reads as a feature rather than a fourth
             box in a set. */}
-        <section className="bg-white px-6 py-24">
+        <section className="bg-white px-6 py-24" aria-labelledby="fta-explainer-title">
           <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-ink sm:flex sm:items-stretch">
             <Reveal className="sm:w-1/2">
               <img
@@ -302,9 +311,9 @@ export default function FtaPage() {
               />
             </Reveal>
             <Reveal delay={0.08} className="p-8 text-white sm:w-1/2 md:p-12">
-              <h3 className="font-heading text-2xl md:text-3xl">
+              <h2 id="fta-explainer-title" className="font-heading text-2xl md:text-3xl">
                 Inside the NZ&ndash;India FTA, with Vangelis Vitalis
-              </h3>
+              </h2>
               <p className="mt-4 text-white/75">
                 New Zealand&rsquo;s Chief Trade Negotiator, who led the negotiations, takes
                 attendees behind the scenes: how the deal was negotiated, the breakthroughs,
