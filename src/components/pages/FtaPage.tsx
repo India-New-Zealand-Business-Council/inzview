@@ -259,11 +259,14 @@ export default function FtaPage() {
         <section className="bg-mist pb-4 pt-24" aria-labelledby="fta-photos-title">
           <Reveal>
             <div className="relative">
+              {/* Delegation photo (2048x1366, ~3:2) sits in the wide banner slot — closer to
+                  that band's shape than the welcome photo (2048x1536, 4:3) was, so less of
+                  the frame is lost to the crop. */}
               <img
-                src="/events/inzbc-welcome-auckland-2026.jpeg"
-                alt="INZBC Chief Executive Sunil Kaushal and delegates at the welcome for the Indian Prime Minister in Auckland"
+                src="/events/modi-luxon-delegation-auckland-2026.jpeg"
+                alt="Prime Ministers Narendra Modi and Christopher Luxon with the New Zealand and India delegations in Auckland"
                 width={2048}
-                height={1536}
+                height={1366}
                 loading="lazy"
                 className="max-h-[36rem] w-full object-cover"
               />
@@ -285,10 +288,10 @@ export default function FtaPage() {
           <div className="mx-auto mt-4 max-w-5xl px-6 pb-20">
             <Reveal delay={0.05}>
               <img
-                src="/events/modi-luxon-delegation-auckland-2026.jpeg"
-                alt="Prime Ministers Narendra Modi and Christopher Luxon with the New Zealand and India delegations in Auckland"
+                src="/events/inzbc-welcome-auckland-2026.jpeg"
+                alt="INZBC Chief Executive Sunil Kaushal and delegates at the welcome for the Indian Prime Minister in Auckland"
                 width={2048}
-                height={1366}
+                height={1536}
                 loading="lazy"
                 className="max-h-[22rem] w-full object-cover"
               />
