@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   AnimatePresence,
@@ -19,6 +19,9 @@ import {
   X,
 } from 'lucide-react';
 import { ART, BENEFITS, LINKS, SOCIALS, STATS } from '@/components/inzbc/content';
+import ClickSpark from '@/components/home/ClickSpark';
+import EffectsWorld from '@/components/home/EffectsWorld';
+import KineticHeading from '@/components/home/KineticHeading';
 import TradeThread from '@/components/home/TradeThread';
 import './HomePage.css';
 
@@ -252,11 +255,289 @@ function Action({
 function HomeBlock({
   children,
   className = '',
+  effect = 'rise',
+  delay = 0,
+  tilt = false,
+  spotlight = false,
 }: {
   children: React.ReactNode;
   className?: string;
+  effect?: 'rise' | 'left' | 'right' | 'fold' | 'scale' | 'flip' | 'benefit' | 'none';
+  delay?: number;
+  tilt?: boolean;
+  spotlight?: boolean;
 }) {
-  return <div className={className || undefined}>{children}</div>;
+  const style = { '--reel-delay': `${delay}ms` } as React.CSSProperties;
+  return (
+    <div
+      className={`home-reel-block ${className}`.trim()}
+      data-reel={effect === 'none' ? undefined : effect}
+      data-reel-tilt={tilt ? 'true' : undefined}
+      data-reel-spotlight={spotlight ? 'true' : undefined}
+      style={style}
+    >
+      {children}
+    </div>
+  );
+}
+
+function ReelSignal({
+  words,
+  tone = 'light',
+}: {
+  words: readonly string[];
+  tone?: 'light' | 'dark';
+}) {
+  const repeatedWords = [...words, ...words];
+  return (
+    <div className={`home-reel-signal home-reel-signal--${tone}`} aria-hidden="true">
+      <div className="home-reel-signal__track">
+        {repeatedWords.map((word, index) => (
+          <React.Fragment key={`${word}-${index}`}>
+            <span>{word}</span>
+            <i />
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CurvedCorridorText() {
+  const pathId = React.useId();
+  const words = 'NEW ZEALAND  •  INDIA  •  ACCESS  •  INTELLIGENCE  •  INFLUENCE  •  ';
+  return (
+    <div className="home-curved-corridor" aria-hidden="true">
+      <svg viewBox="0 0 1440 180" focusable="false">
+        <defs>
+          <path id={pathId} d="M-120 42 Q720 220 1560 42" fill="none" />
+        </defs>
+        <text>
+          <textPath href={`#${pathId}`}>{words.repeat(3)}</textPath>
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+function useEffectsReel(rootRef: React.RefObject<HTMLDivElement>) {
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return undefined;
+
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reelItems = Array.from(root.querySelectorAll<HTMLElement>('[data-reel]'));
+    const aboveFoldItems: HTMLElement[] = [];
+
+    reelItems.forEach((element) => {
+      element.dataset.reelReady = 'true';
+      const alreadyVisible = element.getBoundingClientRect().top < window.innerHeight * 0.92;
+      if (motionQuery.matches) element.dataset.reelVisible = 'true';
+      else if (alreadyVisible) aboveFoldItems.push(element);
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLElement).dataset.reelVisible = 'true';
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -9% 0px', threshold: 0.08 },
+    );
+
+    if (!motionQuery.matches) {
+      reelItems.forEach((element) => {
+        if (!aboveFoldItems.includes(element)) observer.observe(element);
+      });
+    }
+
+    let revealFrame = 0;
+    if (aboveFoldItems.length) {
+      revealFrame = window.requestAnimationFrame(() => {
+        revealFrame = window.requestAnimationFrame(() => {
+          aboveFoldItems.forEach((element) => {
+            element.dataset.reelVisible = 'true';
+          });
+        });
+      });
+    }
+
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const tiltItems = Array.from(root.querySelectorAll<HTMLElement>('[data-reel-tilt]'));
+    const spotlightItems = Array.from(root.querySelectorAll<HTMLElement>('[data-reel-spotlight]'));
+    const magnetItems = Array.from(root.querySelectorAll<HTMLElement>('.home-action'));
+    const tiltCleanups: Array<() => void> = [];
+    const spotlightCleanups: Array<() => void> = [];
+    const magnetCleanups: Array<() => void> = [];
+
+    const interactionsAvailable = () => !motionQuery.matches && finePointer.matches;
+
+    if (tiltItems.length || spotlightItems.length || magnetItems.length) {
+      tiltItems.forEach((element) => {
+        let bounds: DOMRect | null = null;
+        let frameId = 0;
+        let pointerX = 0;
+        let pointerY = 0;
+
+        const paintTilt = () => {
+          frameId = 0;
+          if (!bounds || !interactionsAvailable()) return;
+          const x = (pointerX - bounds.left) / Math.max(1, bounds.width) - 0.5;
+          const y = (pointerY - bounds.top) / Math.max(1, bounds.height) - 0.5;
+          const rotateX = y * -7;
+          const rotateY = x * 8;
+          element.style.transform = `perspective(1100px) translate3d(0, -4px, 0) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
+        };
+        const onPointerEnter = () => {
+          if (!interactionsAvailable()) return;
+          bounds = element.getBoundingClientRect();
+        };
+        const onPointerMove = (event: PointerEvent) => {
+          if (!interactionsAvailable()) return;
+          if (!bounds) bounds = element.getBoundingClientRect();
+          pointerX = event.clientX;
+          pointerY = event.clientY;
+          if (!frameId) frameId = window.requestAnimationFrame(paintTilt);
+        };
+        const onPointerLeave = () => {
+          bounds = null;
+          if (frameId) window.cancelAnimationFrame(frameId);
+          frameId = 0;
+          element.style.transform = '';
+        };
+        element.addEventListener('pointerenter', onPointerEnter);
+        element.addEventListener('pointermove', onPointerMove);
+        element.addEventListener('pointerleave', onPointerLeave);
+        tiltCleanups.push(() => {
+          element.removeEventListener('pointerenter', onPointerEnter);
+          element.removeEventListener('pointermove', onPointerMove);
+          element.removeEventListener('pointerleave', onPointerLeave);
+          if (frameId) window.cancelAnimationFrame(frameId);
+          element.style.transform = '';
+        });
+      });
+
+      spotlightItems.forEach((element) => {
+        let frameId = 0;
+        let bounds: DOMRect | null = null;
+        let pointerX = 0;
+        let pointerY = 0;
+        const paint = () => {
+          frameId = 0;
+          if (!bounds || !interactionsAvailable()) return;
+          element.style.setProperty('--spotlight-x', `${pointerX - bounds.left}px`);
+          element.style.setProperty('--spotlight-y', `${pointerY - bounds.top}px`);
+        };
+        const onPointerEnter = () => {
+          if (!interactionsAvailable()) return;
+          bounds = element.getBoundingClientRect();
+        };
+        const onPointerMove = (event: PointerEvent) => {
+          if (!interactionsAvailable()) return;
+          if (!bounds) bounds = element.getBoundingClientRect();
+          pointerX = event.clientX;
+          pointerY = event.clientY;
+          if (!frameId) frameId = requestAnimationFrame(paint);
+        };
+        const onPointerLeave = () => {
+          bounds = null;
+          element.style.removeProperty('--spotlight-x');
+          element.style.removeProperty('--spotlight-y');
+        };
+        element.addEventListener('pointerenter', onPointerEnter);
+        element.addEventListener('pointermove', onPointerMove);
+        element.addEventListener('pointerleave', onPointerLeave);
+        spotlightCleanups.push(() => {
+          element.removeEventListener('pointerenter', onPointerEnter);
+          element.removeEventListener('pointermove', onPointerMove);
+          element.removeEventListener('pointerleave', onPointerLeave);
+          if (frameId) cancelAnimationFrame(frameId);
+          element.style.removeProperty('--spotlight-x');
+          element.style.removeProperty('--spotlight-y');
+        });
+      });
+
+      magnetItems.forEach((element) => {
+        let frameId = 0;
+        let bounds: DOMRect | null = null;
+        let pointerX = 0;
+        let pointerY = 0;
+        const paint = () => {
+          frameId = 0;
+          if (!bounds || !interactionsAvailable()) return;
+          const x = ((pointerX - bounds.left) / Math.max(1, bounds.width) - 0.5) * 10;
+          const y = ((pointerY - bounds.top) / Math.max(1, bounds.height) - 0.5) * 7;
+          element.style.setProperty('--magnet-x', `${x.toFixed(2)}px`);
+          element.style.setProperty('--magnet-y', `${y.toFixed(2)}px`);
+        };
+        const onPointerEnter = () => {
+          if (!interactionsAvailable()) return;
+          bounds = element.getBoundingClientRect();
+        };
+        const onPointerMove = (event: PointerEvent) => {
+          if (!interactionsAvailable()) return;
+          if (!bounds) bounds = element.getBoundingClientRect();
+          pointerX = event.clientX;
+          pointerY = event.clientY;
+          if (!frameId) frameId = requestAnimationFrame(paint);
+        };
+        const reset = () => {
+          bounds = null;
+          element.style.removeProperty('--magnet-x');
+          element.style.removeProperty('--magnet-y');
+        };
+        element.addEventListener('pointerenter', onPointerEnter);
+        element.addEventListener('pointermove', onPointerMove);
+        element.addEventListener('pointerleave', reset);
+        magnetCleanups.push(() => {
+          element.removeEventListener('pointerenter', onPointerEnter);
+          element.removeEventListener('pointermove', onPointerMove);
+          element.removeEventListener('pointerleave', reset);
+          if (frameId) cancelAnimationFrame(frameId);
+          reset();
+        });
+      });
+    }
+
+    const onMotionChange = () => {
+      if (!motionQuery.matches) return;
+      observer.disconnect();
+      reelItems.forEach((element) => {
+        element.dataset.reelVisible = 'true';
+      });
+      tiltItems.forEach((element) => {
+        element.style.transform = '';
+      });
+      spotlightItems.forEach((element) => {
+        element.style.removeProperty('--spotlight-x');
+        element.style.removeProperty('--spotlight-y');
+      });
+      magnetItems.forEach((element) => {
+        element.style.removeProperty('--magnet-x');
+        element.style.removeProperty('--magnet-y');
+      });
+    };
+    motionQuery.addEventListener('change', onMotionChange);
+
+    const onFocusIn = (event: FocusEvent) => {
+      const target = event.target as HTMLElement | null;
+      const reelItem = target?.closest<HTMLElement>('[data-reel]');
+      if (reelItem && root.contains(reelItem)) reelItem.dataset.reelVisible = 'true';
+    };
+    root.addEventListener('focusin', onFocusIn);
+
+    return () => {
+      observer.disconnect();
+      motionQuery.removeEventListener('change', onMotionChange);
+      root.removeEventListener('focusin', onFocusIn);
+      if (revealFrame) window.cancelAnimationFrame(revealFrame);
+      tiltCleanups.forEach((cleanup) => cleanup());
+      spotlightCleanups.forEach((cleanup) => cleanup());
+      magnetCleanups.forEach((cleanup) => cleanup());
+    };
+  }, [rootRef]);
 }
 
 function HeroRoute() {
@@ -459,6 +740,7 @@ function HomeHeader() {
   return (
     <header className="home-header">
       <div className="home-header__bar">
+        <span className="home-header__progress" aria-hidden="true" />
         <Link to="/" className="home-logo-link home-focus-light" aria-label="INZBC home">
           <img
             src={ART.logo}
@@ -569,10 +851,12 @@ function Hero() {
             <span aria-hidden="true">/</span>
             Ratification pending
           </div>
-          <h1 id="home-hero-title" className="home-display home-hero__title">
-            <span>New Zealand&rsquo;s gateway</span>
-            <span>to the India opportunity.</span>
-          </h1>
+          <KineticHeading
+            as="h1"
+            id="home-hero-title"
+            className="home-display home-hero__title"
+            lines={["New Zealand's gateway", 'to the India opportunity.']}
+          />
           <p className="home-hero__lede">
             INZBC connects exporters, investors, institutions and government across the
             NZ-India trade relationship, with the intelligence and access to move from interest
@@ -617,8 +901,13 @@ function Hero() {
 }
 
 export default function HomePage() {
+  const pageRef = useRef<HTMLDivElement>(null);
+  useEffectsReel(pageRef);
+
   return (
-    <div className="home-page">
+    <ClickSpark>
+      <div ref={pageRef} className="home-page">
+        <EffectsWorld />
       <a href="#main-content" className="home-skip-link">
         Skip to main content
       </a>
@@ -629,15 +918,27 @@ export default function HomePage() {
 
         <section className="home-proof" aria-label="INZBC at a glance">
           <div className="home-shell home-proof__grid">
-            <div className="home-proof__item">
+            <div
+              className="home-proof__item"
+              data-reel="rise"
+              style={{ '--reel-delay': '0ms' } as React.CSSProperties}
+            >
               <p>Established</p>
               <strong>1988</strong>
             </div>
-            <div className="home-proof__item">
+            <div
+              className="home-proof__item"
+              data-reel="rise"
+              style={{ '--reel-delay': '80ms' } as React.CSSProperties}
+            >
               <p>Recognised by</p>
               <strong>New Zealand and India</strong>
             </div>
-            <div className="home-proof__item">
+            <div
+              className="home-proof__item"
+              data-reel="rise"
+              style={{ '--reel-delay': '160ms' } as React.CSSProperties}
+            >
               <p>Member network</p>
               <strong>200+ members</strong>
               <a
@@ -705,12 +1006,16 @@ export default function HomePage() {
 
         <section className="home-intro home-section">
           <div className="home-shell home-intro__layout">
-            <HomeBlock>
-              <h2 className="home-heading home-intro__title">
-                The relationship is moving. Be in the room where it becomes practical.
-              </h2>
+            <HomeBlock effect="none">
+              <KineticHeading
+                className="home-heading home-intro__title"
+                lines={[
+                  'The relationship is moving.',
+                  'Be in the room where it becomes practical.',
+                ]}
+              />
             </HomeBlock>
-            <HomeBlock className="home-intro__copy">
+            <HomeBlock className="home-intro__copy" effect="right" delay={140}>
               <p className="home-lede-dark">
                 New Zealand&rsquo;s leading India trade and FTA platform, connecting business,
                 government and investors since 1988.
@@ -729,22 +1034,31 @@ export default function HomePage() {
               ['Advocate', 'Trade policy and market access'],
               ['Interpret', 'Market intelligence and FTA insight'],
               ['Connect', 'Businesses across both countries'],
-            ].map(([title, body]) => (
-              <HomeBlock key={title} className="home-capability">
+            ].map(([title, body], index) => (
+              <HomeBlock
+                key={title}
+                className="home-capability"
+                effect="fold"
+                delay={index * 90}
+              >
                 <h3>{title}</h3>
                 <p>{body}</p>
               </HomeBlock>
             ))}
           </div>
+          <ReelSignal words={['Advocate', 'Interpret', 'Connect']} />
         </section>
 
         <section className="home-pathways home-section" aria-labelledby="pathways-title">
+          <CurvedCorridorText />
           <div className="home-shell">
-            <HomeBlock className="home-section-head">
+            <HomeBlock className="home-section-head" effect="none">
               <div>
-                <h2 id="pathways-title" className="home-heading">
-                  One relationship. Four ways in.
-                </h2>
+                <KineticHeading
+                  id="pathways-title"
+                  className="home-heading"
+                  lines={['One relationship.', 'Four ways in.']}
+                />
               </div>
               <p>
                 Start with the question in front of you. The council connects each pathway
@@ -753,12 +1067,14 @@ export default function HomePage() {
             </HomeBlock>
 
             <div className="home-pathways__grid">
-              {HOME_PATHWAYS.map((item) => {
+              {HOME_PATHWAYS.map((item, index) => {
                 const Icon = item.icon;
                 return (
-                  <HomeBlock key={item.href}>
+                  <HomeBlock key={item.href} effect="fold" delay={index * 80}>
                     <Link
                       to={item.href}
+                      data-reel-tilt="true"
+                      data-reel-spotlight="true"
                       className={`home-pathway home-focus-dark${
                         item.featured ? ' home-pathway--featured' : ''
                       }`}
@@ -785,10 +1101,12 @@ export default function HomePage() {
 
         <section className="home-events home-section" aria-labelledby="events-title">
           <div className="home-shell home-events__layout">
-            <HomeBlock className="home-events__copy">
-              <h2 id="events-title" className="home-heading">
-                The bilateral relationship is built face to face.
-              </h2>
+            <HomeBlock className="home-events__copy" effect="left">
+              <KineticHeading
+                id="events-title"
+                className="home-heading"
+                lines={['The bilateral relationship', 'is built face to face.']}
+              />
               <p className="home-lede-dark">
                 INZBC brings specialists, ministers, NZTE, MFAT and the business community
                 together for meaningful dialogue.
@@ -814,17 +1132,22 @@ export default function HomePage() {
               </a>
             </HomeBlock>
 
-            <EventsGallery />
+            <div data-reel="right" style={{ '--reel-delay': '100ms' } as React.CSSProperties}>
+              <EventsGallery />
+            </div>
           </div>
         </section>
 
         <section className="home-membership home-section" aria-labelledby="membership-title">
           <div className="home-membership__line" aria-hidden="true" />
+          <ReelSignal words={['Access', 'Intelligence', 'Influence']} tone="dark" />
           <div className="home-shell home-membership__layout">
-            <HomeBlock className="home-membership__copy">
-              <h2 id="membership-title" className="home-heading home-heading--light">
-                Access is useful. The right access changes outcomes.
-              </h2>
+            <HomeBlock className="home-membership__copy" effect="left">
+              <KineticHeading
+                id="membership-title"
+                className="home-heading home-heading--light"
+                lines={['Access is useful.', 'The right access changes outcomes.']}
+              />
               <p>
                 Meet exporters, importers, investors, universities and government agencies
                 working across the corridor.
@@ -837,8 +1160,13 @@ export default function HomePage() {
               </div>
             </HomeBlock>
             <div className="home-membership__benefits">
-              {BENEFITS.map(([lead, rest]) => (
-                <HomeBlock key={lead} className="home-benefit">
+              {BENEFITS.map(([lead, rest], index) => (
+                <HomeBlock
+                  key={lead}
+                  className="home-benefit"
+                  effect="benefit"
+                  delay={index * 85}
+                >
                   <div>
                     <h3>{lead}</h3>
                     <p>{rest}</p>
@@ -851,11 +1179,13 @@ export default function HomePage() {
 
         <section className="home-intelligence home-section" aria-labelledby="intelligence-title">
           <div className="home-shell">
-            <HomeBlock className="home-section-head home-section-head--wide">
+            <HomeBlock className="home-section-head home-section-head--wide" effect="none">
               <div>
-                <h2 id="intelligence-title" className="home-heading">
-                  Read what is changing &mdash; and what it means.
-                </h2>
+                <KineticHeading
+                  id="intelligence-title"
+                  className="home-heading"
+                  lines={['Read what is changing', 'and what it means.']}
+                />
               </div>
               <Action href="/publications" variant="outline-dark">
                 All publications
@@ -863,7 +1193,12 @@ export default function HomePage() {
             </HomeBlock>
 
             <div className="home-intelligence__grid">
-              <HomeBlock className="home-publication home-publication--report">
+              <HomeBlock
+                className="home-publication home-publication--report"
+                effect="flip"
+                tilt
+                spotlight
+              >
                 <div className="home-publication__cover">
                   <img
                     src={ART.reportCover}
@@ -881,7 +1216,13 @@ export default function HomePage() {
                 </div>
               </HomeBlock>
 
-              <HomeBlock className="home-publication home-publication--magazine">
+              <HomeBlock
+                className="home-publication home-publication--magazine"
+                effect="flip"
+                delay={100}
+                tilt
+                spotlight
+              >
                 <div className="home-publication__copy">
                   <span className="home-card-kicker">The INZBC magazine</span>
                   <h3>Kia Ora India</h3>
@@ -899,7 +1240,13 @@ export default function HomePage() {
                 </div>
               </HomeBlock>
 
-              <div className="home-news-card">
+              <div
+                className="home-news-card"
+                data-reel="scale"
+                data-reel-tilt="true"
+                data-reel-spotlight="true"
+                style={{ '--reel-delay': '160ms' } as React.CSSProperties}
+              >
                 <img
                   src={ART.ftaNewEra}
                   alt="Delegation photograph accompanying an INZBC FTA article"
@@ -935,27 +1282,31 @@ export default function HomePage() {
 
         <section className="home-partners home-section" aria-labelledby="partners-title">
           <div className="home-shell">
-            <HomeBlock className="home-partners__head">
-              <h2 id="partners-title" className="home-heading">
-                Partners and supporters
-              </h2>
+            <HomeBlock className="home-partners__head" effect="none">
+              <KineticHeading
+                id="partners-title"
+                className="home-heading"
+                lines={['Partners', 'and supporters']}
+              />
               <p>Organisations supporting INZBC&rsquo;s work across the NZ&ndash;India corridor.</p>
             </HomeBlock>
 
             <div className="home-partners__groups">
-              <HomeBlock className="home-partners__group">
+              <HomeBlock className="home-partners__group" effect="left">
                 <div className="home-partners__group-head">
                   <span>Business network</span>
                   <p>Strategic, partner and associate relationships</p>
                 </div>
                 <div className="home-partners__logo-grid">
-                  {BUSINESS_PARTNERS.map((partner) => (
+                  {BUSINESS_PARTNERS.map((partner, index) => (
                     <a
                       key={partner.name}
                       href={partner.href}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="home-partner-mark home-focus-dark"
+                      data-reel="rise"
+                      style={{ '--reel-delay': `${index * 38}ms` } as React.CSSProperties}
                     >
                       <span className="home-partner-mark__art">
                         {partner.logo ? (
@@ -973,19 +1324,25 @@ export default function HomePage() {
                 </div>
               </HomeBlock>
 
-              <HomeBlock className="home-partners__group home-partners__group--india">
+              <HomeBlock
+                className="home-partners__group home-partners__group--india"
+                effect="right"
+                delay={120}
+              >
                 <div className="home-partners__group-head">
                   <span>India industry network</span>
                   <p>Relationships that extend the council&rsquo;s reach on the ground</p>
                 </div>
                 <div className="home-partners__india-grid">
-                  {INDIA_NETWORK.map((partner) => (
+                  {INDIA_NETWORK.map((partner, index) => (
                     <a
                       key={partner.name}
                       href={partner.href}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="home-india-mark home-focus-dark"
+                      data-reel="rise"
+                      style={{ '--reel-delay': `${index * 58}ms` } as React.CSSProperties}
                     >
                       <span className="home-india-mark__art">
                         {partner.logo ? (
@@ -1004,7 +1361,11 @@ export default function HomePage() {
               </HomeBlock>
             </div>
 
-            <section className="home-partners__stakeholders" aria-label="Public sector and industry stakeholders">
+            <section
+              className="home-partners__stakeholders"
+              aria-label="Public sector and industry stakeholders"
+              data-reel="scale"
+            >
               <span>Also working alongside</span>
               <div>
                 {PUBLIC_SECTOR_NETWORK.map(([name, href]) => (
@@ -1030,16 +1391,23 @@ export default function HomePage() {
 
         <section className="home-conversion" aria-labelledby="conversion-title">
           <div className="home-shell">
-            <HomeBlock className="home-conversion__lead">
-              <h2 id="conversion-title" className="home-display home-conversion__title">
-                Your next India conversation can start here.
-              </h2>
+            <HomeBlock className="home-conversion__lead" effect="none">
+              <KineticHeading
+                id="conversion-title"
+                className="home-display home-conversion__title"
+                lines={['Your next India conversation', 'can start here.']}
+              />
             </HomeBlock>
 
             <ConversionRoute />
 
             <div className="home-conversion__grid">
-              <HomeBlock className="home-conversion-card home-conversion-card--lime">
+              <HomeBlock
+                className="home-conversion-card home-conversion-card--lime"
+                effect="flip"
+                tilt
+                spotlight
+              >
                 <span className="home-card-kicker">Membership</span>
                 <h3>Join the council</h3>
                 <p>Connect your organisation to the people and intelligence shaping the corridor.</p>
@@ -1048,7 +1416,13 @@ export default function HomePage() {
                 </Action>
               </HomeBlock>
 
-              <HomeBlock className="home-conversion-card home-conversion-card--plum">
+              <HomeBlock
+                className="home-conversion-card home-conversion-card--plum"
+                effect="flip"
+                delay={100}
+                tilt
+                spotlight
+              >
                 <span className="home-card-kicker">Stay informed</span>
                 <h3>Trade updates, in your inbox</h3>
                 <p>FTA developments, council news and event announcements.</p>
@@ -1057,7 +1431,11 @@ export default function HomePage() {
                 </Action>
               </HomeBlock>
 
-              <div className="home-conversion-card home-conversion-card--contact">
+              <div
+                className="home-conversion-card home-conversion-card--contact"
+                data-reel="rise"
+                style={{ '--reel-delay': '190ms' } as React.CSSProperties}
+              >
                 <div className="home-contact-intro">
                   <span className="home-card-kicker">Contact</span>
                   <h3>Speak with the Secretariat</h3>
@@ -1139,7 +1517,10 @@ export default function HomePage() {
       </main>
 
       <footer className="home-footer">
-        <div className="home-shell home-footer__top">
+        <div className="home-footer__horizon" aria-hidden="true">
+          <span />
+        </div>
+        <div className="home-shell home-footer__top" data-reel="rise">
           <Link to="/" className="home-footer__logo home-focus-light" aria-label="INZBC home">
             <img
               src={ART.logo}
@@ -1159,7 +1540,11 @@ export default function HomePage() {
             </Link>
           </nav>
         </div>
-        <div className="home-shell home-footer__bottom">
+        <div
+          className="home-shell home-footer__bottom"
+          data-reel="rise"
+          style={{ '--reel-delay': '100ms' } as React.CSSProperties}
+        >
           <p>India New Zealand Business Council / Established 1988</p>
           <nav className="home-footer__socials" aria-label="Social media">
             {SOCIALS.map((social) => (
@@ -1179,7 +1564,8 @@ export default function HomePage() {
             Secretariat@inzbc.org
           </a>
         </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+    </ClickSpark>
   );
 }
