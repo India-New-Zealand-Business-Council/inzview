@@ -91,16 +91,21 @@ export default function FtaPage() {
 
       <main>
         <section
-          className="relative overflow-hidden bg-deep px-6 pb-24 pt-44 text-center"
+          className="relative flex min-h-[32rem] flex-col items-center justify-center overflow-hidden bg-deep px-6 py-24 text-center sm:min-h-[36rem] lg:min-h-[42rem] xl:min-h-[48rem]"
           aria-labelledby="fta-hero-title"
         >
+          {/* The section's own height was content-driven (pt-44 + text + pb-24), which stays
+              roughly constant while the viewport keeps widening — on a large monitor that
+              produced an increasingly wide, short box and cropped the top and bottom off this
+              photo. min-h per breakpoint (not the image) fixes the box shape; flex centering
+              keeps the text centred inside whatever height that produces. */}
           <img
             src="/events/modi-luxon-address-auckland-2026.jpeg"
             alt=""
             aria-hidden="true"
             loading="eager"
             fetchPriority="high"
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover object-[50%_60%]"
           />
           <div
             aria-hidden="true"
@@ -259,13 +264,16 @@ export default function FtaPage() {
         <section className="bg-mist pb-4 pt-24" aria-labelledby="fta-photos-title">
           <Reveal>
             <div className="relative">
+              {/* aspect-* ties height to width at every viewport size instead of a fixed
+                  max-h, which let the crop go from "shows the group" on a phone to "shows a
+                  strip of shoulders" on a wide monitor as width grew past a constant height. */}
               <img
                 src="/events/inzbc-welcome-auckland-2026.jpeg"
                 alt="INZBC Chief Executive Sunil Kaushal and delegates at the welcome for the Indian Prime Minister in Auckland"
                 width={2048}
                 height={1536}
                 loading="lazy"
-                className="max-h-[36rem] w-full object-cover"
+                className="aspect-[4/3] w-full object-cover object-[50%_58%] sm:aspect-[16/9]"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 to-transparent px-6 pb-6 pt-20 md:px-10">
                 <h2
@@ -284,13 +292,15 @@ export default function FtaPage() {
 
           <div className="mx-auto mt-4 max-w-5xl px-6 pb-20">
             <Reveal delay={0.05}>
+              {/* 2048x1366 is already ~3:2 — matching that ratio instead of a fixed max-h
+                  means it shows essentially the full frame at any viewport width. */}
               <img
                 src="/events/modi-luxon-delegation-auckland-2026.jpeg"
                 alt="Prime Ministers Narendra Modi and Christopher Luxon with the New Zealand and India delegations in Auckland"
                 width={2048}
                 height={1366}
                 loading="lazy"
-                className="max-h-[22rem] w-full object-cover"
+                className="aspect-[3/2] w-full object-cover"
               />
             </Reveal>
           </div>
@@ -307,7 +317,7 @@ export default function FtaPage() {
                 width={856}
                 height={403}
                 loading="lazy"
-                className="h-56 w-full object-cover sm:h-full"
+                className="aspect-[2/1] w-full object-cover sm:aspect-auto sm:h-full"
               />
             </Reveal>
             <Reveal delay={0.08} className="p-8 text-white sm:w-1/2 md:p-12">
