@@ -1,17 +1,17 @@
 # Blog post cover images from inzbc.org
 
-Pulled 14 August 2026 from the live site's Wix Blog API. First pass only got 50 posts due to
-a pagination bug (wrong cursor field); the site actually has 154 published posts back to
-2020. This table covers the original 50 plus 7 more added when the bug was fixed and the
-1-17 events in `EVENTS_EXTRACTED.md` were pulled — the remaining ~97 older posts were not
-downloaded (mostly press releases/news, not events; ask if those covers are wanted too).
-Cover images downloaded from Wix's CDN (`static.wixstatic.com`) and localized here rather
-than hot-linked. 5 posts had no cover image set on the live site.
+Pulled 14 August 2026 from the live site's Wix Blog API. All 154 published posts (back to
+2020) are now covered: the original 50, then 7 more when a pagination bug (wrong cursor
+field) got fixed, then 46 while mining `EVENTS_ARCHIVE_MINED.md`, then the final 58
+stragglers. This file only lists the original 57 by name (see git history/folder listing for
+the rest — 149 filenames would make this table useless to scan). Cover images downloaded
+from Wix's CDN (`static.wixstatic.com`) and localized here rather than hot-linked. 11 posts
+across the whole set have no cover image set on the live site.
 
 These are real INZBC blog post covers, not stock imagery — use them as post covers /
 thumbnails on the new site's news, publications, or events pages, matched to the same post.
-See `EVENTS_EXTRACTED.md` for structured event details (date/time/venue) pulled from the
-post bodies for the 17 posts that are actual events.
+See `EVENTS_EXTRACTED.md` and `EVENTS_ARCHIVE_MINED.md` for structured event details
+(date/time/venue) pulled from the post bodies for the 65 posts that are actual events.
 
 | Local file | Post title | Published | Live post URL |
 |---|---|---|---|
