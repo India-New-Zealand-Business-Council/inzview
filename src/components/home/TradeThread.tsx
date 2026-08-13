@@ -3,6 +3,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import type { MotionValue } from 'framer-motion';
 import CorridorPortal from './CorridorPortal';
 import type { CorridorPortalProps } from './CorridorPortal';
+import KineticHeading from './KineticHeading';
 import './TradeThread.css';
 
 export type TradeThreadStat = Readonly<{
@@ -145,12 +146,20 @@ export default function TradeThread({
       {portal ? <CorridorPortal {...portal} /> : null}
       <div className="home-shell home-trade-thread__layout">
         <header className="home-trade-thread__intro">
-          <h2
-            id={resolvedHeadingId}
-            className="home-heading home-heading--light home-trade-thread__title"
-          >
-            {title}
-          </h2>
+          {typeof title === 'string' ? (
+            <KineticHeading
+              id={resolvedHeadingId}
+              className="home-heading home-heading--light home-trade-thread__title"
+              lines={[title]}
+            />
+          ) : (
+            <h2
+              id={resolvedHeadingId}
+              className="home-heading home-heading--light home-trade-thread__title"
+            >
+              {title}
+            </h2>
+          )}
           <div className="home-trade-thread__summary">{summary}</div>
           {action ? <div className="home-trade-thread__action">{action}</div> : null}
         </header>
