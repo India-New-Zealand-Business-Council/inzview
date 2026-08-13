@@ -200,17 +200,28 @@ export default function FtaPage() {
         </section>
 
         {/* Full-bleed on purpose: the one image in the piece that breaks the container, so it
-            reads as a beat in the page rather than a contained thumbnail. */}
+            reads as a beat in the page rather than a contained thumbnail. Was ART.heroBanner,
+            a composite graphic left over from the old Wix Studio build (stock port/sheep/India
+            Gate circles, and it still carried a "Built on WIXVibe" watermark baked into the
+            file). Swapped for a real, high-res INZBC photo instead. */}
         <section className="bg-mist py-20">
           <Reveal>
             <Parallax speed={0.12}>
               <img
-                src={ART.heroBanner}
-                alt="India New Zealand Business Council: connecting New Zealand and India since 1988. A container port, a New Zealand paddock and India Gate."
+                src="/blog/christchurch-city-council-and-inzbc-formalise-strategic-alliance-to-target-indian-market.jpg"
+                alt="Christchurch City Council and INZBC representatives at the signing of a strategic alliance to target the Indian market"
+                width={1600}
+                height={900}
                 loading="lazy"
                 className="w-full"
               />
             </Parallax>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <p className="mx-auto mt-4 max-w-5xl px-6 text-sm text-foreground/60">
+              Christchurch City Council and INZBC formalise a strategic alliance to target the
+              Indian market &mdash; the relationship at work, not just on paper.
+            </p>
           </Reveal>
         </section>
 
