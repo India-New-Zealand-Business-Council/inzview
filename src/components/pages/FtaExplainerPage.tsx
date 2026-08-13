@@ -2,6 +2,7 @@ import React from 'react';
 import { Reveal, ScrollProgress, StickyHeader } from '@/components/inzbc/motion';
 import { ART, LINKS } from '@/components/inzbc/content';
 import { NAV } from '@/components/inzbc/pages';
+import Footer from '@/components/inzbc/Footer';
 
 /**
  * FTA Opportunity Explainer — Coming Soon placeholder.
@@ -59,6 +60,8 @@ export default function FtaExplainerPage() {
           </div>
         </section>
       </main>
+
+      <Footer />
     </div>
   );
 }

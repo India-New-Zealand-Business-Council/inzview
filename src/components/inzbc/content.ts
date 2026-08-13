@@ -11,6 +11,10 @@ export const LINKS = {
   reportIssuu: 'https://issuu.com/inzbc/docs/inzbc_report_2025_digital',
   kiaOraIssuu: 'https://issuu.com/inzbc/docs/kiaora_india_dec_2023_v6_final',
   summitSite: 'https://www.inzbusinesssummit.com/',
+  mfatFta:
+    'https://www.mfat.govt.nz/en/trade/free-trade-agreements/free-trade-agreements-concluded-but-not-in-force/new-zealand-india-free-trade-agreement',
+  mfatFtaText:
+    'https://www.mfat.govt.nz/en/trade/free-trade-agreements/free-trade-agreements-concluded-but-not-in-force/new-zealand-india-free-trade-agreement/text-of-the-agreement',
   facebook: 'https://www.facebook.com/inzbc',
   facebookAlbums: 'https://www.facebook.com/inzbc/photos?tab=albums',
   flickr: 'https://www.flickr.com/photos/inzbc/',
