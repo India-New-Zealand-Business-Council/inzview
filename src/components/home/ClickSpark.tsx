@@ -13,6 +13,16 @@ type ClickSparkProps = Readonly<{
 
 const SPARK_DURATION = 420;
 const SPARK_COUNT = 8;
+const MAX_BACKING_PIXELS = 4_000_000;
+const MAX_RENDER_SCALE = 2;
+
+function clearCanvas(canvas: HTMLCanvasElement, context = canvas.getContext('2d')) {
+  if (!context) return;
+  context.save();
+  context.setTransform(1, 0, 0, 1, 0, 0);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.restore();
+}
 
 export default function ClickSpark({ children }: ClickSparkProps) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -27,7 +37,7 @@ export default function ClickSpark({ children }: ClickSparkProps) {
     const context = canvas?.getContext('2d');
     if (!canvas || !context) return;
 
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    clearCanvas(canvas, context);
     sparksRef.current = sparksRef.current.filter((spark) => {
       const progress = Math.min(1, (now - spark.startedAt) / SPARK_DURATION);
       if (progress >= 1) return false;
@@ -64,15 +74,20 @@ export default function ClickSpark({ children }: ClickSparkProps) {
         sparksRef.current = [];
         if (frameRef.current) cancelAnimationFrame(frameRef.current);
         frameRef.current = 0;
-        canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height);
+        clearCanvas(canvas);
       }
     };
     const resize = () => {
-      const viewportPixels = Math.max(1, window.innerWidth * window.innerHeight);
-      const ratio = Math.min(1, Math.sqrt(4_000_000 / viewportPixels));
-      canvas.width = Math.max(1, Math.round(window.innerWidth * ratio));
-      canvas.height = Math.max(1, Math.round(window.innerHeight * ratio));
-      canvas.getContext('2d')?.setTransform(ratio, 0, 0, ratio, 0, 0);
+      const viewportWidth = Math.max(1, window.innerWidth);
+      const viewportHeight = Math.max(1, window.innerHeight);
+      const viewportPixels = viewportWidth * viewportHeight;
+      const requestedScale = Math.min(window.devicePixelRatio || 1, MAX_RENDER_SCALE);
+      const pixelBudgetScale = Math.sqrt(MAX_BACKING_PIXELS / viewportPixels);
+      const renderScale = Math.min(requestedScale, pixelBudgetScale);
+
+      canvas.width = Math.max(1, Math.floor(viewportWidth * renderScale));
+      canvas.height = Math.max(1, Math.floor(viewportHeight * renderScale));
+      canvas.getContext('2d')?.setTransform(renderScale, 0, 0, renderScale, 0, 0);
     };
 
     syncMotion();

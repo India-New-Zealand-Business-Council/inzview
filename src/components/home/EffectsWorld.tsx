@@ -49,13 +49,15 @@ const WORLD_KEYFRAMES: readonly WorldKeyframe[] = [
   { position: [2.7, 0.15, -0.65], rotation: [0.12, 2.05, -0.08], scale: 0.78 },
   { position: [-2.5, 0, -0.3], rotation: [-0.18, 2.7, 0.12], scale: 1.02 },
   { position: [2.35, 0.25, -0.45], rotation: [0.16, 3.35, -0.1], scale: 0.9 },
-  { position: [0, -0.2, -1.2], rotation: [-0.04, 4.1, 0.04], scale: 1.24 },
-  { position: [0, 0.15, -0.15], rotation: [0.08, 4.8, 0], scale: 1.12 },
+  { position: [3.2, -0.1, -1.1], rotation: [-0.04, 4.1, 0.04], scale: 0.62 },
+  { position: [3, 0.55, -0.55], rotation: [0.08, 4.8, 0], scale: 0.76 },
 ] as const;
+
+const CORE_VISIBILITY_KEYFRAMES = [1, 0.86, 0.14, 0.1, 0.16, 0.12, 0.14, 0.06, 0.72] as const;
 
 const PHOTO_TEXTURES = [
   {
-    src: '/effects/auckland-sunset-squirrel-photos.webp',
+    src: '/effects/otago-harbour-makalu.webp',
     chapter: 0.8,
     x: -2.45,
     y: -1.35,
@@ -274,16 +276,17 @@ function initialiseWorld(THREE: ThreeModule, host: HTMLDivElement) {
   const particles = new THREE.Points(particleGeometry, particleMaterial);
   world.add(particles);
 
-  const ringMaterial = new THREE.MeshBasicMaterial({
+  const ringAMaterial = new THREE.MeshBasicMaterial({
     color: 0xb8f07c,
     transparent: true,
     opacity: 0.42,
     depthWrite: false,
   });
-  const ringA = new THREE.Mesh(new THREE.TorusGeometry(1.66, 0.012, 5, 128), ringMaterial);
+  const ringA = new THREE.Mesh(new THREE.TorusGeometry(1.66, 0.012, 5, 128), ringAMaterial);
   ringA.rotation.set(1.08, 0.18, 0.28);
   core.add(ringA);
-  const ringB = new THREE.Mesh(new THREE.TorusGeometry(1.9, 0.008, 5, 128), ringMaterial.clone());
+  const ringBMaterial = ringAMaterial.clone();
+  const ringB = new THREE.Mesh(new THREE.TorusGeometry(1.9, 0.008, 5, 128), ringBMaterial);
   ringB.rotation.set(0.38, 1.14, -0.42);
   core.add(ringB);
 
@@ -293,14 +296,26 @@ function initialiseWorld(THREE: ThreeModule, host: HTMLDivElement) {
     new THREE.Vector3(0.86, 1.5, 0.92),
     new THREE.Vector3(1.35, 0.15, 0.58),
   );
+  const routeMaterial = new THREE.MeshBasicMaterial({
+    color: 0xb8f07c,
+    transparent: true,
+    opacity: 0.92,
+    depthWrite: false,
+  });
   const route = new THREE.Mesh(
     new THREE.TubeGeometry(routeCurve, 72, 0.018, 7, false),
-    new THREE.MeshBasicMaterial({ color: 0xb8f07c, transparent: true, opacity: 0.92 }),
+    routeMaterial,
   );
   core.add(route);
+  const tracerMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 1,
+    depthWrite: false,
+  });
   const tracer = new THREE.Mesh(
     new THREE.SphereGeometry(0.065, 14, 14),
-    new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    tracerMaterial,
   );
   core.add(tracer);
 
@@ -482,10 +497,19 @@ function initialiseWorld(THREE: ThreeModule, host: HTMLDivElement) {
       photo.group.scale.setScalar(0.86 + presence * 0.14);
     });
 
-    const corePresence = clamp(0.52 + Math.abs(Math.sin(currentPhase * 0.72)) * 0.48);
-    globeMaterial.opacity = 0.66 + corePresence * 0.28;
-    wireMaterial.opacity = 0.25 + corePresence * 0.28;
-    particleMaterial.opacity = 0.22 + corePresence * 0.28;
+    const chapterCoreVisibility = mix(
+      CORE_VISIBILITY_KEYFRAMES[low],
+      CORE_VISIBILITY_KEYFRAMES[high],
+      local,
+    );
+    const corePulse = clamp(0.52 + Math.abs(Math.sin(currentPhase * 0.72)) * 0.48);
+    globeMaterial.opacity = (0.66 + corePulse * 0.28) * chapterCoreVisibility;
+    wireMaterial.opacity = (0.25 + corePulse * 0.28) * chapterCoreVisibility;
+    particleMaterial.opacity = (0.22 + corePulse * 0.28) * chapterCoreVisibility;
+    ringAMaterial.opacity = 0.42 * chapterCoreVisibility;
+    ringBMaterial.opacity = 0.42 * chapterCoreVisibility;
+    routeMaterial.opacity = 0.92 * chapterCoreVisibility;
+    tracerMaterial.opacity = chapterCoreVisibility;
 
     renderer.render(scene, camera);
 

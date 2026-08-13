@@ -1061,6 +1061,15 @@
     border-color 180ms ease;
 }
 
+.home-pathway:focus-visible {
+  /* The card clips its spotlight layer, so keep the keyboard ring inside it. */
+  outline-offset: -6px;
+}
+
+.home-pathway--featured:focus-visible {
+  outline-color: var(--home-lime);
+}
+
 .home-pathway--featured {
   border-color: transparent;
   background:
@@ -2329,11 +2338,6 @@
     opacity: 1;
   }
 
-  .home-action:hover svg,
-  .home-pathway:hover .home-pathway__link svg {
-    transform: translate3d(3px, 0, 0);
-  }
-
   .home-action--primary:hover {
     background: #c7f694;
   }
@@ -2370,6 +2374,32 @@
     border-color: rgba(97, 20, 95, 0.24);
   }
 
+  .home-publication--magazine .home-action--text:hover {
+    color: #fff;
+  }
+
+  .home-partner-mark:hover,
+  .home-india-mark:hover {
+    border-color: rgba(97, 20, 95, 0.26);
+    background: rgba(244, 242, 248, 0.72);
+  }
+
+  .home-contact-form__footer button:hover {
+    background: #c7f694;
+  }
+
+  .home-partners__stakeholders a:hover {
+    border-color: rgba(97, 20, 95, 0.3);
+    color: var(--home-plum);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .home-action:hover svg,
+  .home-pathway:hover .home-pathway__link svg {
+    transform: translate3d(3px, 0, 0);
+  }
+
   .home-pathway--featured:hover {
     transform: translate3d(0, -4px, 0);
   }
@@ -2392,25 +2422,6 @@
 
   .home-summit-link:hover svg {
     transform: translate3d(3px, -3px, 0);
-  }
-
-  .home-publication--magazine .home-action--text:hover {
-    color: #fff;
-  }
-
-  .home-partner-mark:hover,
-  .home-india-mark:hover {
-    border-color: rgba(97, 20, 95, 0.26);
-    background: rgba(244, 242, 248, 0.72);
-  }
-
-  .home-contact-form__footer button:hover {
-    background: #c7f694;
-  }
-
-  .home-partners__stakeholders a:hover {
-    border-color: rgba(97, 20, 95, 0.3);
-    color: var(--home-plum);
   }
 }
 
