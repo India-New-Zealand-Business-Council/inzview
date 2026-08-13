@@ -13,6 +13,33 @@ import './EffectsWorld.css';
 type ThreeModule = typeof import('three');
 type WorldStatus = 'idle' | 'loading' | 'ready' | 'fallback';
 
+/** Scene budget tiers by viewport width. Every tier renders the same world; they differ
+ *  in pixel ratio, antialiasing, particle count and GPU power hint. There is no width
+ *  below which the scene is refused -- phones run it too. Only `constrainedDevice`
+ *  (save-data, or <4GB RAM) opts out, and that device gets the static CSS tier. */
+const WORLD_DESKTOP_MIN_WIDTH = 941;
+const WORLD_TABLET_MIN_WIDTH = 721;
+
+type WorldBudget = Readonly<{
+  pixelRatio: number;
+  antialias: boolean;
+  particles: number;
+  powerPreference: 'high-performance' | 'default';
+}>;
+
+function worldBudget(): WorldBudget {
+  const width = window.innerWidth;
+  if (width >= WORLD_DESKTOP_MIN_WIDTH) {
+    return { pixelRatio: 1.35, antialias: true, particles: 780, powerPreference: 'high-performance' };
+  }
+  if (width >= WORLD_TABLET_MIN_WIDTH) {
+    return { pixelRatio: 1, antialias: false, particles: 380, powerPreference: 'high-performance' };
+  }
+  // Phones: lowest budget and no high-performance GPU request, which on mobile
+  // meaningfully affects battery for a decorative background.
+  return { pixelRatio: 1, antialias: false, particles: 220, powerPreference: 'default' };
+}
+
 type WorldKeyframe = Readonly<{
   position: readonly [number, number, number];
   rotation: readonly [number, number, number];
@@ -53,7 +80,11 @@ const WORLD_KEYFRAMES: readonly WorldKeyframe[] = [
   { position: [3, 0.55, -0.55], rotation: [0.08, 4.8, 0], scale: 0.76 },
 ] as const;
 
-const CORE_VISIBILITY_KEYFRAMES = [1, 0.86, 0.14, 0.1, 0.16, 0.12, 0.14, 0.06, 0.72] as const;
+/* Per-chapter globe presence, indexed by CHAPTER_SELECTORS. The text-heavy middle was
+   sitting at 0.10--0.16: too faint to read as design, too present to read as absent, so
+   it landed as a rendering artifact behind the copy. Committed to three deliberate
+   moments -- hero, trade corridor, closing CTA -- and effectively zero in between. */
+const CORE_VISIBILITY_KEYFRAMES = [1, 0.88, 0.03, 0.03, 0.04, 0.03, 0.04, 0.02, 0.78] as const;
 
 const PHOTO_TEXTURES = [
   {
@@ -198,18 +229,22 @@ function addPhotoPlane(
 }
 
 function initialiseWorld(THREE: ThreeModule, host: HTMLDivElement) {
+  // Sampled once per scene. Crossing a tier boundary tears the world down and rebuilds
+  // it (see onTierChange), so this is re-read rather than going stale.
+  const budget = worldBudget();
+
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
   camera.position.set(0, 0, 8.4);
 
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
-    antialias: true,
-    powerPreference: 'high-performance',
+    antialias: budget.antialias,
+    powerPreference: budget.powerPreference,
     premultipliedAlpha: true,
   });
   renderer.setClearColor(0x000000, 0);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.35));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, budget.pixelRatio));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.08;
@@ -254,8 +289,9 @@ function initialiseWorld(THREE: ThreeModule, host: HTMLDivElement) {
   core.add(wireframe);
 
   const random = createSeededRandom();
-  const particlePositions = new Float32Array(780 * 3);
-  for (let index = 0; index < 780; index += 1) {
+  const particleCount = budget.particles;
+  const particlePositions = new Float32Array(particleCount * 3);
+  for (let index = 0; index < particleCount; index += 1) {
     const radius = 2.2 + random() * 3.8;
     const theta = random() * Math.PI * 2;
     const phi = Math.acos(2 * random() - 1);
@@ -570,7 +606,12 @@ export default function EffectsWorld() {
     const host = hostRef.current;
     if (!host) return undefined;
 
-    const desktop = window.matchMedia('(min-width: 941px)');
+    // Width no longer decides whether the world runs, only which budget it runs at.
+    // These are watched so crossing a boundary rebuilds the scene at the right tier.
+    const tierQueries = [
+      window.matchMedia(`(min-width: ${WORLD_DESKTOP_MIN_WIDTH}px)`),
+      window.matchMedia(`(min-width: ${WORLD_TABLET_MIN_WIDTH}px)`),
+    ];
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const reducedTransparency = window.matchMedia('(prefers-reduced-transparency: reduce)');
     const forcedColors = window.matchMedia('(forced-colors: active)');
@@ -602,10 +643,7 @@ export default function EffectsWorld() {
     };
 
     const eligible = () =>
-      desktop.matches &&
-      !reducedMotion.matches &&
-      !reducedTransparency.matches &&
-      !forcedColors.matches;
+      !reducedMotion.matches && !reducedTransparency.matches && !forcedColors.matches;
 
     const stop = (nextStatus: WorldStatus = 'fallback') => {
       loadToken += 1;
@@ -654,7 +692,18 @@ export default function EffectsWorld() {
       else stop();
     };
 
-    desktop.addEventListener('change', onModeChange);
+    // A tier change needs a genuine rebuild: pixel ratio, antialiasing and particle
+    // count are all fixed at construction, so scheduleStart() alone would no-op.
+    const onTierChange = () => {
+      if (!eligible()) {
+        stop();
+        return;
+      }
+      stop('idle');
+      scheduleStart();
+    };
+
+    tierQueries.forEach((query) => query.addEventListener('change', onTierChange));
     reducedMotion.addEventListener('change', onModeChange);
     reducedTransparency.addEventListener('change', onModeChange);
     forcedColors.addEventListener('change', onModeChange);
@@ -663,7 +712,7 @@ export default function EffectsWorld() {
     return () => {
       cancelled = true;
       loadToken += 1;
-      desktop.removeEventListener('change', onModeChange);
+      tierQueries.forEach((query) => query.removeEventListener('change', onTierChange));
       reducedMotion.removeEventListener('change', onModeChange);
       reducedTransparency.removeEventListener('change', onModeChange);
       forcedColors.removeEventListener('change', onModeChange);

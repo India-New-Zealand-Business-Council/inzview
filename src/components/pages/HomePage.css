@@ -218,6 +218,8 @@
   overflow: hidden;
   margin-top: clamp(3rem, 6vw, 6rem);
   contain: paint;
+  /* Fade both ends so the marquee clip reads as deliberate, not as cut-off words. */
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   pointer-events: none;
 }
 
@@ -254,15 +256,21 @@
   background: var(--home-lime);
 }
 
+/* Sits below the section head so it never crosses the heading, and fades at both
+   edges so the textPath clip reads as a deliberate marquee rather than cut-off text.
+   Offset verified in-browser at 1440 (61px clear) and 1920 (30px clear). Hidden below
+   941px: the heading wraps to more lines there, so no fixed offset clears it, and a
+   13%-opacity flourish is not worth a collision with the copy. */
 .home-curved-corridor {
   position: absolute;
-  top: clamp(1rem, 4vw, 3rem);
+  top: clamp(14rem, 24vw, 22rem);
   left: 50%;
   z-index: 1;
   width: min(112rem, 126vw);
   overflow: hidden;
   opacity: 0.13;
   pointer-events: none;
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
   transform: translate3d(-50%, 0, 0) rotate(-2deg);
 }
 
@@ -299,6 +307,12 @@
 
   to {
     transform: translate3d(4%, 0, 0) scale(1.04);
+  }
+}
+
+@media (max-width: 940px) {
+  .home-curved-corridor {
+    display: none;
   }
 }
 
@@ -1308,7 +1322,7 @@
 }
 
 @supports (animation-timeline: view()) {
-  @media (min-width: 721px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  @media (prefers-reduced-motion: no-preference) {
     .home-events__photo--main,
     .home-events__photo--small-one,
     .home-events__photo--small-two {
@@ -1695,13 +1709,41 @@
   object-fit: contain;
 }
 
+/* Named partners without a supplied logo file. Deliberately a wordmark, not a
+   centred sans block sitting in a logo slot -- that read as a failed image load.
+   Adding `logo:` to the entry restores the image treatment with no CSS change. */
 .home-partner-mark__art strong,
 .home-india-mark__art strong {
-  color: var(--home-ink);
-  font-size: clamp(1rem, 2vw, 1.4rem);
+  position: relative;
+  display: block;
+  width: 100%;
+  padding-top: 0.85rem;
+  color: var(--home-plum);
+  font-family: 'INZBC Editorial', Georgia, serif;
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  font-style: italic;
   font-weight: 600;
-  letter-spacing: -0.035em;
-  text-align: center;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  text-align: left;
+  text-wrap: balance;
+}
+
+.home-partner-mark__art strong::before,
+.home-india-mark__art strong::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1.75rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--home-lime);
+  content: '';
+}
+
+.home-partner-mark[data-logo='false'] .home-partner-mark__art,
+.home-india-mark[data-logo='false'] .home-india-mark__art {
+  place-items: center start;
 }
 
 .home-partner-mark__meta,
@@ -2232,9 +2274,12 @@
   opacity: 0.62;
 }
 
+/* The band above is absolutely positioned, so this layout must reserve its height
+   or the heading renders straight through it. Tracks the track's font-size clamp. */
 .home-membership__layout {
   position: relative;
   z-index: 2;
+  padding-top: clamp(4.5rem, 11vw, 7.5rem);
 }
 
 .home-membership__benefits {
@@ -2329,6 +2374,34 @@
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0) scaleX(1);
+  }
+}
+
+/* Touch gets no spotlight, magnet, tilt or click spark -- all four are pointer effects
+   and correctly gated off. Without a substitute the cards register no feedback at all,
+   so give coarse pointers a press state instead. */
+@media (hover: none), (pointer: coarse) {
+  .home-page .home-pathway,
+  .home-page .home-action,
+  .home-page .home-partner-mark,
+  .home-page .home-india-mark {
+    transition: transform 140ms var(--home-ease-out);
+  }
+
+  .home-page .home-pathway:active,
+  .home-page .home-action:active,
+  .home-page .home-partner-mark:active,
+  .home-page .home-india-mark:active {
+    transform: scale(0.975);
+  }
+}
+
+@media (hover: none) and (prefers-reduced-motion: reduce), (pointer: coarse) and (prefers-reduced-motion: reduce) {
+  .home-page .home-pathway:active,
+  .home-page .home-action:active,
+  .home-page .home-partner-mark:active,
+  .home-page .home-india-mark:active {
+    transform: none;
   }
 }
 
