@@ -7,26 +7,34 @@ export type CorridorPortalProps = Readonly<{
   imagePosition?: string;
   imageWidth?: number;
   imageHeight?: number;
+  destinationImageSrc?: string;
+  destinationImagePosition?: string;
+  destinationImageWidth?: number;
+  destinationImageHeight?: number;
   originLabel: string;
   destinationLabel: string;
 }>;
 
 const DESKTOP_ROUTE =
-  'M320 240 C430 390 650 38 1015 145 C925 190 820 350 740 480';
+  'M258 292 C418 118 676 386 990 158';
 const MOBILE_ROUTE =
-  'M209 150 C160 276 610 178 580 304 C548 414 96 400 18 560';
+  'M196 154 C104 254 604 278 522 402';
 const RESOLVED_TRANSFORM = 'translate3d(0, 0, 0) scale(1)';
 
 /**
- * A decorative visual callback that turns the hero photograph into the FTA data route.
+ * A decorative visual handoff that carries the FTA route between New Zealand and India.
  * All facts remain in the surrounding TradeThread content, so this layer can disappear in
  * forced-colour or reduced-motion contexts without losing meaning.
  */
 export default function CorridorPortal({
   imageSrc,
   imagePosition = 'center',
-  imageWidth = 1200,
-  imageHeight = 1600,
+  imageWidth = 1280,
+  imageHeight = 853,
+  destinationImageSrc,
+  destinationImagePosition = 'center',
+  destinationImageWidth = 1200,
+  destinationImageHeight = 800,
   originLabel,
   destinationLabel,
 }: CorridorPortalProps) {
@@ -37,20 +45,19 @@ export default function CorridorPortal({
     offset: ['start 92%', 'end 24%'],
   });
 
-  const photoClip = useTransform(
+  const photoOpacity = useTransform(scrollYProgress, [0.04, 0.3], [0.45, 1], {
+    clamp: true,
+  });
+  const originPhotoTransform = useTransform(
     scrollYProgress,
-    [0.06, 0.24, 0.58],
-    [
-      'circle(75% at 50% 50%)',
-      'circle(75% at 50% 50%)',
-      'circle(6% at 50% 50%)',
-    ],
+    [0.04, 0.46],
+    ['translate3d(-5%, 0, 0) scale(1.045)', RESOLVED_TRANSFORM],
     { clamp: true },
   );
-  const photoTransform = useTransform(
+  const destinationPhotoTransform = useTransform(
     scrollYProgress,
-    [0.04, 0.58],
-    ['translate3d(0, 0, 0) scale(1)', 'translate3d(0, 0, 0) scale(1.06)'],
+    [0.1, 0.5],
+    ['translate3d(5%, 0, 0) scale(1.045)', RESOLVED_TRANSFORM],
     { clamp: true },
   );
   const fieldOpacity = useTransform(scrollYProgress, [0.12, 0.38], [0.12, 1], {
@@ -87,12 +94,12 @@ export default function CorridorPortal({
     { clamp: true },
   );
 
-  const photoStyle = reducedMotion
-    ? {
-        clipPath: 'circle(6% at 50% 50%)',
-        transform: 'translate3d(0, 0, 0) scale(1.06)',
-      }
-    : { clipPath: photoClip, transform: photoTransform };
+  const originPhotoStyle = reducedMotion
+    ? { opacity: 1, transform: RESOLVED_TRANSFORM }
+    : { opacity: photoOpacity, transform: originPhotoTransform };
+  const destinationPhotoStyle = reducedMotion
+    ? { opacity: 1, transform: RESOLVED_TRANSFORM }
+    : { opacity: photoOpacity, transform: destinationPhotoTransform };
   const fieldStyle = reducedMotion
     ? { opacity: 1, transform: RESOLVED_TRANSFORM }
     : { opacity: fieldOpacity, transform: fieldTransform };
@@ -112,19 +119,39 @@ export default function CorridorPortal({
     <div ref={portalRef} className="home-corridor-portal" aria-hidden="true">
       <div className="home-shell home-corridor-portal__frame">
         <div className="home-corridor-portal__canvas">
-          <div className="home-corridor-portal__photo-anchor">
-            <motion.div className="home-corridor-portal__photo" style={photoStyle}>
+          <motion.div
+            className="home-corridor-portal__photo home-corridor-portal__photo--origin"
+            style={originPhotoStyle}
+          >
+            <img
+              src={imageSrc}
+              alt=""
+              width={imageWidth}
+              height={imageHeight}
+              loading="lazy"
+              decoding="async"
+              style={{ objectPosition: imagePosition }}
+            />
+            <span className="home-corridor-portal__photo-shade" />
+          </motion.div>
+
+          {destinationImageSrc ? (
+            <motion.div
+              className="home-corridor-portal__photo home-corridor-portal__photo--destination"
+              style={destinationPhotoStyle}
+            >
               <img
-                src={imageSrc}
+                src={destinationImageSrc}
                 alt=""
-                width={imageWidth}
-                height={imageHeight}
+                width={destinationImageWidth}
+                height={destinationImageHeight}
                 loading="lazy"
-                style={{ objectPosition: imagePosition }}
+                decoding="async"
+                style={{ objectPosition: destinationImagePosition }}
               />
               <span className="home-corridor-portal__photo-shade" />
             </motion.div>
-          </div>
+          ) : null}
 
           <motion.div className="home-corridor-portal__field" style={fieldStyle}>
             <svg

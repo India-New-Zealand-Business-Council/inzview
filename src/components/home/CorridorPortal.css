@@ -1,13 +1,13 @@
 .home-corridor-portal {
   position: relative;
   z-index: 1;
-  padding-top: clamp(3.5rem, 7vw, 7rem);
+  padding-top: clamp(2.75rem, 5vw, 5rem);
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.96) 0%,
-    rgba(244, 242, 248, 0.95) 11%,
-    rgba(14, 5, 34, 0.93) 48%,
-    rgba(14, 5, 34, 0.94) 100%
+    rgba(244, 242, 248, 0.95) 9%,
+    rgba(14, 5, 34, 0.94) 40%,
+    rgba(14, 5, 34, 0.96) 100%
   );
 }
 
@@ -17,35 +17,45 @@
 
 .home-corridor-portal__canvas {
   position: relative;
-  height: clamp(24rem, 40vw, 31rem);
+  height: clamp(22rem, 32vw, 27rem);
   overflow: hidden;
-  border-radius: 2rem;
-  background: var(--home-deep, #0e0522);
-  box-shadow: 0 42px 110px rgba(6, 1, 20, 0.3);
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(97, 20, 95, 0.44), transparent 34%),
+    var(--home-deep, #0e0522);
+  box-shadow: 0 38px 90px rgba(6, 1, 20, 0.32);
   contain: paint;
 }
 
-.home-corridor-portal__photo-anchor {
+.home-corridor-portal__canvas::after {
   position: absolute;
-  top: 50%;
-  left: 26.6667%;
-  z-index: 2;
-  width: 66%;
-  aspect-ratio: 64 / 27;
-  transform: translate3d(-50%, -50%, 0);
+  inset: 0;
+  z-index: 4;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: inherit;
+  content: '';
+  pointer-events: none;
 }
 
 .home-corridor-portal__photo {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset-block: 0;
+  z-index: 1;
+  width: 61%;
   overflow: hidden;
-  border-radius: 1.75rem;
   background: var(--home-navy, #160933);
-  box-shadow: 0 28px 70px rgba(4, 0, 14, 0.34);
   transform: translate3d(0, 0, 0) scale(1);
   transform-origin: center;
+}
+
+.home-corridor-portal__photo--origin {
+  left: 0;
+  clip-path: polygon(0 0, 88% 0, 100% 50%, 88% 100%, 0 100%);
+}
+
+.home-corridor-portal__photo--destination {
+  right: 0;
+  clip-path: polygon(12% 0, 100% 0, 100% 100%, 12% 100%, 0 50%);
 }
 
 .home-corridor-portal__photo img {
@@ -59,19 +69,32 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(14, 5, 34, 0.05), rgba(14, 5, 34, 0.44)),
-    linear-gradient(0deg, rgba(14, 5, 34, 0.38), transparent 58%);
+    linear-gradient(90deg, rgba(14, 5, 34, 0.04) 30%, rgba(14, 5, 34, 0.76) 100%),
+    linear-gradient(0deg, rgba(14, 5, 34, 0.48), transparent 58%);
+}
+
+.home-corridor-portal__photo--destination .home-corridor-portal__photo-shade {
+  background:
+    linear-gradient(270deg, rgba(14, 5, 34, 0.05) 30%, rgba(14, 5, 34, 0.76) 100%),
+    linear-gradient(0deg, rgba(14, 5, 34, 0.46), transparent 58%);
 }
 
 .home-corridor-portal__field {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
+  isolation: isolate;
   overflow: hidden;
   background:
-    radial-gradient(circle at 27% 56%, rgba(184, 240, 124, 0.16), transparent 17rem),
-    radial-gradient(circle at 84% 28%, rgba(97, 20, 95, 0.5), transparent 20rem),
-    linear-gradient(145deg, var(--home-deep, #0e0522), var(--home-ink, #1a0b3f));
+    radial-gradient(circle at 22% 61%, rgba(184, 240, 124, 0.18), transparent 15rem),
+    radial-gradient(circle at 82% 34%, rgba(167, 53, 147, 0.26), transparent 17rem),
+    linear-gradient(
+      90deg,
+      transparent 31%,
+      rgba(14, 5, 34, 0.9) 46%,
+      rgba(14, 5, 34, 0.94) 54%,
+      transparent 69%
+    );
   transform: translate3d(0, 0, 0) scale(1);
   transform-origin: center;
 }
@@ -79,19 +102,21 @@
 .home-corridor-portal__field::before {
   position: absolute;
   inset: 0;
+  z-index: 0;
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
   background-size: 4.5rem 4.5rem;
   content: '';
-  -webkit-mask-image: linear-gradient(120deg, transparent 2%, #000 34%, #000 76%, transparent 100%);
-  mask-image: linear-gradient(120deg, transparent 2%, #000 34%, #000 76%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 20%, #000 42%, #000 58%, transparent 80%);
+  mask-image: linear-gradient(90deg, transparent 20%, #000 42%, #000 58%, transparent 80%);
   pointer-events: none;
 }
 
 .home-corridor-portal__map {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
@@ -113,8 +138,8 @@
 }
 
 .home-corridor-portal__route-track {
-  opacity: 0.32;
-  stroke: rgba(255, 255, 255, 0.58);
+  opacity: 0.46;
+  stroke: rgba(255, 255, 255, 0.68);
   stroke-dasharray: 2 9;
   stroke-width: 1.4;
 }
@@ -126,31 +151,33 @@
 
 .home-corridor-portal__origin-marker {
   position: absolute;
-  top: 50%;
-  left: 26.6667%;
+  top: 60.8%;
+  left: 21.5%;
   z-index: 2;
   display: block;
-  width: 68px;
-  height: 68px;
-  border: 1.2px solid rgba(184, 240, 124, 0.42);
+  width: 56px;
+  height: 56px;
+  border: 1.2px solid rgba(184, 240, 124, 0.58);
   border-radius: 50%;
-  background: rgba(14, 5, 34, 0.28);
+  background: rgba(14, 5, 34, 0.34);
+  box-shadow: 0 0 0 12px rgba(184, 240, 124, 0.06);
   transform: translate3d(-50%, -50%, 0);
 }
 
 .home-corridor-portal__destination-marker {
   position: absolute;
-  top: 30.2083%;
-  left: 84.5833%;
+  top: 32.9%;
+  left: 82.5%;
   z-index: 2;
   display: block;
   width: 22px;
   height: 22px;
   margin-top: -11px;
   margin-left: -11px;
-  border: 4px solid rgba(14, 5, 34, 0.78);
+  border: 4px solid rgba(14, 5, 34, 0.82);
   border-radius: 50%;
   background: var(--home-lime, #b8f07c);
+  box-shadow: 0 0 0 8px rgba(184, 240, 124, 0.1);
   transform: translate3d(0, 0, 0) scale(1);
   transform-origin: center;
 }
@@ -158,27 +185,28 @@
 .home-corridor-portal__country {
   position: absolute;
   z-index: 3;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: clamp(0.64rem, 0.8vw, 0.75rem);
+  color: rgba(255, 255, 255, 0.94);
+  font-size: clamp(0.68rem, 0.8vw, 0.78rem);
   font-weight: 600;
   letter-spacing: 0.11em;
   line-height: 1.3;
+  text-shadow: 0 2px 16px rgba(8, 2, 24, 0.8);
   text-transform: uppercase;
 }
 
 .home-corridor-portal__country--origin {
-  top: 58%;
-  left: 20%;
+  bottom: 10%;
+  left: 5%;
 }
 
 .home-corridor-portal__country--destination {
-  top: 21%;
-  right: 9%;
+  top: 9%;
+  right: 5%;
 }
 
 .home-corridor-portal__handoff-grid {
   display: grid;
-  height: clamp(4rem, 7vw, 7rem);
+  height: clamp(3.5rem, 5vw, 5rem);
   grid-template-columns: minmax(0, 0.88fr) minmax(340px, 0.7fr);
   gap: clamp(4rem, 9vw, 9rem);
 }
@@ -202,46 +230,7 @@
   }
 
   .home-corridor-portal__canvas {
-    height: clamp(25rem, 70vw, 34rem);
-  }
-
-  .home-corridor-portal__photo-anchor {
-    top: 26.7857%;
-    left: 29.0278%;
-  }
-
-  .home-corridor-portal__origin-marker {
-    top: 26.7857%;
-    left: 29.0278%;
-    width: 46px;
-    height: 46px;
-  }
-
-  .home-corridor-portal__destination-marker {
-    top: 54.2857%;
-    left: 80.5556%;
-    width: 20px;
-    height: 20px;
-    margin-top: -10px;
-    margin-left: -10px;
-  }
-
-  .home-corridor-portal__map--desktop {
-    display: none;
-  }
-
-  .home-corridor-portal__map--mobile {
-    display: block;
-  }
-
-  .home-corridor-portal__country--origin {
-    top: 29%;
-    left: 18%;
-  }
-
-  .home-corridor-portal__country--destination {
-    top: 48%;
-    right: 8%;
+    height: clamp(23rem, 54vw, 30rem);
   }
 
   .home-corridor-portal__handoff-grid {
@@ -256,30 +245,102 @@
 
 @media (max-width: 720px) {
   .home-corridor-portal {
-    padding-top: 2.5rem;
+    padding-top: 2.25rem;
   }
 
   .home-corridor-portal__canvas {
-    height: clamp(23rem, 125vw, 31rem);
-    border-radius: 1.4rem;
+    height: clamp(25rem, 128vw, 31rem);
+    border-radius: 1.25rem;
   }
 
   .home-corridor-portal__photo {
-    border-radius: 1.15rem;
+    inset-inline: 0;
+    width: 100%;
+    height: 56%;
   }
 
-  .home-corridor-portal__origin-marker {
-    width: 30px;
-    height: 30px;
+  .home-corridor-portal__photo--origin {
+    top: 0;
+    bottom: auto;
+    clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
+  }
+
+  .home-corridor-portal__photo--destination {
+    top: auto;
+    bottom: 0;
+    clip-path: polygon(0 18%, 50% 0, 100% 18%, 100% 100%, 0 100%);
+  }
+
+  .home-corridor-portal__photo-shade {
+    background:
+      linear-gradient(180deg, rgba(14, 5, 34, 0.06) 28%, rgba(14, 5, 34, 0.82) 100%),
+      linear-gradient(90deg, rgba(14, 5, 34, 0.2), transparent 60%);
+  }
+
+  .home-corridor-portal__photo--destination .home-corridor-portal__photo-shade {
+    background:
+      linear-gradient(0deg, rgba(14, 5, 34, 0.08) 28%, rgba(14, 5, 34, 0.82) 100%),
+      linear-gradient(270deg, rgba(14, 5, 34, 0.18), transparent 60%);
+  }
+
+  .home-corridor-portal__field {
+    background:
+      radial-gradient(circle at 27% 28%, rgba(184, 240, 124, 0.18), transparent 10rem),
+      radial-gradient(circle at 73% 72%, rgba(167, 53, 147, 0.24), transparent 11rem),
+      linear-gradient(
+        180deg,
+        transparent 32%,
+        rgba(14, 5, 34, 0.92) 45%,
+        rgba(14, 5, 34, 0.94) 55%,
+        transparent 68%
+      );
   }
 
   .home-corridor-portal__field::before {
     background-size: 3.5rem 3.5rem;
+    -webkit-mask-image: linear-gradient(180deg, transparent 18%, #000 40%, #000 60%, transparent 82%);
+    mask-image: linear-gradient(180deg, transparent 18%, #000 40%, #000 60%, transparent 82%);
+  }
+
+  .home-corridor-portal__map--desktop {
+    display: none;
+  }
+
+  .home-corridor-portal__map--mobile {
+    display: block;
+  }
+
+  .home-corridor-portal__origin-marker {
+    top: 27.5%;
+    left: 27.2%;
+    width: 36px;
+    height: 36px;
+  }
+
+  .home-corridor-portal__destination-marker {
+    top: 71.8%;
+    left: 72.5%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
   }
 
   .home-corridor-portal__country {
     max-width: 10rem;
-    font-size: 0.6rem;
+    font-size: 0.62rem;
+  }
+
+  .home-corridor-portal__country--origin {
+    top: 7%;
+    bottom: auto;
+    left: 6%;
+  }
+
+  .home-corridor-portal__country--destination {
+    top: auto;
+    right: 6%;
+    bottom: 7%;
   }
 
   .home-corridor-portal__handoff {
@@ -289,7 +350,7 @@
 
 @media (prefers-contrast: more) {
   .home-corridor-portal__route-track {
-    opacity: 0.68;
+    opacity: 0.74;
   }
 
   .home-corridor-portal__route-active {

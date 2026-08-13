@@ -501,12 +501,7 @@ function useEffectsReel(rootRef: React.RefObject<HTMLDivElement>) {
       });
     }
 
-    const onMotionChange = () => {
-      if (!motionQuery.matches) return;
-      observer.disconnect();
-      reelItems.forEach((element) => {
-        element.dataset.reelVisible = 'true';
-      });
+    const resetInteractionStyles = () => {
       tiltItems.forEach((element) => {
         element.style.transform = '';
       });
@@ -519,7 +514,30 @@ function useEffectsReel(rootRef: React.RefObject<HTMLDivElement>) {
         element.style.removeProperty('--magnet-y');
       });
     };
+
+    const onMotionChange = () => {
+      if (motionQuery.matches) {
+        observer.disconnect();
+        reelItems.forEach((element) => {
+          element.dataset.reelVisible = 'true';
+        });
+        resetInteractionStyles();
+        return;
+      }
+
+      // Never hide content that was already revealed while motion was reduced.
+      // Re-observe only genuinely pending items so a live preference change works
+      // in either direction without replaying the reel.
+      reelItems.forEach((element) => {
+        if (element.dataset.reelVisible !== 'true') observer.observe(element);
+      });
+    };
+
+    const onPointerCapabilityChange = () => {
+      if (!interactionsAvailable()) resetInteractionStyles();
+    };
     motionQuery.addEventListener('change', onMotionChange);
+    finePointer.addEventListener('change', onPointerCapabilityChange);
 
     const onFocusIn = (event: FocusEvent) => {
       const target = event.target as HTMLElement | null;
@@ -531,6 +549,7 @@ function useEffectsReel(rootRef: React.RefObject<HTMLDivElement>) {
     return () => {
       observer.disconnect();
       motionQuery.removeEventListener('change', onMotionChange);
+      finePointer.removeEventListener('change', onPointerCapabilityChange);
       root.removeEventListener('focusin', onFocusIn);
       if (revealFrame) window.cancelAnimationFrame(revealFrame);
       tiltCleanups.forEach((cleanup) => cleanup());
@@ -972,10 +991,14 @@ export default function HomePage() {
           stats={HOME_STATS}
           action={<Action href="/fta">Understand the agreement</Action>}
           portal={{
-            imageSrc: '/events/auckland-skyline-trade-corridor.webp',
-            imagePosition: '63% center',
-            imageWidth: 640,
-            imageHeight: 270,
+            imageSrc: '/effects/otago-harbour-makalu.webp',
+            imagePosition: 'center 58%',
+            imageWidth: 1280,
+            imageHeight: 853,
+            destinationImageSrc: '/effects/ladakh-india-suketdedhia.webp',
+            destinationImagePosition: 'center 48%',
+            destinationImageWidth: 1200,
+            destinationImageHeight: 800,
             originLabel: 'Aotearoa New Zealand',
             destinationLabel: 'India',
           }}
