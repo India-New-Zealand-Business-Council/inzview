@@ -15,6 +15,8 @@ export const LINKS = {
     'https://www.mfat.govt.nz/en/trade/free-trade-agreements/free-trade-agreements-concluded-but-not-in-force/new-zealand-india-free-trade-agreement',
   mfatFtaText:
     'https://www.mfat.govt.nz/en/trade/free-trade-agreements/free-trade-agreements-concluded-but-not-in-force/new-zealand-india-free-trade-agreement/text-of-the-agreement',
+  mfatKeyOutcomes:
+    'https://www.mfat.govt.nz/en/trade/free-trade-agreements/free-trade-agreements-concluded-but-not-in-force/new-zealand-india-free-trade-agreement/key-outcomes',
   facebook: 'https://www.facebook.com/inzbc',
   facebookAlbums: 'https://www.facebook.com/inzbc/photos?tab=albums',
   flickr: 'https://www.flickr.com/photos/inzbc/',
