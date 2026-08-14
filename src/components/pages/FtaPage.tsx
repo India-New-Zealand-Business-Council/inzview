@@ -87,7 +87,7 @@ export default function FtaPage() {
   return (
     <div className="min-h-screen bg-white font-paragraph text-foreground">
       <ScrollProgress />
-      <StickyHeader logo={ART.logo} links={NAV} cta={{ label: 'Join', href: LINKS.join }} />
+      <StickyHeader logo={ART.logo} links={NAV} cta={{ label: 'Join INZBC', href: LINKS.join }} />
 
       <main>
         <section

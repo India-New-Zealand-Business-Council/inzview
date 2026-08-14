@@ -11,7 +11,7 @@ import {
 } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react';
 
 /**
  * Motion primitives.
@@ -372,9 +372,14 @@ export function ScrollProgress() {
   );
 }
 
-/* --- header that condenses --------------------------------------------------------------
-   Impossible in the Studio build: position fixed inside the Embed iframe pinned to the
-   iframe's own viewport, not the window, so the header scrolled away with the content. */
+/* --- header (floating glass bar) ---------------------------------------------------------
+   Rebuilt in plain Tailwind to match Home's own header (HomePage.css .home-header*) exactly,
+   rather than importing that CSS module here — Home's classes are scoped to Home and pulling
+   them in globally would leak Home-only styles onto every other page (see Footer.tsx's own
+   comment for the same reasoning, applied there first).
+
+   Home switches to the mobile menu at max-width: 940px, not Tailwind's default md (768px);
+   matched with the min-[940px]: arbitrary breakpoint below rather than approximating it. */
 
 export function StickyHeader({
   logo,
@@ -385,20 +390,10 @@ export function StickyHeader({
   links: { label: string; href: string }[];
   cta: { label: string; href: string };
 }) {
-  const [solid, setSolid] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const reduced = useReducedMotion();
 
-  useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > 60);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  // Below md, the nav links are hidden (see the <nav> below) — without this menu they had
-  // nowhere to go and simply vanished at narrow widths, taking the Join CTA with them.
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Escape' || !menuOpen) return;
@@ -412,95 +407,92 @@ export function StickyHeader({
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <motion.header
-      className="fixed inset-x-0 top-0 z-40 backdrop-blur-md"
-      animate={{
-        backgroundColor: solid || menuOpen ? 'rgba(14,5,34,0.92)' : 'rgba(14,5,34,0)',
-        paddingTop: solid ? 10 : 20,
-        paddingBottom: solid ? 10 : 20,
-      }}
-      transition={{ duration: 0.28, ease: 'easeOut' }}
-    >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center rounded-md py-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime">
-          <motion.img
-            src={logo}
-            alt="India New Zealand Business Council"
-            animate={{ height: solid ? 28 : 38 }}
-            transition={{ duration: 0.28, ease: 'easeOut' }}
-            className="w-auto"
-          />
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 p-4 sm:p-5">
+      <div className="pointer-events-auto relative mx-auto grid w-full max-w-[1240px] grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[1.2rem] border border-white/60 bg-white/80 px-4 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.78),0_18px_60px_rgba(9,3,24,0.14)] backdrop-blur-2xl backdrop-saturate-150 min-[940px]:gap-8">
+        <Link
+          to="/"
+          className="inline-flex min-h-11 items-center rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+        >
+          <img src={logo} alt="India New Zealand Business Council" className="h-9 w-auto sm:h-10" />
         </Link>
-        <nav className="hidden items-center gap-7 md:flex">
+
+        <nav className="hidden items-center justify-center gap-4 min-[940px]:flex lg:gap-8">
           {links.map((l) => (
             <Link
               key={l.href}
               to={l.href}
-              // py-3 takes the link from an 18px box to a 44px one without moving the
-              // text, so it can be hit on a touch screen.
-              className="rounded-md px-1 py-3 text-sm text-white/75 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+              className="inline-flex min-h-11 items-center rounded-md px-1 text-sm font-medium text-ink/70 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
             >
               {l.label}
             </Link>
           ))}
-          <a
-            href={cta.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full bg-lime px-5 py-3 text-sm font-medium text-navy transition-transform active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
-          >
-            {cta.label}
-          </a>
         </nav>
 
-        <button
-          ref={menuButtonRef}
-          type="button"
-          aria-expanded={menuOpen}
-          aria-controls="sticky-mobile-nav"
-          onClick={() => setMenuOpen((v) => !v)}
-          className="rounded-md p-2 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime md:hidden"
+        <a
+          href={cta.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden min-h-11 items-center gap-1.5 justify-self-end rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-transform active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime min-[940px]:inline-flex"
         >
-          <span className="sr-only">Menu</span>
-          {menuOpen ? <X aria-hidden="true" size={24} /> : <Menu aria-hidden="true" size={24} />}
-        </button>
-      </div>
+          {cta.label}
+          <ArrowUpRight aria-hidden="true" size={16} />
+        </a>
 
-      <AnimatePresence initial={false}>
-        {menuOpen ? (
-          <motion.div
-            id="sticky-mobile-nav"
-            initial={reduced ? { opacity: 0 } : { opacity: 0, height: 0 }}
-            animate={reduced ? { opacity: 1 } : { opacity: 1, height: 'auto' }}
-            exit={reduced ? { opacity: 0 } : { opacity: 0, height: 0 }}
-            transition={{ duration: 0.22, ease: 'easeOut' }}
-            className="overflow-hidden border-t border-white/10 md:hidden"
+        <div className="relative justify-self-end min-[940px]:hidden">
+          <button
+            ref={menuButtonRef}
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="sticky-mobile-nav"
+            onClick={() => setMenuOpen((v) => !v)}
+            className="inline-flex min-h-[46px] min-w-[88px] items-center justify-center gap-2 rounded-full bg-ink text-sm font-semibold text-white transition-transform active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
           >
-            <nav aria-label="Mobile navigation" className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-4">
-              {links.map((l) => (
-                <Link
-                  key={l.href}
-                  to={l.href}
-                  onClick={closeMenu}
-                  className="rounded-md px-2 py-3 text-base text-white/85 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
-                >
-                  {l.label}
-                </Link>
-              ))}
-              <a
-                href={cta.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={closeMenu}
-                className="mt-3 inline-flex items-center justify-center rounded-full bg-lime px-5 py-3 text-sm font-medium text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+            <span>Menu</span>
+            {menuOpen ? <X aria-hidden="true" size={20} /> : <Menu aria-hidden="true" size={20} />}
+          </button>
+
+          <AnimatePresence initial={false}>
+            {menuOpen ? (
+              <motion.div
+                id="sticky-mobile-nav"
+                initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.975, y: -8 }}
+                animate={reduced ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+                exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.985, y: -6 }}
+                transition={{ duration: 0.22, ease: 'easeOut' }}
+                className="absolute right-0 top-[calc(100%+0.85rem)] w-[min(370px,calc(100vw-2.5rem))] max-h-[calc(100dvh-7.5rem)] overflow-y-auto rounded-[1.25rem] border border-white/10 bg-deep/[0.98] p-3 shadow-[0_24px_70px_rgba(9,3,24,0.35)]"
               >
-                {cta.label}
-              </a>
-            </nav>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
-    </motion.header>
+                <nav aria-label="Mobile navigation" className="grid">
+                  {links.map((l, i) => (
+                    <Link
+                      key={l.href}
+                      to={l.href}
+                      onClick={closeMenu}
+                      className="grid min-h-[54px] grid-cols-[2rem_1fr_auto] items-center gap-2.5 rounded-xl px-3 py-2.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+                    >
+                      <span aria-hidden="true" className="text-[0.68rem] tracking-wide text-lime">
+                        0{i + 1}
+                      </span>
+                      {l.label}
+                      <ArrowRight aria-hidden="true" size={18} strokeWidth={1.8} />
+                    </Link>
+                  ))}
+                </nav>
+                <a
+                  href={cta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={closeMenu}
+                  className="mt-2 flex min-h-[50px] items-center justify-between rounded-xl bg-lime px-3.5 py-3 text-sm font-semibold text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+                >
+                  {cta.label}
+                  <ArrowUpRight aria-hidden="true" size={18} />
+                </a>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </div>
+      </div>
+    </header>
   );
 }
 
