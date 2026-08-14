@@ -1539,7 +1539,7 @@ const KIA_ORA_ARCHIVE = [
       {
         label: 'December 2023',
         cover: '/publications/kia-ora-2023-12.jpg',
-        href: LINKS.kiaOraIssuu,
+        href: LINKS.kiaOraIssuuDec2023,
         issueNo: 'Vol 4, Issue 7',
       },
       {
@@ -1824,24 +1824,24 @@ function NewslettersBody() {
             <div className="mt-6 flex gap-6">
               <img
                 src={ART.kiaOraCover}
-                alt="Cover of Kia Ora India, the INZBC magazine"
+                alt="Cover of Kia Ora India, June 2024"
                 loading="lazy"
                 className="h-auto w-28 flex-none rounded-lg shadow-lg md:w-36"
               />
               <div>
                 <p className="text-foreground">
                   The INZBC magazine: member businesses and the people moving between the two
-                  markets.
+                  markets. Latest issue, June 2024 &mdash; New Zealand&rsquo;s High Commissioner
+                  to India Patrick Rata and Trade Commissioner Graham Rouse; Minister Penny
+                  Simmonds on education-sector opportunities; Duco&rsquo;s Chandan Ohri on
+                  building India&rsquo;s tech workforce.
                 </p>
-                <p className="mt-3 text-sm text-foreground">
-                  <Todo>
-                    [[Cadence to confirm &mdash; the old site describes Kia Ora India as
-                    quarterly with a December 2023 latest issue.]]
-                  </Todo>
-                </p>
-                <p className="mt-5">
+                <p className="mt-5 flex flex-wrap gap-3">
                   <Btn href={LINKS.kiaOraIssuu} external>
-                    Read the December 2023 edition
+                    Read the June 2024 edition
+                  </Btn>
+                  <Btn href="/publications" variant="outline">
+                    Browse every issue since 2018
                   </Btn>
                 </p>
               </div>
@@ -1866,18 +1866,6 @@ function NewslettersBody() {
               <Btn href={LINKS.subscribe} external>
                 Subscribe to the digest
               </Btn>
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.12}>
-            <h2 className="mt-16 font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-              Newsletter archive
-            </h2>
-            <p className="mt-4 text-foreground">
-              <Todo>
-                [[Newsletter archive link &mdash; confirm where the archive is hosted. The old
-                Mailchimp list was retired; EmailOctopus is the current list.]]
-              </Todo>
             </p>
           </Reveal>
         </div>

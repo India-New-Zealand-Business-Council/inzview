@@ -9,7 +9,11 @@ export const LINKS = {
   join: 'https://inzbc.memberjungle.club/index.cfm?module=membership_v2&kat=add_register',
   subscribe: 'https://emailoctopus.com/lists/442124e3-1caa-11eb-a3d0-06b4694bee2a/forms/subscribe',
   reportIssuu: 'https://issuu.com/inzbc/docs/inzbc_report_2025_digital',
-  kiaOraIssuu: 'https://issuu.com/inzbc/docs/kiaora_india_dec_2023_v6_final',
+  // Real latest issue is June 2024 (confirmed via the Publications page's Issuu archive) —
+  // this constant used to point at December 2023, which was stale everywhere it was used
+  // (Home and Newsletters both showed it as current).
+  kiaOraIssuu: 'https://issuu.com/inzbc/docs/kiaora_india_june24_v8_highres',
+  kiaOraIssuuDec2023: 'https://issuu.com/inzbc/docs/kiaora_india_dec_2023_v6_final',
   summitSite: 'https://www.inzbusinesssummit.com/',
   mfatFta:
     'https://www.mfat.govt.nz/en/trade/free-trade-agreements/free-trade-agreements-concluded-but-not-in-force/new-zealand-india-free-trade-agreement',
@@ -33,7 +37,7 @@ export const ART = {
   reportCover: 'https://static.wixstatic.com/media/df219d_60093c58a989446681ae38ad6efe3a94~mv2.png',
   reportCover2025: 'https://static.wixstatic.com/media/df219d_4ffc59bcc17b482ba5850f648d232e29~mv2.png',
   pharmaReportCover: 'https://static.wixstatic.com/media/df219d_08ef7a8c3e724d6783a24cd1c5dbcc4f~mv2.jpg',
-  kiaOraCover: 'https://static.wixstatic.com/media/df219d_3ac94d17fa9a42eeaef1597686fe952d~mv2.jpg',
+  kiaOraCover: '/publications/kia-ora-2024-06.jpg',
   partnerStrip: 'https://static.wixstatic.com/media/df219d_5350f10f4b714eddae1958abfd3c39d5~mv2.jpg',
   magazineSpread: 'https://static.wixstatic.com/media/df219d_1b53b12ca8af4cfd970a2093bdee7009~mv2.png',
   newsletterMockup: 'https://static.wixstatic.com/media/df219d_29794fdc9e864b9997c3333499673a20~mv2.png',
