@@ -412,10 +412,22 @@ function EventsBody() {
  */
 function MembershipBody() {
   const reasons = [
-    ['Advocacy', 'A direct voice with government on trade policy and market access affecting NZ–India trade.'],
-    ['Market intelligence', 'The Trade Intelligence Digest and FTA sector briefings, human-reviewed before publication.'],
-    ['Networks', 'Business development, delegations and introductions across the NZ–India corridor.'],
-    ['Events', 'From sector briefings to the annual INZBC Summit.'],
+    [
+      'Advocacy',
+      'A direct voice with government on trade policy and market access affecting NZ–India trade — including the NZ–India FTA itself, signed but not yet in force. INZBC represents member interests directly to officials on both sides of the corridor, not just to publish a position paper.',
+    ],
+    [
+      'Market intelligence',
+      'The Trade Intelligence Digest and FTA sector briefings, human-reviewed before publication. Members also get early access to flagship research, including the Grow With India trade report and the Kia Ora India magazine.',
+    ],
+    [
+      'Networks',
+      'Business development, delegations and introductions across the NZ–India corridor, through chapters in Auckland, Wellington, Christchurch, Mumbai and Delhi. Membership puts you in the same room as exporters, importers, investors and government agencies already active in the market.',
+    ],
+    [
+      'Events',
+      'From sector briefings to the annual INZBC Summit, the flagship gathering for the bilateral trade community. Past sessions have included briefings from New Zealand’s Chief Trade Negotiator and visiting ministers from both governments.',
+    ],
   ] as const;
 
   return (
