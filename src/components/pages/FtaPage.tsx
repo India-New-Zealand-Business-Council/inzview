@@ -156,8 +156,9 @@ export default function FtaPage() {
                 className="block font-heading text-8xl leading-none tracking-tight text-lime md:text-9xl"
               />
               <p className="mt-4 max-w-sm text-white/70 md:ml-auto">
-                Duty-free from day one, rising to 82% over time. The remaining 13% under
-                sharp cuts.
+                Of the 95% of New Zealand&rsquo;s exports to India covered by the agreement,
+                57% become duty-free from day one, rising to 82% once fully implemented, with
+                the remaining 13% under sharp tariff cuts.
               </p>
             </Reveal>
           </div>
