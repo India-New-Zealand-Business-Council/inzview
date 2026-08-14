@@ -327,68 +327,502 @@ function FtaBody() {
 
 /* --- Events -------------------------------------------------------------------------- */
 
+/**
+ * Every event below is real, pulled from inzbc.org's blog and cross-checked against
+ * inzbc.org/past-events and /upcoming-events directly (the latter turned out to be
+ * abandoned — it still shows 2020 webinars as "upcoming"). No genuinely upcoming event is
+ * published anywhere INZBC controls right now (checked the live site and
+ * inzbusinesssummit.com, which 404s), so "Upcoming events" stays honest rather than
+ * inventing a next date.
+ *
+ * INZBC_EVENTS is INZBC's own events — summits, delegations, briefings, panels, workshops
+ * it ran or co-ran. A few posts covered the same event from multiple angles (the 2021 hybrid
+ * Summit had four separate posts: Twyford's address, Mahuta's keynote, Jacobi's remarks and
+ * the post-event release; the 2022 Summit and the September 2022 India delegation each had
+ * two) — those are merged into one entry each rather than shown as duplicates.
+ *
+ * EXPO_EVENTS is third-party India trade shows/expos INZBC circulated to members — real
+ * events, but INZBC didn't host them, so they're kept in their own, lighter-weight section
+ * rather than mixed into "INZBC's own events."
+ *
+ * Every cover is a real, confirmed image already in public/blog/ — sourceSlug is that
+ * file's basename (extension included) and also builds the https://www.inzbc.org/post/…
+ * link back to the original post. Two dates are approximate and say so rather than
+ * asserting a precision the source post didn't give: the Delhi Summit's date comes from
+ * its publish date, not a stated event date, and one 2022-era summit post has no date at
+ * all in the body text.
+ */
+type EventItem = Readonly<{
+  sourceSlug: string;
+  cover?: string;
+  title: string;
+  date: string;
+  venue?: string;
+  description: string;
+  sortKey: string;
+}>;
+
+const INZBC_EVENTS: readonly EventItem[] = [
+  {
+    sourceSlug: 'inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event',
+    cover: 'inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event.png',
+    title: 'Inside the NZ–India FTA, with Vangelis Vitalis',
+    date: '23 June 2026',
+    venue: 'Deloitte Building, Level 20, 1 Queen Street, Commercial Bay, Auckland CBD',
+    description: "New Zealand's Chief Trade Negotiator takes attendees behind the scenes of the FTA negotiations.",
+    sortKey: '2026-06-23',
+  },
+  {
+    sourceSlug: 'boardroom-to-border-a-leadership-dialogue-on-strategy-trade-india-nz-opportunities',
+    title: 'Boardroom to Border: A Leadership Dialogue on Strategy, Trade & India-NZ Opportunities',
+    date: '26 June 2025',
+    venue: 'Drawing Room – Rātā 222 and 223, University of Canterbury',
+    description: 'High-level dialogue on strategic trade, investment and collaboration opportunities, with the University of Canterbury.',
+    sortKey: '2025-06-26',
+  },
+  {
+    sourceSlug: 'breakfast-dialogue-with-nz-high-commissioners-patrick-rata-david-pine-6-june-7-30am',
+    cover: 'breakfast-dialogue-with-nz-high-commissioners-patrick-rata-david-pine-6-june-7-30am.png',
+    title: 'Breakfast Dialogue with NZ High Commissioners Patrick Rata & David Pine',
+    date: '6 June 2025',
+    venue: 'BNZ Place, Level 18, 80 Queen Street, Auckland',
+    description: 'Patrick Rata (NZ High Commissioner to India & Nepal) and David Pine (NZ High Commissioner to Sri Lanka & Maldives), co-hosted with the NZ Nepal Chamber of Commerce and Sri Lanka Business Association NZ.',
+    sortKey: '2025-06-06',
+  },
+  {
+    sourceSlug: 'exclusive-inzbc-members-invitationdelegation-insights-from-india-pm-mission',
+    cover: 'exclusive-inzbc-members-invitationdelegation-insights-from-india-pm-mission.jpg',
+    title: 'Delegation Insights from India PM Mission',
+    date: '15 April 2025',
+    venue: 'NZTE Auckland Office, Level 6, 139 Quay Street, Auckland',
+    description: "Co-hosted with NZTE — insights from the Prime Minister's Mission to India, for members.",
+    sortKey: '2025-04-15',
+  },
+  {
+    sourceSlug: 'inzbc-annual-address-by-rt-hon-winston-peters',
+    cover: 'inzbc-annual-address-by-rt-hon-winston-peters.png',
+    title: 'INZBC Annual Address by Rt Hon Winston Peters',
+    date: '6 December 2024',
+    venue: 'Level 27, PwC Tower, 15 Customs Street West, Auckland',
+    description: 'Deputy Prime Minister and Foreign Minister Winston Peters on achievements and opportunities for the NZ-India relationship.',
+    sortKey: '2024-12-06',
+  },
+  {
+    sourceSlug: 'india-business-forum',
+    cover: 'india-business-forum.jpg',
+    title: 'India Business Forum',
+    date: '21 November 2024',
+    venue: 'BNZ, Auckland',
+    description: 'The BNZ India Business Forum brought New Zealand-India business partnerships to centre stage.',
+    sortKey: '2024-11-21',
+  },
+  {
+    sourceSlug: 'world-food-india-2024-i-19-22-september-2024-pragati-maidan-new-delhi',
+    cover: 'world-food-india-2024-i-19-22-september-2024-pragati-maidan-new-delhi.jpg',
+    title: 'World Food India 2024 delegation',
+    date: '19–22 September 2024',
+    venue: 'Pragati Maidan, New Delhi',
+    description: 'INZBC proposed a business delegation to World Food India for the food & beverage sector.',
+    sortKey: '2024-09-19',
+  },
+  {
+    sourceSlug: 'people-diplomacy-india-and-nz-education-and-beyond',
+    cover: 'people-diplomacy-india-and-nz-education-and-beyond.jpg',
+    title: 'People Diplomacy – India and NZ: Education and Beyond',
+    date: '13 June 2024',
+    venue: 'AIS St Helens Campus, 28A Linwood Avenue, Mt Albert, Auckland',
+    description: 'Fireside chat with Hon. Penny Simmonds, Minister for Tertiary Education and Skills.',
+    sortKey: '2024-06-13',
+  },
+  {
+    sourceSlug: 'webinar-understanding-indian-perceptions-of-new-zealand',
+    cover: 'webinar-understanding-indian-perceptions-of-new-zealand.jpg',
+    title: 'Webinar: Understanding Indian Perceptions of New Zealand',
+    date: '6 June 2024',
+    venue: 'Online',
+    description: 'New Zealand Story and research partner fiftyfive5 present findings on Indian consumers’ perceptions of NZ.',
+    sortKey: '2024-06-06',
+  },
+  {
+    sourceSlug: 'current-insights-on-exporting-to-india',
+    cover: 'current-insights-on-exporting-to-india.jpg',
+    title: 'Current Insights on Exporting to India ("Meet NZTE – Team India")',
+    date: '9 May 2024',
+    venue: 'NZTE Pounamu Lounge, 139 Quay Street, Auckland CBD',
+    description: "Panel with NZTE's Trade Commissioner/Consul General, an NZ exporter to India and NZTE's International Market Manager.",
+    sortKey: '2024-05-09',
+  },
+  {
+    sourceSlug: 'super-sourcing-oceania-2024',
+    cover: 'super-sourcing-oceania-2024.jpg',
+    title: 'Super Sourcing Oceania 2024 (India-New Zealand Buyer Seller Meet)',
+    date: '7 March 2024',
+    venue: 'Trust Arena, Genesis Lounge, Auckland',
+    description: "B2B event connecting Indian exporters with New Zealand's business community.",
+    sortKey: '2024-03-07',
+  },
+  {
+    sourceSlug: 'inzbc-summit-in-delhi-marks-a-new-phase-in-india-new-zealand-relations',
+    cover: 'inzbc-summit-in-delhi-marks-a-new-phase-in-india-new-zealand-relations.png',
+    title: 'INZBC Summit in Delhi',
+    date: 'Reported January 2024 (exact event date not stated in the post)',
+    venue: 'Delhi',
+    description: 'A summit marking a new phase in India-New Zealand relations.',
+    sortKey: '2024-01-21',
+  },
+  {
+    sourceSlug: 'the-education-roundtable',
+    cover: 'the-education-roundtable.jpg',
+    title: 'The Education Roundtable',
+    date: '19 May 2023',
+    venue: 'School of Business, University of Auckland',
+    description: 'INZBC and the University of Auckland on trade and services opportunities in international education.',
+    sortKey: '2023-05-19',
+  },
+  {
+    sourceSlug: 'indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties',
+    cover: 'indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties.jpg',
+    title: "Indian High Commission Symposium — 'Forging New Relations Between India & NZ'",
+    date: '31 May 2023',
+    venue: 'Chancery premises, Wellington',
+    description: 'A half-day symposium on trade and diplomatic ties.',
+    sortKey: '2023-05-31',
+  },
+  {
+    sourceSlug: 'new-zealand-business-delegation-to-india-report-summary',
+    cover: 'new-zealand-business-delegation-to-india-report-summary.png',
+    title: 'New Zealand Business Delegation to India — Report Summary',
+    date: 'Report published 19 October 2023',
+    venue: 'India (multi-city)',
+    description: 'Summary of the five-day New Zealand business delegation programme to India.',
+    sortKey: '2023-10-19',
+  },
+  {
+    sourceSlug: 'new-zealand-business-delegation-to-india-ready-for-the-next-phase',
+    cover: 'new-zealand-business-delegation-to-india-ready-for-the-next-phase.jpg',
+    title: 'New Zealand Business Delegation to India — Ready for the Next Phase',
+    date: '14 July 2023 (planning update)',
+    venue: 'India',
+    description: 'Planning update ahead of a New Zealand business delegation trip to India.',
+    sortKey: '2023-07-14',
+  },
+  {
+    sourceSlug: 'inzbc-networking-event-meet-the-indian-high-commissioner-in-christchurch-on-16-mar-2023',
+    cover: 'inzbc-networking-event-meet-the-indian-high-commissioner-in-christchurch-on-16-mar-2023.jpg',
+    title: "'Opening the Trade Gateway to India' — with the Indian High Commissioner",
+    date: '16 March 2023',
+    venue: 'JIX Reality, 213 Tuam Street, Christchurch Central',
+    description: 'A conversation with H.E. Neeta Bhushan on investing, partnering and manufacturing in India.',
+    sortKey: '2023-03-16',
+  },
+  {
+    sourceSlug: 'new-frontiers-agriculture-horticulture-seminar',
+    cover: 'new-frontiers-agriculture-horticulture-seminar.jpg',
+    title: 'New Frontiers: Agriculture–Horticulture Seminar',
+    date: '19 April 2023',
+    venue: 'Indian High Commission, Wellington',
+    description: 'NZ International Business Forum seminar on agri/horticulture trade and services opportunities.',
+    sortKey: '2023-04-19',
+  },
+  {
+    sourceSlug: 'pharma-sector-buyer-seller-meet',
+    cover: 'pharma-sector-buyer-seller-meet.jpg',
+    title: 'Pharma Sector Buyer-Seller Meet',
+    date: '10 February 2023',
+    venue: 'Indian High Commission, 72 Pipitea Street, Thorndon, Wellington',
+    description: 'Buyer-seller meet with an incoming Indian pharma delegation, led by Pharmexcil.',
+    sortKey: '2023-02-10',
+  },
+  {
+    sourceSlug: 'workshop-on-boosting-india-nz-trade-ties-held-in-wellington',
+    cover: 'workshop-on-boosting-india-nz-trade-ties-held-in-wellington.jpg',
+    title: 'Workshop on Boosting India-NZ Trade Ties',
+    date: 'Reported 8 January 2023',
+    venue: 'Wellington',
+    description: "Workshop following Indian External Affairs Minister S Jaishankar's visit to New Zealand.",
+    sortKey: '2023-01-08',
+  },
+  {
+    sourceSlug: 'india-unplugged-export-import-pathways-25-nov-2022-wellington',
+    cover: 'india-unplugged-export-import-pathways-25-nov-2022-wellington.jpg',
+    title: 'India Unplugged: Export-Import Pathways',
+    date: '25 November 2022',
+    venue: 'Wellington',
+    description: 'Half-day workshop — supply chain/logistics, IP/patent/copyright, legal aspects of trading with India.',
+    sortKey: '2022-11-25',
+  },
+  {
+    sourceSlug: 'inzbc-summit-2022-proposing-a-new-approach-to-india-trade-relations',
+    cover: 'inzbc-summit-2022-proposing-a-new-approach-to-india-trade-relations.jpg',
+    title: 'INZBC Summit 2022',
+    date: '11 November 2022 (venue not stated)',
+    description: 'Proposing a new approach to India trade relations — services, education, AgTech and merchandise trade opportunities.',
+    sortKey: '2022-11-11',
+  },
+  {
+    sourceSlug: 'inzbc-trade-delegation-to-india-seeks-to-reignite-b2b-connections',
+    cover: 'inzbc-trade-delegation-to-india-seeks-to-reignite-b2b-connections.jpg',
+    title: 'INZBC Trade Delegation to India (incl. FICCI LEADS 2022)',
+    date: '19–21 September 2022',
+    venue: 'India',
+    description: 'Delegation to reignite B2B connections; companies also joined for FICCI LEADS 2022.',
+    sortKey: '2022-09-19',
+  },
+  {
+    sourceSlug: 'panel-discussion-on-it-sector-and-its-contribution-to-new-zealand-s-economy',
+    cover: 'panel-discussion-on-it-sector-and-its-contribution-to-new-zealand-s-economy.jpg',
+    title: "Panel Discussion: IT Sector's Contribution to New Zealand's Economy",
+    date: '24 August 2022',
+    venue: 'BNZ HQ, Auckland',
+    description: "Panel on the IT sector's importance to New Zealand's economic growth.",
+    sortKey: '2022-08-24',
+  },
+  {
+    sourceSlug: 'india-unplugged-export-import-workshop-25-may-2022',
+    cover: 'india-unplugged-export-import-workshop-25-may-2022.jpg',
+    title: 'India Unplugged: Export-Import Workshop',
+    date: '25 May 2022',
+    venue: 'Venue TBC at publish time',
+    description: 'One-day workshop — logistics, banking & finance, insurance/export credit, customs & MPI regulations, tax.',
+    sortKey: '2022-05-25',
+  },
+  {
+    sourceSlug: 'women-in-business-lead-the-charge-during-inzbc-panel-discussion',
+    cover: 'women-in-business-lead-the-charge-during-inzbc-panel-discussion.jpg',
+    title: 'Women in Business — INZBC Panel Discussion',
+    date: '6 April 2022',
+    venue: 'Wellington',
+    description: 'With the Indian High Commission Wellington and Wellington Chamber of Commerce.',
+    sortKey: '2022-04-06',
+  },
+  {
+    sourceSlug: 'women-in-business-panel-discussion-29-march-2022',
+    cover: 'women-in-business-panel-discussion-29-march-2022.jpg',
+    title: 'Women in Business — Panel Discussion',
+    date: '29 March 2022',
+    venue: 'Online',
+    description: "'New horizons and old challenges' — an earlier, separate online panel on women in business.",
+    sortKey: '2022-03-29',
+  },
+  {
+    sourceSlug: 'india-s-it-sector-the-kiwi-connections-an-interactive-business-session-on-25-nov-2021',
+    cover: 'india-s-it-sector-the-kiwi-connections-an-interactive-business-session-on-25-nov-2021.jpg',
+    title: "India's IT Sector: The Kiwi Connections",
+    date: '25 November 2021',
+    venue: 'The Wellington Club, Level 5, 88 The Terrace, Wellington',
+    description: 'Interactive business session hosted by the High Commission of India, Wellington.',
+    sortKey: '2021-11-25',
+  },
+  {
+    sourceSlug: 'address-to-the-inzbc-7th-international-summit-2021',
+    cover: 'address-to-the-inzbc-7th-international-summit-2021.png',
+    title: 'INZBC 7th International Summit 2021',
+    date: '23–24 June 2021',
+    venue: "New Zealand's first-ever hybrid summit",
+    description: 'Keynote addresses from Hon Phil Twyford and Hon Nanaia Mahuta (Foreign Affairs Minister), plus remarks from Stephen Jacobi (NZ International Business Forum).',
+    sortKey: '2021-06-23',
+  },
+  {
+    sourceSlug: 'inzbc-holds-diwali-meet-for-networking-in-christchurch',
+    cover: 'inzbc-holds-diwali-meet-for-networking-in-christchurch.jpg',
+    title: 'INZBC Diwali Meet (Networking)',
+    date: '1 December 2020',
+    venue: 'Canterbury Club, Christchurch',
+    description: 'Diwali networking event in Christchurch.',
+    sortKey: '2020-12-01',
+  },
+  {
+    sourceSlug: 'india-new-zealand-bilateral-economic-and-trade-relationship-dialogue',
+    cover: 'india-new-zealand-bilateral-economic-and-trade-relationship-dialogue.jpg',
+    title: 'India-New Zealand Bilateral Economic and Trade Relationship Dialogue',
+    date: '2 September 2020',
+    description: 'Dialogue on the bilateral economic and trade relationship.',
+    sortKey: '2020-09-02',
+  },
+  {
+    sourceSlug: 'india-new-zealand-business-summit-shines-light-on-opportunities-for-kiwi-companies',
+    cover: 'india-new-zealand-business-summit-shines-light-on-opportunities-for-kiwi-companies.jpg',
+    title: 'India-New Zealand Business Summit',
+    date: 'Date not stated in the source post',
+    description: 'Shone a light on opportunities for Kiwi companies in the India relationship.',
+    sortKey: '0000-00-00',
+  },
+] as const;
+
+const EXPO_EVENTS: readonly EventItem[] = [
+  { sourceSlug: 'india-sporting-goods-fair-isgf-2025-at-yashobhoomi-convention-centre-new-delhi-during-24-25-march', cover: 'india-sporting-goods-fair-isgf-2025-at-yashobhoomi-convention-centre-new-delhi-during-24-25-march.jpg', title: 'India Sporting Goods Fair (ISGF) 2025', date: '24–25 March 2025', venue: 'Yashobhoomi Convention Centre, New Delhi', description: '', sortKey: '2025-03-24' },
+  { sourceSlug: 'connect-with-leading-indian-manufacturers-at-vibrant-goa-global-expo-summit-2024', cover: 'connect-with-leading-indian-manufacturers-at-vibrant-goa-global-expo-summit-2024.png', title: 'Vibrant Goa — Global Expo & Summit', date: '2024', venue: 'Goa, India', description: '', sortKey: '2024-06-01' },
+  { sourceSlug: '3rd-edition-of-global-maritime-india-summit-2023-gmis-2023', cover: '3rd-edition-of-global-maritime-india-summit-2023-gmis-2023.png', title: '3rd Global Maritime India Summit (GMIS 2023)', date: '17–19 October 2023', venue: 'MMRDA Ground, Bandra Kurla Complex, Mumbai', description: '', sortKey: '2023-10-17' },
+  { sourceSlug: 'northeast-global-investors-summit-2023', cover: 'northeast-global-investors-summit-2023.png', title: 'Northeast Global Investors Summit 2023', date: '2023', venue: 'Northeast India', description: '', sortKey: '2023-06-01' },
+  { sourceSlug: 'uttar-pradesh-msme-sammelan-2022-transforming-msmes-competitiveness-on-27th-28th-june-2022', cover: 'uttar-pradesh-msme-sammelan-2022-transforming-msmes-competitiveness-on-27th-28th-june-2022.jpg', title: 'Uttar Pradesh MSME Sammelan 2022', date: '27–28 June 2022', venue: 'Uttar Pradesh, India', description: '', sortKey: '2022-06-27' },
+  { sourceSlug: 'cii-global-economic-policy-summit-2021-17-18-nov-2021', cover: 'cii-global-economic-policy-summit-2021-17-18-nov-2021.jpg', title: 'CII Global Economic Policy Summit 2021', date: '17–18 November 2021', venue: 'CII platform', description: '', sortKey: '2021-11-17' },
+  { sourceSlug: '11th-cii-hr-conclave-powering-growth-with-head-heart-and-courage-on-25-26-nov-2021', cover: '11th-cii-hr-conclave-powering-growth-with-head-heart-and-courage-on-25-26-nov-2021.png', title: '11th CII HR Conclave — "Powering Growth with Head, Heart and Courage"', date: '25–26 November 2021', description: '', sortKey: '2021-11-25' },
+  { sourceSlug: 'indo-oceania-connect-virtual-pharma-bsm-by-pharmexcil-for-oceania-pharma-industry', cover: 'indo-oceania-connect-virtual-pharma-bsm-by-pharmexcil-for-oceania-pharma-industry.jpg', title: 'Indo Oceania Connect — Virtual Pharma BSM (Pharmexcil)', date: '16–19 November 2021', venue: 'Virtual', description: '', sortKey: '2021-11-16' },
+  { sourceSlug: 'india-iot-world-virtual-exhibition-3-4-march-2021', cover: 'india-iot-world-virtual-exhibition-3-4-march-2021.png', title: 'India IoT World (Virtual Exhibition)', date: '3–4 March 2021', venue: 'Virtual', description: '', sortKey: '2021-03-03' },
+  { sourceSlug: 'india-hitech-expo-virtual-ict-business-meet-24-25-march-2021', cover: 'india-hitech-expo-virtual-ict-business-meet-24-25-march-2021.png', title: 'India HiTech Expo & Virtual ICT Business Meet', date: '24–25 March 2021', venue: 'Virtual', description: '', sortKey: '2021-03-24' },
+  { sourceSlug: 'ietf-2021-25-february-24-march-2021-cii-hive-virtual-platform', cover: 'ietf-2021-25-february-24-march-2021-cii-hive-virtual-platform.png', title: 'IETF 2021 — International Engineering & Technology Fair', date: '25 February – 24 March 2021', venue: 'CII HIVE Virtual Platform', description: '', sortKey: '2021-02-25' },
+  { sourceSlug: '16th-ficci-higher-education-summit-25-27-feb-2021', cover: '16th-ficci-higher-education-summit-25-27-feb-2021.png', title: '16th FICCI Higher Education Summit', date: '25–27 February 2021', description: '', sortKey: '2021-02-25' },
+  { sourceSlug: 'global-textile-home-furnishing-expo-weaving-the-beauty-of-india-22-24-feb-2021', cover: 'global-textile-home-furnishing-expo-weaving-the-beauty-of-india-22-24-feb-2021.jpg', title: 'Global Textile & Home Furnishing Expo — "Weaving the Beauty of India"', date: '22–24 February 2021', venue: 'Virtual', description: '', sortKey: '2021-02-22' },
+  { sourceSlug: 'india-tourism-mart-18-20-feb-2021', cover: 'india-tourism-mart-18-20-feb-2021.jpg', title: 'India Tourism Mart (ITM 2021)', date: '18–20 February 2021', venue: 'Virtual', description: '', sortKey: '2021-02-18' },
+  { sourceSlug: 'mega-virtual-buyer-seller-meet-5th-february-to-3rd-march-2021', cover: 'mega-virtual-buyer-seller-meet-5th-february-to-3rd-march-2021.png', title: 'Mega Virtual Buyer Seller Meet (ceramics, tiles, stone, marble, kitchenware, sanitaryware)', date: '5 February – 3 March 2021', venue: 'Virtual', description: '', sortKey: '2021-02-05' },
+  { sourceSlug: '8th-9th-edition-of-india-international-silk-fair-on-virtual-portal-from-jan-31st-to-mar-31st-2021', cover: '8th-9th-edition-of-india-international-silk-fair-on-virtual-portal-from-jan-31st-to-mar-31st-2021.png', title: '8th & 9th India International Silk Fair (Virtual Portal)', date: '31 January – 31 March 2021', venue: 'Virtual', description: '', sortKey: '2021-01-31' },
+  { sourceSlug: 'india-e-municipalica-week-virtual-exhibition-conferences-28th-31st-jan-2021', cover: 'india-e-municipalica-week-virtual-exhibition-conferences-28th-31st-jan-2021.jpg', title: 'India E-Municipalica Week — Virtual Exhibition & Conferences', date: '28–31 January 2021', venue: 'Virtual', description: '', sortKey: '2021-01-28' },
+  { sourceSlug: 'assocham-india-oceania-food-beverage-virtual-expo-28-30-jan-2021', cover: 'assocham-india-oceania-food-beverage-virtual-expo-28-30-jan-2021.png', title: 'ASSOCHAM India-Oceania Food & Beverage Virtual Expo', date: '28–30 January 2021', venue: 'Virtual', description: '', sortKey: '2021-01-28' },
+  { sourceSlug: 'cii-partnership-summit-15-18-december-2020', cover: 'cii-partnership-summit-15-18-december-2020.jpg', title: 'CII Partnership Summit', date: '15–18 December 2020', venue: 'Digital platform', description: '', sortKey: '2020-12-15' },
+  { sourceSlug: 'mega-virtual-buyers-sellers-meet-mvbsm-on-ceramics-and-vitrified-tiles', cover: 'mega-virtual-buyers-sellers-meet-mvbsm-on-ceramics-and-vitrified-tiles.jpg', title: 'Mega Virtual Buyers Sellers Meet (MVBSM) — Ceramics & Vitrified Tiles', date: '18 December 2020', venue: 'Virtual', description: '', sortKey: '2020-12-18' },
+  { sourceSlug: 'global-joint-venture-partnership-meet-gjvpm', cover: 'global-joint-venture-partnership-meet-gjvpm.jpg', title: 'Global Joint Venture & Partnership Meet (GJVPM)', date: '10 November 2020', venue: 'Virtual', description: '', sortKey: '2020-11-10' },
+  { sourceSlug: '1st-indo-asean-oceanic-business-summit-expo', cover: '1st-indo-asean-oceanic-business-summit-expo.jpg', title: '1st Indo ASEAN Oceanic Business Summit & Expo', date: '4–6 August 2020', venue: 'Virtual', description: '', sortKey: '2020-08-04' },
+  { sourceSlug: 'ficci-presents-global-virtual-textile-and-home-furnishing-expo', cover: 'ficci-presents-global-virtual-textile-and-home-furnishing-expo.jpg', title: 'FICCI — Global Virtual Textile and Home Furnishing Expo', date: 'Date not stated in the source post', venue: 'Virtual', description: '', sortKey: '2020-01-01' },
+  { sourceSlug: 'expo-in-dubai-an-event-that-will-have-a-strong-connection-to-india', cover: 'expo-in-dubai-an-event-that-will-have-a-strong-connection-to-india.jpg', title: 'Expo in Dubai (India-connected)', date: 'Date not stated in the source post', venue: 'Dubai', description: '', sortKey: '0000-00-00' },
+] as const;
+
+/** Newest-first by sortKey. '0000-00-00' (no date found in the source) sorts last. */
+function sortEventsByDateDesc(events: readonly EventItem[]) {
+  return [...events].sort((a, b) => (a.sortKey < b.sortKey ? 1 : -1));
+}
+
+/** Groups a flat, unordered event list into year buckets, newest year and newest event
+    within each year first. sortKey '0000-00-00' means "no date found in the source" —
+    those sort last and render under a "Date not confirmed" heading instead of a fake year. */
+function groupEventsByYear(events: readonly EventItem[]) {
+  const sorted = sortEventsByDateDesc(events);
+  const groups: { year: string; events: EventItem[] }[] = [];
+  for (const event of sorted) {
+    const year = event.sortKey.slice(0, 4) === '0000' ? 'Date not confirmed' : event.sortKey.slice(0, 4);
+    const current = groups[groups.length - 1];
+    if (current && current.year === year) current.events.push(event);
+    else groups.push({ year, events: [event] });
+  }
+  return groups;
+}
+
+/** A past event: real cover, real details, links out to the original post — every claim on
+    this row traces back to something INZBC itself published. */
+function EventRow({ event, delay = 0 }: { event: EventItem; delay?: number }) {
+  return (
+    <Reveal delay={delay}>
+      <a
+        href={`https://www.inzbc.org/post/${event.sourceSlug}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`group grid gap-5 rounded-xl p-4 -m-4 transition-colors hover:bg-white sm:grid-cols-[8rem_1fr] ${FOCUS}`}
+      >
+        {event.cover ? (
+          <img
+            src={`/blog/${event.cover}`}
+            alt={`Cover for ${event.title}`}
+            loading="lazy"
+            className="aspect-[4/3] w-full rounded-lg object-cover"
+          />
+        ) : (
+          <span className="hidden aspect-[4/3] w-full rounded-lg bg-mist sm:block" aria-hidden="true" />
+        )}
+        <div>
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h3 className="font-heading text-xl text-ink">{event.title}</h3>
+            <ArrowUpRight
+              aria-hidden="true"
+              size={16}
+              className="text-plum opacity-0 transition-opacity group-hover:opacity-100"
+            />
+          </div>
+          <p className="mt-1 text-sm font-medium text-plum">
+            {event.date}
+            {event.venue ? ` · ${event.venue}` : ''}
+          </p>
+          {event.description ? <p className="mt-2 text-sm text-foreground">{event.description}</p> : null}
+        </div>
+      </a>
+    </Reveal>
+  );
+}
+
+/** A lighter row for third-party expos — no description (none written for these), smaller
+    thumbnail, same real-cover-and-real-link rule. */
+function ExpoRow({ event, delay = 0 }: { event: EventItem; delay?: number }) {
+  return (
+    <Reveal delay={delay}>
+      <a
+        href={`https://www.inzbc.org/post/${event.sourceSlug}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`group flex items-center gap-4 rounded-xl p-3 -m-3 transition-colors hover:bg-mist ${FOCUS}`}
+      >
+        <img
+          src={`/blog/${event.cover}`}
+          alt={`Cover for ${event.title}`}
+          loading="lazy"
+          className="h-16 w-14 flex-none rounded object-cover shadow"
+        />
+        <div className="flex-1">
+          <h4 className="font-heading text-base text-ink">{event.title}</h4>
+          <p className="text-sm text-foreground/70">
+            {event.date}
+            {event.venue ? ` · ${event.venue}` : ''}
+          </p>
+        </div>
+        <ArrowUpRight
+          aria-hidden="true"
+          size={16}
+          className="flex-none text-plum opacity-0 transition-opacity group-hover:opacity-100"
+        />
+      </a>
+    </Reveal>
+  );
+}
+
 function EventsBody() {
+  const recent = sortEventsByDateDesc(INZBC_EVENTS).slice(0, 4);
+
   return (
     <>
-      <section className="bg-white px-6 py-20">
-        <div className="mx-auto max-w-6xl">
+      <section className="bg-white px-6 py-24">
+        <div className="mx-auto max-w-4xl">
           <Reveal>
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Upcoming events</h2>
-            <p className="mt-4 max-w-2xl text-foreground">
-              <Todo>
-                [[Event listings &mdash; title, date, venue and a register link for each.
-                Needs the event data source decided: Wix Events, or an external system.]]
-              </Todo>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Upcoming events
+            </h2>
+            <p className="mt-4 text-foreground">
+              Nothing is currently published as an upcoming event, either on this site or
+              INZBC&rsquo;s own listings &mdash; checked directly rather than assumed. The
+              Summit is INZBC&rsquo;s flagship annual gathering; briefings and delegations are
+              announced to members and subscribers first.
             </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Btn href={LINKS.summitSite} external>
+                Visit the Summit website
+              </Btn>
+              <Btn href={LINKS.subscribe} variant="outline" external>
+                Subscribe for announcements
+              </Btn>
+            </div>
           </Reveal>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2">
-            <Reveal>
-              <Card title="INZBC Summit">
-                <p>
-                  The annual summit has its own site with dates, venue and registration.{' '}
-                  <Todo>[[Date and venue for the next Summit to confirm.]]</Todo>
-                </p>
-                <p className="mt-5">
-                  <Btn href={LINKS.summitSite} external>
-                    Visit the summit website
-                  </Btn>
-                </p>
-              </Card>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <Card title="Briefings and delegations">
-                <p>
-                  Sector briefings, delegations and networking are announced to members and
-                  subscribers first.
-                </p>
-                <p className="mt-5">
-                  <Btn href={LINKS.subscribe} external>
-                    Subscribe for announcements
-                  </Btn>
-                </p>
-              </Card>
-            </Reveal>
-          </div>
         </div>
       </section>
 
-      <section className="bg-mist px-6 py-20">
-        <div className="mx-auto max-w-6xl">
+      <section className="bg-mist px-6 py-24">
+        <div className="mx-auto max-w-4xl">
           <Reveal>
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Past events</h2>
-            <p className="mt-4 max-w-2xl text-foreground">
-              Reports, recordings and photographs from previous INZBC events.
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Recent events
+            </h2>
+            <p className="mt-4 text-foreground">
+              The most recent of {INZBC_EVENTS.length} INZBC events on record, real photos and
+              details from each.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Btn href="/events/past" variant="outline">
-                Browse past events
-              </Btn>
+          </Reveal>
+          <div className="mt-10 space-y-2 divide-y divide-ink/10">
+            {recent.map((event, i) => (
+              <EventRow key={event.sourceSlug} event={event} delay={i * 0.05} />
+            ))}
+          </div>
+          <Reveal delay={0.2}>
+            <div className="mt-10 flex flex-wrap items-center gap-3">
+              <Btn href="/events/past">Browse the full event archive</Btn>
+              <span className="text-sm text-foreground/70">
+                {INZBC_EVENTS.length} INZBC events and {EXPO_EVENTS.length} trade expos, back to 2020
+              </span>
             </div>
-            <p className="mt-6 text-sm text-foreground">
-              Galleries: <TextLink href={LINKS.facebookAlbums} external>Facebook albums</TextLink>
-              {' · '}
-              <TextLink href={LINKS.flickr} external>Flickr</TextLink>
-            </p>
           </Reveal>
         </div>
       </section>
@@ -1779,9 +2213,12 @@ function DirectoryBody() {
 /* --- Past events ----------------------------------------------------------------------- */
 
 function EventsPastBody() {
+  const inzbcGroups = groupEventsByYear(INZBC_EVENTS);
+  const expoGroups = groupEventsByYear(EXPO_EVENTS);
+
   // INZBC's own event photography, from their Flickr account. Summit 2018 is what that
   // archive holds; the caption says so rather than implying these are recent.
-  const photos = [
+  const summit2018Photos = [
     { src: '/events/summit-group.jpg', alt: 'Delegates and speakers at the INZBC Summit 2018 in Auckland' },
     { src: '/events/summit-delegates.jpg', alt: 'Delegates at the INZBC Summit 2018 venue' },
     { src: '/events/summit-speakers.jpg', alt: 'Speakers at the INZBC Summit 2018' },
@@ -1791,26 +2228,31 @@ function EventsPastBody() {
   return (
     <>
       <section className="bg-white px-6 py-20">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-4xl">
           <Reveal>
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Event archive</h2>
-            <p className="mt-4 text-foreground">
-              <Todo>
-                [[Confirm which past event reports (2017&ndash;2021) carry over. Link to
-                recordings, summaries and photo galleries.]]
-              </Todo>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Event archive
+            </h2>
+            <p className="mt-4 max-w-2xl text-foreground">
+              {INZBC_EVENTS.length} events INZBC has run or co-run since 2020, newest first.
+              Every cover, date and venue below links back to INZBC&rsquo;s own account of it.
             </p>
-            <ul className="mt-6 space-y-3 text-foreground">
-              {[0, 1, 2].map((n) => (
-                <li key={n}>
-                  <strong>
-                    <Todo>[[Event name, year]]</Todo>
-                  </strong>{' '}
-                  &mdash; <Todo>[[one-line outcome]]</Todo>
-                </li>
-              ))}
-            </ul>
           </Reveal>
+
+          {inzbcGroups.map((group, gi) => (
+            <div key={group.year} className="mt-14 first:mt-10">
+              <Reveal delay={gi * 0.02}>
+                <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-plum">
+                  {group.year}
+                </h3>
+              </Reveal>
+              <div className="mt-4 space-y-2 divide-y divide-ink/10">
+                {group.events.map((event, i) => (
+                  <EventRow key={event.sourceSlug} event={event} delay={i * 0.03} />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -1825,7 +2267,7 @@ function EventsPastBody() {
             </p>
           </Reveal>
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
-            {photos.map((p, i) => (
+            {summit2018Photos.map((p, i) => (
               <Reveal key={p.src} delay={i * 0.06}>
                 <img
                   src={p.src}
@@ -1843,6 +2285,35 @@ function EventsPastBody() {
               <TextLink href={LINKS.flickr} external>Flickr</TextLink>
             </p>
           </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-white px-6 py-20">
+        <div className="mx-auto max-w-3xl">
+          <Reveal>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Trade shows &amp; expos INZBC has featured
+            </h2>
+            <p className="mt-4 text-foreground">
+              Third-party India trade shows and expos INZBC circulated to members &mdash; not
+              INZBC&rsquo;s own events, but real ones it helped members find.
+            </p>
+          </Reveal>
+
+          {expoGroups.map((group, gi) => (
+            <div key={group.year} className="mt-10 first:mt-8">
+              <Reveal delay={gi * 0.02}>
+                <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-plum">
+                  {group.year}
+                </h3>
+              </Reveal>
+              <div className="mt-3 space-y-1">
+                {group.events.map((event, i) => (
+                  <ExpoRow key={event.sourceSlug} event={event} delay={i * 0.03} />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </>

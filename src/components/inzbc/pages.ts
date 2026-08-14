@@ -37,7 +37,14 @@ export const PAGES: PageDef[] = [
   },
   { path: '/newsletters', title: "Newsletters", lede: "Trade news, FTA developments and event announcements, with every past edition kept in the archive." },
   { path: '/fta', title: "NZ\u2013India FTA Centre", lede: "Sourced, plain-language guidance on the New Zealand\u2013India Free Trade Agreement: what changes, who it affects, and what to do next." },
-  { path: '/events', title: "Events", lede: "Briefings, delegations, networking and the annual INZBC Summit \u2014 the main ways to engage with the NZ\u2013India trade community." },
+  {
+    path: '/events',
+    title: "Events",
+    lede: "Briefings, delegations, networking and the annual INZBC Summit \u2014 the main ways to engage with the NZ\u2013India trade community.",
+    heroImage: '/events/summit-group.jpg',
+    heroImageAlt: '',
+    heroImagePosition: '50% 35%',
+  },
   {
     path: '/membership',
     title: "Join New Zealand's India trade network",
@@ -60,7 +67,14 @@ export const PAGES: PageDef[] = [
   { path: '/trade-resources', title: "Trade resources for the NZ\u2013India opportunity", lede: "Practical guidance for New Zealand businesses exporting to India, importing from India, and using the NZ\u2013India Free Trade Agreement." },
   { path: '/india-market-opportunities', title: "India market opportunities", lede: "Sector guidance for New Zealand exporters under the NZ\u2013India Free Trade Agreement." },
   { path: '/membership/directory', title: "Member directory", lede: "The directory of INZBC members is hosted on Member Jungle, the provisional system of record for membership." },
-  { path: '/events/past', title: "Past events", lede: "Reports, recordings and summaries from previous INZBC events." },
+  {
+    path: '/events/past',
+    title: "Past events",
+    lede: "Reports, recordings and summaries from previous INZBC events.",
+    heroImage: '/events/summit-speakers.jpg',
+    heroImageAlt: '',
+    heroImagePosition: '50% 35%',
+  },
   { path: '/executive-council', title: "Executive Council", lede: "The governance and executive team leading INZBC." },
 ];
 
