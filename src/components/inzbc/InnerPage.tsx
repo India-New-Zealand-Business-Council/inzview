@@ -79,6 +79,18 @@ export default function InnerPage({ page }: { page: PageDef }) {
                 <p className="mt-6 max-w-2xl text-lg text-white/75">{page.lede}</p>
               </Reveal>
             ) : null}
+            {page.heroCta ? (
+              <Reveal delay={0.16}>
+                <a
+                  href={page.heroCta.href}
+                  target={page.heroCta.href.startsWith('/') ? undefined : '_blank'}
+                  rel={page.heroCta.href.startsWith('/') ? undefined : 'noopener noreferrer'}
+                  className={`mt-8 inline-flex items-center rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy transition-transform active:scale-[0.97] ${FOCUS}`}
+                >
+                  {page.heroCta.label}
+                </a>
+              </Reveal>
+            ) : null}
           </div>
         </section>
 

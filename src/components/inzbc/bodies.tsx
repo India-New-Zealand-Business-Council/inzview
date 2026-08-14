@@ -423,14 +423,35 @@ function MembershipBody() {
       <section className="bg-white px-6 py-24">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
           <Reveal>
-            <img
-              src="/blog/indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties.jpg"
-              alt="Indian High Commission symposium on trade and diplomatic ties, with New Zealand and Indian officials"
-              width={1600}
-              height={1066}
-              loading="lazy"
-              className="aspect-[4/3] w-full rounded-2xl object-cover"
-            />
+            {/* Three photos, not one — a big square plus two half-square (2:1) photos
+                stacked beside it, so the section reads as a small gallery of the network in
+                action rather than a single illustrative image. */}
+            <div className="grid grid-cols-2 grid-rows-2 gap-3">
+              <img
+                src="/blog/indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties.jpg"
+                alt="Indian High Commission symposium on trade and diplomatic ties, with New Zealand and Indian officials"
+                width={1600}
+                height={1066}
+                loading="lazy"
+                className="row-span-2 aspect-square w-full rounded-2xl object-cover"
+              />
+              <img
+                src="/blog/collaboration-and-cooperation-key-to-india-and-nz-s-future-international-education-success.jpg"
+                alt="An INZBC roundtable discussion between New Zealand and Indian delegates"
+                width={1600}
+                height={1066}
+                loading="lazy"
+                className="aspect-[2/1] w-full rounded-2xl object-cover"
+              />
+              <img
+                src="/blog/indian-envoy-calls-for-stronger-business-ties-mutual-presence.jpg"
+                alt="A speaker addressing delegates at an INZBC summit"
+                width={640}
+                height={559}
+                loading="lazy"
+                className="aspect-[2/1] w-full rounded-2xl object-cover"
+              />
+            </div>
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
@@ -448,23 +469,75 @@ function MembershipBody() {
         </div>
       </section>
 
-      <section className="bg-mist px-6 py-20 text-center">
-        <div className="mx-auto max-w-3xl">
+      <section className="bg-mist px-6 py-20">
+        <div className="mx-auto max-w-3xl text-center">
           <Reveal>
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Membership tiers</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Membership tiers
+            </h2>
             <p className="mt-4 text-foreground">
-              <Todo>
-                [[New fee structure from 1 Jan 2026 &mdash; request final tiers/pricing from
-                INZBC before publish.]]
-              </Todo>
+              Pulled live from Member Jungle, INZBC&rsquo;s registration system &mdash;
+              this is the actual current fee structure, not a placeholder.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Btn href={LINKS.join} external>
-                See membership options
-              </Btn>
-            </div>
           </Reveal>
         </div>
+
+        <Reveal delay={0.06}>
+          <div className="mx-auto mt-12 grid max-w-3xl gap-x-12 gap-y-10 sm:grid-cols-2">
+            <div>
+              <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-foreground/60">
+                New Zealand
+              </h3>
+              <dl className="mt-4 divide-y divide-ink/10">
+                {[
+                  ['Student', '$100'],
+                  ['Individual', '$200'],
+                  ['SME (1–4 staff)', '$250'],
+                  ['MSME (5–24 staff)', '$350'],
+                  ['Educational institution', '$400'],
+                  ['MSE (25–29 staff)', '$600'],
+                  ['Corporate (100+ staff)', '$850'],
+                ].map(([tier, price]) => (
+                  <div key={tier} className="flex items-baseline justify-between gap-4 py-3">
+                    <dt className="text-foreground">{tier}</dt>
+                    <dd className="font-heading text-lg text-ink">{price}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <div>
+              <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-foreground/60">
+                India
+              </h3>
+              <dl className="mt-4 divide-y divide-ink/10">
+                {[
+                  ['MSME', '$750'],
+                  ['Corporate', '$1,000'],
+                ].map(([tier, price]) => (
+                  <div key={tier} className="flex items-baseline justify-between gap-4 py-3">
+                    <dt className="text-foreground">{tier}</dt>
+                    <dd className="font-heading text-lg text-ink">{price}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-4 text-xs text-foreground/60">
+                Annual fees, excluding GST and transaction charges.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <Btn href={LINKS.join} external>
+              See membership options
+            </Btn>
+          </div>
+          <p className="mt-4 text-center text-xs text-foreground/50">
+            Pricing shown here is a snapshot &mdash; Member Jungle is the live, authoritative
+            source and is where you&rsquo;ll actually sign up.
+          </p>
+        </Reveal>
       </section>
 
       <section className="relative overflow-hidden bg-ink px-6 py-24">

@@ -20,6 +20,9 @@ export type PageDef = {
   heroImageAlt?: string;
   /** CSS object-position, e.g. "50% 40%". Defaults to center. */
   heroImagePosition?: string;
+  /** Optional hero CTA button. Only rendered when the page has one — not every inner page
+      has a single obvious action, so this doesn't default to anything. */
+  heroCta?: { label: string; href: string };
 };
 
 export const PAGES: PageDef[] = [
@@ -34,6 +37,7 @@ export const PAGES: PageDef[] = [
     heroImage: '/blog/india-business-forum.jpg',
     heroImageAlt: '',
     heroImagePosition: '50% 35%',
+    heroCta: { label: 'Join INZBC', href: LINKS.join },
   },
   { path: '/connect', title: "Connect", lede: "Get in touch with INZBC, or talk to us about sponsorship." },
   { path: '/news', title: "News", lede: "Updates from INZBC and the NZ\u2013India trade relationship." },
