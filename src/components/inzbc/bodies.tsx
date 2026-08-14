@@ -901,6 +901,24 @@ function MembershipBody() {
                 className="aspect-[2/1] w-full rounded-2xl object-cover"
               />
             </div>
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <img
+                src="/blog/inzbc-bids-farewell-to-high-commissioner-kohli-in-wellington.jpg"
+                alt="INZBC members applauding at a farewell event for outgoing Indian High Commissioner Sanjiv Kohli"
+                width={1600}
+                height={1198}
+                loading="lazy"
+                className="aspect-[4/3] w-full rounded-2xl object-cover"
+              />
+              <img
+                src="/blog/veteran-business-leader-bhav-dhillon-appointed-inzbc-patron.jpg"
+                alt="Bhav Dhillon speaking on an INZBC panel"
+                width={906}
+                height={680}
+                loading="lazy"
+                className="aspect-[4/3] w-full rounded-2xl object-cover"
+              />
+            </div>
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
