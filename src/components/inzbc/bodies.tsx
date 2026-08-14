@@ -870,7 +870,7 @@ function MembershipBody() {
   return (
     <>
       <section className="bg-white px-6 py-24">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
           <Reveal>
             {/* Three photos, not one — a big square plus two half-square (2:1) photos
                 stacked beside it, so the section reads as a small gallery of the network in
