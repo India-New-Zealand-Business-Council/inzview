@@ -20,6 +20,10 @@ export type PageDef = {
   heroImageAlt?: string;
   /** CSS object-position, e.g. "50% 40%". Defaults to center. */
   heroImagePosition?: string;
+  /** Shrinks the hero to roughly 2/3 height. For a heroImage whose source is low-resolution
+      (e.g. a real photo that's only ever existed at 600x400) — the standard tall hero forces
+      a much bigger upscale and crop than the source can carry cleanly. */
+  heroCompact?: boolean;
   /** Optional hero CTA button. Only rendered when the page has one — not every inner page
       has a single obvious action, so this doesn't default to anything. */
   heroCta?: { label: string; href: string };
@@ -61,6 +65,7 @@ export const PAGES: PageDef[] = [
     heroImage: '/blog/india-new-zealand-free-trade-agreement-signals-new-era-for-business-inzbc.jpg',
     heroImageAlt: '',
     heroImagePosition: '50% 40%',
+    heroCompact: true,
   },
   { path: '/news', title: "News", lede: "Updates from INZBC and the NZ\u2013India trade relationship." },
   { path: '/partners', title: "Partners", lede: "Organisations that support INZBC's work across the NZ\u2013India corridor." },

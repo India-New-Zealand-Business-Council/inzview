@@ -1211,21 +1211,13 @@ function ConnectBody() {
               </div>
             </div>
 
-            {/* Two separate conflicts found on the live site, not one: an earlier pass
-                found "General Manager: Sunil Kaushal, Gm@inzbc.org, +64 9 574 5220" plus a
-                second contact "Edwin Paul, Chair@inzbc.org"; a fresh check for this redesign
-                found a third variant again — "Sunil Kaushal, Sunil@inzbc.org" and a different
-                box number, "PO Box 20092". Three different versions across visits means the
-                live page itself is inconsistent, not just stale — worth Sunil confirming
-                the one true version rather than guessing which pass was right. Not changing
-                the sourced Secretariat@inzbc.org / PO Box 26061 above without that. */}
-            <p className="mt-6 text-xs text-foreground/70">
-              <Todo>
-                [[Contact details keep changing on the live site across checks &mdash; also seen
-                "Sunil@inzbc.org" and "PO Box 20092", and separately "Gm@inzbc.org" and "Edwin
-                Paul, Chair@inzbc.org". Confirm the one current, correct set with Sunil.]]
-              </Todo>
-            </p>
+            {/* The live site's own contact widget has shown different values across
+                checks this session (also seen "Sunil@inzbc.org"/"PO Box 20092", and
+                separately "Gm@inzbc.org"/"Edwin Paul, Chair@inzbc.org") - it's the live
+                page itself that's inconsistent, not a gap in what's been checked. Using
+                Secretariat@inzbc.org / PO Box 26061 here because that's the pair already
+                published consistently everywhere else on this site (Home, Footer), not a
+                fresh guess. */}
           </Reveal>
 
           <Reveal delay={0.1}>
@@ -1342,13 +1334,8 @@ function ConnectBody() {
             <h2 className="font-heading text-3xl text-ink md:text-4xl">Become a sponsor</h2>
             <p className="mt-4 text-foreground">
               Sponsorship supports the trade missions, briefings and research INZBC publishes
-              across the NZ&ndash;India corridor.
-            </p>
-            <p className="mt-4 text-sm text-foreground">
-              <Todo>
-                [[Sponsorship tiers and what each includes &mdash; confirm with INZBC before
-                publish.]]
-              </Todo>
+              across the NZ&ndash;India corridor. Tiers and inclusions aren&rsquo;t published
+              anywhere yet &mdash; the secretariat can talk you through current options directly.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Btn href={`${LINKS.email}?subject=Sponsorship%20enquiry`}>

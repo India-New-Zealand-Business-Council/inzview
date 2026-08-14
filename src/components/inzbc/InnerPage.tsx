@@ -34,7 +34,9 @@ export default function InnerPage({ page }: { page: PageDef }) {
         <section
           className={
             page.heroImage
-              ? 'relative flex min-h-[28rem] flex-col justify-end overflow-hidden bg-deep px-6 pb-16 pt-40 sm:min-h-[32rem] lg:min-h-[36rem]'
+              ? page.heroCompact
+                ? 'relative flex min-h-[20rem] flex-col justify-end overflow-hidden bg-deep px-6 pb-12 pt-32 sm:min-h-[22rem] lg:min-h-[24rem]'
+                : 'relative flex min-h-[28rem] flex-col justify-end overflow-hidden bg-deep px-6 pb-16 pt-40 sm:min-h-[32rem] lg:min-h-[36rem]'
               : 'relative overflow-hidden bg-deep px-6 pb-20 pt-40'
           }
         >
