@@ -1071,7 +1071,10 @@ const REPORTS = [
 ] as const;
 
 /** Newest first within each year; years newest first. Descriptions are each issue's real,
-    distinct Issuu synopsis — omitted (not faked) for the 5 issues where none exists. */
+    distinct Issuu synopsis. 5 issues (Dec 2023, Apr 2020, Dec 2019, Aug 2019, Apr 2019) have
+    no synopsis on Issuu at all — checked with a full verbatim-text extraction of each page,
+    not just a summary pass, before concluding that. Those five carry their real volume/issue
+    number instead (also read off Issuu), so they're not just a bare date either. */
 const KIA_ORA_ARCHIVE = [
   {
     year: 2024,
@@ -1088,7 +1091,7 @@ const KIA_ORA_ARCHIVE = [
   {
     year: 2023,
     issues: [
-      { label: 'December 2023', cover: ART.kiaOraCover, href: LINKS.kiaOraIssuu },
+      { label: 'December 2023', cover: ART.kiaOraCover, href: LINKS.kiaOraIssuu, issueNo: 'Vol 4, Issue 7' },
       {
         label: 'June 2023',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_jun2023_v5_low',
@@ -1139,14 +1142,32 @@ const KIA_ORA_ARCHIVE = [
   },
   {
     year: 2020,
-    issues: [{ label: 'April 2020', href: 'https://issuu.com/inzbc/docs/kiaora_india_april_vol_2_issue_01__final' }],
+    issues: [
+      {
+        label: 'April 2020',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_april_vol_2_issue_01__final',
+        issueNo: 'Vol 2, Issue 01',
+      },
+    ],
   },
   {
     year: 2019,
     issues: [
-      { label: 'December 2019', href: 'https://issuu.com/inzbc/docs/kiaora_india_december_v4_final_web' },
-      { label: 'August 2019', href: 'https://issuu.com/inzbc/docs/kiaora_india_august_v9_web' },
-      { label: 'April 2019', href: 'https://issuu.com/inzbc/docs/kiaora_india_april2019_v8_low' },
+      {
+        label: 'December 2019',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_december_v4_final_web',
+        issueNo: 'Vol 1, Issue 4',
+      },
+      {
+        label: 'August 2019',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_august_v9_web',
+        issueNo: 'Vol 1, Issue 3',
+      },
+      {
+        label: 'April 2019',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_april2019_v8_low',
+        issueNo: 'Vol 1, Issue 2',
+      },
     ],
   },
   {
@@ -1167,7 +1188,7 @@ const KIA_ORA_ARCHIVE = [
 function KiaOraIssueRow({
   issue,
 }: {
-  issue: { label: string; href: string; cover?: string; description?: string };
+  issue: { label: string; href: string; cover?: string; description?: string; issueNo?: string };
 }) {
   return (
     <a
@@ -1197,6 +1218,10 @@ function KiaOraIssueRow({
         </span>
         {issue.description ? (
           <span className="mt-1 block text-sm text-foreground/80">{issue.description}</span>
+        ) : issue.issueNo ? (
+          <span className="mt-1 block text-xs uppercase tracking-wide text-foreground/50">
+            {issue.issueNo} &mdash; no synopsis published for this issue
+          </span>
         ) : null}
       </span>
     </a>
