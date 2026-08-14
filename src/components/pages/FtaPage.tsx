@@ -202,15 +202,18 @@ export default function FtaPage() {
             reads as a beat in the page rather than a contained thumbnail. Was ART.heroBanner,
             a composite graphic left over from the old Wix Studio build (stock port/sheep/India
             Gate circles, and it still carried a "Built on WIXVibe" watermark baked into the
-            file). Swapped for a real, high-res INZBC photo instead. */}
+            file), then briefly a Christchurch City Council photo that was real but off-topic
+            for an FTA page (a separate council partnership, not the FTA). Delegation photo
+            instead: closer to this band's shape than the other Modi-Luxon photos (2048x1366,
+            ~3:2), and it's the actual moment the agreement's two governments stood together. */}
         <section className="bg-mist py-20">
           <Reveal>
             <Parallax speed={0.12}>
               <img
-                src="/blog/christchurch-city-council-and-inzbc-formalise-strategic-alliance-to-target-indian-market.jpg"
-                alt="Christchurch City Council and INZBC representatives at the signing of a strategic alliance to target the Indian market"
-                width={1600}
-                height={900}
+                src="/events/modi-luxon-delegation-auckland-2026.jpeg"
+                alt="Prime Ministers Narendra Modi and Christopher Luxon with the New Zealand and India delegations in Auckland"
+                width={2048}
+                height={1366}
                 loading="lazy"
                 className="w-full"
               />
@@ -218,8 +221,8 @@ export default function FtaPage() {
           </Reveal>
           <Reveal delay={0.06}>
             <p className="mx-auto mt-4 max-w-5xl px-6 text-sm text-foreground/60">
-              Christchurch City Council and INZBC formalise a strategic alliance to target the
-              Indian market &mdash; the relationship at work, not just on paper.
+              Indian Prime Minister Narendra Modi&rsquo;s official visit to Auckland, July 2026
+              &mdash; signed face to face, not just on paper.
             </p>
           </Reveal>
         </section>
@@ -265,18 +268,18 @@ export default function FtaPage() {
         </section>
 
         {/* One large photo carries the moment; a smaller supporting pair sits underneath.
-            Not a grid of three equal thumbnails. */}
+            Not a grid of three equal thumbnails. Welcome photo (2048x1536, 4:3) takes the
+            wide banner slot now that the delegation photo moved up to the full-bleed band
+            above; the Modi-Luxon conversation photo (1200x1600, portrait) fits the smaller,
+            tighter-cropped slot better than it would this one. */}
         <section className="bg-mist pb-4 pt-24" aria-labelledby="fta-photos-title">
           <Reveal>
             <div className="relative">
-              {/* Delegation photo (2048x1366, ~3:2) sits in the wide banner slot — closer to
-                  that band's shape than the welcome photo (2048x1536, 4:3) was, so less of
-                  the frame is lost to the crop. */}
               <img
-                src="/events/modi-luxon-delegation-auckland-2026.jpeg"
-                alt="Prime Ministers Narendra Modi and Christopher Luxon with the New Zealand and India delegations in Auckland"
+                src="/events/inzbc-welcome-auckland-2026.jpeg"
+                alt="INZBC Chief Executive Sunil Kaushal and delegates at the welcome for the Indian Prime Minister in Auckland"
                 width={2048}
-                height={1366}
+                height={1536}
                 loading="lazy"
                 className="max-h-[36rem] w-full object-cover"
               />
@@ -285,11 +288,11 @@ export default function FtaPage() {
                   id="fta-photos-title"
                   className="mx-auto max-w-5xl font-heading text-xl text-white md:text-2xl"
                 >
-                  Signed face to face
+                  Welcoming the Prime Minister
                 </h2>
                 <p className="mx-auto mt-1 max-w-5xl text-sm text-white/75">
-                  Indian Prime Minister Narendra Modi&rsquo;s official visit to Auckland, July
-                  2026.
+                  INZBC Chief Executive Sunil Kaushal and delegates welcome Indian Prime Minister
+                  Narendra Modi to Auckland, July 2026.
                 </p>
               </div>
             </div>
@@ -298,12 +301,12 @@ export default function FtaPage() {
           <div className="mx-auto mt-4 max-w-5xl px-6 pb-20">
             <Reveal delay={0.05}>
               <img
-                src="/events/inzbc-welcome-auckland-2026.jpeg"
-                alt="INZBC Chief Executive Sunil Kaushal and delegates at the welcome for the Indian Prime Minister in Auckland"
-                width={2048}
-                height={1536}
+                src="/events/modi-luxon-auckland-2026.jpeg"
+                alt="Prime Ministers Narendra Modi and Christopher Luxon in conversation during the Indian Prime Minister's official visit to Auckland"
+                width={1200}
+                height={1600}
                 loading="lazy"
-                className="max-h-[22rem] w-full object-cover"
+                className="max-h-[22rem] w-full object-cover object-[50%_58%]"
               />
             </Reveal>
           </div>
