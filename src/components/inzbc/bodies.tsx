@@ -4,6 +4,8 @@ import {
   ArrowUpRight,
   Facebook as FacebookIcon,
   Linkedin as LinkedinIcon,
+  Mail,
+  MapPin,
   Twitter as TwitterIcon,
   Youtube as YoutubeIcon,
 } from 'lucide-react';
@@ -725,46 +727,57 @@ function ConnectBody() {
         <div className="mx-auto grid max-w-6xl gap-14 md:grid-cols-2">
           <Reveal>
             <h2 className="font-heading text-3xl text-ink md:text-4xl">Contact</h2>
-            <dl className="mt-8 space-y-6 text-sm">
-              <div>
-                <dt className="font-semibold text-ink">Chief Executive</dt>
-                <dd className="text-foreground">
-                  Sunil Kaushal
-                  <br />
-                  <TextLink href={LINKS.email}>Secretariat@inzbc.org</TextLink>
-                </dd>
-                {/* Live inzbc.org/connect currently shows different titles/contacts entirely
-                    ("General Manager: Sunil Kaushal, Gm@inzbc.org, +64 9 574 5220" and a
-                    second contact, "Edwin Paul, Chair@inzbc.org"). Not changing the sourced
-                    Sunil/Secretariat details above — flagging the conflict instead, same
-                    treatment as the postal address conflict. */}
-                <p className="mt-2 text-xs text-foreground/70">
-                  <Todo>
-                    [[Contact title/email inconsistency on live site &mdash; confirm current
-                    correct details with Sunil]]
-                  </Todo>
-                </p>
+            <p className="mt-3 max-w-sm text-foreground">
+              Sunil Kaushal, Chief Executive, and the secretariat team. Email is the preferred
+              way to reach them.
+            </p>
+
+            <div className="mt-10 space-y-8">
+              <div className="flex gap-4">
+                <Mail aria-hidden="true" size={22} strokeWidth={1.6} className="mt-0.5 flex-none text-plum" />
+                <div>
+                  <p className="font-semibold text-ink">Email</p>
+                  <p className="mt-1">
+                    <TextLink href={LINKS.email}>Secretariat@inzbc.org</TextLink>
+                  </p>
+                </div>
               </div>
-              <div>
-                <dt className="font-semibold text-ink">Postal address</dt>
-                <dd className="text-foreground">
-                  PO Box 26061
-                  <br />
-                  Glen Eden
-                  <br />
-                  Auckland 0641
-                  <br />
-                  New Zealand
-                </dd>
+              <div className="flex gap-4">
+                <MapPin aria-hidden="true" size={22} strokeWidth={1.6} className="mt-0.5 flex-none text-plum" />
+                <div>
+                  <p className="font-semibold text-ink">Postal address</p>
+                  <p className="mt-1 text-foreground">
+                    PO Box 26061
+                    <br />
+                    Glen Eden
+                    <br />
+                    Auckland 0641
+                    <br />
+                    New Zealand
+                  </p>
+                </div>
               </div>
-            </dl>
-            <p className="mt-6 text-sm text-foreground">
-              Email is the preferred way to reach the secretariat.
+            </div>
+
+            {/* Two separate conflicts found on the live site, not one: an earlier pass
+                found "General Manager: Sunil Kaushal, Gm@inzbc.org, +64 9 574 5220" plus a
+                second contact "Edwin Paul, Chair@inzbc.org"; a fresh check for this redesign
+                found a third variant again — "Sunil Kaushal, Sunil@inzbc.org" and a different
+                box number, "PO Box 20092". Three different versions across visits means the
+                live page itself is inconsistent, not just stale — worth Sunil confirming
+                the one true version rather than guessing which pass was right. Not changing
+                the sourced Secretariat@inzbc.org / PO Box 26061 above without that. */}
+            <p className="mt-6 text-xs text-foreground/70">
+              <Todo>
+                [[Contact details keep changing on the live site across checks &mdash; also seen
+                "Sunil@inzbc.org" and "PO Box 20092", and separately "Gm@inzbc.org" and "Edwin
+                Paul, Chair@inzbc.org". Confirm the one current, correct set with Sunil.]]
+              </Todo>
             </p>
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="rounded-2xl bg-mist p-8">
+            <div className="rounded-2xl bg-mist p-8 md:p-10">
               <h2 className="font-heading text-2xl text-ink">Send a message</h2>
               <ContactForm />
               <p className="mt-5 text-sm text-foreground">
