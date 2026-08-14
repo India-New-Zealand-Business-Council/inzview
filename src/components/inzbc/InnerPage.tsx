@@ -68,15 +68,15 @@ export default function InnerPage({ page }: { page: PageDef }) {
               />
             </>
           )}
-          <div className="relative mx-auto max-w-4xl">
+          <div className="relative mx-auto w-full max-w-6xl">
             <Reveal>
-              <h1 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-white md:text-6xl">
+              <h1 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-white md:text-6xl lg:text-7xl">
                 {page.title}
               </h1>
             </Reveal>
             {page.lede ? (
               <Reveal delay={0.08}>
-                <p className="mt-6 max-w-2xl text-lg text-white/75">{page.lede}</p>
+                <p className="mt-6 max-w-2xl text-lg text-white/75 md:text-xl">{page.lede}</p>
               </Reveal>
             ) : null}
             {page.heroCta ? (
