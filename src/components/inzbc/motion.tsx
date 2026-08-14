@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import {
+  AnimatePresence,
   motion,
   useTransform,
   useSpring,
@@ -10,6 +11,7 @@ import {
 } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 /**
  * Motion primitives.
@@ -384,6 +386,10 @@ export function StickyHeader({
   cta: { label: string; href: string };
 }) {
   const [solid, setSolid] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const reduced = useReducedMotion();
+
   useEffect(() => {
     const onScroll = () => setSolid(window.scrollY > 60);
     onScroll();
@@ -391,11 +397,25 @@ export function StickyHeader({
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Below md, the nav links are hidden (see the <nav> below) — without this menu they had
+  // nowhere to go and simply vanished at narrow widths, taking the Join CTA with them.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape' || !menuOpen) return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <motion.header
       className="fixed inset-x-0 top-0 z-40 backdrop-blur-md"
       animate={{
-        backgroundColor: solid ? 'rgba(14,5,34,0.92)' : 'rgba(14,5,34,0)',
+        backgroundColor: solid || menuOpen ? 'rgba(14,5,34,0.92)' : 'rgba(14,5,34,0)',
         paddingTop: solid ? 10 : 20,
         paddingBottom: solid ? 10 : 20,
       }}
@@ -432,7 +452,54 @@ export function StickyHeader({
             {cta.label}
           </a>
         </nav>
+
+        <button
+          ref={menuButtonRef}
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="sticky-mobile-nav"
+          onClick={() => setMenuOpen((v) => !v)}
+          className="rounded-md p-2 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime md:hidden"
+        >
+          <span className="sr-only">Menu</span>
+          {menuOpen ? <X aria-hidden="true" size={24} /> : <Menu aria-hidden="true" size={24} />}
+        </button>
       </div>
+
+      <AnimatePresence initial={false}>
+        {menuOpen ? (
+          <motion.div
+            id="sticky-mobile-nav"
+            initial={reduced ? { opacity: 0 } : { opacity: 0, height: 0 }}
+            animate={reduced ? { opacity: 1 } : { opacity: 1, height: 'auto' }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, height: 0 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+            className="overflow-hidden border-t border-white/10 md:hidden"
+          >
+            <nav aria-label="Mobile navigation" className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-4">
+              {links.map((l) => (
+                <Link
+                  key={l.href}
+                  to={l.href}
+                  onClick={closeMenu}
+                  className="rounded-md px-2 py-3 text-base text-white/85 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+                >
+                  {l.label}
+                </Link>
+              ))}
+              <a
+                href={cta.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={closeMenu}
+                className="mt-3 inline-flex items-center justify-center rounded-full bg-lime px-5 py-3 text-sm font-medium text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+              >
+                {cta.label}
+              </a>
+            </nav>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </motion.header>
   );
 }
