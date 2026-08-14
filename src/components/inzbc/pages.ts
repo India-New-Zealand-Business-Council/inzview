@@ -26,7 +26,15 @@ export type PageDef = {
 };
 
 export const PAGES: PageDef[] = [
-  { path: '/publications', title: "Publications", lede: "The India Report, Kia Ora India and the Trade Intelligence Digest: research, sector analysis and the stories of businesses already trading across the corridor." },
+  {
+    path: '/publications',
+    title: "Publications",
+    lede: "The India Report, Kia Ora India and the Trade Intelligence Digest: research, sector analysis and the stories of businesses already trading across the corridor.",
+    heroImage: '/blog/cancer-collaboration-for-university-of-auckland-and-tata-memorial-hospital.jpg',
+    heroImageAlt: '',
+    heroImagePosition: '50% 30%',
+    heroCta: { label: 'Read the 2025 trade report', href: LINKS.reportIssuu },
+  },
   { path: '/newsletters', title: "Newsletters", lede: "Trade news, FTA developments and event announcements, with every past edition kept in the archive." },
   { path: '/fta', title: "NZ\u2013India FTA Centre", lede: "Sourced, plain-language guidance on the New Zealand\u2013India Free Trade Agreement: what changes, who it affects, and what to do next." },
   { path: '/events', title: "Events", lede: "Briefings, delegations, networking and the annual INZBC Summit \u2014 the main ways to engage with the NZ\u2013India trade community." },

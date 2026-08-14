@@ -1031,102 +1031,200 @@ function NewsBody() {
 
 /* --- Publications --------------------------------------------------------------------- */
 
+/**
+ * Every title, date and Issuu link below is real, pulled from inzbc.org/publications (which
+ * turned out to stop at Dec 2023 — stale, not actually current) plus the June 2024 Kia Ora
+ * India issue found via its own blog post, which the publications page never listed. The
+ * April 2023 report's real title and date came from its own Issuu page; its cover is the
+ * matching blog post's cover image (public/blog/), the same real cover, not a duplicate or
+ * a guess. Nothing here is invented — where a cover image isn't confirmed for a given issue,
+ * it just isn't shown, rather than reusing an unrelated one.
+ */
+const REPORTS = [
+  {
+    title: 'Grow With India',
+    sub: 'The New Zealand India Trade Report 2025',
+    body: 'Where the trade relationship stands and where it can go.',
+    cover: ART.reportCover,
+    href: LINKS.reportIssuu,
+    featured: true,
+  },
+  {
+    title: 'India & New Zealand: A Relationship Ready For Its Next Phase',
+    sub: 'April 2023',
+    body: "INZBC's submission to the New Zealand Government assessing bilateral trade relations, with recommendations from the business community.",
+    cover: '/blog/india-new-zealand-a-relationship-ready-for-its-next-phase.jpg',
+    href: 'https://issuu.com/inzbc/docs/inzbc_report_aw_version_z_low270423',
+    featured: false,
+  },
+  {
+    title: 'Pharma sector report',
+    sub: null,
+    body: 'A sector-specific report on pharmaceutical trade between New Zealand and India.',
+    cover: ART.pharmaReportCover,
+    href: 'https://issuu.com/inzbc/docs/pharma_report_full_final_v9',
+    featured: false,
+  },
+] as const;
+
+/** Newest first within each year; years newest first. */
+const KIA_ORA_ARCHIVE = [
+  {
+    year: 2024,
+    issues: [
+      {
+        label: 'June 2024',
+        cover: '/blog/kia-ora-india-inzbc-magazine-latest-issue-june-2024.jpg',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_june24_v8_highres',
+      },
+    ],
+  },
+  {
+    year: 2023,
+    issues: [
+      { label: 'December 2023', cover: ART.kiaOraCover, href: LINKS.kiaOraIssuu },
+      { label: 'June 2023', href: 'https://issuu.com/inzbc/docs/kiaora_india_jun2023_v5_low' },
+    ],
+  },
+  {
+    year: 2022,
+    issues: [
+      { label: 'November 2022', href: 'https://issuu.com/inzbc/docs/kiaora_india_nov2022_final' },
+      { label: 'April 2022', href: 'https://issuu.com/inzbc/docs/kiaora_india_13april2022_final_low_' },
+    ],
+  },
+  {
+    year: 2021,
+    issues: [
+      { label: 'October 2021', href: 'https://issuu.com/inzbc/docs/kiaora_india_oct2021_finalv2' },
+      { label: 'June 2021', href: 'https://bit.ly/KiaOraIndiaJune2021' },
+      { label: 'March 2021', href: 'https://issuu.com/inzbc/docs/kiaora_india_mar2021_vol_3___issue_01' },
+    ],
+  },
+  {
+    year: 2020,
+    issues: [{ label: 'April 2020', href: 'https://issuu.com/inzbc/docs/kiaora_india_april_vol_2_issue_01__final' }],
+  },
+  {
+    year: 2019,
+    issues: [
+      { label: 'December 2019', href: 'https://issuu.com/inzbc/docs/kiaora_india_december_v4_final_web' },
+      { label: 'August 2019', href: 'https://issuu.com/inzbc/docs/kiaora_india_august_v9_web' },
+      { label: 'April 2019', href: 'https://issuu.com/inzbc/docs/kiaora_india_april2019_v8_low' },
+    ],
+  },
+  {
+    year: 2018,
+    issues: [{ label: 'December 2018', href: 'https://issuu.com/inzbc/docs/kiaora_india_draft_12_web' }],
+  },
+] as const;
+
 function PublicationsBody() {
-  const pubs = [
-    {
-      cover: ART.reportCover,
-      alt: 'Cover of Grow With India, the New Zealand India Trade Report 2025',
-      title: 'Grow With India',
-      sub: 'The New Zealand India Trade Report 2025',
-      body: 'Where the trade relationship stands and where it can go.',
-      href: LINKS.reportIssuu,
-    },
-    {
-      cover: ART.kiaOraCover,
-      alt: 'Cover of Kia Ora India, the INZBC magazine',
-      title: 'Kia Ora India',
-      sub: 'The INZBC magazine',
-      body: 'Member businesses and the people moving between the two markets.',
-      href: LINKS.kiaOraIssuu,
-    },
-    {
-      // Sourced from inzbc.org/publications (12 Aug 2026) - a real, distinct sector report
-      // cover, not previously in ART. No Issuu link or description found for it, so those
-      // stay [[placeholder]] below rather than guessed.
-      cover: ART.pharmaReportCover,
-      alt: 'Cover of an INZBC pharmaceutical sector report',
-      title: 'Pharma sector report',
-      sub: null,
-      body: null,
-      href: null,
-    },
-  ];
+  const [featured, ...otherReports] = REPORTS;
 
   return (
     <>
-      <section className="bg-white px-6 py-20">
+      <section className="bg-white px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">India Report</h2>
-            <p className="mt-4 max-w-2xl text-foreground">
-              <Todo>
-                [[Confirm which India Report editions carry over. The April 2023 edition is
-                referenced on the old trade page.]]
-              </Todo>
-            </p>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Reports</h2>
           </Reveal>
-          <div className="mt-12 grid gap-10 md:grid-cols-2">
-            {pubs.map((pub, i) => (
-              <Reveal key={pub.title} delay={i * 0.08}>
-                <article className="flex gap-6">
-                  <img
-                    src={pub.cover}
-                    alt={pub.alt}
-                    loading="lazy"
-                    className="h-auto w-28 flex-none rounded-lg shadow-lg md:w-36"
-                  />
-                  <div>
-                    <h3 className="font-heading text-2xl text-ink">{pub.title}</h3>
-                    {pub.sub ? <p className="mt-1 text-sm text-plum">{pub.sub}</p> : null}
-                    <p className="mt-3 text-sm text-foreground">
-                      {pub.body ?? (
-                        <Todo>[[Description and where to read it &mdash; confirm with INZBC before publish.]]</Todo>
-                      )}
-                    </p>
-                    {pub.href ? (
-                      <p className="mt-5">
-                        <Btn href={pub.href} external>
-                          Read on Issuu
-                        </Btn>
-                      </p>
-                    ) : null}
-                  </div>
-                </article>
-              </Reveal>
-            ))}
-            <Reveal delay={0.16}>
-              <article className="flex gap-6 rounded-2xl bg-mist p-7">
-                {/* Sourced from inzbc.org/publications (12 Aug 2026) - "INZBC Report 2025
-                    Digital-001.png", a different file than ART.reportCover, so likely this
-                    report's real cover rather than a duplicate. Not certain, hence still
-                    [[placeholder]] below rather than asserting it as confirmed. */}
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-5 lg:gap-10">
+            <Reveal className="lg:col-span-3">
+              <article className="flex h-full flex-col gap-8 rounded-2xl bg-mist p-8 sm:flex-row sm:items-center md:p-10">
                 <img
-                  src={ART.reportCover2025}
-                  alt="Cover of India Report 2.0"
+                  src={featured.cover}
+                  alt={`Cover of ${featured.title}, ${featured.sub}`}
                   loading="lazy"
-                  className="h-auto w-20 flex-none rounded-lg shadow-lg"
+                  className="h-auto w-32 flex-none rounded-lg shadow-lg sm:w-40"
                 />
                 <div>
-                  <h3 className="font-heading text-xl text-ink">India Report 2.0</h3>
-                  <p className="mt-2 text-sm text-foreground">
-                    <Todo>
-                      [[Description, date and file &mdash; confirm with INZBC before publish.
-                      Cover image found on the live site; not confirmed as final.]]
-                    </Todo>
+                  <span className="text-xs font-medium uppercase tracking-[0.14em] text-plum">Latest</span>
+                  <h3 className="mt-2 font-heading text-2xl text-ink md:text-3xl">{featured.title}</h3>
+                  <p className="mt-1 text-sm text-plum">{featured.sub}</p>
+                  <p className="mt-3 text-foreground">{featured.body}</p>
+                  <p className="mt-5">
+                    <Btn href={featured.href} external>
+                      Read on Issuu
+                    </Btn>
                   </p>
                 </div>
               </article>
             </Reveal>
+
+            <div className="flex flex-col gap-8 lg:col-span-2">
+              {otherReports.map((pub, i) => (
+                <Reveal key={pub.title} delay={0.08 + i * 0.06}>
+                  <article className="flex gap-5">
+                    <img
+                      src={pub.cover}
+                      alt={`Cover of ${pub.title}`}
+                      loading="lazy"
+                      className="h-auto w-20 flex-none rounded-lg shadow-lg"
+                    />
+                    <div>
+                      <h3 className="font-heading text-lg text-ink">{pub.title}</h3>
+                      {pub.sub ? <p className="mt-1 text-sm text-plum">{pub.sub}</p> : null}
+                      <p className="mt-2 text-sm text-foreground">{pub.body}</p>
+                      <p className="mt-3">
+                        <TextLink href={pub.href} external>
+                          Read on Issuu
+                        </TextLink>
+                      </p>
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-mist px-6 py-24">
+        <div className="mx-auto max-w-4xl">
+          <Reveal>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Kia Ora India
+            </h2>
+            <p className="mt-4 max-w-2xl text-foreground">
+              The INZBC magazine, running since 2018: member businesses and the people moving
+              between the two markets. Every issue below is real and linked to Issuu &mdash;
+              this page had gone stale and stopped at December 2023 on the live site.
+            </p>
+          </Reveal>
+
+          <div className="mt-14 border-t border-ink/10">
+            {KIA_ORA_ARCHIVE.map((group, gi) => (
+              <Reveal key={group.year} delay={gi * 0.04}>
+                <div className="grid gap-6 border-b border-ink/10 py-8 sm:grid-cols-[6rem_1fr]">
+                  <p className="font-heading text-3xl text-ink">{group.year}</p>
+                  <div className="space-y-5">
+                    {group.issues.map((issue) =>
+                      'cover' in issue && issue.cover ? (
+                        <div key={issue.label} className="flex items-center gap-4">
+                          <img
+                            src={issue.cover}
+                            alt={`Cover of Kia Ora India, ${issue.label}`}
+                            loading="lazy"
+                            className="h-16 w-12 flex-none rounded object-cover shadow"
+                          />
+                          <TextLink href={issue.href} external>
+                            {issue.label}
+                          </TextLink>
+                        </div>
+                      ) : (
+                        <div key={issue.label}>
+                          <TextLink href={issue.href} external>
+                            {issue.label}
+                          </TextLink>
+                        </div>
+                      ),
+                    )}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
