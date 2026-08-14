@@ -91,7 +91,7 @@ export default function FtaPage() {
 
       <main>
         <section
-          className="relative overflow-hidden bg-deep px-6 pb-24 pt-44 text-center"
+          className="relative overflow-hidden bg-deep px-6 pb-24 pt-44"
           aria-labelledby="fta-hero-title"
         >
           <img
@@ -106,27 +106,25 @@ export default function FtaPage() {
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/70 to-deep"
           />
-          <div className="relative mx-auto max-w-3xl">
+          <div className="relative mx-auto w-full max-w-6xl">
             <Reveal>
-              <h1 id="fta-hero-title" className="font-heading text-5xl leading-tight text-white md:text-7xl">
+              <h1 id="fta-hero-title" className="font-heading text-4xl font-semibold leading-tight tracking-tight text-white md:text-6xl lg:text-7xl">
                 <WordReveal text="NZ–India FTA Centre" delay={0.1} />
               </h1>
             </Reveal>
             <Reveal delay={0.16}>
-              <p className="mx-auto mt-6 max-w-xl text-xl text-white/75">
+              <p className="mt-6 max-w-2xl text-lg text-white/75 md:text-xl">
                 Sourced, plain-language guidance on the New Zealand&ndash;India Free Trade
                 Agreement: what changes, who it affects, and what to do next.
               </p>
             </Reveal>
             <Reveal delay={0.24}>
-              <div className="mt-12 flex justify-center">
-                <Link
-                  to="/fta/explainer"
-                  className={`inline-flex items-center rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy transition-transform active:scale-[0.97] ${FOCUS}`}
-                >
-                  Use the FTA Explainer
-                </Link>
-              </div>
+              <Link
+                to="/fta/explainer"
+                className={`mt-8 inline-flex items-center rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy transition-transform active:scale-[0.97] ${FOCUS}`}
+              >
+                Use the FTA Explainer
+              </Link>
             </Reveal>
           </div>
         </section>
