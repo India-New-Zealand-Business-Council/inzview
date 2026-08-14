@@ -24,22 +24,50 @@ export default function InnerPage({ page }: { page: PageDef }) {
       <StickyHeader logo={ART.logo} links={NAV} cta={{ label: 'Join', href: LINKS.join }} />
 
       <main>
-        {/* Layered ambient glow, matching the depth Home's TradeThread/CorridorPortal build
-            with two-three overlapping radial gradients rather than one flat blur circle —
-            same technique (CSS-only, no new dependency), applied here so every inner page
-            gets it via this one shared hero, not copy-pasted per page. Tighter heading
-            tracking (tracking-tight) matches Home's .home-heading letter-spacing choice. */}
-        <section className="relative overflow-hidden bg-deep px-6 pb-20 pt-40">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-1/4 top-0 h-[34rem] w-[34rem] rounded-full opacity-45 blur-3xl"
-            style={{ background: 'radial-gradient(closest-side, rgba(97,20,95,0.9), transparent)' }}
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -left-1/3 bottom-0 h-[26rem] w-[26rem] rounded-full opacity-30 blur-3xl"
-            style={{ background: 'radial-gradient(closest-side, rgba(184,240,124,0.5), transparent)' }}
-          />
+        {/* Two hero treatments share this one shell so every inner page still goes through
+            InnerPage rather than growing its own bespoke hero. Pages without a heroImage get
+            the original layered ambient glow (two radial gradients, matching Home's
+            TradeThread/CorridorPortal depth technique). Pages with one get a real photo
+            instead — min-height per breakpoint (not the image) keeps the crop box a sane
+            shape at any viewport width, the same fix that FTA Centre's hero needed; flex
+            centering keeps the heading centred inside whatever height that produces. */}
+        <section
+          className={
+            page.heroImage
+              ? 'relative flex min-h-[28rem] flex-col justify-end overflow-hidden bg-deep px-6 pb-16 pt-40 sm:min-h-[32rem] lg:min-h-[36rem]'
+              : 'relative overflow-hidden bg-deep px-6 pb-20 pt-40'
+          }
+        >
+          {page.heroImage ? (
+            <>
+              <img
+                src={page.heroImage}
+                alt={page.heroImageAlt ?? ''}
+                aria-hidden={!page.heroImageAlt}
+                loading="eager"
+                fetchPriority="high"
+                className="absolute inset-0 h-full w-full object-cover"
+                style={{ objectPosition: page.heroImagePosition ?? '50% 50%' }}
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-t from-deep via-deep/80 to-ink/40"
+              />
+            </>
+          ) : (
+            <>
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-1/4 top-0 h-[34rem] w-[34rem] rounded-full opacity-45 blur-3xl"
+                style={{ background: 'radial-gradient(closest-side, rgba(97,20,95,0.9), transparent)' }}
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -left-1/3 bottom-0 h-[26rem] w-[26rem] rounded-full opacity-30 blur-3xl"
+                style={{ background: 'radial-gradient(closest-side, rgba(184,240,124,0.5), transparent)' }}
+              />
+            </>
+          )}
           <div className="relative mx-auto max-w-4xl">
             <Reveal>
               <h1 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-white md:text-6xl">

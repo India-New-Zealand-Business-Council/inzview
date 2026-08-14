@@ -11,14 +11,30 @@ import { LINKS } from './content';
  * thin page: the Studio site had nineteen of twenty pages returning 404 for days and it was
  * not obvious from looking at it.
  */
-export type PageDef = { path: string; title: string; lede: string };
+export type PageDef = {
+  path: string;
+  title: string;
+  lede: string;
+  /** Optional photo-backed hero. Falls back to the plain dark gradient hero when absent. */
+  heroImage?: string;
+  heroImageAlt?: string;
+  /** CSS object-position, e.g. "50% 40%". Defaults to center. */
+  heroImagePosition?: string;
+};
 
 export const PAGES: PageDef[] = [
   { path: '/publications', title: "Publications", lede: "The India Report, Kia Ora India and the Trade Intelligence Digest: research, sector analysis and the stories of businesses already trading across the corridor." },
   { path: '/newsletters', title: "Newsletters", lede: "Trade news, FTA developments and event announcements, with every past edition kept in the archive." },
   { path: '/fta', title: "NZ\u2013India FTA Centre", lede: "Sourced, plain-language guidance on the New Zealand\u2013India Free Trade Agreement: what changes, who it affects, and what to do next." },
   { path: '/events', title: "Events", lede: "Briefings, delegations, networking and the annual INZBC Summit \u2014 the main ways to engage with the NZ\u2013India trade community." },
-  { path: '/membership', title: "Join New Zealand's India trade network", lede: "INZBC membership gives companies and institutions a direct voice in the NZ\u2013India trade relationship, sourced market intelligence, and access to events, delegations and introductions." },
+  {
+    path: '/membership',
+    title: "Join New Zealand's India trade network",
+    lede: "INZBC membership gives companies and institutions a direct voice in the NZ\u2013India trade relationship, sourced market intelligence, and access to events, delegations and introductions.",
+    heroImage: '/blog/india-business-forum.jpg',
+    heroImageAlt: '',
+    heroImagePosition: '50% 35%',
+  },
   { path: '/connect', title: "Connect", lede: "Get in touch with INZBC, or talk to us about sponsorship." },
   { path: '/news', title: "News", lede: "Updates from INZBC and the NZ\u2013India trade relationship." },
   { path: '/partners', title: "Partners", lede: "Organisations that support INZBC's work across the NZ\u2013India corridor." },

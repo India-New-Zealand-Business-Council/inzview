@@ -402,9 +402,13 @@ function EventsBody() {
  * Directory were missing entirely until now — both are migrated from
  * member-network.html, which also supplies the member/industry counts staying [[placeholder]]
  * ("inventing a member number is exactly the claim this site must not make," per that
- * snippet's own comment). No dedicated "network" photo exists in ART, and the general rule
- * for this pass is not to reintroduce parallax, so the band is a plain dark surface rather
- * than member-network.html's parallax photo treatment.
+ * snippet's own comment).
+ *
+ * Photos: three real INZBC event photos, none used elsewhere on the site (checked against
+ * HomePage.tsx and FtaPage.tsx before picking) — an Indian High Commission symposium, the BNZ
+ * India Business Forum (also the page's hero, via pages.ts), and a QualityNZ investment-decade
+ * event. Real council headshots (public/council/) stand in for "who's already in the
+ * directory" instead of a stock illustration.
  */
 function MembershipBody() {
   const reasons = [
@@ -416,22 +420,31 @@ function MembershipBody() {
 
   return (
     <>
-      <section className="bg-white px-6 py-20">
-        <div className="mx-auto max-w-6xl">
+      <section className="bg-white px-6 py-24">
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
           <Reveal>
-            <h2 className="text-center font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+            <img
+              src="/blog/indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties.jpg"
+              alt="Indian High Commission symposium on trade and diplomatic ties, with New Zealand and Indian officials"
+              width={1600}
+              height={1066}
+              loading="lazy"
+              className="aspect-[4/3] w-full rounded-2xl object-cover"
+            />
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
               Why members join
             </h2>
+            <dl className="mt-10 space-y-8 border-t border-ink/10 pt-8">
+              {reasons.map(([title, body], i) => (
+                <div key={title} className={i > 0 ? 'border-t border-ink/10 pt-8' : ''}>
+                  <dt className="font-heading text-xl text-ink">{title}</dt>
+                  <dd className="mt-2 text-foreground">{body}</dd>
+                </div>
+              ))}
+            </dl>
           </Reveal>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {reasons.map(([title, body], i) => (
-              <Reveal key={title} delay={i * 0.06}>
-                <Card title={title}>
-                  <p>{body}</p>
-                </Card>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -455,6 +468,17 @@ function MembershipBody() {
       </section>
 
       <section className="relative overflow-hidden bg-ink px-6 py-24">
+        {/* QualityNZ event photo as ambient texture behind the band, not a portrait to look
+            at directly — low opacity keeps white text at full contrast. Was a flat colour
+            field; the code comment here used to say no network photo existed, which was true
+            before this pass pulled ~150 real ones down from the live site. */}
+        <img
+          src="/blog/qualitynz-group-celebrates-a-decade-of-investment-in-india.jpg"
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover opacity-20"
+        />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -right-1/4 top-0 h-[30rem] w-[30rem] rounded-full opacity-35 blur-3xl"
@@ -463,7 +487,6 @@ function MembershipBody() {
         <div className="relative mx-auto max-w-6xl">
           <div className="grid items-start gap-12 md:grid-cols-2">
             <Reveal>
-              <p className="mb-3 text-xs uppercase tracking-[0.18em] text-lime">The network</p>
               <h2 className="font-heading text-3xl font-semibold tracking-tight text-white md:text-4xl">
                 Who you meet by joining
               </h2>
@@ -518,7 +541,35 @@ function MembershipBody() {
       <section className="bg-mist px-6 py-20 text-center">
         <div className="mx-auto max-w-2xl">
           <Reveal>
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Member directory</h2>
+            {/* Real council headshots, not a stand-in illustration — same photos and names as
+                the Executive Council page. These are the council and secretariat, not the
+                member directory itself (that's on Member Jungle, per this page's lede), so the
+                caption says exactly that rather than implying these faces are a directory
+                sample. No count badge — this project's standing rule is not to invent member
+                numbers, and a "+N" tail would be exactly that. */}
+            <div className="mb-6 flex justify-center -space-x-3">
+              {[
+                ['Sunil Kaushal', '/council/sunil-kaushal.png'],
+                ['Edwin Paul', '/council/edwin-paul.png'],
+                ['Rachel Lynch', '/council/rachel-lynch.jpg'],
+                ['Bharat Chawla', '/council/bharat-chawla.jpg'],
+                ['Sreedhar Venkatram', '/council/sreedhar-venkatram.jpeg'],
+                ['Tony Martin', '/council/tony-martin.png'],
+              ].map(([name, photo]) => (
+                <img
+                  key={name}
+                  src={photo}
+                  alt={name}
+                  title={name}
+                  width={56}
+                  height={56}
+                  loading="lazy"
+                  className="h-14 w-14 rounded-full border-2 border-mist object-cover"
+                />
+              ))}
+            </div>
+            <p className="text-xs text-foreground/60">The council and secretariat &mdash; some of who you&rsquo;ll meet</p>
+            <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Member directory</h2>
             <p className="mt-4 text-foreground">
               See who is already trading across the corridor &mdash; exporters, importers,
               investors, universities and government agencies.
