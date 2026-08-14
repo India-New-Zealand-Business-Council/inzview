@@ -71,9 +71,9 @@ export const PAGES: PageDef[] = [
     path: '/events/past',
     title: "Past events",
     lede: "Reports, recordings and summaries from previous INZBC events.",
-    heroImage: '/events/summit-speakers.jpg',
+    heroImage: '/blog/keynote-address-by-hon-nanaia-mahuta-foreign-affairs-minister-new-zealand-at-the-inzbc-summit-2021.png',
     heroImageAlt: '',
-    heroImagePosition: '50% 35%',
+    heroImagePosition: '50% 45%',
   },
   { path: '/executive-council', title: "Executive Council", lede: "The governance and executive team leading INZBC." },
 ];
