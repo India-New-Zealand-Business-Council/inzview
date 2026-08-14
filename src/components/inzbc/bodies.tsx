@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
+  ArrowUpRight,
   Facebook as FacebookIcon,
   Linkedin as LinkedinIcon,
   Twitter as TwitterIcon,
@@ -1032,13 +1033,15 @@ function NewsBody() {
 /* --- Publications --------------------------------------------------------------------- */
 
 /**
- * Every title, date and Issuu link below is real, pulled from inzbc.org/publications (which
- * turned out to stop at Dec 2023 — stale, not actually current) plus the June 2024 Kia Ora
- * India issue found via its own blog post, which the publications page never listed. The
- * April 2023 report's real title and date came from its own Issuu page; its cover is the
- * matching blog post's cover image (public/blog/), the same real cover, not a duplicate or
- * a guess. Nothing here is invented — where a cover image isn't confirmed for a given issue,
- * it just isn't shown, rather than reusing an unrelated one.
+ * Every title, date, description and Issuu link below is real. Titles/dates/links started
+ * from inzbc.org/publications (which turned out to be stale, stopping at Dec 2023) plus the
+ * June 2024 Kia Ora India issue found via its own blog post, which the publications page never
+ * listed. Descriptions were then read off each issue's own Issuu page — 8 of the 13 Kia Ora
+ * issues have a distinct one; the other 5 (Dec 2023, Apr 2020, Dec 2019, Aug 2019, Apr 2019)
+ * only returned Issuu's generic account-level boilerplate ("a platform to celebrate success
+ * stories...", verbatim-identical across all three of the 2019 issues), so those stay
+ * undescribed rather than presenting the same canned sentence as if it were issue-specific.
+ * Same rule for covers: only shown where a real one is confirmed, never reused across issues.
  */
 const REPORTS = [
   {
@@ -1058,16 +1061,17 @@ const REPORTS = [
     featured: false,
   },
   {
-    title: 'Pharma sector report',
-    sub: null,
-    body: 'A sector-specific report on pharmaceutical trade between New Zealand and India.',
+    title: 'Health & Pharmaceutical Landscape of New Zealand',
+    sub: 'March 2022',
+    body: "A roadmap for Indian pharma companies, commissioned by the High Commission of India and researched by INZBC.",
     cover: ART.pharmaReportCover,
     href: 'https://issuu.com/inzbc/docs/pharma_report_full_final_v9',
     featured: false,
   },
 ] as const;
 
-/** Newest first within each year; years newest first. */
+/** Newest first within each year; years newest first. Descriptions are each issue's real,
+    distinct Issuu synopsis — omitted (not faked) for the 5 issues where none exists. */
 const KIA_ORA_ARCHIVE = [
   {
     year: 2024,
@@ -1076,6 +1080,8 @@ const KIA_ORA_ARCHIVE = [
         label: 'June 2024',
         cover: '/blog/kia-ora-india-inzbc-magazine-latest-issue-june-2024.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_june24_v8_highres',
+        description:
+          "New Zealand's High Commissioner to India Patrick Rata and Trade Commissioner Graham Rouse; Minister Penny Simmonds on education-sector opportunities; Duco's Chandan Ohri on building India's tech workforce.",
       },
     ],
   },
@@ -1083,22 +1089,52 @@ const KIA_ORA_ARCHIVE = [
     year: 2023,
     issues: [
       { label: 'December 2023', cover: ART.kiaOraCover, href: LINKS.kiaOraIssuu },
-      { label: 'June 2023', href: 'https://issuu.com/inzbc/docs/kiaora_india_jun2023_v5_low' },
+      {
+        label: 'June 2023',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_jun2023_v5_low',
+        description:
+          "An exclusive interview with India's High Commissioner Neeta Bhushan, plus business opportunities, educational collaboration and an INZBC report on the two nations' connections.",
+      },
     ],
   },
   {
     year: 2022,
     issues: [
-      { label: 'November 2022', href: 'https://issuu.com/inzbc/docs/kiaora_india_nov2022_final' },
-      { label: 'April 2022', href: 'https://issuu.com/inzbc/docs/kiaora_india_13april2022_final_low_' },
+      {
+        label: 'November 2022',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_nov2022_final',
+        description:
+          "India's External Affairs Minister Dr S Jaishankar's visit to New Zealand and a reset in bilateral relations, plus the services sector and the Kiwi-Indian diaspora's influence.",
+      },
+      {
+        label: 'April 2022',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_13april2022_final_low_',
+        description:
+          'International education and aviation, two pandemic-hit industries, with the New Zealand Airline Academy and Auckland University of Technology on recovery strategies.',
+      },
     ],
   },
   {
     year: 2021,
     issues: [
-      { label: 'October 2021', href: 'https://issuu.com/inzbc/docs/kiaora_india_oct2021_finalv2' },
-      { label: 'June 2021', href: 'https://bit.ly/KiaOraIndiaJune2021' },
-      { label: 'March 2021', href: 'https://issuu.com/inzbc/docs/kiaora_india_mar2021_vol_3___issue_01' },
+      {
+        label: 'October 2021',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_oct2021_finalv2',
+        description:
+          "An exclusive interview with NZ Transport Minister Michael Wood, Ola's CEO on what's next, perspectives from India's NITI Aayog, and drone-regulation updates.",
+      },
+      {
+        label: 'June 2021',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_june_final_v2',
+        description:
+          "Reshaping Indo-Pacific ties, technology's role in pandemic recovery, and the opening for Kiwi businesses in India's market.",
+      },
+      {
+        label: 'March 2021',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_mar2021_vol_3___issue_01',
+        description:
+          "India emerging as the ‘Vaccine Superpower’, post-COVID trade, and New Zealand investment into India's manufacturing sector.",
+      },
     ],
   },
   {
@@ -1115,9 +1151,57 @@ const KIA_ORA_ARCHIVE = [
   },
   {
     year: 2018,
-    issues: [{ label: 'December 2018', href: 'https://issuu.com/inzbc/docs/kiaora_india_draft_12_web' }],
+    issues: [
+      {
+        label: 'December 2018',
+        href: 'https://issuu.com/inzbc/docs/kiaora_india_draft_12_web',
+        description: "‘New Zealand-India trade poised for takeoff’ — early coverage of emerging commercial opportunities between the two countries.",
+      },
+    ],
   },
 ] as const;
+
+/** One archive row: thumbnail where a real cover is confirmed (an empty same-size spacer
+    otherwise, so every label lines up in one column), description where Issuu had a real,
+    distinct one. The whole row is the link target, not just the label text. */
+function KiaOraIssueRow({
+  issue,
+}: {
+  issue: { label: string; href: string; cover?: string; description?: string };
+}) {
+  return (
+    <a
+      href={issue.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`group -mx-3 flex items-start gap-4 rounded-xl px-3 py-3 transition-colors hover:bg-white ${FOCUS}`}
+    >
+      {issue.cover ? (
+        <img
+          src={issue.cover}
+          alt={`Cover of Kia Ora India, ${issue.label}`}
+          loading="lazy"
+          className="h-20 w-14 flex-none rounded object-cover shadow"
+        />
+      ) : (
+        <span className="h-20 w-14 flex-none" aria-hidden="true" />
+      )}
+      <span className="flex-1 pt-1">
+        <span className="flex items-center gap-1.5 font-heading text-lg text-ink">
+          {issue.label}
+          <ArrowUpRight
+            aria-hidden="true"
+            size={16}
+            className="text-plum opacity-0 transition-opacity group-hover:opacity-100"
+          />
+        </span>
+        {issue.description ? (
+          <span className="mt-1 block text-sm text-foreground/80">{issue.description}</span>
+        ) : null}
+      </span>
+    </a>
+  );
+}
 
 function PublicationsBody() {
   const [featured, ...otherReports] = REPORTS;
@@ -1196,31 +1280,13 @@ function PublicationsBody() {
 
           <div className="mt-14 border-t border-ink/10">
             {KIA_ORA_ARCHIVE.map((group, gi) => (
-              <Reveal key={group.year} delay={gi * 0.04}>
-                <div className="grid gap-6 border-b border-ink/10 py-8 sm:grid-cols-[6rem_1fr]">
+              <Reveal key={group.year} delay={gi * 0.03}>
+                <div className="grid gap-2 border-b border-ink/10 py-8 sm:grid-cols-[6rem_1fr] sm:gap-6">
                   <p className="font-heading text-3xl text-ink">{group.year}</p>
-                  <div className="space-y-5">
-                    {group.issues.map((issue) =>
-                      'cover' in issue && issue.cover ? (
-                        <div key={issue.label} className="flex items-center gap-4">
-                          <img
-                            src={issue.cover}
-                            alt={`Cover of Kia Ora India, ${issue.label}`}
-                            loading="lazy"
-                            className="h-16 w-12 flex-none rounded object-cover shadow"
-                          />
-                          <TextLink href={issue.href} external>
-                            {issue.label}
-                          </TextLink>
-                        </div>
-                      ) : (
-                        <div key={issue.label}>
-                          <TextLink href={issue.href} external>
-                            {issue.label}
-                          </TextLink>
-                        </div>
-                      ),
-                    )}
+                  <div className="divide-y divide-ink/5">
+                    {group.issues.map((issue) => (
+                      <KiaOraIssueRow key={issue.label} issue={issue} />
+                    ))}
                   </div>
                 </div>
               </Reveal>
