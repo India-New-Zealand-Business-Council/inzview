@@ -810,7 +810,7 @@ function ConnectBody() {
           </Reveal>
           <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4">
             {[
-              { name: 'Twitter', Icon: TwitterIcon, href: LINKS.x, label: 'Follow us on Twitter', from: '#3d2a66', to: '#160933' },
+              { name: 'X', Icon: TwitterIcon, href: LINKS.x, label: 'Follow us on X', from: '#3d2a66', to: '#160933' },
               { name: 'LinkedIn', Icon: LinkedinIcon, href: LINKS.linkedin, label: 'Connect with us on LinkedIn', from: '#8a3d87', to: '#61145f' },
               { name: 'YouTube', Icon: YoutubeIcon, href: LINKS.youtube, label: 'Watch our videos on YouTube', from: '#2f6b62', to: '#1b4640' },
               { name: 'Facebook', Icon: FacebookIcon, href: LINKS.facebook, label: 'Find us on Facebook', from: '#402d66', to: '#1a0b3f' },

@@ -2,19 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { LINKS } from './content';
 
 /**
- * Real, live Twitter/X and Facebook embeds for the Connect page — the official public embed
- * methods (platform.twitter.com/widgets.js, connect.facebook.net's Page Plugin SDK), not the
- * old site's POWr app (a paid third-party Wix app with no equivalent here) and not a hand-
- * built approximation of one.
+ * Facebook is a real, live embed (connect.facebook.net's Page Plugin SDK) — the official
+ * public embed method, not the old site's POWr app (a paid third-party Wix app with no
+ * equivalent here) and not a hand-built approximation of one.
  *
- * Neither SDK ships types, so the injected globals (`window.twttr`, `window.FB`) are typed
- * `any` below — there's no @types package for either and declaring a full ambient type for
- * two methods each isn't worth it.
+ * X/Twitter is not: see TwitterTimeline's own comment for why the live widget was replaced
+ * with its fallback card as the permanent state, not a last resort.
+ *
+ * The Facebook SDK ships no types, so the injected `window.FB` global is typed `any` below —
+ * there's no @types package for it and declaring a full ambient type for two methods isn't
+ * worth it.
  *
  * Not verified in a browser this session (no browser tool available) — Paras has explicitly
- * accepted that risk and asked for the real embeds anyway. Both scripts load only when this
- * component is mounted (Connect page only, not globally), and both degrade to a visible
- * fallback — a real profile link, not an empty box — if the script fails to load.
+ * accepted that risk and asked for the real embed anyway. The script loads only when this
+ * component is mounted (Connect page only, not globally), and degrades to a visible fallback
+ * — a real profile link, not an empty box — if the script fails to load.
  */
 
 type LoadState = 'loading' | 'ready' | 'error';
@@ -66,55 +68,22 @@ function FeedFallback({ platform, href }: { platform: string; href: string }) {
   );
 }
 
+/**
+ * Not a live embed, on purpose — this used to attempt platform.twitter.com/widgets.js the
+ * same way FacebookPage still does. That script itself loads fine (verified: 200 OK, not a
+ * dead URL, and renaming anything to "x.com" doesn't change this), but the timeline it
+ * renders comes from X's backend API, which X locked down after the 2023 platform changes.
+ * For accounts without special API access the widget silently renders nothing — no error
+ * event fires, because the script itself succeeded; the empty result is inside a
+ * cross-origin iframe X controls, which this page has no way to inspect or detect from the
+ * outside. That combination means the old code could show "Loading the latest posts…"
+ * forever with no way to notice the load had actually failed and fall back — worse than
+ * just being honest about it. This is the same real, working fallback card FeedFallback
+ * already provides for Facebook's actual failure case, used here as the primary state
+ * instead of a last resort, because for X it currently always is one.
+ */
 function TwitterTimeline() {
-  const [state, setState] = useState<LoadState>('loading');
-
-  useEffect(() => {
-    let cancelled = false;
-    loadScriptOnce(
-      'https://platform.twitter.com/widgets.js',
-      'twitter-wjs',
-      () => {
-        if (!cancelled) setState('ready');
-      },
-      () => {
-        if (!cancelled) setState('error');
-      },
-    );
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  // Separate effect, not called inline from the script's onload above: onload can fire
-  // before React has committed the render that removes the anchor's display:none (setState
-  // is async), and widgets.js needs to measure a visible element to replace it. A useEffect
-  // keyed on `state` is guaranteed to run after that commit, so the anchor is actually
-  // visible by the time this scans for it. Also covers the remount case (widgets.js auto-
-  // scans once at its own load time, which may be before this anchor exists at all).
-  useEffect(() => {
-    if (state === 'ready') (window as any).twttr?.widgets?.load();
-  }, [state]);
-
-  if (state === 'error') return <FeedFallback platform="X" href={LINKS.x} />;
-
-  return (
-    <div className={state === 'loading' ? 'flex min-h-[500px] items-center justify-center' : undefined}>
-      {state === 'loading' ? (
-        <p role="status" className="text-sm text-foreground/60">
-          Loading the latest posts&hellip;
-        </p>
-      ) : null}
-      <a
-        className="twitter-timeline"
-        data-height="500"
-        href={LINKS.x}
-        style={state === 'loading' ? { display: 'none' } : undefined}
-      >
-        Tweets by inzbc
-      </a>
-    </div>
-  );
+  return <FeedFallback platform="X" href={LINKS.x} />;
 }
 
 function FacebookPage() {
@@ -182,7 +151,7 @@ export default function SocialFeeds() {
     <div className="grid gap-6 sm:grid-cols-2">
       <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
         <div className="flex items-center justify-between bg-navy px-6 py-4">
-          <h3 className="font-heading text-lg text-white">Follow us on Twitter</h3>
+          <h3 className="font-heading text-lg text-white">Follow us on X</h3>
         </div>
         <TwitterTimeline />
       </div>
