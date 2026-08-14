@@ -41,9 +41,9 @@ export const PAGES: PageDef[] = [
     path: '/events',
     title: "Events",
     lede: "Briefings, delegations, networking and the annual INZBC Summit \u2014 the main ways to engage with the NZ\u2013India trade community.",
-    heroImage: '/events/summit-group.jpg',
+    heroImage: '/blog/remarks-by-shri-v-muraleedharan-minister-of-state-for-external-affairs-government-of-india.jpg',
     heroImageAlt: '',
-    heroImagePosition: '50% 35%',
+    heroImagePosition: '50% 40%',
   },
   {
     path: '/membership',
