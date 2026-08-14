@@ -1033,55 +1033,53 @@ function NewsBody() {
 /* --- Publications --------------------------------------------------------------------- */
 
 /**
- * Every title, date, description and Issuu link below is real. Titles/dates/links started
- * from inzbc.org/publications (which turned out to be stale, stopping at Dec 2023) plus the
- * June 2024 Kia Ora India issue found via its own blog post, which the publications page never
- * listed. Descriptions were then read off each issue's own Issuu page — 8 of the 13 Kia Ora
- * issues have a distinct one; the other 5 (Dec 2023, Apr 2020, Dec 2019, Aug 2019, Apr 2019)
- * only returned Issuu's generic account-level boilerplate ("a platform to celebrate success
- * stories...", verbatim-identical across all three of the 2019 issues), so those stay
- * undescribed rather than presenting the same canned sentence as if it were issue-specific.
- * Same rule for covers: only shown where a real one is confirmed, never reused across issues.
+ * Every title, date, description, cover and Issuu link below is real. Titles/dates/links
+ * started from inzbc.org/publications (stale, stopping at Dec 2023) plus the June 2024 Kia
+ * Ora India issue found via its own blog post, which the publications page never listed.
+ * Descriptions and covers both come from Issuu's own oEmbed endpoint
+ * (issuu.com/oembed?url=...&format=json) called per document — it returns the real
+ * document-specific cover (image.isu.pub/{id}/...) and, where the publisher wrote one, the
+ * actual synopsis, not the generic account-avatar/boilerplate a plain page fetch was
+ * returning earlier. Covers downloaded to public/publications/ at the "large" thumbnail size
+ * (340x480). 8 of the 13 Kia Ora issues have a distinct description; the other 5 (Dec 2023,
+ * Apr 2020, Dec 2019, Aug 2019, Apr 2019) confirmed empty or generic-boilerplate-only via
+ * oEmbed, so they carry their real volume/issue number instead of a faked description.
  */
 const REPORTS = [
   {
     title: 'Grow With India',
     sub: 'The New Zealand India Trade Report 2025',
     body: 'Where the trade relationship stands and where it can go.',
-    cover: ART.reportCover,
+    cover: '/publications/report-2025.jpg',
     href: LINKS.reportIssuu,
     featured: true,
   },
   {
     title: 'India & New Zealand: A Relationship Ready For Its Next Phase',
     sub: 'April 2023',
-    body: "INZBC's submission to the New Zealand Government assessing bilateral trade relations, with recommendations from the business community.",
-    cover: '/blog/india-new-zealand-a-relationship-ready-for-its-next-phase.jpg',
+    body: "INZBC's submission to the New Zealand Government presenting its assessment of the current state of India-NZ trade relations, and what the business community identified as the key steps to take the relationship to the next level.",
+    cover: '/publications/report-2023-relationship-ready.jpg',
     href: 'https://issuu.com/inzbc/docs/inzbc_report_aw_version_z_low270423',
     featured: false,
   },
   {
     title: 'Health & Pharmaceutical Landscape of New Zealand',
     sub: 'March 2022',
-    body: "A roadmap for Indian pharma companies, commissioned by the High Commission of India and researched by INZBC.",
-    cover: ART.pharmaReportCover,
+    body: 'A roadmap for Indian pharma companies, commissioned by the High Commission of India and researched by INZBC.',
+    cover: '/publications/report-pharma-2022.jpg',
     href: 'https://issuu.com/inzbc/docs/pharma_report_full_final_v9',
     featured: false,
   },
 ] as const;
 
-/** Newest first within each year; years newest first. Descriptions are each issue's real,
-    distinct Issuu synopsis. 5 issues (Dec 2023, Apr 2020, Dec 2019, Aug 2019, Apr 2019) have
-    no synopsis on Issuu at all — checked with a full verbatim-text extraction of each page,
-    not just a summary pass, before concluding that. Those five carry their real volume/issue
-    number instead (also read off Issuu), so they're not just a bare date either. */
+/** Newest first within each year; years newest first. */
 const KIA_ORA_ARCHIVE = [
   {
     year: 2024,
     issues: [
       {
         label: 'June 2024',
-        cover: '/blog/kia-ora-india-inzbc-magazine-latest-issue-june-2024.jpg',
+        cover: '/publications/kia-ora-2024-06.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_june24_v8_highres',
         description:
           "New Zealand's High Commissioner to India Patrick Rata and Trade Commissioner Graham Rouse; Minister Penny Simmonds on education-sector opportunities; Duco's Chandan Ohri on building India's tech workforce.",
@@ -1091,12 +1089,18 @@ const KIA_ORA_ARCHIVE = [
   {
     year: 2023,
     issues: [
-      { label: 'December 2023', cover: ART.kiaOraCover, href: LINKS.kiaOraIssuu, issueNo: 'Vol 4, Issue 7' },
+      {
+        label: 'December 2023',
+        cover: '/publications/kia-ora-2023-12.jpg',
+        href: LINKS.kiaOraIssuu,
+        issueNo: 'Vol 4, Issue 7',
+      },
       {
         label: 'June 2023',
+        cover: '/publications/kia-ora-2023-06.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_jun2023_v5_low',
         description:
-          "An exclusive interview with India's High Commissioner Neeta Bhushan, plus business opportunities, educational collaboration and an INZBC report on the two nations' connections.",
+          "The INZBC report on India-New Zealand relations; an exclusive interview with India's High Commissioner Neeta Bhushan, 'Open for Business'; and a spotlight on education collaboration.",
       },
     ],
   },
@@ -1105,15 +1109,17 @@ const KIA_ORA_ARCHIVE = [
     issues: [
       {
         label: 'November 2022',
+        cover: '/publications/kia-ora-2022-11.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_nov2022_final',
         description:
-          "India's External Affairs Minister Dr S Jaishankar's visit to New Zealand and a reset in bilateral relations, plus the services sector and the Kiwi-Indian diaspora's influence.",
+          "The INZBC business delegation to India and its B2B engagements; Dr S Jaishankar's ministerial visit to New Zealand and, in an interview with Simon Bridges, his call for a 'reset' of bilateral relations; Duco Consultancy on the services sector; and the Kiwi-Indian diaspora's influence.",
       },
       {
         label: 'April 2022',
+        cover: '/publications/kia-ora-2022-04.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_13april2022_final_low_',
         description:
-          'International education and aviation, two pandemic-hit industries, with the New Zealand Airline Academy and Auckland University of Technology on recovery strategies.',
+          'International education and aviation, two pandemic-hit industries — the New Zealand Airline Academy on training future aviation professionals, Auckland University of Technology on bridging the gap, and HCL on emerging technologies aiding recovery.',
       },
     ],
   },
@@ -1122,21 +1128,24 @@ const KIA_ORA_ARCHIVE = [
     issues: [
       {
         label: 'October 2021',
+        cover: '/publications/kia-ora-2021-10.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_oct2021_finalv2',
         description:
-          "An exclusive interview with NZ Transport Minister Michael Wood, Ola's CEO on what's next, perspectives from India's NITI Aayog, and drone-regulation updates.",
+          "An exclusive interview with NZ Transport Minister Michael Wood; Ola co-founder Bhavish Aggarwal on what's next; NITI Aayog CEO Amitabh Kant's post-COVID perspective; Auckland University of Technology on international education; and Invest India on the new drone regulatory framework.",
       },
       {
         label: 'June 2021',
+        cover: '/publications/kia-ora-2021-06.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_june_final_v2',
         description:
-          "Reshaping Indo-Pacific ties, technology's role in pandemic recovery, and the opening for Kiwi businesses in India's market.",
+          "Reshaping Indo-Pacific ties; how technology aided pandemic recovery in India and New Zealand; why NZ businesses should look to India for new opportunities; and India's tech industry fighting COVID-19 without business taking a hit.",
       },
       {
         label: 'March 2021',
+        cover: '/publications/kia-ora-2021-03.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_mar2021_vol_3___issue_01',
         description:
-          "India emerging as the ‘Vaccine Superpower’, post-COVID trade, and New Zealand investment into India's manufacturing sector.",
+          "India emerging as the 'Vaccine Superpower'; trade challenges in a world beyond COVID; Indians' $10B contribution to the NZ economy; NZ businesses investing in 'Make in India'; and pressures on the meat industry.",
       },
     ],
   },
@@ -1145,6 +1154,7 @@ const KIA_ORA_ARCHIVE = [
     issues: [
       {
         label: 'April 2020',
+        cover: '/publications/kia-ora-2020-04.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_april_vol_2_issue_01__final',
         issueNo: 'Vol 2, Issue 01',
       },
@@ -1155,16 +1165,19 @@ const KIA_ORA_ARCHIVE = [
     issues: [
       {
         label: 'December 2019',
+        cover: '/publications/kia-ora-2019-12.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_december_v4_final_web',
         issueNo: 'Vol 1, Issue 4',
       },
       {
         label: 'August 2019',
+        cover: '/publications/kia-ora-2019-08.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_august_v9_web',
         issueNo: 'Vol 1, Issue 3',
       },
       {
         label: 'April 2019',
+        cover: '/publications/kia-ora-2019-04.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_april2019_v8_low',
         issueNo: 'Vol 1, Issue 2',
       },
@@ -1175,8 +1188,10 @@ const KIA_ORA_ARCHIVE = [
     issues: [
       {
         label: 'December 2018',
+        cover: '/publications/kia-ora-2018-12.jpg',
         href: 'https://issuu.com/inzbc/docs/kiaora_india_draft_12_web',
-        description: "‘New Zealand-India trade poised for takeoff’ — early coverage of emerging commercial opportunities between the two countries.",
+        description:
+          "'New Zealand-India trade poised for takeoff' — early coverage of emerging commercial opportunities between the two countries.",
       },
     ],
   },
