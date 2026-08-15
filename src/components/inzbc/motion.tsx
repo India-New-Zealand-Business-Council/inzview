@@ -408,7 +408,7 @@ export function StickyHeader({
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 p-4 sm:p-5">
-      <div className="pointer-events-auto relative mx-auto grid w-full max-w-[1240px] min-h-[72px] grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[1.2rem] border border-white/60 bg-white/80 py-[0.65rem] pl-4 pr-[0.72rem] shadow-[inset_0_1px_0_rgba(255,255,255,0.78),0_18px_60px_rgba(9,3,24,0.14)] backdrop-blur-2xl backdrop-saturate-150 min-[940px]:gap-8">
+      <div className="pointer-events-auto relative mx-auto grid w-full max-w-[1240px] min-h-[72px] grid-cols-[auto_1fr_auto] items-center gap-8 rounded-[1.2rem] border border-white/60 bg-white/80 py-[0.65rem] pl-4 pr-[0.72rem] shadow-[inset_0_1px_0_rgba(255,255,255,0.78),0_18px_60px_rgba(9,3,24,0.14)] backdrop-blur-2xl backdrop-saturate-150 max-[1100px]:gap-4">
         <Link
           to="/"
           className="inline-flex min-h-11 items-center rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
@@ -420,12 +420,12 @@ export function StickyHeader({
           />
         </Link>
 
-        <nav className="hidden items-center justify-center gap-4 min-[940px]:flex lg:gap-8">
+        <nav className="hidden items-center justify-center gap-[clamp(1rem,2vw,2rem)] min-[940px]:flex">
           {links.map((l) => (
             <Link
               key={l.href}
               to={l.href}
-              className="inline-flex min-h-11 items-center rounded-md px-1 text-sm font-medium text-ink/70 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+              className="inline-flex min-h-11 items-center rounded-md text-[0.78rem] font-medium text-ink/70 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
             >
               {l.label}
             </Link>
@@ -436,7 +436,7 @@ export function StickyHeader({
           href={cta.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden min-h-11 items-center gap-1.5 justify-self-end rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-transform active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime min-[940px]:inline-flex"
+          className="hidden min-h-11 items-center gap-2 justify-self-end rounded-full bg-ink px-[1.05rem] py-[0.72rem] text-[0.78rem] font-semibold text-white transition-transform active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime min-[940px]:inline-flex"
         >
           {cta.label}
           <ArrowUpRight aria-hidden="true" size={16} />
@@ -449,7 +449,7 @@ export function StickyHeader({
             aria-expanded={menuOpen}
             aria-controls="sticky-mobile-nav"
             onClick={() => setMenuOpen((v) => !v)}
-            className="inline-flex min-h-[46px] min-w-[88px] items-center justify-center gap-2 rounded-full bg-ink text-sm font-semibold text-white transition-transform active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+            className="inline-flex min-h-[46px] min-w-[88px] items-center justify-center gap-2 rounded-full bg-ink text-[0.8rem] font-semibold text-white transition-transform active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
           >
             <span>Menu</span>
             {menuOpen ? <X aria-hidden="true" size={20} /> : <Menu aria-hidden="true" size={20} />}
