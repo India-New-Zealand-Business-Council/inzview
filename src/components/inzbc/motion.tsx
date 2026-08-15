@@ -408,12 +408,16 @@ export function StickyHeader({
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 p-4 sm:p-5">
-      <div className="pointer-events-auto relative mx-auto grid w-full max-w-[1240px] grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[1.2rem] border border-white/60 bg-white/80 px-4 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.78),0_18px_60px_rgba(9,3,24,0.14)] backdrop-blur-2xl backdrop-saturate-150 min-[940px]:gap-8">
+      <div className="pointer-events-auto relative mx-auto grid w-full max-w-[1240px] min-h-[72px] grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[1.2rem] border border-white/60 bg-white/80 py-[0.65rem] pl-4 pr-[0.72rem] shadow-[inset_0_1px_0_rgba(255,255,255,0.78),0_18px_60px_rgba(9,3,24,0.14)] backdrop-blur-2xl backdrop-saturate-150 min-[940px]:gap-8">
         <Link
           to="/"
           className="inline-flex min-h-11 items-center rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
         >
-          <img src={logo} alt="India New Zealand Business Council" className="h-9 w-auto sm:h-10" />
+          <img
+            src={logo}
+            alt="India New Zealand Business Council"
+            className="h-auto w-[clamp(185px,17vw,222px)]"
+          />
         </Link>
 
         <nav className="hidden items-center justify-center gap-4 min-[940px]:flex lg:gap-8">
