@@ -94,6 +94,7 @@ export const PAGES: PageDef[] = [
 
 export const NAV = [
   { label: 'The FTA', href: '/fta' },
+  { label: 'Trade', href: '/trade-resources' },
   { label: 'Events', href: '/events' },
   { label: 'Membership', href: '/membership' },
   { label: 'Publications', href: '/publications' },

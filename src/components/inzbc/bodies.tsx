@@ -229,101 +229,6 @@ function ContactForm() {
   );
 }
 
-/* --- NZ–India FTA Centre ------------------------------------------------------------- */
-
-function FtaBody() {
-  return (
-    <>
-      <section className="bg-white px-6 py-20">
-        <div className="mx-auto max-w-6xl">
-          <Reveal>
-            <img
-              src={ART.heroBanner}
-              alt="India New Zealand Business Council: connecting New Zealand and India since 1988. A container port, a New Zealand paddock and India Gate."
-              loading="lazy"
-              className="mb-12 w-full rounded-2xl"
-            />
-          </Reveal>
-          <div className="grid gap-6 sm:grid-cols-2">
-            <Reveal>
-              <Card title="Status">
-                <p>
-                  Signed 27 April 2026. Awaiting domestic ratification before it enters into
-                  force.
-                </p>
-              </Card>
-            </Reveal>
-            <Reveal delay={0.06}>
-              <Card title="Key tariff outcomes">
-                <p>
-                  57% duty-free from day one, rising to 82% once fully implemented, with the
-                  remaining 13% under sharp cuts.
-                </p>
-              </Card>
-            </Reveal>
-            <Reveal delay={0.12}>
-              <Card title="Sector briefings">
-                <p>
-                  <Todo>
-                    [[Sector briefings to be drafted. The priority sectors named so far are on
-                    the trade resources page.]]
-                  </Todo>{' '}
-                  <TextLink href="/trade-resources">See trade resources</TextLink>
-                </p>
-              </Card>
-            </Reveal>
-            <Reveal delay={0.18}>
-              <Card title="Official documents">
-                <p>
-                  The Ministry of Foreign Affairs and Trade&apos;s official page for the
-                  agreement, including its status while it awaits ratification.
-                </p>
-                <p className="mt-3">
-                  {/* LINKS.mfatFta was referenced here but never defined in content.ts - an
-                      undefined href, i.e. a genuinely broken link on the published page. No
-                      legacy snippet or doc in this repo has the real MFAT URL sourced, so
-                      this is a marker, not an invented link. */}
-                  <Todo>[[MFAT&rsquo;s official NZ&ndash;India FTA page URL &mdash; not yet sourced.]]</Todo>
-                </p>
-              </Card>
-            </Reveal>
-          </div>
-          <Reveal delay={0.2}>
-            <p className="mt-6 text-xs text-foreground/70">
-              Tariff figures sourced from MFAT&rsquo;s NZ&ndash;India FTA outcomes summary.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="relative overflow-hidden bg-deep px-6 py-24 text-center">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-0 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl"
-          style={{ background: 'radial-gradient(closest-side, rgba(97,20,95,0.9), transparent)' }}
-        />
-        <div className="relative mx-auto max-w-3xl">
-          <Reveal>
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-white md:text-4xl">
-              Not sure what this means for your business?
-            </h2>
-            <p className="mt-4 text-white/75">
-              The FTA Opportunity Explainer gives a sector-specific answer.{' '}
-              <Todo>
-                [[The Explainer tool is not part of this build yet &mdash; it needs its app
-                deployed and a route here.]]
-              </Todo>{' '}
-              Until then, talk to the INZBC secretariat directly.
-            </p>
-            <div className="mt-10 flex flex-wrap justify-center gap-3">
-              <Btn href="/connect">Talk to the secretariat</Btn>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-    </>
-  );
-}
 
 /* --- Events -------------------------------------------------------------------------- */
 
@@ -2569,9 +2474,11 @@ function AboutBody() {
   );
 }
 
-/** The body for an inner route, keyed by its path in pages.ts. */
+/** The body for an inner route, keyed by its path in pages.ts. Deliberately no '/fta' entry:
+    that path is routed straight to the dedicated FtaPage.tsx component instead (see
+    Router.tsx, which filters '/fta' out of the PAGES-driven InnerPage loop for exactly this
+    reason), so an entry here would never actually be reached. */
 export const BODIES: Record<string, React.ComponentType> = {
-  '/fta': FtaBody,
   '/events': EventsBody,
   '/membership': MembershipBody,
   '/connect': ConnectBody,
