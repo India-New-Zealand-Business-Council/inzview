@@ -341,7 +341,7 @@ export default function FtaPage() {
                 attendees behind the scenes: how the deal was negotiated, the breakthroughs,
                 and what it means for Kiwi businesses. Auckland, 23 June 2026.
               </p>
-              <p className="mt-6">
+              <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
                 <a
                   href="https://www.inzbc.org/post/inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event"
                   target="_blank"
@@ -350,6 +350,12 @@ export default function FtaPage() {
                 >
                   Read the invitation
                 </a>
+                <Link
+                  to="/fta/briefings"
+                  className={`font-medium text-lime underline underline-offset-4 hover:text-white ${FOCUS}`}
+                >
+                  See all FTA events and briefings
+                </Link>
               </p>
             </Reveal>
           </div>

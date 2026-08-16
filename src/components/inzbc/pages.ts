@@ -50,6 +50,11 @@ export const PAGES: PageDef[] = [
     heroImagePosition: '50% 40%',
   },
   {
+    path: '/fta/briefings',
+    title: "FTA Events and Briefings",
+    lede: "Sessions where INZBC and its partners walk businesses through the NZ–India FTA and what it means for them — direct from the negotiators, ministers and officials involved.",
+  },
+  {
     path: '/membership',
     title: "Join New Zealand's India trade network",
     lede: "INZBC membership gives companies and institutions a direct voice in the NZ\u2013India trade relationship, sourced market intelligence, and access to events, delegations and introductions.",

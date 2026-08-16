@@ -1854,6 +1854,109 @@ function PartnersBody() {
   );
 }
 
+/* --- FTA Events and Briefings ----------------------------------------------------------- */
+
+/**
+ * One of Sunil's named FTA sub-pages (migration guide §3: "NZ India FTA... FTA Events and
+ * Briefings"). Real entries only, pulled from the same INZBC_EVENTS archive the Events page
+ * uses — no separate list to fall out of sync. Only one event is actually titled about the
+ * FTA itself (the Vitalis session); the rest are real trade/diplomacy briefings tied to the
+ * relationship, honestly labelled as that rather than stretched into "FTA events" they
+ * weren't billed as.
+ */
+function FtaBriefingsBody() {
+  const ftaExplainer = INZBC_EVENTS.find(
+    (e) => e.sourceSlug === 'inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event',
+  )!;
+  // Hand-picked, not a keyword filter: these are genuinely briefings/dialogues with
+  // ministers, high commissioners and officials, not trade shows or delegations that happen
+  // to be recent. Keeps the page honest about what it actually contains.
+  const briefingSlugs = [
+    'boardroom-to-border-a-leadership-dialogue-on-strategy-trade-india-nz-opportunities',
+    'breakfast-dialogue-with-nz-high-commissioners-patrick-rata-david-pine-6-june-7-30am',
+    'exclusive-inzbc-members-invitationdelegation-insights-from-india-pm-mission',
+    'inzbc-annual-address-by-rt-hon-winston-peters',
+    'indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties',
+    'workshop-on-boosting-india-nz-trade-ties-held-in-wellington',
+  ];
+  const briefings = sortEventsByDateDesc(INZBC_EVENTS).filter((e) => briefingSlugs.includes(e.sourceSlug));
+
+  return (
+    <>
+      <section className="bg-white px-6 py-24" aria-labelledby="explainer-title">
+        <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-ink sm:flex sm:items-stretch">
+          <Reveal className="sm:w-1/2">
+            <img
+              src={`/blog/${ftaExplainer.cover}`}
+              alt={ftaExplainer.title}
+              loading="lazy"
+              className="h-56 w-full object-cover sm:h-full"
+            />
+          </Reveal>
+          <Reveal delay={0.08} className="p-8 text-white sm:w-1/2 md:p-12">
+            <p className="text-sm font-medium uppercase tracking-wide text-lime">Featured</p>
+            <h2 id="explainer-title" className="mt-3 font-heading text-2xl md:text-3xl">
+              {ftaExplainer.title}
+            </h2>
+            <p className="mt-4 text-white/75">{ftaExplainer.description}</p>
+            <p className="mt-2 text-sm text-white/60">
+              {ftaExplainer.date} &middot; {ftaExplainer.venue}
+            </p>
+            <p className="mt-6">
+              <a
+                href={`https://www.inzbc.org/post/${ftaExplainer.sourceSlug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`font-medium text-lime underline underline-offset-4 hover:text-white ${FOCUS}`}
+              >
+                Read the invitation
+              </a>
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-mist px-6 py-24" aria-labelledby="briefings-title">
+        <div className="mx-auto max-w-3xl">
+          <Reveal>
+            <h2 id="briefings-title" className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Trade briefings and dialogues
+            </h2>
+            <p className="mt-4 text-foreground">
+              INZBC also runs briefings and dialogues on the wider trade relationship the FTA
+              sits inside &mdash; with ministers, high commissioners and government agencies on
+              both sides.
+            </p>
+          </Reveal>
+          <div className="mt-10 space-y-2 divide-y divide-ink/10">
+            {briefings.map((event, i) => (
+              <EventRow key={event.sourceSlug} event={event} delay={i * 0.05} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white px-6 py-16 text-center">
+        <div className="mx-auto max-w-2xl">
+          <Reveal>
+            <p className="text-foreground">
+              Looking for the full FTA picture, or every past INZBC event?
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <Btn href="/fta" variant="outline">
+                Visit the FTA Centre
+              </Btn>
+              <Btn href="/events/past" variant="outline">
+                Browse the full event archive
+              </Btn>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </>
+  );
+}
+
 /* --- Trade resources ------------------------------------------------------------------ */
 
 function TradeResourcesBody() {
@@ -2532,6 +2635,7 @@ export const BODIES: Record<string, React.ComponentType> = {
   '/newsletters': NewslettersBody,
   '/partners': PartnersBody,
   '/trade-resources': TradeResourcesBody,
+  '/fta/briefings': FtaBriefingsBody,
   '/india-market-opportunities': IndiaMarketOpportunitiesBody,
   '/membership/directory': DirectoryBody,
   '/events/past': EventsPastBody,
