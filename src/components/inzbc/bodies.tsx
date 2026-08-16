@@ -2064,34 +2064,75 @@ function TradeResourcesBody() {
  * section is removed in favour of this page, with Trade Resources' "Export to India" card
  * now linking here instead.
  */
+/**
+ * Real MFAT-sourced sector detail (mfat.govt.nz, NZ-India FTA "Key Outcomes" page, fetched
+ * directly — LINKS.mfatKeyOutcomes). "Industrial goods" was a placeholder heading with no
+ * sourced outcome behind it; MFAT's own outcomes page doesn't break that out as a category,
+ * so it's replaced with Dairy, which does have specific, sourced figures.
+ */
+const SECTOR_OUTCOMES = [
+  {
+    sector: 'Forestry',
+    outcome:
+      "Over 95% of forestry exports can enter tariff-free immediately from entry into force, with tariffs on almost all remaining trade phased out over seven years.",
+  },
+  {
+    sector: 'Horticulture',
+    outcome:
+      "New Zealand is the first country to secure preferential access for apples in any Indian FTA, and the first kiwifruit exporter to secure tariff-free kiwifruit access plus a 50% tariff reduction outside quota — quota volumes start well above recent average trade and grow from there. Cherries, avocados, blueberries and persimmons get phased tariff elimination.",
+  },
+  {
+    sector: 'Seafood',
+    outcome: "Tariffs on New Zealand's key fish and seafood exports phase out over seven years.",
+  },
+  {
+    sector: 'Wine',
+    outcome:
+      "Tariffs on the full range of New Zealand wine — including wines under 0.5% alc/vol — reduce 66–83% over ten years from entry into force.",
+  },
+  {
+    sector: 'Dairy',
+    outcome:
+      "Bulk infant formula, other dairy-based preparations and peptones phase out over seven years; tariffs on albumins (a milk protein product) halve within a quota covering average recent trade.",
+  },
+] as const;
+
 function IndiaMarketOpportunitiesBody() {
   return (
     <>
       <section className="bg-white px-6 py-20">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-3xl">
           <Reveal>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Sector priorities</h2>
-            <p className="mt-4 max-w-2xl text-foreground">
-              <Todo>
-                [[Sector-specific guidance &mdash; forestry, horticulture, seafood, wine and
-                industrial goods are flagged as priority sectors for tariff outcomes content;
-                the full guide is still to be drafted.]]
-              </Todo>
+            <p className="mt-4 text-foreground">
+              What the NZ&ndash;India FTA changes, sector by sector, for New Zealand exporters
+              &mdash; sourced from MFAT&rsquo;s own outcomes summary, not a general guide.
             </p>
           </Reveal>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {['Forestry', 'Horticulture', 'Seafood', 'Wine', 'Industrial goods'].map(
-              (sector, i) => (
-                <Reveal key={sector} delay={i * 0.06}>
-                  <Card title={sector}>
-                    <p>
-                      <Todo>[[FTA outcome summary]]</Todo>
-                    </p>
-                  </Card>
-                </Reveal>
-              ),
-            )}
-          </div>
+
+          <dl className="mt-10 space-y-8 border-t border-ink/10 pt-8">
+            {SECTOR_OUTCOMES.map(({ sector, outcome }, i) => (
+              <Reveal key={sector} delay={i * 0.06}>
+                <div className={i > 0 ? 'border-t border-ink/10 pt-8' : ''}>
+                  <dt className="font-heading text-xl text-plum">{sector}</dt>
+                  <dd className="mt-2 text-foreground">{outcome}</dd>
+                </div>
+              </Reveal>
+            ))}
+          </dl>
+
+          <Reveal delay={0.1}>
+            <p className="mt-10 text-foreground">
+              Also named with specific outcomes: sheep meat (tariffs removed immediately) and
+              mānuka honey (75% tariff cut over five years, another New Zealand first for
+              honey in any Indian FTA). Beyond goods, the agreement names coal, engineering
+              services, environmental services, education, audio-visual services, financial
+              services, telecommunications and professional services as sectors with new access.
+            </p>
+            <p className="mt-6 text-sm text-foreground/70">
+              Source: <TextLink href={LINKS.mfatKeyOutcomes} external>MFAT&rsquo;s NZ&ndash;India FTA Key Outcomes summary</TextLink>.
+            </p>
+          </Reveal>
         </div>
       </section>
 

@@ -69,7 +69,15 @@ export const PAGES: PageDef[] = [
   },
   { path: '/news', title: "News", lede: "Updates from INZBC and the NZ\u2013India trade relationship." },
   { path: '/partners', title: "Partners", lede: "Organisations that support INZBC's work across the NZ\u2013India corridor." },
-  { path: '/trade-resources', title: "Trade resources for the NZ\u2013India opportunity", lede: "Practical guidance for New Zealand businesses exporting to India, importing from India, and using the NZ\u2013India Free Trade Agreement." },
+  {
+    path: '/trade-resources',
+    title: "Trade resources for the NZ\u2013India opportunity",
+    lede: "Practical guidance for New Zealand businesses exporting to India, importing from India, and using the NZ\u2013India Free Trade Agreement.",
+    heroImage: '/blog/nz-india-chart-path-to-enhanced-relationship.jpg',
+    heroImageAlt: '',
+    heroImagePosition: '50% 10%',
+    heroCompact: true,
+  },
   { path: '/india-market-opportunities', title: "India market opportunities", lede: "Sector guidance for New Zealand exporters under the NZ\u2013India Free Trade Agreement." },
   { path: '/membership/directory', title: "Member directory", lede: "The directory of INZBC members is hosted on Member Jungle, the provisional system of record for membership." },
   {
