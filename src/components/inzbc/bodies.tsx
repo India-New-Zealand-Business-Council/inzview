@@ -2393,6 +2393,142 @@ function CouncilBody() {
   );
 }
 
+/* --- About INZBC ------------------------------------------------------------------------ */
+
+/**
+ * Built from Sunil's migration guide (INZBC_Website_Stocktake_Migration_and_Wix_Guide.docx,
+ * §8 "About page" template: hero, history, mission, role, council structure, CTA) — this page
+ * didn't exist anywhere in the site before. Copy is quoted from inzbc.org/about-us directly
+ * (fetched fresh, not the brand-guidelines PDF's older draft copy), with the one change the
+ * guide itself calls for: "About Us... outdated positioning says over 25 years while INZBC
+ * history dates to 1988... update to since 1988" — so the "over 25 years" line is dropped
+ * rather than carried over.
+ *
+ * Council structure isn't duplicated here: it links to /executive-council instead, which
+ * already carries the real board photos/names under its own confirmation caveat. Repeating
+ * names here would be a second place for them to go stale.
+ */
+function AboutBody() {
+  const functions = [
+    'Advocate on trade policy and market access affecting members',
+    'Provide sourced market intelligence and FTA Centre resources',
+    'Facilitate business development, delegations and introductions',
+    'Host Government of India delegations and bilateral events',
+    'Convene events, including the annual INZBC Summit',
+  ];
+
+  return (
+    <>
+      <section className="bg-white px-6 py-24">
+        <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2 lg:items-start lg:gap-20">
+          <Reveal>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Since 1988
+            </h2>
+            <p className="mt-6 text-lg text-foreground">
+              Since 1988, INZBC has promoted and encouraged trade in goods and services,
+              investment, and scientific, technical and economic cooperation between New
+              Zealand and India. INZBC is a member-based, independent, not-for-profit
+              incorporated society &mdash; New Zealand&rsquo;s trusted partner for the India
+              relationship.
+            </p>
+            <p className="mt-4 text-foreground">
+              INZBC is recognised as the main industry body for the bilateral relationship by
+              both governments, and has hosted the majority of visiting Government of India
+              delegations to New Zealand &mdash; most recently an ICT delegation from the state
+              of Kerala.
+            </p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <img
+              src="/blog/new-zealand-business-delegation-over-the-moon-with-indian-trade-and-investment-opportunities.jpg"
+              alt="New Zealand's High Commissioner to India in conversation with an Indian government minister"
+              loading="lazy"
+              className="aspect-[4/3] w-full rounded-2xl object-cover"
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-mist px-6 py-24">
+        <div className="mx-auto max-w-3xl">
+          <Reveal>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Mission
+            </h2>
+            <p className="mt-6 text-xl text-plum">
+              INZBC advances trade, investment and enduring commercial ties between New Zealand
+              and India.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <h3 className="mt-14 font-heading text-xl text-ink">What INZBC does</h3>
+            <ul className="mt-6 space-y-4 text-foreground">
+              {functions.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <span aria-hidden="true" className="mt-2.5 h-1.5 w-1.5 flex-none rounded-full bg-lime" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-white px-6 py-24">
+        <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2 lg:items-center lg:gap-20">
+          <Reveal>
+            <img
+              src="/blog/christchurch-city-council-and-inzbc-formalise-strategic-alliance-to-target-indian-market.jpg"
+              alt="Christchurch City Council and INZBC representatives at the signing of a strategic alliance to target the Indian market"
+              width={1600}
+              height={900}
+              loading="lazy"
+              className="aspect-[16/9] w-full rounded-2xl object-cover"
+            />
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Chapters across both countries
+            </h2>
+            <p className="mt-6 text-foreground">
+              INZBC operates through chapters in Auckland, Wellington, Christchurch, Mumbai and
+              Delhi, each led by a chapter head on the executive team &mdash; putting the
+              council, and its members, in the room in both countries, not just one.
+            </p>
+            <p className="mt-6">
+              <TextLink href="/executive-council">Meet the Executive Council and chapter heads</TextLink>
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-ink px-6 py-20 text-center">
+        <div className="mx-auto max-w-2xl">
+          <Reveal>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-white md:text-4xl">
+              Join New Zealand&rsquo;s India trade network
+            </h2>
+            <p className="mt-4 text-white/75">
+              Membership gives companies and institutions a direct voice in the NZ&ndash;India
+              trade relationship.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Btn href={LINKS.join} external>
+                Join INZBC
+              </Btn>
+              <Btn href="/membership" variant="ghost">
+                See membership benefits
+              </Btn>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </>
+  );
+}
+
 /** The body for an inner route, keyed by its path in pages.ts. */
 export const BODIES: Record<string, React.ComponentType> = {
   '/fta': FtaBody,
@@ -2408,4 +2544,5 @@ export const BODIES: Record<string, React.ComponentType> = {
   '/membership/directory': DirectoryBody,
   '/events/past': EventsPastBody,
   '/executive-council': CouncilBody,
+  '/about-inzbc': AboutBody,
 };

@@ -39,6 +39,9 @@ export default function Footer() {
           <Link to="/partners" className={`text-white/80 hover:text-white ${FOCUS}`}>
             Partners
           </Link>
+          <Link to="/about-inzbc" className={`text-white/80 hover:text-white ${FOCUS}`}>
+            About
+          </Link>
         </nav>
       </div>
 

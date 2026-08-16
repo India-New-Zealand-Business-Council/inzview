@@ -81,6 +81,15 @@ export const PAGES: PageDef[] = [
     heroImagePosition: '50% 45%',
   },
   { path: '/executive-council', title: "Executive Council", lede: "The governance and executive team leading INZBC." },
+  {
+    path: '/about-inzbc',
+    title: "About INZBC",
+    lede: "New Zealand's trusted partner for the India relationship — a member-based trade organisation, advancing trade, investment and commercial ties since 1988.",
+    heroImage: '/blog/india-new-zealand-business-council-speech-india-as-a-strategic-priority.jpg',
+    heroImageAlt: '',
+    heroImagePosition: '50% 30%',
+    heroCta: { label: 'Join INZBC', href: LINKS.join },
+  },
 ];
 
 export const NAV = [
