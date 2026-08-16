@@ -98,6 +98,7 @@ export const NAV = [
   { label: 'Membership', href: '/membership' },
   { label: 'Publications', href: '/publications' },
   { label: 'Connect', href: '/connect' },
+  { label: 'About', href: '/about-inzbc' },
 ];
 
 export const JOIN = LINKS.join;
