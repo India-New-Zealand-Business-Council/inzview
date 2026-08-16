@@ -164,8 +164,14 @@ export default function FtaPage() {
           <Reveal delay={0.18}>
             <div className="mx-auto mt-16 flex max-w-5xl flex-col gap-3 border-t border-white/15 pt-8 text-sm sm:flex-row sm:items-center sm:justify-between">
               <p className="text-white/70">
-                Sector-by-sector outcomes are below. For practical export/import guidance,
-                see{' '}
+                Sector-by-sector outcomes are below, with fuller detail on{' '}
+                <Link
+                  to="/india-market-opportunities"
+                  className={`text-white underline decoration-white/40 underline-offset-4 hover:decoration-white ${FOCUS}`}
+                >
+                  India Market Opportunities
+                </Link>
+                . For practical export/import guidance, see{' '}
                 <Link
                   to="/trade-resources"
                   className={`text-white underline decoration-white/40 underline-offset-4 hover:decoration-white ${FOCUS}`}

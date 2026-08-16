@@ -2140,9 +2140,13 @@ function IndiaMarketOpportunitiesBody() {
         <div className="mx-auto max-w-2xl">
           <Reveal>
             <p className="text-foreground">
-              Looking for exporting, importing or trade mission guidance instead?
+              Looking for the FTA&rsquo;s full phase-in timeline, or exporting, importing and
+              trade mission guidance instead?
             </p>
-            <div className="mt-6 flex justify-center">
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <Btn href="/fta" variant="outline">
+                Visit the FTA Centre
+              </Btn>
               <Btn href="/trade-resources" variant="outline">
                 Visit trade resources
               </Btn>
