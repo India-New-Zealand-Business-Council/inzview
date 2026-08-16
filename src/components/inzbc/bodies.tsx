@@ -10,7 +10,7 @@ import {
   Youtube as YoutubeIcon,
 } from 'lucide-react';
 import { Reveal } from './motion';
-import { ART, BENEFITS, LINKS } from './content';
+import { ART, BENEFITS, LINKS, STATS } from './content';
 import SocialFeeds from './SocialFeeds';
 
 /**
@@ -1952,90 +1952,130 @@ function PartnersBody() {
 /* --- Trade resources ------------------------------------------------------------------ */
 
 function TradeResourcesBody() {
-  const cards = [
-    {
-      title: 'Export to India',
-      body: 'A practical guide for NZ businesses preparing to export, build partnerships and use FTA opportunities.',
-      href: '/india-market-opportunities',
-      label: 'Explore sectors',
-    },
-    {
-      title: 'Import from India',
-      body: 'Guidance for NZ businesses sourcing products and services from India under the evolving trade relationship.',
-      href: '#missions',
-      label: 'See suppliers',
-    },
-    {
-      title: 'Trade missions and shows',
-      body: 'Delegations, trade shows and market events merged into one pathway.',
-      href: '#missions',
-      label: 'View missions',
-    },
-    {
-      title: 'Market intelligence',
-      body: 'The Trade Intelligence Digest, human-reviewed before publication.',
-      href: '#intelligence',
-      label: 'Read the digest',
-    },
-  ] as const;
+  // Real trade missions INZBC itself has run recently, not a generic "missions happen" line.
+  // Filtered from the same INZBC_EVENTS archive the Events page uses, not a separate list to
+  // keep in sync.
+  const recentMissions = sortEventsByDateDesc(INZBC_EVENTS)
+    .filter((e) => /delegation|sourcing|buyer.seller|world food india/i.test(e.title))
+    .slice(0, 3);
+  const recentExpos = sortEventsByDateDesc(EXPO_EVENTS).slice(0, 3);
+
+  const twoWayTrade = STATS.find((s) => s.label === 'Two-way trade')!;
+  const exportsCovered = STATS.find((s) => s.label === 'Of NZ exports covered')!;
+  const dutyFreeDayOne = STATS.find((s) => s.label === 'Duty free from day one')!;
 
   return (
     <>
-      <section className="bg-white px-6 py-20">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {cards.map((card, i) => (
-              <Reveal key={card.title} delay={i * 0.06}>
-                <Card title={card.title}>
-                  <p>{card.body}</p>
-                  <p className="mt-4">
-                    {/* TextLink assumes a non-"/" href is external and opens a new tab, wrong
-                        for the two in-page "#missions"/"#intelligence" anchors here, so this
-                        stays a plain Link/anchor split rather than reusing that helper. */}
-                    {card.href.startsWith('/') ? (
-                      <Link to={card.href} className={`rounded-sm font-medium text-plum underline ${FOCUS}`}>
-                        {card.label}
-                      </Link>
-                    ) : (
-                      <a href={card.href} className={`rounded-sm font-medium text-plum underline ${FOCUS}`}>
-                        {card.label}
-                      </a>
-                    )}
-                  </p>
-                </Card>
-              </Reveal>
-            ))}
-          </div>
+      <section className="bg-white px-6 py-24" aria-labelledby="export-title">
+        <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+          <Reveal>
+            <h2 id="export-title" className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Export to India
+            </h2>
+            <p className="mt-6 text-lg text-foreground">
+              {exportsCovered.figure} of New Zealand&rsquo;s current exports to India get
+              tariff elimination or reduction under the NZ&ndash;India FTA, with{' '}
+              {dutyFreeDayOne.figure} duty-free from the day it enters into force. Sheep meat,
+              wool and coal clear immediately; apples get preferential access for the first
+              time in any Indian FTA; kiwifruit and mānuka honey follow within five years;
+              dairy, seafood and forestry phase in over seven; wine over ten.
+            </p>
+            <p className="mt-5">
+              <TextLink href="/fta">See the full phase-in timeline on the FTA Centre</TextLink>
+            </p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <Card title="Sector guidance">
+              <p>
+                Sector-by-sector detail for exporters &mdash; agritech, horticulture, seafood,
+                education, tourism and more &mdash; already built out on its own page.
+              </p>
+              <p className="mt-5">
+                <Btn href="/india-market-opportunities" variant="outline">
+                  India market opportunities
+                </Btn>
+              </p>
+            </Card>
+          </Reveal>
         </div>
       </section>
 
-      <section id="missions" className="scroll-mt-24 bg-mist px-6 py-20">
+      <section className="bg-mist px-6 py-24" aria-labelledby="import-title">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-              Trade missions and shows
+            <h2 id="import-title" className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Import from India
             </h2>
-            <p className="mt-4 text-foreground">
-              Delegations, trade shows and market events that connect New Zealand and Indian
-              businesses.
+            <p className="mt-6 text-foreground">
+              The FTA also changes tariff and market-access settings for goods and services New
+              Zealand businesses source from India. The full text of the agreement covers the
+              specific commitments on both sides &mdash; the sourced guide above only tracks the
+              outcomes for New Zealand exporters so far.
             </p>
-            <p className="mt-4 text-foreground">
-              <Todo>
-                [[Current trade mission/show listings to confirm &mdash; this merges the
-                former &ldquo;Trade Shows&rdquo; page per the migration plan.]]
-              </Todo>
+            <p className="mt-5">
+              <TextLink href={LINKS.mfatFtaText} external>
+                Read the full agreement text on MFAT
+              </TextLink>
             </p>
           </Reveal>
         </div>
       </section>
 
-      <section id="intelligence" className="scroll-mt-24 bg-white px-6 py-20">
+      <section className="bg-white px-6 py-24" aria-labelledby="missions-title">
+        <div className="mx-auto max-w-6xl">
+          <Reveal>
+            <h2 id="missions-title" className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Trade missions and shows
+            </h2>
+            <p className="mt-4 max-w-2xl text-foreground">
+              INZBC-led delegations, and third-party India trade shows INZBC has circulated to
+              members &mdash; the most recent of each, from the full event archive.
+            </p>
+          </Reveal>
+
+          {recentMissions.length > 0 ? (
+            <>
+              <Reveal delay={0.06}>
+                <h3 className="mt-12 font-heading text-lg text-plum">Recent INZBC-led missions</h3>
+              </Reveal>
+              <div className="mt-4 space-y-2 divide-y divide-ink/10">
+                {recentMissions.map((event, i) => (
+                  <EventRow key={event.sourceSlug} event={event} delay={i * 0.05} />
+                ))}
+              </div>
+            </>
+          ) : null}
+
+          <Reveal delay={0.1}>
+            <h3 className="mt-12 font-heading text-lg text-plum">Recent trade shows circulated to members</h3>
+          </Reveal>
+          <div className="mt-3 space-y-1">
+            {recentExpos.map((event, i) => (
+              <ExpoRow key={event.sourceSlug} event={event} delay={i * 0.04} />
+            ))}
+          </div>
+
+          <Reveal delay={0.14}>
+            <p className="mt-8">
+              <Btn href="/events/past" variant="outline">
+                Browse the full event archive
+              </Btn>
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-mist px-6 py-24" aria-labelledby="intelligence-title">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Market intelligence</h2>
+            <h2 id="intelligence-title" className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Market intelligence
+            </h2>
             <p className="mt-4 text-foreground">
               The Trade Intelligence Digest is a weekly, LLM-summarised, human-reviewed digest
-              of India&ndash;NZ trade news, with source citations.
+              of India&ndash;NZ trade news, with source citations &mdash; against a real
+              baseline: two-way trade stood at {twoWayTrade.figure} for the{' '}
+              {twoWayTrade.note.replace(/\.$/, '').toLowerCase()}.
             </p>
             <p className="mt-3 text-sm text-foreground">
               <Todo>
