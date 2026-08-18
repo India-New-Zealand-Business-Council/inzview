@@ -69,6 +69,14 @@
   outline-color: var(--home-lime);
 }
 
+/* Used on 9 links across the page (partner marks, the Summit link, socials, and now the
+   Make Connections actions) but never had a rule — every one of them fell back to the
+   default plum outline with no dark-background check. Named for exactly this: the lime
+   override for a dark background, matching every other *-dark focus rule above. */
+.home-focus-dark:focus-visible {
+  outline-color: var(--home-lime);
+}
+
 .home-publication--magazine a:focus-visible {
   outline-color: var(--home-lime);
 }
@@ -1194,6 +1202,33 @@
   margin-top: 2rem;
 }
 
+/* Same pill-link treatment as .home-partners__stakeholders a — reused rather than
+   reinvented, and it already carries the 44px tap target this project holds to. */
+.home-events__actions--secondary {
+  margin-top: 0.9rem;
+}
+
+.home-events__actions--secondary a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  border: 1px solid rgba(26, 11, 63, 0.1);
+  border-radius: 999px;
+  color: rgba(58, 55, 66, 0.78);
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.55rem 0.9rem;
+  text-decoration: none;
+  transition:
+    border-color 180ms var(--home-ease-out),
+    color 180ms var(--home-ease-out);
+}
+
+.home-events__actions--secondary a:hover {
+  border-color: var(--home-plum);
+  color: var(--home-ink);
+}
+
 .home-summit-link {
   display: flex;
   min-height: 76px;
@@ -1811,10 +1846,12 @@
   gap: 0.5rem;
 }
 
-.home-partners__stakeholders a {
+.home-partners__stakeholders a,
+.home-partners__stakeholders span {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
+  gap: 0.4rem;
   border: 1px solid rgba(26, 11, 63, 0.1);
   border-radius: 999px;
   color: rgba(58, 55, 66, 0.78);
@@ -1825,6 +1862,11 @@
   transition:
     border-color 180ms var(--home-ease-out),
     color 180ms var(--home-ease-out);
+}
+
+.home-partners__stakeholders img {
+  height: 18px;
+  width: auto;
 }
 
 .home-partners__action {

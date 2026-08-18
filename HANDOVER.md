@@ -178,12 +178,18 @@ measurement was wrong. Check the instrument before writing the diagnosis.
 
 Needs INZBC to supply something:
 
-1. **India Industry Partners** logos (FICCI, CII, PHD Chamber and others). The row exists on
-   the old site and is absent here. Needs logo files and URLs.
+1. **India and NZ Industry Partner logos** (FICCI, CII, PHD Chamber and others). Names are
+   now live on `/partners` and Home — sourced 18 Aug 2026 by reading the composite graphics
+   on inzbc.org/our-sponsors directly. Individual logo files and links are still owed.
 2. **Contact form.** Needs a Wix Form so submissions reach the Secretariat. Currently an
    email link, because a form that silently discards a message is worse than no form.
 3. **Event photography after 2018**, if the Summit 2018 set is not acceptable.
-4. **The four `[[markers]]` above.**
+4. **Member and industry counts** on the Membership page — inzbc.org's own member directory
+   doesn't publish a count either (checked 18 Aug 2026), so this isn't a lookup INZBC's
+   website already answers; they have to supply the number directly.
+5. **Sponsorship tier pricing and inclusions** — tier names (Strategic, Logistics, Education,
+   Sponsors & Supporters) are now sourced and live on `/partners`; what each tier costs or
+   includes isn't published anywhere and needs INZBC directly.
 
 Code work that can start now:
 

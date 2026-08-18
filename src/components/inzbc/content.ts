@@ -75,6 +75,68 @@ export const BENEFITS = [
   ['Delegations', 'and trade missions into the Indian market'],
 ] as const;
 
+/* Partner data. BUSINESS_PARTNERS and the first four INDIA_NETWORK entries (FICCI, CII, PHD
+   Chamber, ASSOCHAM) originated in HomePage.tsx with real logo files already in
+   public/partners/ (see its LOGO_SOURCES.md) — moved here so Home and /partners render from
+   one list instead of two that can drift apart, which is exactly what had already happened:
+   /partners was still using a flattened legacy image while Home had moved on to individual
+   logos. The rest (TPCI, NABARD, Bihar Foundation, HSIIDC, and the PUBLIC_SECTOR_NETWORK
+   additions below) are text-only — real names and URLs, verified by web search 18 Aug 2026,
+   but no logo file exists for them yet. "ThinkNew New Zealand," visible on inzbc.org's own
+   partner graphic, has no verifiable official site under that name, so it's named but not
+   linked rather than guessed. */
+export type PartnerMark = {
+  name: string;
+  href: string;
+  logo?: string;
+  relationship: string;
+};
+
+export const BUSINESS_PARTNERS: readonly PartnerMark[] = [
+  { name: 'Bank of New Zealand', href: 'https://www.bnz.co.nz/', logo: '/partners/bnz.png', relationship: 'Strategic partner' },
+  { name: 'High Commission of India, Wellington', href: 'https://www.hciwellington.gov.in/', logo: '/partners/hci-wellington.webp', relationship: 'Strategic partner' },
+  { name: 'University of Auckland', href: 'https://www.auckland.ac.nz/', logo: '/partners/auckland.svg', relationship: 'Strategic partner' },
+  { name: 'Duco Consultancy', href: 'https://www.ducoconsultancy.com/', logo: '/partners/duco.svg', relationship: 'Strategic partner / Gold' },
+  { name: 'Zespri', href: 'https://www.zespri.com/en-NZ', logo: '/partners/zespri.png', relationship: 'Strategic partner' },
+  { name: 'Fonterra', href: 'https://www.fonterra.com/nz/en.html', logo: '/partners/fonterra.png', relationship: 'Partner' },
+  { name: 'Slumberzone New Zealand', href: 'https://slumberzone.co.nz/', logo: '/partners/slumberzone.webp', relationship: 'Associate partner' },
+  { name: 'Auckland Institute of Studies', href: 'https://www.ais.ac.nz/', logo: '/partners/ais.png', relationship: 'Associate partner' },
+  { name: 'New Zealand Airline Academy', href: 'https://www.nzaal.co.nz/', logo: '/partners/nzaal.webp', relationship: 'Associate partner' },
+] as const;
+
+export const INDIA_NETWORK: readonly PartnerMark[] = [
+  { name: 'FICCI', href: 'https://www.ficci.in/', logo: '/partners/ficci.png', relationship: 'India industry network' },
+  { name: 'Confederation of Indian Industry', href: 'https://www.cii.in/', logo: '/partners/cii.svg', relationship: 'India industry network' },
+  { name: 'PHD Chamber of Commerce and Industry', href: 'https://www.phdcci.in/', logo: '/partners/phdcci.png', relationship: 'India industry network' },
+  { name: 'ASSOCHAM', href: 'https://www.assocham.org/', logo: '/partners/assocham.jpg', relationship: '2026 MoU partner' },
+  { name: 'Trade Promotion Council of India', href: 'https://www.tpci.in/', logo: '/partners/tpci.png', relationship: 'India industry network' },
+  // NABARD and HSIIDC: nabard.org and hsiidc.org.in both refused every connection attempt
+  // from here (curl and a rendering fetch both got ECONNREFUSED/timeout) — not a scraping
+  // failure, the sites themselves are unreachable from this environment. No logo file.
+  { name: 'NABARD', href: 'https://www.nabard.org/', relationship: 'India industry network' },
+  // biharfoundation.in (the URL in the parity matrix) currently serves a bare Laravel
+  // install page, not the real site — biharfoundation.bihar.gov.in is the working mirror
+  // and is what the logo below came from; using it as the link too.
+  { name: 'Bihar Foundation', href: 'https://biharfoundation.bihar.gov.in/', logo: '/partners/bihar-foundation.png', relationship: 'India industry network' },
+  { name: 'HSIIDC', href: 'https://hsiidc.org.in/', relationship: 'India industry network' },
+] as const;
+
+export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null; logo?: string }[] = [
+  { name: 'MFAT', href: 'https://www.mfat.govt.nz/' },
+  { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/' },
+  { name: 'Business Canterbury', href: 'https://www.businesscanterbury.co.nz/' },
+  { name: 'BusinessNZ', href: 'https://businessnz.org.nz/' },
+  { name: 'ExportNZ', href: 'https://exportnz.org.nz/' },
+  { name: 'ASEAN New Zealand Business Council', href: 'https://asean.org.nz/', logo: '/partners/asean-nz.png' },
+  // NZAL's only logo asset (nzasianleaders.org) is white-on-transparent, made for a dark
+  // background — invisible on this site's light chips. Left text-only rather than ship a
+  // logo that renders blank.
+  { name: 'NZ Asian Leaders', href: 'https://nzasianleaders.org/' },
+  { name: 'BNZBA', href: 'https://www.bnzba.co.nz/', logo: '/partners/bnzba.png' },
+  { name: 'NZ India Research Institute', href: 'https://www.wgtn.ac.nz/nziri' },
+  { name: 'ThinkNew New Zealand', href: null },
+] as const;
+
 export const SOCIALS = [
   { name: 'Facebook', href: LINKS.facebook, icon: ART.socialFacebook, label: 'Find us on Facebook' },
   { name: 'YouTube', href: LINKS.youtube, icon: ART.socialYoutube, label: 'Watch our videos' },

@@ -60,6 +60,18 @@ const router = createBrowserRouter(
           path: 'trade-bazaar',
           element: <Navigate to="/india-market-opportunities" replace />,
         },
+        // The rest of §5's redirect table, mapped to where each destination actually lives in
+        // this rebuild (which doesn't always match the guide's proposed slug — e.g. Trade Shows
+        // folded into /trade-resources, not a standalone /trade-missions route). Without these,
+        // every one of these old inzbc.org URLs hit the catch-all below and silently bounce to
+        // Home instead of their real destination — the exact SEO risk §5 exists to prevent.
+        { path: 'about-us', element: <Navigate to="/about-inzbc" replace /> },
+        { path: 'our-sponsors', element: <Navigate to="/partners" replace /> },
+        { path: 'upcoming-events', element: <Navigate to="/events" replace /> },
+        { path: 'trade-shows', element: <Navigate to="/trade-resources" replace /> },
+        { path: 'join-inzbc', element: <Navigate to="/membership" replace /> },
+        { path: 'membership-form', element: <Navigate to="/membership" replace /> },
+        { path: 'news/categories/news', element: <Navigate to="/news" replace /> },
         {
           path: '*',
           element: <Navigate to="/" replace />,

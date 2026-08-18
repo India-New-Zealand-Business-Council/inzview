@@ -18,7 +18,16 @@ import {
   UsersRound,
   X,
 } from 'lucide-react';
-import { ART, BENEFITS, LINKS, SOCIALS, STATS } from '@/components/inzbc/content';
+import {
+  ART,
+  BENEFITS,
+  LINKS,
+  SOCIALS,
+  STATS,
+  BUSINESS_PARTNERS,
+  INDIA_NETWORK,
+  PUBLIC_SECTOR_NETWORK,
+} from '@/components/inzbc/content';
 import ClickSpark from '@/components/home/ClickSpark';
 import EffectsWorld from '@/components/home/EffectsWorld';
 import KineticHeading from '@/components/home/KineticHeading';
@@ -115,104 +124,8 @@ const EVENT_PHOTOS = [
   },
 ] as const;
 
-type PartnerMark = {
-  name: string;
-  href: string;
-  logo?: string;
-  relationship: string;
-};
-
-const BUSINESS_PARTNERS: readonly PartnerMark[] = [
-  {
-    name: 'Bank of New Zealand',
-    href: 'https://www.bnz.co.nz/',
-    logo: '/partners/bnz.png',
-    relationship: 'Strategic partner',
-  },
-  {
-    name: 'High Commission of India, Wellington',
-    href: 'https://www.hciwellington.gov.in/',
-    logo: '/partners/hci-wellington.webp',
-    relationship: 'Strategic partner',
-  },
-  {
-    name: 'University of Auckland',
-    href: 'https://www.auckland.ac.nz/',
-    logo: '/partners/auckland.svg',
-    relationship: 'Strategic partner',
-  },
-  {
-    name: 'Duco Consultancy',
-    href: 'https://www.ducoconsultancy.com/',
-    logo: '/partners/duco.svg',
-    relationship: 'Strategic partner / Gold',
-  },
-  {
-    name: 'Zespri',
-    href: 'https://www.zespri.com/en-NZ',
-    logo: '/partners/zespri.png',
-    relationship: 'Strategic partner',
-  },
-  {
-    name: 'Fonterra',
-    href: 'https://www.fonterra.com/nz/en.html',
-    logo: '/partners/fonterra.png',
-    relationship: 'Partner',
-  },
-  {
-    name: 'Slumberzone New Zealand',
-    href: 'https://slumberzone.co.nz/',
-    logo: '/partners/slumberzone.webp',
-    relationship: 'Associate partner',
-  },
-  {
-    name: 'Auckland Institute of Studies',
-    href: 'https://www.ais.ac.nz/',
-    logo: '/partners/ais.png',
-    relationship: 'Associate partner',
-  },
-  {
-    name: 'New Zealand Airline Academy',
-    href: 'https://www.nzaal.co.nz/',
-    logo: '/partners/nzaal.webp',
-    relationship: 'Associate partner',
-  },
-];
-
-const INDIA_NETWORK: readonly PartnerMark[] = [
-  {
-    name: 'FICCI',
-    href: 'https://www.ficci.in/',
-    logo: '/partners/ficci.png',
-    relationship: 'India industry network',
-  },
-  {
-    name: 'Confederation of Indian Industry',
-    href: 'https://www.cii.in/',
-    logo: '/partners/cii.svg',
-    relationship: 'India industry network',
-  },
-  {
-    name: 'PHD Chamber of Commerce and Industry',
-    href: 'https://www.phdcci.in/',
-    logo: '/partners/phdcci.png',
-    relationship: 'India industry network',
-  },
-  {
-    name: 'ASSOCHAM',
-    href: 'https://www.assocham.org/',
-    logo: '/partners/assocham.jpg',
-    relationship: '2026 MoU partner',
-  },
-];
-
-const PUBLIC_SECTOR_NETWORK = [
-  ['MFAT', 'https://www.mfat.govt.nz/'],
-  ['New Zealand Trade & Enterprise', 'https://www.nzte.govt.nz/'],
-  ['Business Canterbury', 'https://www.businesscanterbury.co.nz/'],
-  ['BusinessNZ', 'https://businessnz.org.nz/'],
-  ['ExportNZ', 'https://exportnz.org.nz/'],
-] as const;
+// BUSINESS_PARTNERS, INDIA_NETWORK and PUBLIC_SECTOR_NETWORK now live in content.ts, shared
+// with the /partners page (bodies.tsx PartnersBody) so the two can't drift apart again.
 
 function Action({
   href,
@@ -1146,6 +1059,17 @@ export default function HomePage() {
                   Event reports
                 </Action>
               </div>
+              {/* The old site's "Make Connections" section (inzbc.org, checked 18 Aug 2026)
+                  paired this same tagline with a Register link and a photo-gallery link out
+                  to Facebook/Flickr — both real, both already in LINKS, neither was here. */}
+              <div className="home-events__actions home-events__actions--secondary">
+                <a href={LINKS.subscribe} target="_blank" rel="noopener noreferrer" className="home-focus-dark">
+                  Register for event announcements
+                </a>
+                <a href={LINKS.facebookAlbums} target="_blank" rel="noopener noreferrer" className="home-focus-dark">
+                  View photo gallery
+                </a>
+              </div>
               <a
                 href={LINKS.summitSite}
                 target="_blank"
@@ -1398,17 +1322,16 @@ export default function HomePage() {
             >
               <span>Also working alongside</span>
               <div>
-                {PUBLIC_SECTOR_NETWORK.map(([name, href]) => (
-                  <a
-                    key={name}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="home-focus-dark"
-                  >
-                    {name}
-                  </a>
-                ))}
+                {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo }) =>
+                  href ? (
+                    <a key={name} href={href} target="_blank" rel="noopener noreferrer" className="home-focus-dark">
+                      {logo ? <img src={logo} alt="" loading="lazy" /> : null}
+                      {name}
+                    </a>
+                  ) : (
+                    <span key={name}>{name}</span>
+                  ),
+                )}
               </div>
             </section>
             <div className="home-partners__action">

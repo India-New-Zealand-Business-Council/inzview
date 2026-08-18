@@ -25,7 +25,7 @@ a content and functionality migration.
 | `/connect` | live | Nav, footer, closing CTA |
 | `/executive-council` | live | Footer, About page |
 | `/our-patron` | live | Footer |
-| `/our-sponsors` | **gap** | Partners page exists; the sponsors route does not resolve |
+| `/our-sponsors` | live | 301 to `/partners`, added 18 Aug 2026 (Router.tsx) |
 | `/join-inzbc` | live | Member Jungle registration, hero and every CTA |
 | `/membership-form` | live | Same Member Jungle destination |
 | `/member-directory` | live | `/membership/directory` |
@@ -34,13 +34,13 @@ a content and functionality migration.
 
 | Old destination | Status | Where it lives now |
 |---|---|---|
-| `/upcoming-events` | **gap** | Events page exists; no explicit upcoming route from Home |
+| `/upcoming-events` | live | 301 to `/events`, added 18 Aug 2026 (Router.tsx) |
 | `/past-events` | live | `/events/past`, linked from the Summit band |
-| Event Calendar | **gap** | No calendar anywhere. A core INZBC function |
-| Register for events | **gap** | No registration path with date, venue, availability |
-| Event Reports | **gap** | Removed with the Make Connections section |
+| Event Calendar | **partial** | `/events` now computes "Upcoming" from `INZBC_EVENTS` by date instead of hand-written prose (18 Aug 2026, bodies.tsx) — a real future-dated event appears automatically. Not a month-grid calendar view, and Sunil's own guide (§7 Step 7) says not to duplicate registration logic in Wix, so this is deliberately a list, not a rebuild |
+| Register for events | **gap** | No Zoho or Member Jungle registration link exists per event — needs a real URL from INZBC, not a decision this repo can make alone |
+| Event Reports | live | `/events/past`, linked from Home's events section (already existed, just mislabelled as a gap) |
 | View Gallery | live | Facebook albums and Flickr, in the social band |
-| Make Connections showcase | **gap** | Removed entirely. The single largest loss |
+| Make Connections showcase | **partial** | Most of the substance was already live under different copy (Home's events section carries the same tagline, event/report links and Summit link) — genuinely missing were the Register link and a gallery link, both added 18 Aug 2026 (HomePage.tsx). No separate "Make Connections"-branded block; folded into the existing section instead of duplicating it |
 | INZBC Annual Summit | live | Summit band |
 | `inzbusinesssummit.com` | **gap** | The summit's own site is not linked |
 
@@ -86,21 +86,36 @@ a content and functionality migration.
 | Old element | Status | Where it lives now |
 |---|---|---|
 | Strategic, Partner, Associate, Government tiers | live | Partner wall image |
-| India Industry Partners | **gap** | Not in the wall image used. Bilateral credibility |
-| Individual partner links | **gap** | The wall is one flattened image; no logo is clickable |
+| India Industry Partners | **partial** | Names now live on `/partners` and the Home Partners section — FICCI, CII, PHD Chamber, TPCI, ASSOCHAM, NABARD, Bihar Foundation, HSIIDC — read visually off the composite graphic on inzbc.org/our-sponsors, 18 Aug 2026. Logo files still not sourced |
+| NZ Industry Partners | **partial** | Same source and same date: NZTE, MFAT, ThinkNew New Zealand, ASEAN NZ Business Council, NZAL, BNZBA, NZ India Research Institute, Export New Zealand. Logo files still not sourced |
+| Individual partner links | **gap** | The wall image is still one flattened JPEG; no logo is clickable. Names are now text, not logos |
 
 ## What the gaps need
 
 Ordered by value, not effort.
 
-1. **Make Connections.** Real photographs of people meeting carry more trust than any
-   claim. Needs event photography that is not in the asset library today.
+1. **Make Connections.** Mostly done as of 18 Aug 2026 (see row above) — reused Home's
+   existing events section rather than rebuilding a separate block. Real photographs beyond
+   the Modi-Luxon 2026 set and the Summit set already in `public/events/` still need INZBC.
 2. **Member network.** Membership is INZBC's strongest proposition and the page asserts it
    rather than showing it. Needs member names, industries and locations.
-3. **Partner ecosystem.** Individual logos, categories, clickable. Needs each logo as a
-   file and each partner's URL. Currently one flattened JPEG.
-4. **Events depth.** Calendar, upcoming, registration, reports. Needs the event data source
-   decided: Wix Events, or an external system.
+3. **Partner ecosystem.** Done, 18 Aug 2026. `BUSINESS_PARTNERS`/`INDIA_NETWORK`/
+   `PUBLIC_SECTOR_NETWORK` moved from `HomePage.tsx` into `content.ts` as the single source
+   for both Home and `/partners` (`bodies.tsx` PartnersBody), which previously still rendered
+   the old flattened `ART.partnerStrip` image while Home had already moved to individual
+   logos — the two pages had drifted to different quality bars for the same content. Added
+   TPCI, NABARD, Bihar Foundation, HSIIDC (real URLs) and ASEAN NZ Business Council, NZ Asian
+   Leaders, BNZBA, NZ India Research Institute (verified by web search). "ThinkNew New
+   Zealand" is named, not linked — no verifiable official site found under that name.
+   Logo files sourced directly, 18 Aug 2026 (see `public/partners/LOGO_SOURCES.md`): TPCI,
+   Bihar Foundation, ASEAN NZ Business Council, BNZBA. Still text-only: NABARD and HSIIDC
+   (their sites refused every connection attempt from this environment — a real access limit,
+   not a lookup that was skipped) and NZ Asian Leaders (their only logo asset is white-on-
+   transparent and would render invisible on this page's light background).
+4. **Events depth.** Upcoming/recent is now computed, not hand-written (see row above). Still
+   open: a real registration link per event (needs a Zoho or Member Jungle URL from INZBC)
+   and event reports as their own content type, not just the past-events archive standing in
+   for them.
 5. **Advertise With Us.** A commercial route that simply vanished. Needs the rate card.
 
 ## Rule for anything after this

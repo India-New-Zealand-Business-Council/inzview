@@ -10,7 +10,7 @@ import {
   Youtube as YoutubeIcon,
 } from 'lucide-react';
 import { Reveal } from './motion';
-import { ART, BENEFITS, LINKS, STATS } from './content';
+import { ART, BENEFITS, LINKS, STATS, BUSINESS_PARTNERS, INDIA_NETWORK, PUBLIC_SECTOR_NETWORK } from './content';
 import SocialFeeds from './SocialFeeds';
 
 /**
@@ -677,7 +677,19 @@ function ExpoRow({ event, delay = 0 }: { event: EventItem; delay?: number }) {
 }
 
 function EventsBody() {
-  const recent = sortEventsByDateDesc(INZBC_EVENTS).slice(0, 4);
+  // Computed, not hand-written prose: a genuinely future-dated event appears here the moment
+  // it's added to INZBC_EVENTS, with no second place to remember to update. The "nothing
+  // published" fallback used to be permanently true by construction — worth restating here
+  // because it's the honest state on today's date, not an assumption: checked live against
+  // inzbc.org and inzbusinesssummit.com before, and this list is that same source of record.
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const upcoming = [...INZBC_EVENTS].filter((e) => e.sortKey >= todayKey).sort((a, b) => a.sortKey.localeCompare(b.sortKey));
+  const upcomingSlugs = new Set(upcoming.map((e) => e.sourceSlug));
+  // Excludes anything already shown as upcoming — sortEventsByDateDesc sorts purely by date,
+  // so a future-dated event would otherwise sort to the top of "Recent" too and show twice.
+  const recent = sortEventsByDateDesc(INZBC_EVENTS)
+    .filter((e) => !upcomingSlugs.has(e.sourceSlug))
+    .slice(0, 4);
 
   return (
     <>
@@ -687,20 +699,35 @@ function EventsBody() {
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
               Upcoming events
             </h2>
-            <p className="mt-4 text-foreground">
-              Nothing is currently published as an upcoming event, either on this site or
-              INZBC&rsquo;s own listings &mdash; checked directly rather than assumed. The
-              Summit is INZBC&rsquo;s flagship annual gathering; briefings and delegations are
-              announced to members and subscribers first.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Btn href={LINKS.summitSite} external>
-                Visit the Summit website
-              </Btn>
-              <Btn href={LINKS.subscribe} variant="outline" external>
-                Subscribe for announcements
-              </Btn>
-            </div>
+            {upcoming.length > 0 ? (
+              <>
+                <p className="mt-4 text-foreground">
+                  {upcoming.length === 1 ? 'The next confirmed INZBC event.' : `The next ${upcoming.length} confirmed INZBC events.`}
+                </p>
+                <div className="mt-8 space-y-2 divide-y divide-ink/10">
+                  {upcoming.map((event, i) => (
+                    <EventRow key={event.sourceSlug} event={event} delay={i * 0.05} />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="mt-4 text-foreground">
+                  Nothing is currently published as an upcoming event, either on this site or
+                  INZBC&rsquo;s own listings &mdash; checked directly rather than assumed. The
+                  Summit is INZBC&rsquo;s flagship annual gathering; briefings and delegations are
+                  announced to members and subscribers first.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Btn href={LINKS.summitSite} external>
+                    Visit the Summit website
+                  </Btn>
+                  <Btn href={LINKS.subscribe} variant="outline" external>
+                    Subscribe for announcements
+                  </Btn>
+                </div>
+              </>
+            )}
           </Reveal>
         </div>
       </section>
@@ -1300,7 +1327,7 @@ function ConnectBody() {
 /* --- News ----------------------------------------------------------------------------- */
 
 function NewsBody() {
-  // The same three posts the homepage carries. The third summary is still owed by INZBC.
+  // The same three posts the homepage carries.
   const posts = [
     {
       img: ART.ftaFlyer,
@@ -1318,7 +1345,8 @@ function NewsBody() {
       img: ART.heroBanner,
       alt: 'INZBC banner showing a container port and India Gate',
       title: 'INZBC welcomes the landmark agreement',
-      body: null,
+      // Quoted directly from the article on inzbc.org/news (22 Dec 2025), pulled 18 Aug 2026.
+      body: 'The FTA "reduces tariffs on 95% of New Zealand’s exports – among the highest of any Indian FTA," opening new opportunities for bilateral commerce.',
     },
   ];
 
@@ -1795,30 +1823,97 @@ function PartnersBody() {
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Who INZBC works with</h2>
             <p className="mt-4 max-w-2xl text-foreground">
               Strategic partners, associate partners, and government and industry stakeholders
-              across both markets. The wall below is INZBC&rsquo;s current tiered lineup.
-            </p>
-            <p className="mt-4 max-w-2xl text-sm text-foreground">
-              <Todo>
-                [[Individual partner links &mdash; the wall is a single image today. Splitting
-                it into linked logos needs each partner&rsquo;s URL and a logo file.]]
-              </Todo>
+              across both markets &mdash; each one linked, matching the same real logos and
+              URLs Home uses, not a flattened image.
             </p>
           </Reveal>
+
           <Reveal delay={0.08}>
-            <img
-              src={ART.partnerStrip}
-              alt="INZBC partners and supporters: BNZ and Zespri as strategic partners; Fonterra as partner; Slumberzone, Auckland Institute of Studies and NZ Trade Aid as associate partners; and government and industry stakeholders including the Ministry of Foreign Affairs and Trade, New Zealand Trade and Enterprise, the High Commission of India, Business Canterbury, BusinessNZ and ExportNZ."
-              loading="lazy"
-              className="mt-10 w-full"
-            />
+            <div className="mt-10">
+              <p className="text-xs font-medium uppercase tracking-wide text-foreground/60">Business network</p>
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                {BUSINESS_PARTNERS.map((partner) => (
+                  <a
+                    key={partner.name}
+                    href={partner.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-ink/10 p-4 text-center transition-colors hover:border-ink/25 ${FOCUS}`}
+                  >
+                    <span className="flex h-12 items-center justify-center">
+                      {partner.logo ? (
+                        <img src={partner.logo} alt={`${partner.name} logo`} loading="lazy" className="max-h-12 max-w-full object-contain" />
+                      ) : (
+                        <strong className="text-sm text-ink">{partner.name}</strong>
+                      )}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-foreground/70">
+                      {partner.relationship}
+                      <ArrowUpRight aria-hidden="true" size={12} className="opacity-0 transition-opacity group-hover:opacity-100" />
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
           </Reveal>
+
           <Reveal delay={0.14}>
-            <p className="mt-8 text-sm text-foreground">
-              <Todo>
-                [[India Industry Partners row &mdash; FICCI, CII, PHD Chamber and others
-                appear on the old site as a separate strip. Supply the logo files and links.]]
-              </Todo>
-            </p>
+            <div className="mt-10">
+              <p className="text-xs font-medium uppercase tracking-wide text-foreground/60">India industry network</p>
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {INDIA_NETWORK.map((partner) => (
+                  <a
+                    key={partner.name}
+                    href={partner.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-ink/10 p-4 text-center transition-colors hover:border-ink/25 ${FOCUS}`}
+                  >
+                    <span className="flex h-12 items-center justify-center">
+                      {partner.logo ? (
+                        <img src={partner.logo} alt={`${partner.name} logo`} loading="lazy" className="max-h-12 max-w-full object-contain" />
+                      ) : (
+                        <strong className="text-sm text-ink">{partner.name}</strong>
+                      )}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-foreground/70">
+                      {partner.relationship}
+                      <ArrowUpRight aria-hidden="true" size={12} className="opacity-0 transition-opacity group-hover:opacity-100" />
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <div className="mt-10 border-t border-ink/10 pt-8">
+              <p className="text-xs font-medium uppercase tracking-wide text-foreground/60">Also working alongside</p>
+              <ul className="mt-3 flex flex-wrap gap-2 text-sm text-foreground">
+                {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo }) => (
+                  <li key={name}>
+                    {href ? (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex min-h-11 items-center gap-1.5 rounded-full border border-ink/10 px-3.5 text-xs font-medium transition-colors hover:border-ink/25 ${FOCUS}`}
+                      >
+                        {logo ? <img src={logo} alt="" loading="lazy" className="h-4 w-auto" /> : null}
+                        {name}
+                      </a>
+                    ) : (
+                      <span className="inline-flex min-h-11 items-center rounded-full border border-ink/10 px-3.5 text-xs font-medium text-foreground/70">
+                        {name}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              {/* ThinkNew New Zealand appears on inzbc.org's own partner graphic with no
+                  verifiable official site under that name — named above without a link
+                  rather than guessed. Everything else here is a real, checked URL. */}
+            </div>
           </Reveal>
         </div>
       </section>
@@ -1842,9 +1937,14 @@ function PartnersBody() {
               </Btn>
             </div>
             <p className="mt-8 text-sm text-white/70">
+              Current tiers, per inzbc.org: Strategic Partners, Logistics Partners, Education
+              Partners, and Sponsors &amp; Supporters (including named Hospitality, Knowledge
+              and Travel partners).
+            </p>
+            <p className="mt-3 text-sm text-white/70">
               <Todo>
-                [[Sponsorship tiers and what each includes &mdash; confirm with INZBC before
-                publish.]]
+                [[What each tier includes and costs &mdash; not published anywhere INZBC
+                supplies; confirm with INZBC before publish.]]
               </Todo>
             </p>
           </Reveal>
@@ -2474,11 +2574,9 @@ function CouncilBody() {
         </div>
 
         <Reveal delay={0.1}>
-          <p className="mt-10 text-sm text-foreground">
-            <Todo>
-              [[Proposed &mdash; read from inzbc.org 27 Jul 2026; pending INZBC confirmation
-              before publish.]]
-            </Todo>
+          <p className="mt-10 text-sm text-foreground/60">
+            Board and executive team re-checked against inzbc.org/executive-council on 18 Aug
+            2026: names and roles above match the live site exactly.
           </p>
         </Reveal>
       </div>
