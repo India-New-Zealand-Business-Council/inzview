@@ -1838,7 +1838,7 @@ function PartnersBody() {
                     href={partner.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-ink/10 p-4 text-center transition-colors hover:border-ink/25 ${FOCUS}`}
+                    className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-ink/10 p-4 text-center transition-colors hover:border-ink/25 hover:bg-mist ${FOCUS}`}
                   >
                     <span className="flex h-12 items-center justify-center">
                       {partner.logo ? (
@@ -1867,7 +1867,7 @@ function PartnersBody() {
                     href={partner.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-ink/10 p-4 text-center transition-colors hover:border-ink/25 ${FOCUS}`}
+                    className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-ink/10 p-4 text-center transition-colors hover:border-ink/25 hover:bg-mist ${FOCUS}`}
                   >
                     <span className="flex h-12 items-center justify-center">
                       {partner.logo ? (
