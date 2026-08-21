@@ -2522,10 +2522,19 @@ function CouncilBody() {
   // live-site-extract.md's rule: this is a separate Wix account, so its media URLs are not
   // guaranteed stable). The combined "Board Members" entry (six names in one card) is split
   // into six individual cards here so each can carry its own photo — same six names, same
-  // order, nothing added or dropped, per this file's own rule above. Four people (Kanwaljit
-  // Singh Bakshi, Clive Antony, Bharat Joshi, Dr Pushpa Wood) had no matching photo found;
-  // they keep the text-only card. Sreedhar Venkatram's photo filename was just "Sree.jpeg" —
-  // a reasonable but not certain match, worth confirming.
+  // order, per this file's own rule above. Sreedhar Venkatram's photo filename was just
+  // "Sree.jpeg" — a reasonable but not certain match, worth confirming.
+  //
+  // Executive team amended 20 Aug 2026 on Sunil Kaushal's (Chief Executive) instruction after
+  // his review of this site: the four photo-less cards are dropped — Kanwaljit Singh Bakshi
+  // (Ex-Officio), Clive Antony (Strategic Communications Officer), Bharat Joshi (Delhi Chapter
+  // Head) and Dr Pushpa Wood (Wellington Chapter Head) — and Selwyn Thomas added as Southern
+  // India Chapter Head. Selwyn is the one entry still without a photo: he is here on the CE's
+  // explicit instruction, so he stays photo-less until a headshot arrives rather than being
+  // swept up by the "no photo, no card" rule that removed the other four.
+  //
+  // This is a deliberate divergence from inzbc.org/executive-council, which still carries the
+  // older list: do not "fix" this back to match the live site.
   const board = [
     { name: 'Edwin Paul', role: 'Chair', photo: '/council/edwin-paul.png' },
     { name: 'Tony Martin', role: 'Deputy Chair', photo: '/council/tony-martin.png' },
@@ -2539,12 +2548,9 @@ function CouncilBody() {
   ];
   const team = [
     { name: 'Sunil Kaushal', role: 'Chief Executive', photo: '/council/sunil-kaushal.png' },
-    { name: 'Kanwaljit Singh Bakshi', role: 'Ex-Officio' },
-    { name: 'Clive Antony', role: 'Strategic Communications Officer' },
     { name: 'Sandeep Sharma', role: 'Strategy and Trade Officer', photo: '/council/sandeep-sharma.png' },
     { name: 'Sreedhar Venkatram', role: 'Mumbai Chapter Head', photo: '/council/sreedhar-venkatram.jpeg' },
-    { name: 'Bharat Joshi', role: 'Delhi Chapter Head' },
-    { name: 'Dr Pushpa Wood', role: 'Wellington Chapter Head' },
+    { name: 'Selwyn Thomas', role: 'Southern India Chapter Head' },
     { name: 'Michael Henstock', role: 'Christchurch Chapter Head', photo: '/council/michael-henstock.jpg' },
   ];
 
@@ -2575,8 +2581,9 @@ function CouncilBody() {
 
         <Reveal delay={0.1}>
           <p className="mt-10 text-sm text-foreground/60">
-            Board and executive team re-checked against inzbc.org/executive-council on 18 Aug
-            2026: names and roles above match the live site exactly.
+            Board re-checked against inzbc.org/executive-council on 18 Aug 2026. The executive
+            team was amended on 20 Aug 2026 on the Chief Executive's instruction, and
+            intentionally differs from the older list still shown on inzbc.org.
           </p>
         </Reveal>
       </div>
