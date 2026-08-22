@@ -3,21 +3,68 @@ import { SEO } from '@wix/seo/components';
 import { loadSEOTagsServiceConfig } from '@wix/seo/services';
 import { Head } from "@/components/Head";
 import AppRouter from "@/components/Router";
+import { ART, LINKS } from "@/components/inzbc/content";
+import { SITE_NAME, absoluteUrl, seoForPath } from "@/lib/seo";
 import "@wix/wix-vibe-plugins/plugins-vars.css";
 import "@wix/wix-vibe-plugins/plugins-theme.css";
 import "@/styles/global.css";
 
+/*
+ * This file serves every URL on the site, so everything in it is per-request: the page
+ * identity has to be derived from the path, not fixed. It used to pass a literal
+ * `pageName: 'Home'`, which meant all twenty-odd routes were served as "Home | INZView"
+ * with no description and no share image.
+ *
+ * Wix's SEO service still owns the title, canonical, og:title, og:url, og:site_name,
+ * og:type, twitter:card and twitter:title tags — those are rendered by <SEO.Tags> and
+ * marked wix-seo-tags in the output. What it does not emit is a description or a share
+ * image, so those are added below. Nothing here duplicates a tag <SEO.Tags> produces;
+ * adding a second title or canonical would leave scrapers picking between them.
+ */
+const seo = seoForPath(Astro.url.pathname);
+const canonical = absoluteUrl(Astro.url.pathname);
+const shareImage = absoluteUrl(seo.image);
+
 const seoTagsServiceConfig = await loadSEOTagsServiceConfig({
-  pageUrl: Astro.url.href,
+  // Not Astro.url.href: behind Wix's proxy that reports the incoming scheme, which is how
+  // the live canonical came out as http:// on an https-only site.
+  pageUrl: canonical,
   itemData: {
-    pageName: 'Home',
+    pageName: seo.title,
   },
 });
+
+/*
+ * Organization data, so search engines can tie the site to the entity rather than
+ * inferring it. Every field is already published on this site: the name and founding year
+ * from /about-inzbc, the social profiles and secretariat address from content.ts.
+ */
+const organizationLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE_NAME,
+  alternateName: 'INZBC',
+  url: absoluteUrl('/'),
+  logo: ART.logo,
+  foundingDate: '1988',
+  email: LINKS.email.replace('mailto:', ''),
+  sameAs: [LINKS.linkedin, LINKS.facebook, LINKS.x, LINKS.youtube, LINKS.flickr],
+};
 ---
 
 <html lang="en" class="w-full min-h-full">
   <head>
     <Head />
+    <meta name="description" content={seo.description} />
+    <meta property="og:description" content={seo.description} />
+    <meta property="og:image" content={shareImage} />
+    <meta name="twitter:description" content={seo.description} />
+    <meta name="twitter:image" content={shareImage} />
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(organizationLd)}
+    />
     <SEO.Tags seoTagsServiceConfig={seoTagsServiceConfig} slot="seo-tags" />
   </head>
   <body class="w-full min-h-full">
