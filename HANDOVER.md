@@ -199,6 +199,34 @@ Code work that can start now:
 7. **A screenshot timeout after scrolling**, roughly 30 seconds of unresponsive renderer.
    Never chased. Suspect the parallax springs plus the 300vh pinned section. Worth profiling.
 
+## Domain cutover
+
+INZBC intends to move `inzbc.org` off the old live site and point it at this build once the
+rebuild is finished (confirmed 22 August 2026). Four things break at that moment, and three
+of them break silently.
+
+1. **Every `inzbc.org/post/...` link becomes a link into this site.** Seven places link out
+   to the old site as their source citation, three of them templated over data lists — 72
+   `sourceSlug` entries in `bodies.tsx` alone. Today those are outbound links to a different
+   domain and they work. The moment `inzbc.org` resolves here, they become self-links to
+   `/post/<slug>`, a route this build does not have, and `Router.tsx`'s catch-all sends every
+   one of them to the homepage without an error. Sourced claims would quietly stop being
+   checkable. Decide before cutover whether the posts get migrated behind a `/post/:slug`
+   route, redirected per-slug, or the citations are rewritten to point at an archive.
+
+2. **`SITE_ORIGIN` in `src/lib/seo.ts` still names the wix-vibe preview host.** It feeds the
+   canonical tag, `sitemap.xml` and `robots.txt`. Left stale, the new inzbc.org would tell
+   Google that the canonical version of every page lives on the preview domain — worse than
+   having no canonical at all, because it actively points ranking somewhere else.
+
+3. **The `| INZView` title suffix and `og:site_name`** come from the Wix dashboard's site
+   settings, not from this repo. They read as the internal build name on every page and in
+   every social share card. Nobody can fix this from code.
+
+4. **Search Console.** The sitemap needs resubmitting for the new host, and the old site's
+   URLs want checking against the redirect table in `Router.tsx` — which covers the old
+   top-level routes but, as above, nothing under `/post/`.
+
 ## Content parity
 
 `legacy/wix-studio/docs/parity-matrix.md` maps every destination, form, archive and content
