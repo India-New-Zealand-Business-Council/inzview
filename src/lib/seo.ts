@@ -104,6 +104,11 @@ function normalise(pathname: string): string {
  */
 export function seoForPath(pathname: string): PageSeo {
   const path = normalise(pathname);
+  // Old inzbc.org article URLs, which Router.tsx redirects per slug once the domain moves.
+  // The slug-to-destination map lives in bodies.tsx and importing it here would pull the
+  // whole component tree into the server bundle for a title, so every /post/ URL gets the
+  // archive's metadata. The redirect is what a crawler follows regardless.
+  if (path.startsWith('/post/')) return FROM_PAGES['/events/past'] ?? STANDALONE['/'];
   const resolved = ALIASES[path] ?? path;
   return STANDALONE[resolved] ?? FROM_PAGES[resolved] ?? STANDALONE['/'];
 }

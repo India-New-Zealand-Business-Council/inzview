@@ -601,12 +601,28 @@ function groupEventsByYear(events: readonly EventItem[]) {
   return groups;
 }
 
+/**
+ * Every slug that has a row rendered somewhere on this site.
+ *
+ * Read by Router.tsx to resolve /post/:slug. Exported from here rather than duplicated
+ * there because these two arrays are the source of record: a slug added to an event is
+ * routable the same day, with no second list to remember.
+ */
+export const EVENT_SLUGS: ReadonlySet<string> = new Set(
+  [...INZBC_EVENTS, ...EXPO_EVENTS].map((event) => event.sourceSlug),
+);
+
 /** A past event: real cover, real details, links out to the original post — every claim on
-    this row traces back to something INZBC itself published. */
+    this row traces back to something INZBC itself published.
+
+    The id is the slug, so /events/past#<slug> lands on this exact row. That is what
+    Router.tsx's /post/:slug redirect targets, and it is why these rows are addressable at
+    all — see the domain cutover section in HANDOVER.md. */
 function EventRow({ event, delay = 0 }: { event: EventItem; delay?: number }) {
   return (
     <Reveal delay={delay}>
       <a
+        id={event.sourceSlug}
         href={`https://www.inzbc.org/post/${event.sourceSlug}`}
         target="_blank"
         rel="noopener noreferrer"
@@ -648,6 +664,7 @@ function ExpoRow({ event, delay = 0 }: { event: EventItem; delay?: number }) {
   return (
     <Reveal delay={delay}>
       <a
+        id={event.sourceSlug}
         href={`https://www.inzbc.org/post/${event.sourceSlug}`}
         target="_blank"
         rel="noopener noreferrer"

@@ -1,11 +1,12 @@
 import { MemberProvider } from '@/integrations';
-import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate, Outlet, useParams } from 'react-router-dom';
 import { ScrollToTop } from '@/lib/scroll-to-top';
 import ErrorPage from '@/integrations/errorHandlers/ErrorPage';
 import HomePage from '@/components/pages/HomePage';
 import FtaPage from '@/components/pages/FtaPage';
 import FtaExplainerPage from '@/components/pages/FtaExplainerPage';
 import InnerPage from '@/components/inzbc/InnerPage';
+import { EVENT_SLUGS } from '@/components/inzbc/bodies';
 import { PAGES } from '@/components/inzbc/pages';
 
 function Layout() {
@@ -15,6 +16,28 @@ function Layout() {
       <Outlet />
     </>
   );
+}
+
+/**
+ * Old inzbc.org article URLs.
+ *
+ * These are currently outbound links to a different site — every event row, and three
+ * hand-written citations, link to https://www.inzbc.org/post/<slug> as their source. They
+ * work today because inzbc.org is still the old Wix site. INZBC intends to point that
+ * domain at this build, and on the day they do, all of them become links into this site,
+ * to a path that would otherwise hit the catch-all below and land on the homepage. Every
+ * sourced claim on the site would stop being checkable, silently, with nothing logged.
+ *
+ * So the path is answered here instead. An event slug goes to its own row in the archive;
+ * anything else — old news posts, and the two the homepage cites by hand — goes to /news,
+ * which is the closest thing this build has to the old blog. Neither is as good as the
+ * original article, but both beat a silent bounce to the homepage.
+ *
+ * This route is inert until the domain moves: nothing on the site links to /post/ today.
+ */
+function PostRedirect() {
+  const { slug = '' } = useParams();
+  return <Navigate to={EVENT_SLUGS.has(slug) ? `/events/past#${slug}` : '/news'} replace />;
 }
 
 // Routes are generated from the same table the navigation reads, so a nav item and its
@@ -72,6 +95,7 @@ const router = createBrowserRouter(
         { path: 'join-inzbc', element: <Navigate to="/membership" replace /> },
         { path: 'membership-form', element: <Navigate to="/membership" replace /> },
         { path: 'news/categories/news', element: <Navigate to="/news" replace /> },
+        { path: 'post/:slug', element: <PostRedirect /> },
         {
           path: '*',
           element: <Navigate to="/" replace />,
