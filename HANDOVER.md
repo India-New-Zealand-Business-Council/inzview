@@ -227,6 +227,13 @@ of them break silently.
    URLs want checking against the redirect table in `Router.tsx` — which covers the old
    top-level routes but, as above, nothing under `/post/`.
 
+`inzbusinesssummit.com` is **not** part of this. It is a separate domain, parked at Wix with
+no site connected, and it serves Wix's "ConnectYourDomain" error to anyone who follows the
+three Summit buttons on Home, `/events` and `Sections.tsx`. Moving `inzbc.org` will not
+touch it. It was left in place on 23 August 2026 on the understanding that the domain gets
+reconnected as its own task — if that does not happen, those three buttons need repointing
+at `/events` instead, which is a five-minute change.
+
 ## Content parity
 
 `legacy/wix-studio/docs/parity-matrix.md` maps every destination, form, archive and content
