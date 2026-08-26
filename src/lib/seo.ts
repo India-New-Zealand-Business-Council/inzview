@@ -27,6 +27,8 @@ export const SITE_NAME = 'India New Zealand Business Council';
  * scheme, which is how the live canonical ended up as http:// on an https-only site.
  * A wrong-scheme canonical splits ranking signals between two spellings of the same URL.
  *
+ * Feeds the canonical tag and every <loc> in /sitemap-pages.xml.
+ *
  * This is the wix-vibe preview host because that is where the rebuild is currently served.
  * When INZBC points inzbc.org at this build, change this one constant — nothing else needs
  * to move, but leaving it stale would make every canonical on the live site point at the

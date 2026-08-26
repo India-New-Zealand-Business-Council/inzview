@@ -136,6 +136,17 @@ headline and both buttons never appeared. Content is now visible by default and 
 after the client confirms it can animate. Do not reintroduce an animation that stands between
 the reader and the words.
 
+**Wix reserves `/sitemap.xml` and `/robots.txt`.** An Astro route at either path is never
+reached: Wix answers both itself, returning its own 404 for the first and a dashboard-managed
+file for the second. Both were added here as endpoints on 22 August and neither worked; the
+sitemap now lives at `/sitemap-pages.xml` and there is no robots endpoint at all. Probed
+against the published site on 27 August — `/sitemap.xml` returned 404 while `/foo.xml`,
+`/feed.xml`, `/anything.txt` and `/sitemap-pages.xml` all fell through to the catch-all, so
+the reservation is per-path, not per-extension. Wix's own robots.txt advertises a sitemap at
+`/sitemap.xml`, which does not exist; pointing it at `/sitemap-pages.xml` is a change in the
+Wix dashboard under SEO Tools, and until someone makes it the sitemap is published but
+unadvertised.
+
 ## Finish the last step
 
 A previous agent wrote `bodies.tsx` in full, twelve components and a route map, correct and
@@ -215,7 +226,7 @@ of them break silently.
    route, redirected per-slug, or the citations are rewritten to point at an archive.
 
 2. **`SITE_ORIGIN` in `src/lib/seo.ts` still names the wix-vibe preview host.** It feeds the
-   canonical tag, `sitemap.xml` and `robots.txt`. Left stale, the new inzbc.org would tell
+   canonical tag and `/sitemap-pages.xml`. Left stale, the new inzbc.org would tell
    Google that the canonical version of every page lives on the preview domain — worse than
    having no canonical at all, because it actively points ranking somewhere else.
 
