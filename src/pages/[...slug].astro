@@ -45,7 +45,9 @@ const organizationLd = {
   name: SITE_NAME,
   alternateName: 'INZBC',
   url: absoluteUrl('/'),
-  logo: ART.logo,
+  // absoluteUrl, because ART.logo is a repo path now that the artwork is served from here
+  // rather than the old site's media library, and structured data needs a resolvable URL.
+  logo: absoluteUrl(ART.logo),
   foundingDate: '1988',
   email: LINKS.email.replace('mailto:', ''),
   sameAs: [LINKS.linkedin, LINKS.facebook, LINKS.x, LINKS.youtube, LINKS.flickr],

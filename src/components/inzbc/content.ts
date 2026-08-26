@@ -30,27 +30,42 @@ export const LINKS = {
   email: 'mailto:Secretariat@inzbc.org',
 } as const;
 
+/*
+ * Artwork, served from this repo.
+ *
+ * Every entry here except kiaOraCover used to be a static.wixstatic.com URL under the
+ * df219d media account — the old inzbc.org site's library, not this one's. That is exactly
+ * what legacy/wix-studio/docs/live-site-extract.md says not to do: "the URLs work today but
+ * tie the rebuild to the old site's assets." The site logo was one of them, so retiring the
+ * old site would have taken the masthead off every page of the new one, on a schedule
+ * nobody was tracking against this repo.
+ *
+ * The fifteen files still in use were downloaded on 22 August 2026 and live in public/art/
+ * under names that say what they are. Byte-identical to what the URLs served; nothing was
+ * re-encoded or resized, so this commit changes where the images come from and nothing
+ * about how they look.
+ *
+ * Four dropped rather than downloaded, because nothing rendered them: heroPhoto,
+ * reportCover2025, pharmaReportCover and magazineSpread. They are recoverable from this
+ * file's history along with their original URLs, for as long as the old library is up.
+ */
 export const ART = {
-  logo: 'https://static.wixstatic.com/media/df219d_0b8e6333d53841efaf66f675038a0798~mv2.jpg',
-  heroPhoto: 'https://static.wixstatic.com/media/df219d_85f777cc8d624bc2b4ea81783f71df24~mv2.jpg',
-  heroBanner: 'https://static.wixstatic.com/media/df219d_83e2d493f8b8499c8ef83fddd27208b8~mv2.jpg',
-  reportCover: 'https://static.wixstatic.com/media/df219d_60093c58a989446681ae38ad6efe3a94~mv2.png',
-  reportCover2025: 'https://static.wixstatic.com/media/df219d_4ffc59bcc17b482ba5850f648d232e29~mv2.png',
-  pharmaReportCover: 'https://static.wixstatic.com/media/df219d_08ef7a8c3e724d6783a24cd1c5dbcc4f~mv2.jpg',
+  logo: '/art/logo.jpg',
+  heroBanner: '/art/hero-banner.jpg',
+  reportCover: '/art/report-cover.png',
   kiaOraCover: '/publications/kia-ora-2024-06.jpg',
-  partnerStrip: 'https://static.wixstatic.com/media/df219d_5350f10f4b714eddae1958abfd3c39d5~mv2.jpg',
-  magazineSpread: 'https://static.wixstatic.com/media/df219d_1b53b12ca8af4cfd970a2093bdee7009~mv2.png',
-  newsletterMockup: 'https://static.wixstatic.com/media/df219d_29794fdc9e864b9997c3333499673a20~mv2.png',
-  ftaFlyer: 'https://static.wixstatic.com/media/df219d_b5d766252f204d4a85f6d6b58784144c~mv2.png',
-  ftaNewEra: 'https://static.wixstatic.com/media/df219d_7e1445021137495297e56207da29fcaa~mv2.jpg',
-  iconEvents: 'https://static.wixstatic.com/media/df219d_161014de7ca0434ea61527a1d44455a2~mv2.png',
-  iconPublications: 'https://static.wixstatic.com/media/df219d_5660a14b9b3c457a801d7c5e2d6e4450~mv2.png',
-  iconMemberships: 'https://static.wixstatic.com/media/df219d_e722f1a99464408c987c16bec72791f4~mv2.png',
-  iconTrade: 'https://static.wixstatic.com/media/df219d_3f9c2e680dbb4de1964c21532decad7b~mv2.png',
-  socialFacebook: 'https://static.wixstatic.com/media/df219d_1bfd392cd6be42959afc33895036d9eb~mv2.png',
-  socialLinkedin: 'https://static.wixstatic.com/media/df219d_bbc62087c9cd4b908787d3fe761e05e7~mv2.png',
-  socialYoutube: 'https://static.wixstatic.com/media/df219d_f0d2dc7f557c43aea100e778e904f3d8~mv2.png',
-  socialX: 'https://static.wixstatic.com/media/df219d_e31fcca7427c4eca88e40f376e1b8320~mv2.png',
+  partnerStrip: '/art/partner-strip.jpg',
+  newsletterMockup: '/art/newsletter-mockup.png',
+  ftaFlyer: '/art/fta-flyer.png',
+  ftaNewEra: '/art/fta-new-era.jpg',
+  iconEvents: '/art/icon-events.png',
+  iconPublications: '/art/icon-publications.png',
+  iconMemberships: '/art/icon-memberships.png',
+  iconTrade: '/art/icon-trade.png',
+  socialFacebook: '/art/social-facebook.png',
+  socialLinkedin: '/art/social-linkedin.png',
+  socialYoutube: '/art/social-youtube.png',
+  socialX: '/art/social-x.png',
 } as const;
 
 /* The only three numbers this site may state. Each carries its own source line, because a
