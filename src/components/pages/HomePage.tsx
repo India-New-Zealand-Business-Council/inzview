@@ -1070,18 +1070,17 @@ export default function HomePage() {
                   View photo gallery
                 </a>
               </div>
-              <a
-                href={LINKS.summitSite}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="home-summit-link home-focus-dark"
-              >
+              {/* inzbusinesssummit.com is parked at Wix with no site connected and 404s
+                  (checked 27 Aug 2026) — points at /events, the live page about the same
+                  Summit, rather than a dead domain. Repoint at LINKS.summitSite once INZBC
+                  reconnects it. */}
+              <Link to="/events" className="home-summit-link home-focus-dark">
                 <span>
                   <small>Annual flagship</small>
                   INZBC Summit
                 </span>
                 <ArrowUpRight aria-hidden="true" size={20} />
-              </a>
+              </Link>
             </HomeBlock>
 
             <div data-reel="right" style={{ '--reel-delay': '100ms' } as React.CSSProperties}>

@@ -150,55 +150,6 @@ export function MakeConnections() {
   );
 }
 
-/* --- Summit and mailing list, side by side, as the old site had them ------------------- */
-
-export function SummitAndMailingList() {
-  return (
-    <section className="relative grid md:grid-cols-2">
-      <div className="relative overflow-hidden bg-navy px-6 py-20">
-        <Reveal>
-          <div className="mx-auto max-w-md">
-            <h2 className="font-heading text-2xl text-white md:text-3xl">INZBC Annual Summit</h2>
-            <p className="mt-4 text-white/75">
-              New Zealand&rsquo;s premier India trade event, bringing together business
-              leaders, policymakers and government representatives from both countries.
-            </p>
-            <a
-              href={LINKS.summitSite}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-7 inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
-            >
-              Visit website
-            </a>
-          </div>
-        </Reveal>
-      </div>
-      <div className="relative overflow-hidden bg-plum px-6 py-20">
-        <Reveal delay={0.08}>
-          <div className="mx-auto max-w-md">
-            <h2 className="font-heading text-2xl text-white md:text-3xl">
-              Subscribe to our mailing list
-            </h2>
-            <p className="mt-4 text-white/80">
-              INZBC publishes a monthly newsletter and a quarterly magazine. These
-              publications cover latest news and trade updates from India and New Zealand.
-            </p>
-            <a
-              href={LINKS.subscribe}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-7 inline-block rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
-            >
-              Subscribe
-            </a>
-          </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
 /* --- Advertise ------------------------------------------------------------------------- */
 
 export function Advertise() {

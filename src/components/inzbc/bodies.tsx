@@ -736,10 +736,11 @@ function EventsBody() {
                   announced to members and subscribers first.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <Btn href={LINKS.summitSite} external>
-                    Visit the Summit website
-                  </Btn>
-                  <Btn href={LINKS.subscribe} variant="outline" external>
+                  {/* inzbusinesssummit.com 404s (parked at Wix, no site connected — checked
+                      27 Aug 2026), and this page already is the events page, so a "visit the
+                      Summit" button here had nowhere honest to send anyone. Restore it once
+                      INZBC reconnects the domain. */}
+                  <Btn href={LINKS.subscribe} external>
                     Subscribe for announcements
                   </Btn>
                 </div>
