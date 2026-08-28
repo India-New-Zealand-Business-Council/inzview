@@ -46,9 +46,7 @@ src/components/inzbc/
   pages.ts          Route table; the nav reads the same list
   motion.tsx        Scroll hooks, Reveal, WordReveal, Parallax, TiltCard, CountUp,
                     ScrollProgress, StickyHeader
-  TradeRoute.tsx    The page-length SVG line that draws on scroll
-  PinnedJourney.tsx The pinned statistics section
-  Sections.tsx      Make Connections, summit, advertise, connect, newsletter, partners
+  Sections.tsx      Make Connections, advertise, connect, newsletter, partners
   InnerPage.tsx     Shell for the ten inner routes
 src/components/pages/HomePage.tsx   19 sections
 public/events/      Four INZBC event photographs
@@ -185,6 +183,19 @@ measurement was wrong. Check the instrument before writing the diagnosis.
   Tab instead.
 - **Lazy images below the fold report `naturalWidth: 0`.** They look broken. Scroll first.
 
+**The "30 second unresponsive renderer" screenshot timeout did not reproduce on 28 Aug 2026.**
+Profiled with a standalone Playwright script (real `mouse.wheel` steps top to bottom, a
+`PerformanceObserver` for long tasks, per-step timing) against the live site on Home,
+`/fta`, `/events` and `/connect` (the page with the live Twitter/Facebook embeds). Worst
+single scroll step was 435ms on Home; longest main-thread long task was 817ms, during
+initial load, not scrolling. The two components this was suspected to trace to,
+`TradeRoute.tsx` and `PinnedJourney.tsx`, turned out to be dead code — nothing imported
+either of them — and were deleted the same day. Likely explanation: the freeze was tied to
+one of those two before HomePage moved past them, and it retired along with the code. Not
+proven, since the original report never captured a repro case to compare against; if it
+recurs, get a trace from the actual browser session it happens in before assuming this is
+the same bug.
+
 ## What is still open
 
 Needs INZBC to supply something:
@@ -206,9 +217,9 @@ Code work that can start now:
 
 5. **Individual partner logos.** The wall is one flattened JPEG, so no logo is clickable.
 6. **36 tap targets under 44px.** Mostly nav links at 42px and inline text links inside
-   paragraphs, where a 44px box would break line spacing. A real trade, worth revisiting.
-7. **A screenshot timeout after scrolling**, roughly 30 seconds of unresponsive renderer.
-   Never chased. Suspect the parallax springs plus the 300vh pinned section. Worth profiling.
+   paragraphs, where a 44px box would break line spacing. A real trade, worth revisiting. The
+   shared inner-page footer's nav/social/email links (no padding at all, ~20px real tap
+   height) were the largest single group and are fixed as of 27 Aug 2026.
 
 ## Domain cutover
 

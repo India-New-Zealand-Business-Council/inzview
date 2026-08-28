@@ -96,8 +96,7 @@ function Card({
 
 /**
  * An organic "blob" icon badge, same silhouette family as the live site's old social-icon
- * graphics but built as a real SVG path (same technique TradeRoute.tsx already uses for
- * organic curves in this codebase) rather than a CSS border-radius approximation, which reads
+ * graphics but built as a real SVG path rather than a CSS border-radius approximation, which reads
  * as a rounded rectangle rather than a true blob. One diagonal gradient per instance, using
  * this project's own brand hex values (from tailwind.config.mjs) rather than the old site's
  * blue — the shape is what's being matched here, not that palette, per the standing
