@@ -46,7 +46,9 @@ no `logo:` falls back to a styled wordmark automatically.
 
 ## Known follow-up
 
-`phdcci.png` is 1584x1584 and 257 KB for a tile that renders at most 72px tall. It predates
-this pass and is the heaviest asset on the page; worth downscaling. `asean-nz.png` (above)
-has the same issue at 2180x528/68 KB — no image tool was available in this environment to
-fix either.
+`phdcci.png` was 1584x1584 and 257 KB for a tile that renders at most 72px tall; `asean-nz.png`
+was 2180x528 and 68 KB for the same 72px-tall render. Downscaled 28 Aug 2026 to 320x320
+(68 KB) and 480x116 (22 KB) — a Playwright-driven canvas resize, since no image tool was
+otherwise available in this environment. Both targets keep real headroom above the 72px/220px
+max render size in `HomePage.css`'s `.home-partner-mark__art img`, checked side by side
+against the originals at render size before committing.
