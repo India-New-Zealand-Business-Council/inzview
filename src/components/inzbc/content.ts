@@ -54,7 +54,6 @@ export const ART = {
   heroBanner: '/art/hero-banner.jpg',
   reportCover: '/art/report-cover.png',
   kiaOraCover: '/publications/kia-ora-2024-06.jpg',
-  partnerStrip: '/art/partner-strip.jpg',
   newsletterMockup: '/art/newsletter-mockup.png',
   ftaFlyer: '/art/fta-flyer.png',
   ftaNewEra: '/art/fta-new-era.jpg',
