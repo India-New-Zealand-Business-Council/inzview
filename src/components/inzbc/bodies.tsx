@@ -1348,6 +1348,13 @@ function NewsBody() {
   const posts = [
     {
       img: ART.ftaFlyer,
+      // Both the flyer and the banner below are wider than this card's 16:10 box and carry
+      // their own text right up against the left edge (856x403 and 1280x720 respectively).
+      // A centered object-cover crop, checked against the actual images before choosing
+      // this, sliced "INSIDE THE / NZ INDIA FTA" and "VANGELIS VITALIS" down to "IDE THE"
+      // and "ELIS VITALIS" here, and cut the "C" off "CONNECTING" below. The third photo is
+      // a group shot with no such edge content, so it keeps the default center crop.
+      imgPosition: 'left' as const,
       alt: 'Event flyer for Inside the NZ India FTA with Vangelis Vitalis',
       title: 'Inside the NZ–India FTA with Vangelis Vitalis',
       body: "An Auckland event with New Zealand's chief trade negotiator.",
@@ -1360,6 +1367,7 @@ function NewsBody() {
     },
     {
       img: ART.heroBanner,
+      imgPosition: 'left' as const,
       alt: 'INZBC banner showing a container port and India Gate',
       title: 'INZBC welcomes the landmark agreement',
       // Quoted directly from the article on inzbc.org/news (22 Dec 2025), pulled 18 Aug 2026.
@@ -1387,7 +1395,7 @@ function NewsBody() {
                     src={post.img}
                     alt={post.alt}
                     loading="lazy"
-                    className="aspect-[16/10] w-full object-cover"
+                    className={`aspect-[16/10] w-full object-cover ${post.imgPosition === 'left' ? 'object-left' : ''}`}
                   />
                   <div className="flex flex-1 flex-col p-6">
                     <h3 className="font-heading text-lg text-ink">{post.title}</h3>
