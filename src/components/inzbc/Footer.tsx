@@ -37,6 +37,8 @@ export default function Footer() {
         </Link>
 
         <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+          {/* NAV (pages.ts) already ends with About, so only Partners — which NAV doesn't
+              carry — needs adding here. */}
           {NAV.map((item) => (
             <Link key={item.href} to={item.href} className={LINK}>
               {item.label}
@@ -44,9 +46,6 @@ export default function Footer() {
           ))}
           <Link to="/partners" className={LINK}>
             Partners
-          </Link>
-          <Link to="/about-inzbc" className={LINK}>
-            About
           </Link>
         </nav>
       </div>
