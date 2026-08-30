@@ -50,7 +50,12 @@ export const LINKS = {
  * file's history along with their original URLs, for as long as the old library is up.
  */
 export const ART = {
-  logo: '/art/logo.jpg',
+  // .png, not the original .jpg: JPEG has no alpha channel, so the logo carried a hard
+  // white rectangle wherever it sat on anything but a plain white background — visible as
+  // a mismatched box against the header's translucent lavender pill. Background removed by
+  // channel-thresholding near-white pixels to transparent (checked against the flower
+  // mark's own light-centre gradient first, so the removal doesn't punch a hole in it).
+  logo: '/art/logo.png',
   heroBanner: '/art/hero-banner.jpg',
   reportCover: '/art/report-cover.png',
   kiaOraCover: '/publications/kia-ora-2024-06.jpg',
