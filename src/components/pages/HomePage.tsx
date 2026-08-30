@@ -28,6 +28,7 @@ import {
   INDIA_NETWORK,
   PUBLIC_SECTOR_NETWORK,
 } from '@/components/inzbc/content';
+import { NAV } from '@/components/inzbc/pages';
 import ClickSpark from '@/components/home/ClickSpark';
 import EffectsWorld from '@/components/home/EffectsWorld';
 import KineticHeading from '@/components/home/KineticHeading';
@@ -41,14 +42,6 @@ import './HomePage.css';
  * established shell while the homepage can be art-directed as one editorial experience.
  * Factual claims stay sourced, and unfinished integrations are presented honestly.
  */
-
-const HOME_NAV = [
-  { label: 'The FTA', href: '/fta' },
-  { label: 'Events', href: '/events' },
-  { label: 'Membership', href: '/membership' },
-  { label: 'Publications', href: '/publications' },
-  { label: 'Connect', href: '/connect' },
-] as const;
 
 const HOME_PATHWAYS = [
   {
@@ -689,7 +682,7 @@ function HomeHeader() {
         </Link>
 
         <nav className="home-nav" aria-label="Primary navigation">
-          {HOME_NAV.map((item) => (
+          {NAV.map((item) => (
             <Link key={item.href} to={item.href} className="home-nav__link home-focus-light">
               {item.label}
             </Link>
@@ -745,7 +738,7 @@ function HomeHeader() {
                 }
               >
                 <nav aria-label="Mobile navigation">
-                  {HOME_NAV.map((item, index) => (
+                  {NAV.map((item, index) => (
                     <Link
                       key={item.href}
                       to={item.href}
@@ -1482,7 +1475,7 @@ export default function HomePage() {
             />
           </Link>
           <nav className="home-footer__nav" aria-label="Footer navigation">
-            {HOME_NAV.map((item) => (
+            {NAV.map((item) => (
               <Link key={item.href} to={item.href} className="home-focus-light">
                 {item.label}
               </Link>
