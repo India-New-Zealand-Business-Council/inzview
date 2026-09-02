@@ -76,18 +76,22 @@ make it correct; it makes it the only version with a source.
 
 **Never invent a fact.** Member counts, event dates, venues, article summaries, testimonials
 and company names are all things INZBC has to supply. Where one is missing the page renders
-a visible `[[marker]]`. Four are live right now:
-
-- `[[member count — confirm with INZBC]]`
-- `[[FTA summary copy — pull from the FTA Overview page once drafted]]`
-- `[[Article summary — confirm with INZBC]]`
-- `[[Page body still to be migrated]]` on each inner page
+a visible `[[marker]]`. This list goes stale fast — `grep -rn '\[\[' src` for the live count
+and locations rather than trusting a number written here. Checked 3 Sep 2026: member/industry
+count (bodies.tsx), FTA summary copy, one article summary, a digest-archive note, the News
+CMS gap, the contact-form gap, sponsorship tier pricing, and the FTA Explainer's embed slot
+all still render honestly as markers, nothing invented to fill any of them.
 
 A visible gap is better than plausible filler nobody has checked. Do not "tidy these up".
 
-**Only three figures may be stated**, and each carries its source line: NZ$3.95bn two-way
-trade (year ended December 2025), 95% of NZ exports receiving tariff elimination or
-reduction, 57% duty free from day one. Sourced from MFAT's National Interest Analysis.
+**STATS in content.ts holds the three headline figures** repeated across Home and the summary
+bands, each with its source line: NZ$3.95bn two-way trade (year ended December 2025), 95% of
+NZ exports receiving tariff elimination or reduction, 57% duty free from day one. Sourced from
+MFAT's National Interest Analysis. `FtaPage.tsx` separately cites further figures (82%, 13%,
+forestry 95%) for its own detailed timeline, sourced from MFAT's Key Outcomes summary and
+`legacy/wix-studio`'s `fta-centre.html` snippet — a wider, page-specific source set for that
+one page, not a violation of this rule. Any *other* figure appearing anywhere on the site
+without its own source line is the actual thing to catch.
 
 **The FTA is signed, not in force.** Signed 27 April 2026, awaiting domestic ratification in
 both countries. The old site said "now in effect" and that was wrong.

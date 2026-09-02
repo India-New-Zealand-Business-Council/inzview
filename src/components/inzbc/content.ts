@@ -62,29 +62,22 @@ export const ART = {
   newsletterMockup: '/art/newsletter-mockup.png',
   ftaFlyer: '/art/fta-flyer.png',
   ftaNewEra: '/art/fta-new-era.jpg',
-  iconEvents: '/art/icon-events.png',
-  iconPublications: '/art/icon-publications.png',
-  iconMemberships: '/art/icon-memberships.png',
-  iconTrade: '/art/icon-trade.png',
   socialFacebook: '/art/social-facebook.png',
   socialLinkedin: '/art/social-linkedin.png',
   socialYoutube: '/art/social-youtube.png',
   socialX: '/art/social-x.png',
 } as const;
 
-/* The only three numbers this site may state. Each carries its own source line, because a
-   figure without a source is a claim. Sourced from MFAT's National Interest Analysis. */
+/* The three headline numbers repeated across Home and the summary bands. Each carries its
+   own source line, because a figure without a source is a claim. Sourced from MFAT's
+   National Interest Analysis. FtaPage.tsx cites further figures (82%, 13%, forestry 95%) for
+   its own detailed timeline/breakdown, sourced separately from MFAT's Key Outcomes summary
+   and legacy/wix-studio's fta-centre.html snippet — a wider, page-specific source set, not a
+   drift from this one. */
 export const STATS = [
   { figure: 'NZ$3.95bn', label: 'Two-way trade', note: 'Year ended December 2025.' },
   { figure: '95%', label: 'Of NZ exports covered', note: 'Receiving tariff elimination or reduction.' },
   { figure: '57%', label: 'Duty free from day one', note: "At the agreement's entry into force." },
-] as const;
-
-export const PATHWAYS = [
-  { title: 'Events', body: 'Briefings, delegations, networking and the annual INZBC Summit.', icon: ART.iconEvents, href: '/events' },
-  { title: 'News and publications', body: 'The India Report, Kia Ora India and the Trade Intelligence Digest.', icon: ART.iconPublications, href: '/publications' },
-  { title: 'Membership', body: 'Advocacy, market intelligence, introductions and the member directory.', icon: ART.iconMemberships, href: '/membership' },
-  { title: 'Trade with India', body: 'Exporting, importing, trade missions and the NZ-India FTA.', icon: ART.iconTrade, href: '/trade' },
 ] as const;
 
 export const BENEFITS = [
