@@ -30,23 +30,31 @@ export default function KineticHeading({
           const words = line.split(/\s+/);
 
           return (
-            <span key={`${line}-${lineIndex}`} className="home-kinetic-heading__line">
-              {words.map((word, indexInLine) => {
-                const index = wordIndex;
-                wordIndex += 1;
-                return (
-                  <React.Fragment key={`${word}-${index}`}>
-                    <span
-                      className="home-kinetic-word"
-                      style={{ '--word-index': index } as React.CSSProperties}
-                    >
-                      <span className="home-kinetic-word__inner">{word}</span>
-                    </span>
-                    {indexInLine < words.length - 1 ? ' ' : null}
-                  </React.Fragment>
-                );
-              })}
-            </span>
+            <React.Fragment key={`${line}-${lineIndex}`}>
+              <span className="home-kinetic-heading__line">
+                {words.map((word, indexInLine) => {
+                  const index = wordIndex;
+                  wordIndex += 1;
+                  return (
+                    <React.Fragment key={`${word}-${index}`}>
+                      <span
+                        className="home-kinetic-word"
+                        style={{ '--word-index': index } as React.CSSProperties}
+                      >
+                        <span className="home-kinetic-word__inner">{word}</span>
+                      </span>
+                      {indexInLine < words.length - 1 ? ' ' : null}
+                    </React.Fragment>
+                  );
+                })}
+              </span>
+              {/* .home-kinetic-heading__line is display:block, so this space is invisible
+                  on screen (whitespace between block elements never renders) but keeps the
+                  raw text — what a crawler indexes or a visitor copy-pastes — from reading
+                  as "gatewayto" instead of "gateway to". Screen readers already get the
+                  correctly-spaced text from aria-label above; this fixes the other two. */}
+              {lineIndex < lines.length - 1 ? ' ' : null}
+            </React.Fragment>
           );
         })}
       </span>
