@@ -34,6 +34,7 @@ import EffectsWorld from '@/components/home/EffectsWorld';
 import KineticHeading from '@/components/home/KineticHeading';
 import TradeThread from '@/components/home/TradeThread';
 import './HomePage.css';
+import { Image } from '@/components/ui/image';
 
 /**
  * INZBC homepage.
@@ -521,13 +522,7 @@ function EventsGallery() {
           key={photo.src}
           className={`home-events__photo ${photoClasses[index]}`}
         >
-          <img
-            src={photo.src}
-            alt={photo.alt}
-            width={photo.width}
-            height={photo.height}
-            loading="lazy"
-          />
+          <Image src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" />
         </div>
       ))}
       <figcaption className="home-events__gallery-caption">
@@ -672,13 +667,7 @@ function HomeHeader() {
       <div className="home-header__bar">
         <span className="home-header__progress" aria-hidden="true" />
         <Link to="/" className="home-logo-link home-focus-light" aria-label="INZBC home">
-          <img
-            src={ART.logo}
-            width="400"
-            height="114"
-            alt="India New Zealand Business Council"
-            className="home-logo"
-          />
+          <Image src={ART.logo} width="400" height="114" alt="India New Zealand Business Council" className="home-logo" />
         </Link>
 
         <nav className="home-nav" aria-label="Primary navigation">
@@ -779,7 +768,7 @@ function Hero() {
             <span className="home-hero__status-dot" aria-hidden="true" />
             FTA signed 27 April 2026
             <span aria-hidden="true">/</span>
-            Ratification pending
+            Comes into effect on 20 October 2026
           </div>
           <KineticHeading
             as="h1"
@@ -802,15 +791,7 @@ function Hero() {
 
         <div className="home-hero__visual">
           <div className="home-hero__image-wrap">
-            <img
-              src="/events/modi-luxon-auckland-2026.jpeg"
-              alt="Prime Ministers Narendra Modi and Christopher Luxon in conversation during the Indian Prime Minister's official visit to Auckland"
-              width="1200"
-              height="1600"
-              loading="eager"
-              fetchPriority="high"
-              className="home-hero__image"
-            />
+            <Image src="/events/modi-luxon-auckland-2026.jpeg" alt="Prime Ministers Narendra Modi and Christopher Luxon in conversation during the Indian Prime Minister's official visit to Auckland" width="1200" height="1600" loading="eager" fetchPriority="high" className="home-hero__image" />
             <div className="home-hero__image-shade" aria-hidden="true" />
             <HeroRoute />
             <div aria-hidden="true" className="home-hero__route-label home-hero__route-label--start">
@@ -1144,11 +1125,7 @@ export default function HomePage() {
                 spotlight
               >
                 <div className="home-publication__cover">
-                  <img
-                    src={ART.reportCover}
-                    alt="Cover of Grow With India, the New Zealand India Trade Report 2025"
-                    loading="lazy"
-                  />
+                  <Image src={ART.reportCover} alt="Cover of Grow With India, the New Zealand India Trade Report 2025" loading="lazy" />
                 </div>
                 <div className="home-publication__copy">
                   <span className="home-card-kicker">Flagship report / 2025</span>
@@ -1176,11 +1153,7 @@ export default function HomePage() {
                   </Action>
                 </div>
                 <div className="home-publication__cover">
-                  <img
-                    src={ART.kiaOraCover}
-                    alt="Cover of Kia Ora India, the INZBC magazine"
-                    loading="lazy"
-                  />
+                  <Image src={ART.kiaOraCover} alt="Cover of Kia Ora India, the INZBC magazine" loading="lazy" />
                 </div>
               </HomeBlock>
 
@@ -1191,11 +1164,7 @@ export default function HomePage() {
                 data-reel-spotlight="true"
                 style={{ '--reel-delay': '160ms' } as React.CSSProperties}
               >
-                <img
-                  src={ART.ftaNewEra}
-                  alt="Delegation photograph accompanying an INZBC FTA article"
-                  loading="lazy"
-                />
+                <Image src={ART.ftaNewEra} alt="Delegation photograph accompanying an INZBC FTA article" loading="lazy" />
                 <div className="home-news-card__copy">
                   <span className="home-card-kicker">Latest insight</span>
                   <h3>FTA signals a new era for business</h3>
@@ -1255,7 +1224,7 @@ export default function HomePage() {
                     >
                       <span className="home-partner-mark__art">
                         {partner.logo ? (
-                          <img src={partner.logo} alt={`${partner.name} logo`} loading="lazy" />
+                          <Image src={partner.logo} alt={`${partner.name} logo`} loading="lazy" />
                         ) : (
                           <strong>{partner.name}</strong>
                         )}
@@ -1292,7 +1261,7 @@ export default function HomePage() {
                     >
                       <span className="home-india-mark__art">
                         {partner.logo ? (
-                          <img src={partner.logo} alt={`${partner.name} logo`} loading="lazy" />
+                          <Image src={partner.logo} alt={`${partner.name} logo`} loading="lazy" />
                         ) : (
                           <strong>{partner.name}</strong>
                         )}
@@ -1317,7 +1286,7 @@ export default function HomePage() {
                 {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo }) =>
                   href ? (
                     <a key={name} href={href} target="_blank" rel="noopener noreferrer" className="home-focus-dark">
-                      {logo ? <img src={logo} alt="" loading="lazy" /> : null}
+                      {logo ? <Image src={logo} alt="" loading="lazy" /> : null}
                       {name}
                     </a>
                   ) : (
@@ -1467,12 +1436,7 @@ export default function HomePage() {
         </div>
         <div className="home-shell home-footer__top" data-reel="rise">
           <Link to="/" className="home-footer__logo home-focus-light" aria-label="INZBC home">
-            <img
-              src={ART.logo}
-              width="400"
-              height="114"
-              alt="India New Zealand Business Council"
-            />
+            <Image src={ART.logo} width="400" height="114" alt="India New Zealand Business Council" />
           </Link>
           <nav className="home-footer__nav" aria-label="Footer navigation">
             {NAV.map((item) => (

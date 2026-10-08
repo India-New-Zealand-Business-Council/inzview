@@ -12,6 +12,7 @@ import {
 import { Reveal } from './motion';
 import { ART, BENEFITS, LINKS, STATS, BUSINESS_PARTNERS, INDIA_NETWORK, PUBLIC_SECTOR_NETWORK } from './content';
 import SocialFeeds from './SocialFeeds';
+import { Image } from '@/components/ui/image';
 
 /**
  * The migrated bodies for the inner routes, carried over from the Studio build's section
@@ -127,7 +128,7 @@ function Person({ name, role, photo }: { name: string; role: string; photo?: str
   return (
     <div className="h-full overflow-hidden rounded-2xl bg-mist">
       {photo ? (
-        <img src={photo} alt="" loading="lazy" className="aspect-square w-full object-cover" />
+        <Image src={photo} alt="" loading="lazy" className="aspect-square w-full object-cover" />
       ) : null}
       <div className="p-6">
         <h3 className="font-heading text-lg text-ink">{name}</h3>
@@ -628,12 +629,7 @@ function EventRow({ event, delay = 0 }: { event: EventItem; delay?: number }) {
         className={`group grid gap-5 rounded-xl p-4 -m-4 transition-colors hover:bg-white sm:grid-cols-[8rem_1fr] ${FOCUS}`}
       >
         {event.cover ? (
-          <img
-            src={`/blog/${event.cover}`}
-            alt={`Cover for ${event.title}`}
-            loading="lazy"
-            className="aspect-[4/3] w-full rounded-lg object-cover"
-          />
+          <Image src={`/blog/${event.cover}`} alt={`Cover for ${event.title}`} loading="lazy" className="aspect-[4/3] w-full rounded-lg object-cover" />
         ) : (
           <span className="hidden aspect-[4/3] w-full rounded-lg bg-mist sm:block" aria-hidden="true" />
         )}
@@ -669,12 +665,7 @@ function ExpoRow({ event, delay = 0 }: { event: EventItem; delay?: number }) {
         rel="noopener noreferrer"
         className={`group flex items-center gap-4 rounded-xl p-3 -m-3 transition-colors hover:bg-mist ${FOCUS}`}
       >
-        <img
-          src={`/blog/${event.cover}`}
-          alt={`Cover for ${event.title}`}
-          loading="lazy"
-          className="h-16 w-14 flex-none rounded object-cover shadow"
-        />
+        <Image src={`/blog/${event.cover}`} alt={`Cover for ${event.title}`} loading="lazy" className="h-16 w-14 flex-none rounded object-cover shadow" />
         <div className="flex-1">
           <h4 className="font-heading text-base text-ink">{event.title}</h4>
           <p className="text-sm text-foreground/70">
@@ -825,52 +816,17 @@ function MembershipBody() {
                 stacked beside it, so the section reads as a small gallery of the network in
                 action rather than a single illustrative image. */}
             <div className="grid grid-cols-2 grid-rows-2 gap-3">
-              <img
-                src="/blog/indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties.jpg"
-                alt="Indian High Commission symposium on trade and diplomatic ties, with New Zealand and Indian officials"
-                width={1600}
-                height={1066}
-                loading="lazy"
-                className="row-span-2 aspect-square w-full rounded-2xl object-cover"
-              />
-              <img
-                src="/blog/collaboration-and-cooperation-key-to-india-and-nz-s-future-international-education-success.jpg"
-                alt="An INZBC roundtable discussion between New Zealand and Indian delegates"
-                width={1600}
-                height={1066}
-                loading="lazy"
-                className="aspect-[2/1] w-full rounded-2xl object-cover"
-              />
-              <img
-                src="/blog/indian-envoy-calls-for-stronger-business-ties-mutual-presence.jpg"
-                alt="A speaker addressing delegates at an INZBC summit"
-                width={640}
-                height={559}
-                loading="lazy"
-                className="aspect-[2/1] w-full rounded-2xl object-cover"
-              />
+              <Image src="/blog/indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties.jpg" alt="Indian High Commission symposium on trade and diplomatic ties, with New Zealand and Indian officials" width={1600} height={1066} loading="lazy" className="row-span-2 aspect-square w-full rounded-2xl object-cover" />
+              <Image src="/blog/collaboration-and-cooperation-key-to-india-and-nz-s-future-international-education-success.jpg" alt="An INZBC roundtable discussion between New Zealand and Indian delegates" width={1600} height={1066} loading="lazy" className="aspect-[2/1] w-full rounded-2xl object-cover" />
+              <Image src="/blog/indian-envoy-calls-for-stronger-business-ties-mutual-presence.jpg" alt="A speaker addressing delegates at an INZBC summit" width={640} height={559} loading="lazy" className="aspect-[2/1] w-full rounded-2xl object-cover" />
             </div>
             <div className="mt-3 grid grid-cols-2 gap-3">
               {/* The outgoing High Commissioner this slot used to show (Sanjiv Kohli) has
                   since been succeeded; swapped for current 2026 delegation photography from
                   Sunil's 7 Oct 2026 photo set rather than leave a photo of a departed official
                   in a "the network in action" gallery. */}
-              <img
-                src="/events/nz-india-business-delegation-delhi-2026.jpg"
-                alt="New Zealand business delegation in Delhi, 2026"
-                width={1280}
-                height={853}
-                loading="lazy"
-                className="aspect-[4/3] w-full rounded-2xl object-cover"
-              />
-              <img
-                src="/blog/veteran-business-leader-bhav-dhillon-appointed-inzbc-patron.jpg"
-                alt="Bhav Dhillon speaking on an INZBC panel"
-                width={906}
-                height={680}
-                loading="lazy"
-                className="aspect-[4/3] w-full rounded-2xl object-cover"
-              />
+              <Image src="/events/nz-india-business-delegation-delhi-2026.jpg" alt="New Zealand business delegation in Delhi, 2026" width={1280} height={853} loading="lazy" className="aspect-[4/3] w-full rounded-2xl object-cover" />
+              <Image src="/blog/veteran-business-leader-bhav-dhillon-appointed-inzbc-patron.jpg" alt="Bhav Dhillon speaking on an INZBC panel" width={906} height={680} loading="lazy" className="aspect-[4/3] w-full rounded-2xl object-cover" />
             </div>
           </Reveal>
           <Reveal delay={0.08}>
@@ -965,13 +921,7 @@ function MembershipBody() {
             at directly — low opacity keeps white text at full contrast. Was a flat colour
             field; the code comment here used to say no network photo existed, which was true
             before this pass pulled ~150 real ones down from the live site. */}
-        <img
-          src="/blog/qualitynz-group-celebrates-a-decade-of-investment-in-india.jpg"
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover opacity-20"
-        />
+        <Image src="/blog/qualitynz-group-celebrates-a-decade-of-investment-in-india.jpg" alt="" aria-hidden="true" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-20" />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -right-1/4 top-0 h-[30rem] w-[30rem] rounded-full opacity-35 blur-3xl"
@@ -1049,16 +999,7 @@ function MembershipBody() {
                 ['Sreedhar Venkatram', '/council/sreedhar-venkatram.jpeg'],
                 ['Tony Martin', '/council/tony-martin.png'],
               ].map(([name, photo]) => (
-                <img
-                  key={name}
-                  src={photo}
-                  alt={name}
-                  title={name}
-                  width={56}
-                  height={56}
-                  loading="lazy"
-                  className="h-14 w-14 rounded-full border-2 border-mist object-cover"
-                />
+                <Image key={name} src={photo} alt={name} title={name} width={56} height={56} loading="lazy" className="h-14 w-14 rounded-full border-2 border-mist object-cover" />
               ))}
             </div>
             <p className="text-xs text-foreground/60">The council and secretariat &mdash; some of who you&rsquo;ll meet</p>
@@ -1271,12 +1212,7 @@ function ConnectBody() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <img
-              src={ART.newsletterMockup}
-              alt="The INZBC newsletter shown on a laptop and a tablet"
-              loading="lazy"
-              className="w-full"
-            />
+            <Image src={ART.newsletterMockup} alt="The INZBC newsletter shown on a laptop and a tablet" loading="lazy" className="w-full" />
           </Reveal>
         </div>
       </section>
@@ -1327,12 +1263,7 @@ function ConnectBody() {
                   rel="noopener noreferrer"
                   className={`block rounded-2xl bg-mist p-4 transition-transform hover:scale-[1.02] ${FOCUS}`}
                 >
-                  <img
-                    src={`https://i.ytimg.com/vi/${video.id}/mqdefault.jpg`}
-                    alt=""
-                    loading="lazy"
-                    className="w-full rounded-lg"
-                  />
+                  <Image src={`https://i.ytimg.com/vi/${video.id}/mqdefault.jpg`} alt="" loading="lazy" className="w-full rounded-lg" />
                   <p className="mt-3 text-sm font-medium text-ink">{video.title}</p>
                   <p className="mt-1 text-xs text-plum">Watch on YouTube</p>
                 </a>
@@ -1395,12 +1326,7 @@ function NewsBody() {
             {posts.map((post, i) => (
               <Reveal key={post.title} delay={i * 0.08}>
                 <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-mist">
-                  <img
-                    src={post.img}
-                    alt={post.alt}
-                    loading="lazy"
-                    className={`aspect-[16/10] w-full object-cover ${post.imgPosition === 'left' ? 'object-left' : ''}`}
-                  />
+                  <Image src={post.img} alt={post.alt} loading="lazy" className={`aspect-[16/10] w-full object-cover ${post.imgPosition === 'left' ? 'object-left' : ''}`} />
                   <div className="flex flex-1 flex-col p-6">
                     <h3 className="font-heading text-lg text-ink">{post.title}</h3>
                     <p className="mt-2 flex-1 text-sm text-foreground">
@@ -1627,12 +1553,7 @@ function KiaOraIssueRow({
       className={`group -mx-3 flex items-start gap-4 rounded-xl px-3 py-3 transition-colors hover:bg-white ${FOCUS}`}
     >
       {issue.cover ? (
-        <img
-          src={issue.cover}
-          alt={`Cover of Kia Ora India, ${issue.label}`}
-          loading="lazy"
-          className="h-20 w-14 flex-none rounded object-cover shadow"
-        />
+        <Image src={issue.cover} alt={`Cover of Kia Ora India, ${issue.label}`} loading="lazy" className="h-20 w-14 flex-none rounded object-cover shadow" />
       ) : (
         <span className="h-20 w-14 flex-none" aria-hidden="true" />
       )}
@@ -1671,12 +1592,7 @@ function PublicationsBody() {
           <div className="mt-12 grid gap-8 lg:grid-cols-5 lg:gap-10">
             <Reveal className="lg:col-span-3">
               <article className="flex h-full flex-col gap-8 rounded-2xl bg-mist p-8 sm:flex-row sm:items-center md:p-10">
-                <img
-                  src={featured.cover}
-                  alt={`Cover of ${featured.title}, ${featured.sub}`}
-                  loading="lazy"
-                  className="h-auto w-32 flex-none rounded-lg shadow-lg sm:w-40"
-                />
+                <Image src={featured.cover} alt={`Cover of ${featured.title}, ${featured.sub}`} loading="lazy" className="h-auto w-32 flex-none rounded-lg shadow-lg sm:w-40" />
                 <div>
                   <span className="text-xs font-medium uppercase tracking-[0.14em] text-plum">Latest</span>
                   <h3 className="mt-2 font-heading text-2xl text-ink md:text-3xl">{featured.title}</h3>
@@ -1695,12 +1611,7 @@ function PublicationsBody() {
               {otherReports.map((pub, i) => (
                 <Reveal key={pub.title} delay={0.08 + i * 0.06}>
                   <article className="flex gap-5">
-                    <img
-                      src={pub.cover}
-                      alt={`Cover of ${pub.title}`}
-                      loading="lazy"
-                      className="h-auto w-20 flex-none rounded-lg shadow-lg"
-                    />
+                    <Image src={pub.cover} alt={`Cover of ${pub.title}`} loading="lazy" className="h-auto w-20 flex-none rounded-lg shadow-lg" />
                     <div>
                       <h3 className="font-heading text-lg text-ink">{pub.title}</h3>
                       {pub.sub ? <p className="mt-1 text-sm text-plum">{pub.sub}</p> : null}
@@ -1789,12 +1700,7 @@ function NewslettersBody() {
           <Reveal>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Kia Ora India</h2>
             <div className="mt-6 flex gap-6">
-              <img
-                src={ART.kiaOraCover}
-                alt="Cover of Kia Ora India, June 2024"
-                loading="lazy"
-                className="h-auto w-28 flex-none rounded-lg shadow-lg md:w-36"
-              />
+              <Image src={ART.kiaOraCover} alt="Cover of Kia Ora India, June 2024" loading="lazy" className="h-auto w-28 flex-none rounded-lg shadow-lg md:w-36" />
               <div>
                 <p className="text-foreground">
                   The INZBC magazine: member businesses and the people moving between the two
@@ -1871,7 +1777,7 @@ function PartnersBody() {
                   >
                     <span className="flex h-12 items-center justify-center">
                       {partner.logo ? (
-                        <img src={partner.logo} alt={`${partner.name} logo`} loading="lazy" className="max-h-12 max-w-full object-contain" />
+                        <Image src={partner.logo} alt={`${partner.name} logo`} loading="lazy" className="max-h-12 max-w-full object-contain" />
                       ) : (
                         <strong className="text-sm text-ink">{partner.name}</strong>
                       )}
@@ -1900,7 +1806,7 @@ function PartnersBody() {
                   >
                     <span className="flex h-12 items-center justify-center">
                       {partner.logo ? (
-                        <img src={partner.logo} alt={`${partner.name} logo`} loading="lazy" className="max-h-12 max-w-full object-contain" />
+                        <Image src={partner.logo} alt={`${partner.name} logo`} loading="lazy" className="max-h-12 max-w-full object-contain" />
                       ) : (
                         <strong className="text-sm text-ink">{partner.name}</strong>
                       )}
@@ -1928,7 +1834,7 @@ function PartnersBody() {
                         rel="noopener noreferrer"
                         className={`inline-flex min-h-11 items-center gap-1.5 rounded-full border border-ink/10 px-3.5 text-xs font-medium transition-colors hover:border-ink/25 ${FOCUS}`}
                       >
-                        {logo ? <img src={logo} alt="" loading="lazy" className="h-4 w-auto" /> : null}
+                        {logo ? <Image src={logo} alt="" loading="lazy" className="h-4 w-auto" /> : null}
                         {name}
                       </a>
                     ) : (
@@ -2015,12 +1921,7 @@ function FtaBriefingsBody() {
       <section className="bg-white px-6 py-24" aria-labelledby="explainer-title">
         <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-ink sm:flex sm:items-stretch">
           <Reveal className="sm:w-1/2">
-            <img
-              src={`/blog/${ftaExplainer.cover}`}
-              alt={ftaExplainer.title}
-              loading="lazy"
-              className="h-56 w-full object-cover sm:h-full"
-            />
+            <Image src={`/blog/${ftaExplainer.cover}`} alt={ftaExplainer.title} loading="lazy" className="h-56 w-full object-cover sm:h-full" />
           </Reveal>
           <Reveal delay={0.08} className="p-8 text-white sm:w-1/2 md:p-12">
             <p className="text-sm font-medium uppercase tracking-wide text-lime">Featured</p>
@@ -2064,14 +1965,7 @@ function FtaBriefingsBody() {
               7 Oct 2026 — so it's a plain photo and caption instead of a fabricated link. */}
           <Reveal delay={0.04}>
             <figure className="mt-10 overflow-hidden rounded-2xl bg-white shadow-sm">
-              <img
-                src="/events/inzbc-from-agreement-to-business-panel-23-sep-2026.jpg"
-                alt="Panel discussion for 'India New Zealand: From Agreement to Business', with New Zealand's Minister for Trade and Investment and the High Commissioner of India"
-                width={1600}
-                height={800}
-                loading="lazy"
-                className="aspect-[2/1] w-full object-cover"
-              />
+              <Image src="/events/inzbc-from-agreement-to-business-panel-23-sep-2026.jpg" alt="Panel discussion for 'India New Zealand: From Agreement to Business', with New Zealand's Minister for Trade and Investment and the High Commissioner of India" width={1600} height={800} loading="lazy" className="aspect-[2/1] w-full object-cover" />
               <figcaption className="px-5 py-4 text-sm text-foreground/70">
                 <span className="font-medium text-ink">India New Zealand: From Agreement to Business</span>
                 {' — 23 September 2026, Auckland.'}
@@ -2505,12 +2399,7 @@ function EventsPastBody() {
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
             {summit2018Photos.map((p, i) => (
               <Reveal key={p.src} delay={i * 0.06}>
-                <img
-                  src={p.src}
-                  alt={p.alt}
-                  loading="lazy"
-                  className="aspect-[3/2] w-full rounded-2xl object-cover"
-                />
+                <Image src={p.src} alt={p.alt} loading="lazy" className="aspect-[3/2] w-full rounded-2xl object-cover" />
               </Reveal>
             ))}
           </div>
@@ -2692,12 +2581,7 @@ function AboutBody() {
                 of the old blog scrape this slot carried before — a better match for "hosted
                 the majority of visiting Government of India delegations", stated right next
                 to it. */}
-            <img
-              src="/events/nz-parliament-india-delegation-21-sep-2026.jpg"
-              alt="New Zealand and Indian delegates at New Zealand's Parliament, 21 September 2026"
-              loading="lazy"
-              className="aspect-[4/3] w-full rounded-2xl object-cover"
-            />
+            <Image src="/events/nz-parliament-india-delegation-21-sep-2026.jpg" alt="New Zealand and Indian delegates at New Zealand's Parliament, 21 September 2026" loading="lazy" className="aspect-[4/3] w-full rounded-2xl object-cover" />
           </Reveal>
         </div>
       </section>
@@ -2731,14 +2615,7 @@ function AboutBody() {
       <section className="bg-white px-6 py-24">
         <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2 lg:items-center lg:gap-20">
           <Reveal>
-            <img
-              src="/blog/christchurch-city-council-and-inzbc-formalise-strategic-alliance-to-target-indian-market.jpg"
-              alt="Christchurch City Council and INZBC representatives at the signing of a strategic alliance to target the Indian market"
-              width={1600}
-              height={900}
-              loading="lazy"
-              className="aspect-[16/9] w-full rounded-2xl object-cover"
-            />
+            <Image src="/blog/christchurch-city-council-and-inzbc-formalise-strategic-alliance-to-target-indian-market.jpg" alt="Christchurch City Council and INZBC representatives at the signing of a strategic alliance to target the Indian market" width={1600} height={900} loading="lazy" className="aspect-[16/9] w-full rounded-2xl object-cover" />
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">

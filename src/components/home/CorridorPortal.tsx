@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import './CorridorPortal.css';
+import { Image } from '@/components/ui/image';
 
 export type CorridorPortalProps = Readonly<{
   imageSrc: string;
@@ -123,15 +124,7 @@ export default function CorridorPortal({
             className="home-corridor-portal__photo home-corridor-portal__photo--origin"
             style={originPhotoStyle}
           >
-            <img
-              src={imageSrc}
-              alt=""
-              width={imageWidth}
-              height={imageHeight}
-              loading="lazy"
-              decoding="async"
-              style={{ objectPosition: imagePosition }}
-            />
+            <Image src={imageSrc} alt="" width={imageWidth} height={imageHeight} loading="lazy" decoding="async" style={{ objectPosition: imagePosition }} />
             <span className="home-corridor-portal__photo-shade" />
           </motion.div>
 
@@ -140,15 +133,7 @@ export default function CorridorPortal({
               className="home-corridor-portal__photo home-corridor-portal__photo--destination"
               style={destinationPhotoStyle}
             >
-              <img
-                src={destinationImageSrc}
-                alt=""
-                width={destinationImageWidth}
-                height={destinationImageHeight}
-                loading="lazy"
-                decoding="async"
-                style={{ objectPosition: destinationImagePosition }}
-              />
+              <Image src={destinationImageSrc} alt="" width={destinationImageWidth} height={destinationImageHeight} loading="lazy" decoding="async" style={{ objectPosition: destinationImagePosition }} />
               <span className="home-corridor-portal__photo-shade" />
             </motion.div>
           ) : null}

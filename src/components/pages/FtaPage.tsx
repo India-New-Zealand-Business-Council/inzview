@@ -4,6 +4,7 @@ import { Reveal, WordReveal, Parallax, CountUp, ScrollProgress, StickyHeader } f
 import { ART, LINKS } from '@/components/inzbc/content';
 import { NAV } from '@/components/inzbc/pages';
 import Footer from '@/components/inzbc/Footer';
+import { Image } from '@/components/ui/image';
 
 /**
  * NZ-India FTA Centre.
@@ -94,14 +95,7 @@ export default function FtaPage() {
           className="relative overflow-hidden bg-deep px-6 pb-24 pt-44"
           aria-labelledby="fta-hero-title"
         >
-          <img
-            src="/events/modi-luxon-address-auckland-2026.jpeg"
-            alt=""
-            aria-hidden="true"
-            loading="eager"
-            fetchPriority="high"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          <Image src="/events/modi-luxon-address-auckland-2026.jpeg" alt="" aria-hidden="true" loading="eager" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/70 to-deep"
@@ -215,14 +209,7 @@ export default function FtaPage() {
         <section className="bg-mist py-20">
           <Reveal>
             <Parallax speed={0.12}>
-              <img
-                src="/events/modi-luxon-delegation-auckland-2026.jpeg"
-                alt="Prime Ministers Narendra Modi and Christopher Luxon with the New Zealand and India delegations in Auckland"
-                width={2048}
-                height={1366}
-                loading="lazy"
-                className="w-full"
-              />
+              <Image src="/events/modi-luxon-delegation-auckland-2026.jpeg" alt="Prime Ministers Narendra Modi and Christopher Luxon with the New Zealand and India delegations in Auckland" width={2048} height={1366} loading="lazy" className="w-full" />
             </Parallax>
           </Reveal>
           <Reveal delay={0.06}>
@@ -281,14 +268,7 @@ export default function FtaPage() {
         <section className="bg-mist pb-4 pt-24" aria-labelledby="fta-photos-title">
           <Reveal>
             <div className="relative">
-              <img
-                src="/events/inzbc-welcome-auckland-2026.jpeg"
-                alt="INZBC Chief Executive Sunil Kaushal and delegates at the welcome for the Indian Prime Minister in Auckland"
-                width={2048}
-                height={1536}
-                loading="lazy"
-                className="max-h-[36rem] w-full object-cover"
-              />
+              <Image src="/events/inzbc-welcome-auckland-2026.jpeg" alt="INZBC Chief Executive Sunil Kaushal and delegates at the welcome for the Indian Prime Minister in Auckland" width={2048} height={1536} loading="lazy" className="max-h-[36rem] w-full object-cover" />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 to-transparent px-6 pb-6 pt-20 md:px-10">
                 <h2
                   id="fta-photos-title"
@@ -306,14 +286,7 @@ export default function FtaPage() {
 
           <div className="mx-auto mt-4 max-w-5xl px-6 pb-20">
             <Reveal delay={0.05}>
-              <img
-                src="/events/modi-luxon-auckland-2026.jpeg"
-                alt="Prime Ministers Narendra Modi and Christopher Luxon in conversation during the Indian Prime Minister's official visit to Auckland"
-                width={1200}
-                height={1600}
-                loading="lazy"
-                className="max-h-[22rem] w-full object-cover object-[50%_58%]"
-              />
+              <Image src="/events/modi-luxon-auckland-2026.jpeg" alt="Prime Ministers Narendra Modi and Christopher Luxon in conversation during the Indian Prime Minister's official visit to Auckland" width={1200} height={1600} loading="lazy" className="max-h-[22rem] w-full object-cover object-[50%_58%]" />
             </Reveal>
           </div>
         </section>
@@ -323,14 +296,7 @@ export default function FtaPage() {
         <section className="bg-white px-6 py-24" aria-labelledby="fta-explainer-title">
           <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-ink sm:flex sm:items-stretch">
             <Reveal className="sm:w-1/2">
-              <img
-                src="/blog/inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event.png"
-                alt="Vangelis Vitalis, New Zealand's Chief Trade Negotiator"
-                width={856}
-                height={403}
-                loading="lazy"
-                className="h-56 w-full object-cover sm:h-full"
-              />
+              <Image src="/blog/inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event.png" alt="Vangelis Vitalis, New Zealand's Chief Trade Negotiator" width={856} height={403} loading="lazy" className="h-56 w-full object-cover sm:h-full" />
             </Reveal>
             <Reveal delay={0.08} className="p-8 text-white sm:w-1/2 md:p-12">
               <h2 id="fta-explainer-title" className="font-heading text-2xl md:text-3xl">
