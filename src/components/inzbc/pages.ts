@@ -53,6 +53,12 @@ export const PAGES: PageDef[] = [
     path: '/fta/briefings',
     title: "FTA Events and Briefings",
     lede: "Sessions where INZBC and its partners walk businesses through the NZ–India FTA and what it means for them — direct from the negotiators, ministers and officials involved.",
+    // NZ's Minister for Trade and Investment, Hon Todd McClay, exchanging documentation with
+    // India's High Commissioner at the High Commission of India — from the photo set Sunil
+    // forwarded 7 Oct 2026 (real INZBC event photography, not a stock substitute).
+    heroImage: '/events/fta-briefing-document-exchange-india-high-commission.jpg',
+    heroImageAlt: "New Zealand's Minister for Trade and Investment exchanging signed documentation with the High Commissioner of India",
+    heroImagePosition: '50% 30%',
   },
   {
     path: '/membership',
@@ -73,7 +79,17 @@ export const PAGES: PageDef[] = [
     heroCompact: true,
   },
   { path: '/news', title: "News", lede: "Updates from INZBC and the NZ\u2013India trade relationship." },
-  { path: '/partners', title: "Partners", lede: "Organisations that support INZBC's work across the NZ\u2013India corridor." },
+  {
+    path: '/partners',
+    title: "Partners",
+    lede: "Organisations that support INZBC's work across the NZ\u2013India corridor.",
+    // INZBC signing an MOU with FICCI (a named India Industry Network partner on this page)
+    // during NZ PM Rt Hon Christopher Luxon's mission to India — from Sunil's 7 Oct 2026
+    // photo set.
+    heroImage: '/events/ficci-mou-signing-pm-luxon-mission-2026.jpg',
+    heroImageAlt: 'INZBC and FICCI signing a memorandum of understanding for business expansion, during the New Zealand Prime Minister\u2019s mission to India',
+    heroImagePosition: '50% 30%',
+  },
   {
     path: '/trade-resources',
     title: "Trade resources for the NZ\u2013India opportunity",
@@ -83,7 +99,16 @@ export const PAGES: PageDef[] = [
     heroImagePosition: '50% 10%',
     heroCompact: true,
   },
-  { path: '/india-market-opportunities', title: "India market opportunities", lede: "Sector guidance for New Zealand exporters under the NZ\u2013India Free Trade Agreement." },
+  {
+    path: '/india-market-opportunities',
+    title: "India market opportunities",
+    lede: "Sector guidance for New Zealand exporters under the NZ\u2013India Free Trade Agreement.",
+    // The Lotus Temple, New Delhi — from Sunil's 7 Oct 2026 photo set. A real India photo
+    // rather than this page's previous plain-gradient placeholder; not tied to one sector.
+    heroImage: '/events/lotus-temple-new-delhi.jpg',
+    heroImageAlt: 'The Lotus Temple in New Delhi, lit at night',
+    heroImagePosition: '50% 55%',
+  },
   { path: '/membership/directory', title: "Member directory", lede: "The directory of INZBC members is hosted on Member Jungle, the provisional system of record for membership." },
   {
     path: '/events/past',
@@ -93,7 +118,16 @@ export const PAGES: PageDef[] = [
     heroImageAlt: '',
     heroImagePosition: '50% 45%',
   },
-  { path: '/executive-council', title: "Executive Council", lede: "The governance and executive team leading INZBC." },
+  {
+    path: '/executive-council',
+    title: "Executive Council",
+    lede: "The governance and executive team leading INZBC.",
+    // Sunil Kaushal (Chief Executive) presenting a gift to Hon Todd McClay, NZ's Minister for
+    // Trade and Investment — from Sunil's own 7 Oct 2026 photo set.
+    heroImage: '/events/sunil-kaushal-todd-mclay-gift-presentation.jpg',
+    heroImageAlt: "INZBC Chief Executive Sunil Kaushal presenting a gift to New Zealand's Minister for Trade and Investment",
+    heroImagePosition: '50% 25%',
+  },
   {
     path: '/about-inzbc',
     title: "About INZBC",

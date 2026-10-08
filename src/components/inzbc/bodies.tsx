@@ -851,11 +851,15 @@ function MembershipBody() {
               />
             </div>
             <div className="mt-3 grid grid-cols-2 gap-3">
+              {/* The outgoing High Commissioner this slot used to show (Sanjiv Kohli) has
+                  since been succeeded; swapped for current 2026 delegation photography from
+                  Sunil's 7 Oct 2026 photo set rather than leave a photo of a departed official
+                  in a "the network in action" gallery. */}
               <img
-                src="/blog/inzbc-bids-farewell-to-high-commissioner-kohli-in-wellington.jpg"
-                alt="INZBC members applauding at a farewell event for outgoing Indian High Commissioner Sanjiv Kohli"
-                width={1600}
-                height={1198}
+                src="/events/nz-india-business-delegation-delhi-2026.jpg"
+                alt="New Zealand business delegation in Delhi, 2026"
+                width={1280}
+                height={853}
                 loading="lazy"
                 className="aspect-[4/3] w-full rounded-2xl object-cover"
               />
@@ -2053,6 +2057,27 @@ function FtaBriefingsBody() {
               both sides.
             </p>
           </Reveal>
+          {/* Not routed through INZBC_EVENTS/EventRow: that list exists only for posts
+              already migrated from inzbc.org's blog, and its outbound link assumes one. This
+              briefing has no blog post to link to yet — it's sourced directly from the event's
+              own title slide and speaker-name graphics, in the photo set Sunil forwarded
+              7 Oct 2026 — so it's a plain photo and caption instead of a fabricated link. */}
+          <Reveal delay={0.04}>
+            <figure className="mt-10 overflow-hidden rounded-2xl bg-white shadow-sm">
+              <img
+                src="/events/inzbc-from-agreement-to-business-panel-23-sep-2026.jpg"
+                alt="Panel discussion for 'India New Zealand: From Agreement to Business', with New Zealand's Minister for Trade and Investment and the High Commissioner of India"
+                width={1600}
+                height={800}
+                loading="lazy"
+                className="aspect-[2/1] w-full object-cover"
+              />
+              <figcaption className="px-5 py-4 text-sm text-foreground/70">
+                <span className="font-medium text-ink">India New Zealand: From Agreement to Business</span>
+                {' — 23 September 2026, Auckland.'}
+              </figcaption>
+            </figure>
+          </Reveal>
           <div className="mt-10 space-y-2 divide-y divide-ink/10">
             {briefings.map((event, i) => (
               <EventRow key={event.sourceSlug} event={event} delay={i * 0.05} />
@@ -2663,9 +2688,13 @@ function AboutBody() {
             </p>
           </Reveal>
           <Reveal delay={0.08}>
+            {/* Real 2026 delegation photography (from Sunil's 7 Oct 2026 photo set) in place
+                of the old blog scrape this slot carried before — a better match for "hosted
+                the majority of visiting Government of India delegations", stated right next
+                to it. */}
             <img
-              src="/blog/new-zealand-business-delegation-over-the-moon-with-indian-trade-and-investment-opportunities.jpg"
-              alt="New Zealand's High Commissioner to India in conversation with an Indian government minister"
+              src="/events/nz-parliament-india-delegation-21-sep-2026.jpg"
+              alt="New Zealand and Indian delegates at New Zealand's Parliament, 21 September 2026"
               loading="lazy"
               className="aspect-[4/3] w-full rounded-2xl object-cover"
             />
