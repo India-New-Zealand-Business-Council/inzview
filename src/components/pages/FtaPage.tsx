@@ -141,11 +141,10 @@ export default function FtaPage() {
               >
                 Signed.
                 <br />
-                Not yet in force.
+                In force from 20 October 2026.
               </h2>
               <p className="mt-5 max-w-sm text-white/70">
-                27 April 2026. Awaiting domestic ratification in both countries before it
-                takes effect.
+                Signed 27 April 2026. Ratified by both countries 21 September 2026.
               </p>
             </Reveal>
             <Reveal delay={0.1} className="md:text-right">

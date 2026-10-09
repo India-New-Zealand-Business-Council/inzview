@@ -14,12 +14,12 @@ graphics), not invented.
 
 | Local file | What it shows | Source |
 |---|---|---|
-| `fta-briefing-document-exchange-india-high-commission.jpg` | NZ PM Rt Hon Christopher Luxon (background) with NZ's Minister for Trade and Investment and the High Commissioner of India, exchanging bound/sealed documentation | Original filename `IHC Todd McClay.jpeg` |
+| `fta-briefing-document-exchange-india-high-commission.jpg` | Almost certainly the exchange of Diplomatic Notes ratifying the FTA, 21 Sept 2026 (news coverage confirms that date, in Parliament, between these two people — see HANDOVER.md): NZ's Minister for Trade and Investment, Hon Todd McClay, and India's High Commissioner, Muanpuii Saiawi, exchanging sealed documentation, with PM Rt Hon Christopher Luxon behind them | Original filename `IHC Todd McClay.jpeg` |
 | `ficci-mou-signing-pm-luxon-mission-2026.jpg` | MOU for Business Expansion between INZBC and FICCI, signed during NZ PM Luxon's mission to India — title slide reads "NEW ZEALAND PRIME MINISTER RT HON CHRISTOPHER LUXON MISSION TO INDIA WITH ACCOMPANYING DELEGATION" | Flickr-sourced original `54394813255_a2672f9dc8_o.jpg` |
 | `lotus-temple-new-delhi.jpg` | The Lotus Temple (Bahá'í House of Worship), New Delhi, aerial night photo | Flickr-sourced original `54381135838_1390392d2f_o.jpg` |
 | `sunil-kaushal-todd-mclay-gift-presentation.jpg` | Sunil Kaushal (Moderator \| CEO, INZBC) presenting a carved gift to Hon Todd McClay (Minister for Trade and Investment) on stage at "India New Zealand: From Agreement to Business" | Cropped from composite `5.png` (top half) |
 | `inzbc-from-agreement-to-business-panel-23-sep-2026.jpg` | Panel group photo, same event — title slide elsewhere in the batch gives the name, date (23 September) and time (5.30–7.00pm) | Cropped from composite `1.png` (bottom half) |
-| `nz-parliament-india-delegation-21-sep-2026.jpg` | New Zealand and Indian delegates at New Zealand's Parliament, with both countries' flags | Original filename `group photo FTA Parliament 21 Sept26.jpeg` |
+| `nz-parliament-india-delegation-21-sep-2026.jpg` | New Zealand and Indian delegates at New Zealand's Parliament, with both countries' flags — 21 Sept 2026 is the date both countries ratified the FTA there, so very likely the same occasion | Original filename `group photo FTA Parliament 21 Sept26.jpeg` |
 | `nz-india-business-delegation-delhi-2026.jpg` | New Zealand business delegation group photo, outdoor venue, Delhi | Original filename `FTA Signing (15).jpeg` |
 
 **Not yet placed anywhere on the site** (same batch, kept here for a future pass — ask before

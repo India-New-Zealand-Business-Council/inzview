@@ -93,8 +93,16 @@ forestry 95%) for its own detailed timeline, sourced from MFAT's Key Outcomes su
 one page, not a violation of this rule. Any *other* figure appearing anywhere on the site
 without its own source line is the actual thing to catch.
 
-**The FTA is signed, not in force.** Signed 27 April 2026, awaiting domestic ratification in
-both countries. The old site said "now in effect" and that was wrong.
+**The FTA's status changed on 10 Oct 2026 — check before trusting anything already written
+about it.** Signed 27 April 2026, this held "signed, not in force" for months; both countries
+ratified it 21 September 2026 (confirmed via MFAT, Indian government news and independent wire
+coverage — not from Sunil's say-so alone, though his workspace edit was what prompted the
+check), and it enters into force 20 October 2026. Updated everywhere this site stated the old
+status: HomePage.tsx's hero pill and TradeThread status, FtaPage.tsx's headline, three spots in
+bodies.tsx, and the STATS note in content.ts. The old Wix Studio site said "now in effect"
+before it actually was, which was wrong at the time — the lesson isn't "never say it's in
+force", it's "don't say it before confirming it independently." This note will itself go stale
+once 20 October passes; delete it then rather than leave a dated warning with no more work to do.
 
 **Photography must be INZBC's own.** The four event photographs came from INZBC's Flickr.
 They are all Summit 2018 because that is what the archive holds, and the caption says so.

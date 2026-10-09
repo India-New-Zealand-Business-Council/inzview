@@ -92,7 +92,7 @@ const HOME_STATS = [
   {
     figure: STATS[2].figure,
     label: STATS[2].label,
-    note: "At the agreement's entry into force.",
+    note: 'From 20 October 2026, when the agreement enters into force.',
   },
 ] as const;
 
@@ -779,7 +779,7 @@ function Hero() {
             <span className="home-hero__status-dot" aria-hidden="true" />
             FTA signed 27 April 2026
             <span aria-hidden="true">/</span>
-            Ratification pending
+            In force from 20 October 2026
           </div>
           <KineticHeading
             as="h1"
@@ -888,16 +888,16 @@ export default function HomePage() {
           title="A signed agreement. A new field of possibility."
           summary={
             <p>
-              Signed in New Delhi, the agreement will eliminate or reduce tariffs across
-              95% of New Zealand&rsquo;s current export trade with India. Around 57% will
-              become duty-free when the agreement enters into force. Domestic implementation
-              is still underway.
+              Signed in New Delhi and ratified by both countries, the agreement will
+              eliminate or reduce tariffs across 95% of New Zealand&rsquo;s current export
+              trade with India. 57% becomes duty-free from 20 October 2026, when it enters
+              into force.
             </p>
           }
           status={{
             label: 'Current status',
-            value: 'Signed, not yet in force',
-            note: 'Awaiting domestic ratification in both countries.',
+            value: 'In force from 20 October 2026',
+            note: 'Ratified by both countries on 21 September 2026.',
           }}
           stats={HOME_STATS}
           action={<Action href="/fta">Understand the agreement</Action>}

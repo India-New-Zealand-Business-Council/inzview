@@ -53,11 +53,14 @@ export const PAGES: PageDef[] = [
     path: '/fta/briefings',
     title: "FTA Events and Briefings",
     lede: "Sessions where INZBC and its partners walk businesses through the NZ–India FTA and what it means for them — direct from the negotiators, ministers and officials involved.",
-    // NZ's Minister for Trade and Investment, Hon Todd McClay, exchanging documentation with
-    // India's High Commissioner at the High Commission of India — from the photo set Sunil
-    // forwarded 7 Oct 2026 (real INZBC event photography, not a stock substitute).
+    // Almost certainly the exchange of Diplomatic Notes that ratified the FTA: NZ's Minister
+    // for Trade and Investment, Hon Todd McClay, exchanging sealed documentation with India's
+    // High Commissioner, Muanpuii Saiawi, with PM Rt Hon Christopher Luxon behind them — news
+    // coverage confirmed 21 Sept 2026 as the date both countries' diplomatic notes were
+    // exchanged, in Parliament, which matches this photo's setting and the people in it. From
+    // the photo set Sunil forwarded 7 Oct 2026 (real INZBC event photography, not stock).
     heroImage: '/events/fta-briefing-document-exchange-india-high-commission.jpg',
-    heroImageAlt: "New Zealand's Minister for Trade and Investment exchanging signed documentation with the High Commissioner of India",
+    heroImageAlt: "New Zealand's Minister for Trade and Investment exchanging ratifying documentation with the High Commissioner of India, 21 September 2026",
     heroImagePosition: '50% 30%',
   },
   {

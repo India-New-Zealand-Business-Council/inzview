@@ -800,7 +800,7 @@ function MembershipBody() {
   const reasons = [
     [
       'Advocacy',
-      'A direct voice with government on trade policy and market access affecting NZ–India trade — including the NZ–India FTA itself, signed but not yet in force. INZBC represents member interests directly to officials on both sides of the corridor, not just to publish a position paper.',
+      'A direct voice with government on trade policy and market access affecting NZ–India trade — including the NZ–India FTA itself, in force from 20 October 2026. INZBC represents member interests directly to officials on both sides of the corridor, not just to publish a position paper.',
     ],
     [
       'Market intelligence',
@@ -2133,7 +2133,8 @@ function TradeResourcesBody() {
             <p className="mt-6 text-lg text-foreground">
               {exportsCovered.figure} of New Zealand&rsquo;s current exports to India get
               tariff elimination or reduction under the NZ&ndash;India FTA, with{' '}
-              {dutyFreeDayOne.figure} duty-free from the day it enters into force. Sheep meat,
+              {dutyFreeDayOne.figure} duty-free from 20 October 2026, when it enters into
+              force. Sheep meat,
               wool and coal clear immediately; apples get preferential access for the first
               time in any Indian FTA; kiwifruit and mānuka honey follow within five years;
               dairy, seafood and forestry phase in over seven; wine over ten.
@@ -2262,9 +2263,9 @@ function TradeResourcesBody() {
               NZ&ndash;India FTA opportunity
             </h2>
             <p className="mt-4 text-white/75">
-              Signed 27 April 2026 and awaiting ratification, the agreement changes tariff and
-              market-access settings for NZ exporters. The FTA Centre tracks what changes, who
-              it affects and what to do next.
+              Signed 27 April 2026 and in force from 20 October 2026, the agreement changes
+              tariff and market-access settings for NZ exporters. The FTA Centre tracks what
+              changes, who it affects and what to do next.
             </p>
           </Reveal>
           <Reveal delay={0.1}>
@@ -2691,10 +2692,12 @@ function AboutBody() {
             {/* Real 2026 delegation photography (from Sunil's 7 Oct 2026 photo set) in place
                 of the old blog scrape this slot carried before — a better match for "hosted
                 the majority of visiting Government of India delegations", stated right next
-                to it. */}
+                to it. 21 September 2026 is also the date news coverage confirms both
+                countries formally ratified the FTA in Parliament, so this is very likely that
+                same occasion. */}
             <img
               src="/events/nz-parliament-india-delegation-21-sep-2026.jpg"
-              alt="New Zealand and Indian delegates at New Zealand's Parliament, 21 September 2026"
+              alt="New Zealand and Indian delegates at New Zealand's Parliament, 21 September 2026 — the day the NZ–India FTA was ratified"
               loading="lazy"
               className="aspect-[4/3] w-full rounded-2xl object-cover"
             />

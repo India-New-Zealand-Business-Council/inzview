@@ -77,7 +77,7 @@ export const ART = {
 export const STATS = [
   { figure: 'NZ$3.95bn', label: 'Two-way trade', note: 'Year ended December 2025.' },
   { figure: '95%', label: 'Of NZ exports covered', note: 'Receiving tariff elimination or reduction.' },
-  { figure: '57%', label: 'Duty free from day one', note: "At the agreement's entry into force." },
+  { figure: '57%', label: 'Duty free from day one', note: 'From 20 October 2026, when the agreement enters into force.' },
 ] as const;
 
 export const BENEFITS = [
