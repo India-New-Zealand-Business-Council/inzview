@@ -67,6 +67,7 @@
     "@wix/wix-vibe-plugins": "^0.0.8",
     "astro": "^5.16.5",
     "babel-plugin-transform-react-jsx-location": "^0.2.0",
+    "@react-hook/resize-observer": "2.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
