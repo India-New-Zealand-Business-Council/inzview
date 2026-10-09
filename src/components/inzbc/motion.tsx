@@ -12,6 +12,7 @@ import {
 import type { MotionValue } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react';
+import { Image } from '@/components/ui/image';
 
 /**
  * Motion primitives.
@@ -413,11 +414,7 @@ export function StickyHeader({
           to="/"
           className="inline-flex min-h-11 items-center rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
         >
-          <img
-            src={logo}
-            alt="India New Zealand Business Council"
-            className="h-auto w-[clamp(185px,17vw,222px)]"
-          />
+          <Image src={logo} alt="India New Zealand Business Council" className="h-auto w-[clamp(185px,17vw,222px)]" />
         </Link>
 
         <nav className="hidden items-center justify-center gap-[clamp(1rem,2vw,2rem)] min-[940px]:flex">

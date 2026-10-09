@@ -5,6 +5,7 @@ import { ART, LINKS } from './content';
 import { NAV, type PageDef } from './pages';
 import { BODIES } from './bodies';
 import Footer from './Footer';
+import { Image } from '@/components/ui/image';
 
 /**
  * Every destination other than the homepage.
@@ -42,15 +43,7 @@ export default function InnerPage({ page }: { page: PageDef }) {
         >
           {page.heroImage ? (
             <>
-              <img
-                src={page.heroImage}
-                alt={page.heroImageAlt ?? ''}
-                aria-hidden={!page.heroImageAlt}
-                loading="eager"
-                fetchPriority="high"
-                className="absolute inset-0 h-full w-full object-cover"
-                style={{ objectPosition: page.heroImagePosition ?? '50% 50%' }}
-              />
+              <Image src={page.heroImage} alt={page.heroImageAlt ?? ''} aria-hidden={!page.heroImageAlt} loading="eager" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: page.heroImagePosition ?? '50% 50%' }} />
               <div
                 aria-hidden="true"
                 className="absolute inset-0 bg-gradient-to-t from-deep via-deep/80 to-ink/40"

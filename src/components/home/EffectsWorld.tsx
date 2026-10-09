@@ -9,6 +9,7 @@ import type {
   Texture,
 } from 'three';
 import './EffectsWorld.css';
+import { Image } from '@/components/ui/image';
 
 type ThreeModule = typeof import('three');
 type WorldStatus = 'idle' | 'loading' | 'ready' | 'fallback';
@@ -729,13 +730,7 @@ export default function EffectsWorld() {
       aria-hidden="true"
     >
       <div className="home-effects-world__fallback">
-        <img
-          src="/effects/new-zealand-map-clker.png"
-          alt=""
-          width="1732"
-          height="1920"
-          fetchPriority="high"
-        />
+        <Image src="/effects/new-zealand-map-clker.png" alt="" width="1732" height="1920" fetchPriority="high" />
         <span className="home-effects-world__fallback-orbit" />
         <span className="home-effects-world__fallback-node" />
       </div>

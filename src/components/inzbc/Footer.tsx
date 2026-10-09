@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ART, LINKS, SOCIALS } from './content';
 import { NAV } from './pages';
+import { Image } from '@/components/ui/image';
 
 // One focus treatment for the whole file, matching bodies.tsx's FOCUS constant.
 const FOCUS =
@@ -33,7 +34,7 @@ export default function Footer() {
     <footer className="bg-navy px-6 py-12 text-white">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-8">
         <Link to="/" aria-label="INZBC home" className={`inline-flex min-h-11 items-center rounded-sm ${FOCUS}`}>
-          <img src={ART.logo} alt="India New Zealand Business Council" className="h-8 w-auto" />
+          <Image src={ART.logo} alt="India New Zealand Business Council" className="h-8 w-auto" />
         </Link>
 
         <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
