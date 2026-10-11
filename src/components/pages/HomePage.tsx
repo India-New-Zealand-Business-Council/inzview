@@ -851,7 +851,7 @@ export default function HomePage() {
               style={{ '--reel-delay': '160ms' } as React.CSSProperties}
             >
               <p>Member network</p>
-              <strong>200+ members</strong>
+              <strong>200+ touch points</strong>
               <a
                 href="https://www.inzbc.org/post/india-new-zealand-business-council-welcomes-landmark-nz-india-free-trade-agreement"
                 target="_blank"
@@ -891,7 +891,7 @@ export default function HomePage() {
             destinationImagePosition: 'center 48%',
             destinationImageWidth: 1200,
             destinationImageHeight: 800,
-            originLabel: 'Aotearoa New Zealand',
+            originLabel: 'New Zealand',
             destinationLabel: 'India',
           }}
           source={
