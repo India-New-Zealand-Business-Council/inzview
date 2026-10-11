@@ -12,6 +12,7 @@ import {
   ArrowUpRight,
   BookOpenText,
   CalendarDays,
+  ChevronDown,
   Globe2,
   Mail,
   Menu,
@@ -29,6 +30,8 @@ import {
   PUBLIC_SECTOR_NETWORK,
 } from '@/components/inzbc/content';
 import { NAV } from '@/components/inzbc/pages';
+import { NEWS_POSTS } from '@/components/inzbc/news';
+import { useNewsDialog, NewsArticleDialog } from '@/components/inzbc/News';
 import ClickSpark from '@/components/home/ClickSpark';
 import EffectsWorld from '@/components/home/EffectsWorld';
 import KineticHeading from '@/components/home/KineticHeading';
@@ -645,6 +648,77 @@ function openContactDraft(event: React.FormEvent<HTMLFormElement>) {
   window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
+/** Home's own version of motion.tsx's NavDropdown — same behaviour (hover/click-open caret,
+    Esc and focus-out close, label itself still links to the parent page), rebuilt in Home's
+    own CSS classes since HomePage.css isn't shared outside Home (see Footer.tsx's comment for
+    why). Currently only Events > Events/News uses this. */
+function HomeNavDropdown({ item }: { item: (typeof NAV)[number] }) {
+  const [open, setOpen] = useState(false);
+  const groupRef = useRef<HTMLDivElement>(null);
+  const caretRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setOpen(false);
+      caretRef.current?.focus();
+    };
+    const onFocusOut = (event: FocusEvent) => {
+      if (!groupRef.current?.contains(event.relatedTarget as Node | null)) setOpen(false);
+    };
+    const node = groupRef.current;
+    window.addEventListener('keydown', onKeyDown);
+    node?.addEventListener('focusout', onFocusOut);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      node?.removeEventListener('focusout', onFocusOut);
+    };
+  }, [open]);
+
+  return (
+    <div
+      ref={groupRef}
+      className="home-nav__item"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <Link to={item.href} className="home-nav__link home-focus-light">
+        {item.label}
+      </Link>
+      <button
+        ref={caretRef}
+        type="button"
+        aria-expanded={open}
+        aria-controls="home-nav-events-dropdown"
+        aria-label={`${item.label} menu`}
+        onClick={() => setOpen((v) => !v)}
+        className="home-nav__caret home-focus-light"
+      >
+        <ChevronDown aria-hidden="true" size={14} className={open ? 'is-open' : ''} />
+      </button>
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            id="home-nav-events-dropdown"
+            className="home-nav__dropdown"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.15 }}
+          >
+            {item.children?.map((child) => (
+              <Link key={child.href} to={child.href} onClick={() => setOpen(false)} className="home-focus-light">
+                {child.label}
+              </Link>
+            ))}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 function HomeHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -671,11 +745,15 @@ function HomeHeader() {
         </Link>
 
         <nav className="home-nav" aria-label="Primary navigation">
-          {NAV.map((item) => (
-            <Link key={item.href} to={item.href} className="home-nav__link home-focus-light">
-              {item.label}
-            </Link>
-          ))}
+          {NAV.map((item) =>
+            item.children ? (
+              <HomeNavDropdown key={item.href} item={item} />
+            ) : (
+              <Link key={item.href} to={item.href} className="home-nav__link home-focus-light">
+                {item.label}
+              </Link>
+            )
+          )}
         </nav>
 
         <a
@@ -728,16 +806,33 @@ function HomeHeader() {
               >
                 <nav aria-label="Mobile navigation">
                   {NAV.map((item, index) => (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      onClick={closeMenu}
-                      className="home-mobile-menu__link home-focus-light"
-                    >
-                      <span aria-hidden="true">0{index + 1}</span>
-                      {item.label}
-                      <ArrowRight aria-hidden="true" size={18} strokeWidth={1.8} />
-                    </Link>
+                    <React.Fragment key={item.href}>
+                      <Link
+                        to={item.href}
+                        onClick={closeMenu}
+                        className="home-mobile-menu__link home-focus-light"
+                      >
+                        <span aria-hidden="true">0{index + 1}</span>
+                        {item.label}
+                        <ArrowRight aria-hidden="true" size={18} strokeWidth={1.8} />
+                      </Link>
+                      {item.children
+                        ? item.children
+                            .filter((child) => child.href !== item.href)
+                            .map((child) => (
+                              <Link
+                                key={child.href}
+                                to={child.href}
+                                onClick={closeMenu}
+                                className="home-mobile-menu__link home-mobile-menu__link--sub home-focus-light"
+                              >
+                                <span aria-hidden="true" />
+                                {child.label}
+                                <ArrowRight aria-hidden="true" size={16} strokeWidth={1.8} />
+                              </Link>
+                            ))
+                        : null}
+                    </React.Fragment>
                   ))}
                 </nav>
                 <a
@@ -756,6 +851,77 @@ function HomeHeader() {
         </div>
       </div>
     </header>
+  );
+}
+
+/** One card in the Home "Latest news" section - same real-button-opens-a-dialog pattern as
+    bodies.tsx's NewsBody, built in Home's own CSS classes instead of Tailwind so it sits
+    inside the rest of this page's rhythm. */
+function LatestNewsCard({
+  post,
+  index,
+  onOpen,
+}: {
+  post: (typeof NEWS_POSTS)[number];
+  index: number;
+  onOpen: (post: (typeof NEWS_POSTS)[number], trigger: HTMLButtonElement) => void;
+}) {
+  const ref = useRef<HTMLButtonElement>(null);
+  return (
+    <HomeBlock
+      className="home-latest-news__card-wrap"
+      effect="fold"
+      delay={index * 90}
+    >
+      <button
+        ref={ref}
+        type="button"
+        onClick={() => ref.current && onOpen(post, ref.current)}
+        className="home-latest-news__card home-focus-dark"
+      >
+        {post.cover ? (
+          <Image src={`/blog/${post.cover}`} alt={post.alt} loading="lazy" />
+        ) : (
+          <span className="home-latest-news__card-placeholder" aria-hidden="true" />
+        )}
+        <div className="home-latest-news__card-copy">
+          <span className="home-card-kicker">{post.date}</span>
+          <h3>{post.title}</h3>
+          <p>{post.excerpt}</p>
+        </div>
+      </button>
+    </HomeBlock>
+  );
+}
+
+/** The three newest posts, as cards, with a button to the full News page. Sits after the
+    Publications/Intelligence section and before Partners - after the FTA and stats area,
+    before the final call-to-action section, per the brief. */
+function LatestNews() {
+  const { active, open, close } = useNewsDialog();
+  const latest = NEWS_POSTS.slice(0, 3);
+
+  return (
+    <section className="home-latest-news home-section" aria-labelledby="latest-news-title">
+      <div className="home-shell">
+        <HomeBlock className="home-section-head" effect="none">
+          <div>
+            <KineticHeading id="latest-news-title" className="home-heading" lines={['Latest', 'news.']} />
+          </div>
+          <Action href="/news" variant="outline-dark">
+            Read more news
+          </Action>
+        </HomeBlock>
+
+        <div className="home-latest-news__grid">
+          {latest.map((post, index) => (
+            <LatestNewsCard key={post.slug} post={post} index={index} onOpen={open} />
+          ))}
+        </div>
+      </div>
+
+      <NewsArticleDialog post={active?.post ?? null} triggerEl={active?.trigger ?? null} onClose={close} />
+    </section>
   );
 }
 
@@ -1192,6 +1358,8 @@ export default function HomePage() {
             </p>
           </div>
         </section>
+
+        <LatestNews />
 
         <section className="home-partners home-section" aria-labelledby="partners-title">
           <div className="home-shell">

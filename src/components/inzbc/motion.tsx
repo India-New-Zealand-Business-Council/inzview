@@ -11,8 +11,9 @@ import {
 } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import type { NavItem } from './pages';
 
 /**
  * Motion primitives.
@@ -382,13 +383,94 @@ export function ScrollProgress() {
    Home switches to the mobile menu at max-width: 940px, not Tailwind's default md (768px);
    matched with the min-[940px]: arbitrary breakpoint below rather than approximating it. */
 
+/** One nav item with a dropdown (currently just Events > Events/News). The label itself is a
+    real link to item.href; the caret beside it is a separate button that opens the menu, so
+    "go to Events" and "open the submenu" stay two different, equally obvious actions.
+
+    Opens on hover or on click/Enter on the caret. Closes on Esc (returning focus to the
+    caret), on a click/focus outside the group, or when a menu link is chosen. */
+function NavDropdown({ item }: { item: NavItem }) {
+  const [open, setOpen] = useState(false);
+  const groupRef = useRef<HTMLDivElement>(null);
+  const caretRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setOpen(false);
+      caretRef.current?.focus();
+    };
+    const onFocusOut = (event: FocusEvent) => {
+      if (!groupRef.current?.contains(event.relatedTarget as Node | null)) setOpen(false);
+    };
+    const node = groupRef.current;
+    window.addEventListener('keydown', onKeyDown);
+    node?.addEventListener('focusout', onFocusOut);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      node?.removeEventListener('focusout', onFocusOut);
+    };
+  }, [open]);
+
+  return (
+    <div
+      ref={groupRef}
+      className="relative flex items-center"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <Link
+        to={item.href}
+        className="inline-flex min-h-11 items-center rounded-md text-[0.78rem] font-medium text-ink/70 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+      >
+        {item.label}
+      </Link>
+      <button
+        ref={caretRef}
+        type="button"
+        aria-expanded={open}
+        aria-controls={`nav-dropdown-${item.href.replace(/\W+/g, '-')}`}
+        aria-label={`${item.label} menu`}
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex h-11 w-6 items-center justify-center text-ink/70 hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+      >
+        <ChevronDown aria-hidden="true" size={14} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            id={`nav-dropdown-${item.href.replace(/\W+/g, '-')}`}
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.15 }}
+            className="absolute left-0 top-full z-10 mt-2 w-44 rounded-xl border border-ink/10 bg-white py-1.5 shadow-lg"
+          >
+            {item.children?.map((child) => (
+              <Link
+                key={child.href}
+                to={child.href}
+                onClick={() => setOpen(false)}
+                className="block min-h-11 px-4 py-2.5 text-[0.8rem] text-ink/80 hover:bg-mist hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+              >
+                {child.label}
+              </Link>
+            ))}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export function StickyHeader({
   logo,
   links,
   cta,
 }: {
   logo: string;
-  links: { label: string; href: string }[];
+  links: NavItem[];
   cta: { label: string; href: string };
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -418,15 +500,19 @@ export function StickyHeader({
         </Link>
 
         <nav className="hidden items-center justify-center gap-[clamp(1rem,2vw,2rem)] min-[940px]:flex">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              to={l.href}
-              className="inline-flex min-h-11 items-center rounded-md text-[0.78rem] font-medium text-ink/70 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
-            >
-              {l.label}
-            </Link>
-          ))}
+          {links.map((l) =>
+            l.children ? (
+              <NavDropdown key={l.href} item={l} />
+            ) : (
+              <Link
+                key={l.href}
+                to={l.href}
+                className="inline-flex min-h-11 items-center rounded-md text-[0.78rem] font-medium text-ink/70 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+              >
+                {l.label}
+              </Link>
+            )
+          )}
         </nav>
 
         <a
@@ -464,18 +550,35 @@ export function StickyHeader({
               >
                 <nav aria-label="Mobile navigation" className="grid">
                   {links.map((l, i) => (
-                    <Link
-                      key={l.href}
-                      to={l.href}
-                      onClick={closeMenu}
-                      className="grid min-h-[54px] grid-cols-[2rem_1fr_auto] items-center gap-2.5 rounded-xl px-3 py-2.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
-                    >
-                      <span aria-hidden="true" className="text-[0.68rem] tracking-wide text-lime">
-                        0{i + 1}
-                      </span>
-                      {l.label}
-                      <ArrowRight aria-hidden="true" size={18} strokeWidth={1.8} />
-                    </Link>
+                    <React.Fragment key={l.href}>
+                      <Link
+                        to={l.href}
+                        onClick={closeMenu}
+                        className="grid min-h-[54px] grid-cols-[2rem_1fr_auto] items-center gap-2.5 rounded-xl px-3 py-2.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+                      >
+                        <span aria-hidden="true" className="text-[0.68rem] tracking-wide text-lime">
+                          0{i + 1}
+                        </span>
+                        {l.label}
+                        <ArrowRight aria-hidden="true" size={18} strokeWidth={1.8} />
+                      </Link>
+                      {l.children
+                        ? l.children
+                            .filter((c) => c.href !== l.href)
+                            .map((c) => (
+                              <Link
+                                key={c.href}
+                                to={c.href}
+                                onClick={closeMenu}
+                                className="grid min-h-[48px] grid-cols-[2rem_1fr_auto] items-center gap-2.5 rounded-xl px-3 py-2 text-white/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+                              >
+                                <span aria-hidden="true" />
+                                {c.label}
+                                <ArrowRight aria-hidden="true" size={16} strokeWidth={1.8} />
+                              </Link>
+                            ))
+                        : null}
+                    </React.Fragment>
                   ))}
                 </nav>
                 <a

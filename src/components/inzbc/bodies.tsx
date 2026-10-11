@@ -13,6 +13,8 @@ import { Reveal } from './motion';
 import { ART, BENEFITS, LINKS, STATS, BUSINESS_PARTNERS, INDIA_NETWORK, PUBLIC_SECTOR_NETWORK } from './content';
 import SocialFeeds from './SocialFeeds';
 import Council from './Council';
+import { NEWS_POSTS } from './news';
+import { useNewsDialog, NewsArticleDialog } from './News';
 import { Image } from '@/components/ui/image';
 
 /**
@@ -220,11 +222,12 @@ function ContactForm() {
 
 /**
  * Every event below is real, pulled from inzbc.org's blog and cross-checked against
- * inzbc.org/past-events and /upcoming-events directly (the latter turned out to be
- * abandoned — it still shows 2020 webinars as "upcoming"). No genuinely upcoming event is
- * published anywhere INZBC controls right now (checked the live site and
- * inzbusinesssummit.com, which 404s), so "Upcoming events" stays honest rather than
- * inventing a next date.
+ * inzbc.org/past-events and /upcoming-events directly (the latter turned out to be mostly
+ * abandoned — as of 12 Oct 2026 it still lists seven 2020 webinars as "upcoming", which are
+ * not migrated here; this file sorts into Upcoming/Recent by each event's own sortKey against
+ * today's date, not by which of inzbc.org's two pages an event happened to sit on). The one
+ * genuinely future-dated item on that page, the New Zealand–India Business, Sport and
+ * Innovation Summit (12–13 Nov 2026), is below and does drive a real "Upcoming events" entry.
  *
  * INZBC_EVENTS is INZBC's own events — summits, delegations, briefings, panels, workshops
  * it ran or co-ran. A few posts covered the same event from multiple angles (the 2021 hybrid
@@ -254,6 +257,18 @@ type EventItem = Readonly<{
 }>;
 
 const INZBC_EVENTS: readonly EventItem[] = [
+  {
+    // From inzbc.org/upcoming-events (checked 12 Oct 2026) and its own post page — genuinely
+    // upcoming, unlike the seven 2020 webinars that page still lists as "upcoming" (those are
+    // stale leftovers, see the comment above this array; they're not migrated here).
+    sourceSlug: 'registrations-are-open-new-zealand-india-business-sport-and-innovation-summit',
+    cover: 'registrations-are-open-new-zealand-india-business-sport-and-innovation-summit.webp',
+    title: 'New Zealand–India Business, Sport and Innovation Summit',
+    date: '12–13 November 2026',
+    venue: 'Auckland University of Technology (12 Nov) and the New Zealand International Convention Centre (13 Nov), Tāmaki Makaurau, Auckland',
+    description: 'A two-day summit on trade, innovation, technology, sport, education and talent between New Zealand and India, supported by MFAT and convened by Tātaki Auckland Unlimited with Sport New Zealand.',
+    sortKey: '2026-11-12',
+  },
   {
     sourceSlug: 'inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event',
     cover: 'inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event.png',
@@ -1264,37 +1279,43 @@ function ConnectBody() {
 
 /* --- News ----------------------------------------------------------------------------- */
 
+/** A card for one post - a real button (not a link), so it's focusable and opens the article
+    dialog with Enter or Space for free. Shared shape for all 12 posts on this page. */
+function NewsCard({
+  post,
+  delay,
+  onOpen,
+}: {
+  post: (typeof NEWS_POSTS)[number];
+  delay: number;
+  onOpen: (post: (typeof NEWS_POSTS)[number], trigger: HTMLButtonElement) => void;
+}) {
+  const ref = React.useRef<HTMLButtonElement>(null);
+  return (
+    <Reveal delay={delay}>
+      <button
+        ref={ref}
+        type="button"
+        onClick={() => ref.current && onOpen(post, ref.current)}
+        className={`flex h-full w-full flex-col overflow-hidden rounded-2xl bg-mist text-left transition-shadow hover:shadow-md ${FOCUS}`}
+      >
+        {post.cover ? (
+          <Image src={`/blog/${post.cover}`} alt={post.alt} loading="lazy" className="aspect-[16/10] w-full object-cover" />
+        ) : (
+          <span className="aspect-[16/10] w-full bg-ink/5" aria-hidden="true" />
+        )}
+        <div className="flex flex-1 flex-col p-6">
+          <p className="text-xs font-medium text-plum">{post.date}</p>
+          <h3 className="mt-1 font-heading text-lg text-ink">{post.title}</h3>
+          <p className="mt-2 flex-1 text-sm text-foreground">{post.excerpt}</p>
+        </div>
+      </button>
+    </Reveal>
+  );
+}
+
 function NewsBody() {
-  // The same three posts the homepage carries.
-  const posts = [
-    {
-      img: ART.ftaFlyer,
-      // Both the flyer and the banner below are wider than this card's 16:10 box and carry
-      // their own text right up against the left edge (856x403 and 1280x720 respectively).
-      // A centered object-cover crop, checked against the actual images before choosing
-      // this, sliced "INSIDE THE / NZ INDIA FTA" and "VANGELIS VITALIS" down to "IDE THE"
-      // and "ELIS VITALIS" here, and cut the "C" off "CONNECTING" below. The third photo is
-      // a group shot with no such edge content, so it keeps the default center crop.
-      imgPosition: 'left' as const,
-      alt: 'Event flyer for Inside the NZ India FTA with Vangelis Vitalis',
-      title: 'Inside the NZ–India FTA with Vangelis Vitalis',
-      body: "An Auckland event with New Zealand's chief trade negotiator.",
-    },
-    {
-      img: ART.ftaNewEra,
-      alt: 'Delegation photograph accompanying the FTA article',
-      title: 'A new era for business',
-      body: 'The agreement signals a new era for trade between the two countries.',
-    },
-    {
-      img: ART.heroBanner,
-      imgPosition: 'left' as const,
-      alt: 'INZBC banner showing a container port and India Gate',
-      title: 'INZBC welcomes the landmark agreement',
-      // Quoted directly from the article on inzbc.org/news (22 Dec 2025), pulled 18 Aug 2026.
-      body: 'The FTA "reduces tariffs on 95% of New Zealand’s exports – among the highest of any Indian FTA," opening new opportunities for bilateral commerce.',
-    },
-  ];
+  const { active, open, close } = useNewsDialog();
 
   return (
     <>
@@ -1302,29 +1323,19 @@ function NewsBody() {
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <p className="max-w-2xl text-foreground">
-              <Todo>
-                [[News CMS &mdash; connect a CMS so posts publish here with their own pages;
-                until then the latest three are listed by hand.]]
-              </Todo>
+              All {NEWS_POSTS.length} posts, newest first. Select a card to read the full
+              article.
             </p>
           </Reveal>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {posts.map((post, i) => (
-              <Reveal key={post.title} delay={i * 0.08}>
-                <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-mist">
-                  <Image src={post.img} alt={post.alt} loading="lazy" className={`aspect-[16/10] w-full object-cover ${post.imgPosition === 'left' ? 'object-left' : ''}`} />
-                  <div className="flex flex-1 flex-col p-6">
-                    <h3 className="font-heading text-lg text-ink">{post.title}</h3>
-                    <p className="mt-2 flex-1 text-sm text-foreground">
-                      {post.body ?? <Todo>[[Article summary &mdash; confirm with INZBC.]]</Todo>}
-                    </p>
-                  </div>
-                </article>
-              </Reveal>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+            {NEWS_POSTS.map((post, i) => (
+              <NewsCard key={post.slug} post={post} delay={i * 0.05} onOpen={open} />
             ))}
           </div>
         </div>
       </section>
+
+      <NewsArticleDialog post={active?.post ?? null} triggerEl={active?.trigger ?? null} onClose={close} />
 
       <section className="relative overflow-hidden bg-ink px-6 py-24 text-center">
         <div

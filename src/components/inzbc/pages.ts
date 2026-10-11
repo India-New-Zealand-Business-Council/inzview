@@ -142,10 +142,19 @@ export const PAGES: PageDef[] = [
   },
 ];
 
-export const NAV = [
+export type NavItem = { label: string; href: string; children?: { label: string; href: string }[] };
+
+export const NAV: NavItem[] = [
   { label: 'The FTA', href: '/fta' },
   { label: 'Trade', href: '/trade-resources' },
-  { label: 'Events', href: '/events' },
+  {
+    label: 'Events',
+    href: '/events',
+    children: [
+      { label: 'Events', href: '/events' },
+      { label: 'News', href: '/news' },
+    ],
+  },
   { label: 'Membership', href: '/membership' },
   { label: 'Publications', href: '/publications' },
   { label: 'Connect', href: '/connect' },
