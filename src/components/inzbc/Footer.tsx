@@ -33,8 +33,22 @@ export default function Footer() {
   return (
     <footer className="bg-navy px-6 py-12 text-white">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-8">
-        <Link to="/" aria-label="INZBC home" className={`inline-flex min-h-11 items-center rounded-sm ${FOCUS}`}>
-          <Image src={ART.logo} alt="India New Zealand Business Council" className="h-8 w-auto" />
+        {/* Sized to match StickyHeader's own logo (w-[clamp(185px,17vw,222px)]) instead of
+            the old fixed h-8, which rendered it at ~1/3 that width given the logo's wide
+            aspect ratio - cramped next to the nav bar on every inner page. The white pill
+            behind it matches HomePage.css's .home-footer__logo: since the logo became a
+            transparent PNG, its dark ink text has no backing of its own and needs one to
+            stay legible on this footer's dark navy background. */}
+        <Link
+          to="/"
+          aria-label="INZBC home"
+          className={`inline-flex items-center rounded-xl bg-white px-3 py-2 ${FOCUS}`}
+        >
+          <Image
+            src={ART.logo}
+            alt="India New Zealand Business Council"
+            className="h-auto w-[clamp(185px,17vw,222px)]"
+          />
         </Link>
 
         <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-6 gap-y-2 text-sm">

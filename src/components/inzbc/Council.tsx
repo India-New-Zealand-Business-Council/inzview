@@ -244,10 +244,7 @@ export default function Council() {
         ))}
 
         <Reveal delay={0.1}>
-          <p className="mt-10 text-sm text-foreground/60">
-            Copied from inzbc.org/executive-council on 12 October 2026, on Sunil's instruction to
-            match the live page exactly. Click a photo for that person's full bio.
-          </p>
+          <p className="mt-10 text-sm text-foreground/60">Select a photo to read that person's full bio.</p>
         </Reveal>
       </div>
 
