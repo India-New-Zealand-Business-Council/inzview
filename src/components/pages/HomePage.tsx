@@ -768,7 +768,7 @@ function Hero() {
             <span className="home-hero__status-dot" aria-hidden="true" />
             FTA signed 27 April 2026
             <span aria-hidden="true">/</span>
-            In force from 20 October 2026
+            Comes into effect 20 October 2026
           </div>
           <KineticHeading
             as="h1"
@@ -877,8 +877,8 @@ export default function HomePage() {
           }
           status={{
             label: 'Current status',
-            value: 'In force from 20 October 2026',
-            note: 'Ratified by both countries on 21 September 2026.',
+            value: 'Comes into effect 20 October 2026',
+            note: 'Signed 27 April 2026. Ratified 21 September 2026.',
           }}
           stats={HOME_STATS}
           action={<Action href="/fta">Understand the agreement</Action>}

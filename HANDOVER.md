@@ -97,12 +97,21 @@ without its own source line is the actual thing to catch.
 about it.** Signed 27 April 2026, this held "signed, not in force" for months; both countries
 ratified it 21 September 2026 (confirmed via MFAT, Indian government news and independent wire
 coverage — not from Sunil's say-so alone, though his workspace edit was what prompted the
-check), and it enters into force 20 October 2026. Updated everywhere this site stated the old
-status: HomePage.tsx's hero pill and TradeThread status, FtaPage.tsx's headline, three spots in
-bodies.tsx, and the STATS note in content.ts. The old Wix Studio site said "now in effect"
-before it actually was, which was wrong at the time — the lesson isn't "never say it's in
-force", it's "don't say it before confirming it independently." This note will itself go stale
-once 20 October passes; delete it then rather than leave a dated warning with no more work to do.
+check). Updated everywhere this site stated the old status: HomePage.tsx's hero pill and
+TradeThread status, FtaPage.tsx's headline, three spots in bodies.tsx, and the STATS note in
+content.ts. The old Wix Studio site said "now in effect" before it actually was, which was
+wrong at the time — the lesson isn't "never say it's in force", it's "don't say it before
+confirming it independently."
+
+**11-12 Oct 2026: a "28 October" instruction came through and was reverted.** On 11 Oct, an
+instruction said Sunil wanted the entry-into-force date changed to 28 October; every site
+mention was updated to match, flagged unconfirmed (no public source ever said 28), and left
+uncommitted rather than shipped. On 12 Oct the person actually relaying these instructions
+confirmed directly: it's 20 October, as every public source already said. Reverted everywhere.
+Worth remembering only as a reminder that an instruction relayed secondhand can be wrong even
+when it names the client as the source — the flag-and-ask habit this note was already an
+example of is what caught it before publish. Delete this whole note once 20 October has
+actually passed.
 
 **Photography must be INZBC's own.** The four event photographs came from INZBC's Flickr.
 They are all Summit 2018 because that is what the archive holds, and the caption says so.
