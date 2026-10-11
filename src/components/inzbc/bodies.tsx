@@ -12,6 +12,7 @@ import {
 import { Reveal } from './motion';
 import { ART, BENEFITS, LINKS, STATS, BUSINESS_PARTNERS, INDIA_NETWORK, PUBLIC_SECTOR_NETWORK } from './content';
 import SocialFeeds from './SocialFeeds';
+import Council from './Council';
 import { Image } from '@/components/ui/image';
 
 /**
@@ -120,21 +121,6 @@ function Blob({ id, from, to, size = 96 }: { id: string; from: string; to: strin
       <circle cx="90" cy="34" r="5" fill={`url(#${id})`} />
       <path d={BLOB_PATH} fill={`url(#${id})`} />
     </svg>
-  );
-}
-
-/** A person tile for the council grid: a name and a role. */
-function Person({ name, role, photo }: { name: string; role: string; photo?: string }) {
-  return (
-    <div className="h-full overflow-hidden rounded-2xl bg-mist">
-      {photo ? (
-        <Image src={photo} alt="" loading="lazy" className="aspect-square w-full object-cover" />
-      ) : null}
-      <div className="p-6">
-        <h3 className="font-heading text-lg text-ink">{name}</h3>
-        <p className="mt-1 text-sm text-foreground">{role}</p>
-      </div>
-    </div>
   );
 }
 
@@ -2449,86 +2435,15 @@ function EventsPastBody() {
 /* --- Executive Council ------------------------------------------------------------------ */
 
 /*
- * DO NOT PUBLISH THIS PAGE WITHOUT BOARD CONFIRMATION.
- *
- * The names below are sourced, not invented: read from inzbc.org/executive-council on
- * 27 July 2026, and the Board confirms currency before publication. A board page listing
- * someone who has stepped down, or omitting someone who has joined, is a governance
- * embarrassment rather than a content bug. Do not add, drop or reorder a name.
+ * Content, photos and bios all live in council.ts now, not here - see that file's header for
+ * sourcing and the three spelling fixes made to copied text. This page used to carry a
+ * deliberate divergence from the live inzbc.org page (added 20 Aug 2026, on Sunil's own
+ * instruction at the time); that stood until Sunil asked, 12 Oct 2026, for the opposite -
+ * this page to mirror the live page exactly. Re-sync it from council.ts, not from memory of
+ * either list, if it's ever asked for again.
  */
 function CouncilBody() {
-  // Photos found on inzbc.org/executive-council (12 Aug 2026), matched to the sourced names
-  // below by filename and downloaded to public/council/ rather than hot-linked (per
-  // live-site-extract.md's rule: this is a separate Wix account, so its media URLs are not
-  // guaranteed stable). The combined "Board Members" entry (six names in one card) is split
-  // into six individual cards here so each can carry its own photo — same six names, same
-  // order, per this file's own rule above. Sreedhar Venkatram's photo filename was just
-  // "Sree.jpeg" — a reasonable but not certain match, worth confirming.
-  //
-  // Executive team amended 20 Aug 2026 on Sunil Kaushal's (Chief Executive) instruction after
-  // his review of this site: the four photo-less cards are dropped — Kanwaljit Singh Bakshi
-  // (Ex-Officio), Clive Antony (Strategic Communications Officer), Bharat Joshi (Delhi Chapter
-  // Head) and Dr Pushpa Wood (Wellington Chapter Head) — and Selwyn Thomas added as Southern
-  // India Chapter Head. Selwyn is the one entry still without a photo: he is here on the CE's
-  // explicit instruction, so he stays photo-less until a headshot arrives rather than being
-  // swept up by the "no photo, no card" rule that removed the other four.
-  //
-  // This is a deliberate divergence from inzbc.org/executive-council, which still carries the
-  // older list: do not "fix" this back to match the live site.
-  const board = [
-    { name: 'Edwin Paul', role: 'Chair', photo: '/council/edwin-paul.png' },
-    { name: 'Tony Martin', role: 'Deputy Chair', photo: '/council/tony-martin.png' },
-    { name: 'Bharat Chawla', role: 'Treasurer', photo: '/council/bharat-chawla.jpg' },
-    { name: 'Antje Fiedler', role: 'Board Member', photo: '/council/antje-fiedler.jpg' },
-    { name: 'Prince Kumar', role: 'Board Member', photo: '/council/prince-kumar.png' },
-    { name: 'Jonathan Manuel', role: 'Board Member', photo: '/council/jonathan-manuel.png' },
-    { name: 'Rachel Lynch', role: 'Board Member', photo: '/council/rachel-lynch.jpg' },
-    { name: 'Jenny McGregor', role: 'Board Member', photo: '/council/jenny-mcgregor.jpg' },
-    { name: 'Sumant Khedkar', role: 'Board Member', photo: '/council/sumant-khedkar.jpg' },
-  ];
-  const team = [
-    { name: 'Sunil Kaushal', role: 'Chief Executive', photo: '/council/sunil-kaushal.png' },
-    { name: 'Sandeep Sharma', role: 'Strategy and Trade Officer', photo: '/council/sandeep-sharma.png' },
-    { name: 'Sreedhar Venkatram', role: 'Mumbai Chapter Head', photo: '/council/sreedhar-venkatram.jpeg' },
-    { name: 'Selwyn Thomas', role: 'Southern India Chapter Head' },
-    { name: 'Michael Henstock', role: 'Christchurch Chapter Head', photo: '/council/michael-henstock.jpg' },
-  ];
-
-  return (
-    <section className="bg-white px-6 py-20">
-      <div className="mx-auto max-w-6xl">
-        <Reveal>
-          <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Board</h2>
-        </Reveal>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {board.map((p, i) => (
-            <Reveal key={p.name} delay={i * 0.06}>
-              <Person name={p.name} role={p.role} photo={p.photo} />
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal>
-          <h2 className="mt-16 font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Executive team</h2>
-        </Reveal>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {team.map((p, i) => (
-            <Reveal key={p.name} delay={i * 0.05}>
-              <Person name={p.name} role={p.role} photo={p.photo} />
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal delay={0.1}>
-          <p className="mt-10 text-sm text-foreground/60">
-            Board re-checked against inzbc.org/executive-council on 18 Aug 2026. The executive
-            team was amended on 20 Aug 2026 on the Chief Executive's instruction, and
-            intentionally differs from the older list still shown on inzbc.org.
-          </p>
-        </Reveal>
-      </div>
-    </section>
-  );
+  return <Council />;
 }
 
 /* --- About INZBC ------------------------------------------------------------------------ */
