@@ -1017,7 +1017,7 @@ export default function HomePage() {
               style={{ '--reel-delay': '160ms' } as React.CSSProperties}
             >
               <p>Member network</p>
-              <strong>200+ touch points</strong>
+              <strong>2000+ touch points</strong>
               <a
                 href="https://www.inzbc.org/post/india-new-zealand-business-council-welcomes-landmark-nz-india-free-trade-agreement"
                 target="_blank"
