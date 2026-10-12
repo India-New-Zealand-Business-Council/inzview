@@ -21,9 +21,9 @@
  * their real photos were on the live inzbc.org page itself all along and were downloaded
  * directly from there on 13 Oct 2026, same source as the other ten.
  *
- * Colour: every one of the 14 photos (checked by eye, all of them, 13 Oct 2026) is already a
- * genuinely black-and-white source file, not a colour photo with a filter applied by the old
- * site - this file doesn't need a CSS grayscale treatment to match, the images already do.
+ * Colour: every one of the 14 photos is already a black-and-white source file by eye, not a
+ * colour photo. Council.tsx still applies a CSS grayscale filter to every photo on top of
+ * that, so the page is guaranteed black-and-white even if a future photo arrives in colour.
  */
 
 export type CouncilMember = Readonly<{

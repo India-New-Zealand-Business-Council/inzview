@@ -40,7 +40,7 @@ function MemberTrigger({
           src={member.photo}
           alt={`${member.name}, ${member.title}`}
           loading="lazy"
-          className="aspect-square w-full object-cover"
+          className="aspect-square w-full grayscale object-cover"
         />
       ) : null}
       <div className="p-6">
@@ -81,7 +81,7 @@ function MemberDialog({
             alt=""
             aria-hidden="true"
             loading="lazy"
-            className="aspect-square w-full object-cover sm:aspect-[16/10]"
+            className="aspect-square w-full grayscale object-cover sm:aspect-[16/10]"
           />
         ) : null}
         <button
