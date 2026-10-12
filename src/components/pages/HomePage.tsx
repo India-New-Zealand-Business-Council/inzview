@@ -1110,6 +1110,20 @@ export default function HomePage() {
                   'Be in the room where it becomes practical.',
                 ]}
               />
+              {/* This column had nothing below a two-line heading - a lot of flat white
+                  space once the heading wrapped. A real photo of the Council's own CEO,
+                  already used elsewhere on the site, fills it and backs up the "Meet the
+                  executive council" action in the copy column alongside it. */}
+              <HomeBlock className="home-intro__photo" effect="scale" delay={80}>
+                <Image
+                  src="/events/sunil-kaushal-todd-mclay-gift-presentation.jpg"
+                  alt="INZBC Chief Executive Sunil Kaushal presenting a gift to New Zealand's Minister for Trade and Investment"
+                  width={1600}
+                  height={800}
+                  loading="lazy"
+                  className="home-intro__photo-img"
+                />
+              </HomeBlock>
             </HomeBlock>
             <HomeBlock className="home-intro__copy" effect="right" delay={140}>
               <p className="home-lede-dark">

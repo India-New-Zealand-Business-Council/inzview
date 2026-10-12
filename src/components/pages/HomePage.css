@@ -1041,6 +1041,21 @@
   max-width: 14ch;
 }
 
+.home-intro__photo {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  overflow: hidden;
+  border-radius: 1.5rem;
+  box-shadow: 0 24px 60px rgba(9, 3, 24, 0.12);
+}
+
+.home-intro__photo-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
 .home-intro__copy {
   padding-top: 2.5rem;
 }
