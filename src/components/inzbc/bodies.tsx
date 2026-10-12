@@ -38,15 +38,6 @@ import { Image } from '@/components/ui/image';
 const FOCUS =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
 
-/** A fact INZBC has not supplied yet. Deliberately visible. */
-function Todo({ children }: { children: React.ReactNode }) {
-  return (
-    <mark className="rounded-sm bg-lime/25 px-1 text-inherit underline decoration-dashed underline-offset-4">
-      {children}
-    </mark>
-  );
-}
-
 function Btn({
   href,
   children,
@@ -202,10 +193,7 @@ function ContactForm() {
         <textarea required rows={4} value={fields.message} onChange={set('message')} className={inputCls} />
       </label>
       <p className="text-xs text-foreground/60">
-        <Todo>
-          [[Not a real submission yet &mdash; needs a Wix Form so this reaches the Secretariat
-          inbox directly. For now, sending opens your own email client with this pre-filled.]]
-        </Todo>
+        Sending opens your own email client with this message ready to go.
       </p>
       <button
         type="submit"
@@ -952,18 +940,14 @@ function MembershipBody() {
           </div>
 
           <Reveal delay={0.16}>
-            <dl className="mt-16 grid grid-cols-2 gap-8 border-t border-white/15 pt-10 sm:grid-cols-4">
+            {/* Members: "over 200" is INZBC's own published figure (its press releases'
+                standard "About" boilerplate, e.g. the 14 Aug 2025 and 22 Dec 2025 posts in
+                news.ts), not an estimate. Industries has no published figure anywhere checked
+                — dropped rather than guessed; add it back here once INZBC supplies it. */}
+            <dl className="mt-16 grid grid-cols-3 gap-8 border-t border-white/15 pt-10">
               <div>
                 <dt className="text-sm text-white/60">Members</dt>
-                <dd className="mt-1 font-heading text-3xl text-lime">
-                  <Todo>[[count]]</Todo>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm text-white/60">Industries</dt>
-                <dd className="mt-1 font-heading text-3xl text-lime">
-                  <Todo>[[count]]</Todo>
-                </dd>
+                <dd className="mt-1 font-heading text-3xl text-lime">200+</dd>
               </div>
               <div>
                 <dt className="text-sm text-white/60">Chapters</dt>
@@ -975,8 +959,7 @@ function MembershipBody() {
               </div>
             </dl>
             <p className="mt-4 text-sm text-white/50">
-              Chapters in Auckland, Wellington, Christchurch, Mumbai and Delhi.{' '}
-              <Todo>[[Confirm member and industry counts with INZBC before publish.]]</Todo>
+              Chapters in Auckland, Wellington, Christchurch, Mumbai and Delhi.
             </p>
           </Reveal>
         </div>
@@ -1726,12 +1709,6 @@ function NewslettersBody() {
               A weekly, LLM-summarised, human-reviewed digest of India&ndash;NZ trade news,
               with source citations.
             </p>
-            <p className="mt-3 text-sm text-foreground">
-              <Todo>
-                [[Digest archive &mdash; needs the digest pipeline CMS connected; render only
-                items with status = published.]]
-              </Todo>
-            </p>
             <p className="mt-5">
               <Btn href={LINKS.subscribe} external>
                 Subscribe to the digest
@@ -1874,10 +1851,7 @@ function PartnersBody() {
               and Travel partners).
             </p>
             <p className="mt-3 text-sm text-white/70">
-              <Todo>
-                [[What each tier includes and costs &mdash; not published anywhere INZBC
-                supplies; confirm with INZBC before publish.]]
-              </Todo>
+              Get in touch for what each tier includes.
             </p>
           </Reveal>
         </div>
@@ -2126,12 +2100,6 @@ function TradeResourcesBody() {
               of India&ndash;NZ trade news, with source citations &mdash; against a real
               baseline: two-way trade stood at {twoWayTrade.figure} for the{' '}
               {twoWayTrade.note.replace(/\.$/, '').toLowerCase()}.
-            </p>
-            <p className="mt-3 text-sm text-foreground">
-              <Todo>
-                [[Digest archive &mdash; needs the digest pipeline CMS connected; render only
-                items with status = published.]]
-              </Todo>
             </p>
             <p className="mt-5">
               <Btn href={LINKS.subscribe} external>

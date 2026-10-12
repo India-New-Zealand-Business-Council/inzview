@@ -46,12 +46,7 @@ export default function FtaExplainerPage() {
         <section className="bg-mist px-6 py-20">
           <div className="mx-auto max-w-2xl text-center">
             <Reveal>
-              <p className="text-foreground">
-                <mark className="rounded-sm bg-lime/30 px-1 underline decoration-dashed underline-offset-4">
-                  [[Embed the FTA Explainer app here &mdash; the deployed apps/fta/ui instance,
-                  via iframe or a Studio custom element.]]
-                </mark>
-              </p>
+              <p className="text-foreground">Coming soon.</p>
               <p className="mt-6 text-sm text-foreground/70">
                 All answers cite the approved FTA corpus only. Content is human-reviewed before
                 publication.

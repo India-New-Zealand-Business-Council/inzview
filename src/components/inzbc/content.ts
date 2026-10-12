@@ -107,8 +107,8 @@ export type PartnerMark = {
 export const BUSINESS_PARTNERS: readonly PartnerMark[] = [
   { name: 'Bank of New Zealand', href: 'https://www.bnz.co.nz/', logo: '/partners/bnz.png', relationship: 'Strategic partner' },
   { name: 'High Commission of India, Wellington', href: 'https://www.hciwellington.gov.in/', logo: '/partners/hci-wellington.webp', relationship: 'Strategic partner' },
-  { name: 'University of Auckland', href: 'https://www.auckland.ac.nz/', logo: '/partners/auckland.svg', relationship: 'Strategic partner' },
-  { name: 'Duco Consultancy', href: 'https://www.ducoconsultancy.com/', logo: '/partners/duco.svg', relationship: 'Strategic partner / Gold' },
+  // University of Auckland and Duco Consultancy removed on Sunil's instruction (11 Oct 2026) —
+  // he's sourcing High Commission of India logos to fill these two Strategic Partner slots.
   { name: 'Zespri', href: 'https://www.zespri.com/en-NZ', logo: '/partners/zespri.png', relationship: 'Strategic partner' },
   { name: 'Fonterra', href: 'https://www.fonterra.com/nz/en.html', logo: '/partners/fonterra.png', relationship: 'Partner' },
   { name: 'Slumberzone New Zealand', href: 'https://slumberzone.co.nz/', logo: '/partners/slumberzone.webp', relationship: 'Associate partner' },

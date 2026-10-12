@@ -98,12 +98,7 @@ export default function InnerPage({ page }: { page: PageDef }) {
           <section className="bg-mist px-6 py-20">
             <div className="mx-auto max-w-4xl">
               <Reveal>
-                <p className="text-foreground">
-                  <mark className="rounded-sm bg-lime/30 px-1 underline decoration-dashed underline-offset-4">
-                    [[Page body still to be migrated from the Studio build &mdash; the sourced
-                    copy exists at legacy/wix-studio/src/public/wix-studio-snippets.]]
-                  </mark>
-                </p>
+                <p className="text-foreground">This page is coming soon.</p>
                 <Link
                   to="/"
                   className={`mt-10 inline-flex items-center rounded-full bg-lime px-6 py-3 text-sm font-medium text-navy transition-transform active:scale-[0.97] ${FOCUS}`}
