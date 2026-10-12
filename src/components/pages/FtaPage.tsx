@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight, X } from 'lucide-react';
 import { Reveal, WordReveal, Parallax, CountUp, ScrollProgress, StickyHeader } from '@/components/inzbc/motion';
 import { Dialog } from '@/components/inzbc/Dialog';
+import { INZBC_EVENTS } from '@/components/inzbc/bodies';
 import { ART, LINKS } from '@/components/inzbc/content';
 import { NAV } from '@/components/inzbc/pages';
 import Footer from '@/components/inzbc/Footer';
@@ -236,6 +237,13 @@ export default function FtaPage() {
   const openSector = (sector: SectorHighlight, trigger: HTMLButtonElement) => setActiveSector({ sector, trigger });
   const closeSector = () => setActiveSector(null);
 
+  // Same computation EventsBody uses: whatever is genuinely soonest, by today's real date,
+  // not a post picked by hand. Empty when nothing is upcoming, same as that page.
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const nextEvent = [...INZBC_EVENTS]
+    .filter((e) => e.sortKey >= todayKey)
+    .sort((a, b) => a.sortKey.localeCompare(b.sortKey))[0];
+
   return (
     <div className="min-h-screen bg-white font-paragraph text-foreground">
       <ScrollProgress />
@@ -439,72 +447,51 @@ export default function FtaPage() {
           />
         </section>
 
-        {/* One large photo carries the moment; a smaller supporting pair sits underneath.
-            Not a grid of three equal thumbnails. Welcome photo (2048x1536, 4:3) takes the
-            wide banner slot now that the delegation photo moved up to the full-bleed band
-            above; the Modi-Luxon conversation photo (1200x1600, portrait) fits the smaller,
-            tighter-cropped slot better than it would this one. */}
-        <section className="bg-mist pb-4 pt-24" aria-labelledby="fta-photos-title">
-          <Reveal>
-            <div className="relative">
-              <Image src="/events/inzbc-welcome-auckland-2026.jpeg" alt="INZBC Chief Executive Sunil Kaushal and delegates at the welcome for the Indian Prime Minister in Auckland" width={2048} height={1536} loading="lazy" className="max-h-[36rem] w-full object-cover" />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 to-transparent px-6 pb-6 pt-20 md:px-10">
-                <h2
-                  id="fta-photos-title"
-                  className="mx-auto max-w-5xl font-heading text-xl text-white md:text-2xl"
-                >
-                  Welcoming the Prime Minister
-                </h2>
-                <p className="mx-auto mt-1 max-w-5xl text-sm text-white/75">
-                  INZBC Chief Executive Sunil Kaushal and delegates welcome Indian Prime Minister
-                  Narendra Modi to Auckland, July 2026.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
-          <div className="mx-auto mt-4 max-w-5xl px-6 pb-20">
-            <Reveal delay={0.05}>
-              <Image src="/events/modi-luxon-auckland-2026.jpeg" alt="Prime Ministers Narendra Modi and Christopher Luxon in conversation during the Indian Prime Minister's official visit to Auckland" width={1200} height={1600} loading="lazy" className="max-h-[22rem] w-full object-cover object-[50%_58%]" />
-            </Reveal>
-          </div>
-        </section>
-
         {/* Ink panel instead of a white card, so it reads as a feature rather than a fourth
-            box in a set. */}
-        <section className="bg-white px-6 py-24" aria-labelledby="fta-explainer-title">
-          <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-ink sm:flex sm:items-stretch">
-            <Reveal className="sm:w-1/2">
-              <Image src="/blog/inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event.png" alt="Vangelis Vitalis, New Zealand's Chief Trade Negotiator" width={856} height={403} loading="lazy" className="h-56 w-full object-cover sm:h-full" />
-            </Reveal>
-            <Reveal delay={0.08} className="p-8 text-white sm:w-1/2 md:p-12">
-              <h2 id="fta-explainer-title" className="font-heading text-2xl md:text-3xl">
-                Inside the NZ&ndash;India FTA, with Vangelis Vitalis
-              </h2>
-              <p className="mt-4 text-white/75">
-                New Zealand&rsquo;s Chief Trade Negotiator, who led the negotiations, takes
-                attendees behind the scenes: how the deal was negotiated, the breakthroughs,
-                and what it means for Kiwi businesses. Auckland, 23 June 2026.
-              </p>
-              <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-                <a
-                  href="https://www.inzbc.org/post/inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`font-medium text-lime underline underline-offset-4 hover:text-white ${FOCUS}`}
-                >
-                  Read the invitation
-                </a>
-                <Link
-                  to="/fta/briefings"
-                  className={`font-medium text-lime underline underline-offset-4 hover:text-white ${FOCUS}`}
-                >
-                  See all FTA events and briefings
-                </Link>
-              </p>
-            </Reveal>
-          </div>
-        </section>
+            box in a set. Driven by the same INZBC_EVENTS data the Events page uses, not a
+            hand-picked post — a hardcoded "next event" goes stale the moment the real next
+            event changes, which is exactly what happened to the panel this replaced (it kept
+            pointing at a June briefing months after it had already happened). */}
+        {nextEvent ? (
+          <section className="bg-white px-6 py-24" aria-labelledby="fta-explainer-title">
+            <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-ink sm:flex sm:items-stretch">
+              <Reveal className="sm:w-1/2">
+                {nextEvent.cover ? (
+                  <Image src={`/blog/${nextEvent.cover}`} alt={`Cover for ${nextEvent.title}`} loading="lazy" className="h-56 w-full object-cover sm:h-full" />
+                ) : (
+                  <span className="hidden h-full w-full bg-white/10 sm:block" aria-hidden="true" />
+                )}
+              </Reveal>
+              <Reveal delay={0.08} className="p-8 text-white sm:w-1/2 md:p-12">
+                <p className="text-sm font-medium text-lime">Next INZBC event</p>
+                <h2 id="fta-explainer-title" className="mt-1 font-heading text-2xl md:text-3xl">
+                  {nextEvent.title}
+                </h2>
+                <p className="mt-4 text-white/75">
+                  {nextEvent.date}
+                  {nextEvent.venue ? ` · ${nextEvent.venue}` : ''}
+                  {nextEvent.description ? ` — ${nextEvent.description}` : ''}
+                </p>
+                <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+                  <a
+                    href={`https://www.inzbc.org/post/${nextEvent.sourceSlug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`font-medium text-lime underline underline-offset-4 hover:text-white ${FOCUS}`}
+                  >
+                    Read more and register
+                  </a>
+                  <Link
+                    to="/fta/briefings"
+                    className={`font-medium text-lime underline underline-offset-4 hover:text-white ${FOCUS}`}
+                  >
+                    See all FTA events and briefings
+                  </Link>
+                </p>
+              </Reveal>
+            </div>
+          </section>
+        ) : null}
       </main>
 
       <Footer />

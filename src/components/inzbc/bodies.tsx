@@ -234,7 +234,7 @@ function ContactForm() {
  * its publish date, not a stated event date, and one 2022-era summit post has no date at
  * all in the body text.
  */
-type EventItem = Readonly<{
+export type EventItem = Readonly<{
   sourceSlug: string;
   cover?: string;
   title: string;
@@ -244,7 +244,7 @@ type EventItem = Readonly<{
   sortKey: string;
 }>;
 
-const INZBC_EVENTS: readonly EventItem[] = [
+export const INZBC_EVENTS: readonly EventItem[] = [
   {
     // From inzbc.org/upcoming-events (checked 12 Oct 2026) and its own post page — genuinely
     // upcoming, unlike the seven 2020 webinars that page still lists as "upcoming" (those are
