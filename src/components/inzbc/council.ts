@@ -14,13 +14,16 @@
  *   - Rachel Lynch's bio: "commericialisation" -> "commercialisation"
  *   - Sumant Khedkar's bio: "Enginering" -> "Engineering"
  *
- * Photos: matched by filename to the live page's own image filenames, downloaded 12 Aug 2026
- * (see bodies.tsx's prior CouncilBody comment) and still correct for the 10 people who keep
- * the same name here. No new photos were available to match for the four people below with
- * `photo: undefined` — the account's Wix Media Manager was checked directly (12 Oct 2026) and
- * contains only 3 unrelated files, none for any council member. The grid already handles a
- * missing photo (Selwyn Thomas has shipped without one since 20 Aug) by showing name and title
- * alone, so these four do the same until real photos arrive.
+ * Photos: all 14 people now have one. 10 were matched by filename to the live page's own
+ * image filenames on 12 Aug 2026 (see bodies.tsx's prior CouncilBody comment). The remaining
+ * four — Sameer Handa, Sakthi Ranganathan, Kanwaljit Singh Bakshi and Selwyn Thomas — were
+ * missing because the account's Wix Media Manager (checked 12 Oct 2026) doesn't hold them;
+ * their real photos were on the live inzbc.org page itself all along and were downloaded
+ * directly from there on 13 Oct 2026, same source as the other ten.
+ *
+ * Colour: every one of the 14 photos (checked by eye, all of them, 13 Oct 2026) is already a
+ * genuinely black-and-white source file, not a colour photo with a filter applied by the old
+ * site - this file doesn't need a CSS grayscale treatment to match, the images already do.
  */
 
 export type CouncilMember = Readonly<{
@@ -79,6 +82,7 @@ export const COUNCIL: readonly CouncilGroup[] = [
       {
         name: 'Sameer Handa',
         title: 'Board Member',
+        photo: '/council/sameer-handa.jpg',
         linkedin: 'https://www.linkedin.com/in/sameerhanda/',
         bio: 'Sameer is a business leader with extensive experience in management, leadership and governance roles in various countries and industries. He is currently the managing director of Glowbal NZ Ltd & Three 60 Construction Ltd. Sameer Handa is a Member of the New Zealand Order of Merit (MNZM) for services to Business and New Zealand-India relations. Sameer is an experienced director with wide governance knowledge and is currently the Chairman on the board of Bank of India (NZ) Ltd, Trustee on the boards of Auckland Hospital Foundation and Trust for destruction of synthetic refrigerants. He is past Chair of India NZ Business Council and past co-chair of New Zealand Asian leaders (NZAL). He has also been part of a few ministerial trade delegations to India, Sri Lanka, Thailand & Philippines. Sameer is a mechanical engineer with an MBA from Sydney University. He uses his business, management and international trade experience to mentor entrepreneurs and guide those businesses wishing to make a mark in international markets.',
       },
@@ -100,6 +104,7 @@ export const COUNCIL: readonly CouncilGroup[] = [
       {
         name: 'Sakthi Ranganathan',
         title: 'Board Member',
+        photo: '/council/sakthi-ranganathan.png',
         linkedin: 'https://www.linkedin.com/in/sakthinz/',
         bio: 'Sakthi is a hands-on entrepreneur with expertise in digital design, cross-functional team development, human-computer interaction and extended reality technologies, including VR, AR and MR. He founded JIX Reality in 2017 after identifying a gap between XR research and its practical use in solving real-world business and industry problems. A maker at heart, Sakthi enjoys building ideas from concept to implementation. He brings creative foresight, technical understanding and commercial discipline to his work, with a strong focus on return on investment and practical outcomes. Through JIX Reality, he has established an XR lab in Christchurch where researchers, industry partners and students can test new ideas, explore emerging technologies and develop commercially viable prototypes. Sakthi is passionate about industry-academic collaboration and believes in using technology for good. He serves on the EdTech Executive Council and is committed to using innovation to improve how young people learn.',
       },
@@ -118,6 +123,7 @@ export const COUNCIL: readonly CouncilGroup[] = [
       {
         name: 'Kanwaljit Singh Bakshi',
         title: 'Ex-Officio',
+        photo: '/council/kanwaljit-singh-bakshi.jpg',
         linkedin: 'https://www.linkedin.com/in/kanwaljit-singh-bakshi-08873120/',
         bio: 'Kanwaljit has worked as a Member of Parliament in New Zealand for twelve years. During this time, he have had the opportunity to work with various communities, governmental sectors, and the public sector, as well as people from diverse backgrounds across the country. His lifelong goal has been to help people by identifying their concerns, addressing their issues, and contributing to building a better and more productive society. He wants to continue to contribute and is committed to continuing his efforts towards this end. As an immigrant who moved to New Zealand, he started a business from scratch and took it to a successful level, which has equipped me with a multitude of skills. His experience in business administration and organization, as well as my background as a Member of Parliament will be invaluable to the Business Council.',
       },
@@ -133,6 +139,7 @@ export const COUNCIL: readonly CouncilGroup[] = [
         // "Souther India Chapter Head" -> "Southern India Chapter Head" (spelling fix, see
         // file header) - the one fix explicitly called out when this task was set.
         title: 'Southern India Chapter Head',
+        photo: '/council/selwyn-thomas.jpg',
         linkedin: 'https://www.linkedin.com/in/selwynthomas/',
         bio: 'Selwyn Thomas is an internationally recognised leader in people analytics, digital transformation and human resource management. He is President and CEO of Talent Tribe Global Consulting, headquartered in Auckland, with offices in Melbourne and Toronto, and a global support centre in Chennai, India. Across a 32-year career, Selwyn has held senior leadership roles across media, finance, insurance, consulting, manufacturing, hospitality, entertainment, NGOs and digital technology. He has also served as Associate Director, People and Infrastructure, Ernst & Young Asia Pacific, and HR Director for Alstom’s Transportation Division. Selwyn is a sought-after advisor, consultant and keynote speaker, with specialist expertise in organisational transformation, job grading, compensation review, performance systems and workforce strategy. He has also been a guest lecturer across key HR disciplines. He holds a Bachelor of Commerce from Madras Christian College and a Master’s in Human Resource Management from Bosco Institute for Social Sciences.',
       },
