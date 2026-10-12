@@ -476,7 +476,9 @@ const INZBC_EVENTS: readonly EventItem[] = [
     cover: 'india-unplugged-export-import-workshop-25-may-2022.jpg',
     title: 'India Unplugged: Export-Import Workshop',
     date: '25 May 2022',
-    venue: 'Venue TBC at publish time',
+    // Checked against the live post (13 Oct 2026): it never named a venue either, just
+    // "TBC" and "Auckland, New Zealand" — not a gap on our side, the source never had it.
+    venue: 'Auckland (venue unconfirmed)',
     description: 'One-day workshop — logistics, banking & finance, insurance/export credit, customs & MPI regulations, tax.',
     sortKey: '2022-05-25',
   },
@@ -940,14 +942,14 @@ function MembershipBody() {
           </div>
 
           <Reveal delay={0.16}>
-            {/* Members: "over 200" is INZBC's own published figure (its press releases'
-                standard "About" boilerplate, e.g. the 14 Aug 2025 and 22 Dec 2025 posts in
-                news.ts), not an estimate. Industries has no published figure anywhere checked
-                — dropped rather than guessed; add it back here once INZBC supplies it. */}
+            {/* Members: 2000+, per direct correction from Sunil (13 Oct 2026) - overrides
+                the "over 200" figure in INZBC's own press-release boilerplate (news.ts),
+                which is a different, narrower count. Industries has no published figure
+                anywhere checked — dropped rather than guessed; add it back once supplied. */}
             <dl className="mt-16 grid grid-cols-3 gap-8 border-t border-white/15 pt-10">
               <div>
                 <dt className="text-sm text-white/60">Members</dt>
-                <dd className="mt-1 font-heading text-3xl text-lime">200+</dd>
+                <dd className="mt-1 font-heading text-3xl text-lime">2000+</dd>
               </div>
               <div>
                 <dt className="text-sm text-white/60">Chapters</dt>
