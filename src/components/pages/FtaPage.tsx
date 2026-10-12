@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowUpRight, X } from 'lucide-react';
 import { Reveal, WordReveal, Parallax, CountUp, ScrollProgress, StickyHeader } from '@/components/inzbc/motion';
+import { Dialog } from '@/components/inzbc/Dialog';
 import { ART, LINKS } from '@/components/inzbc/content';
 import { NAV } from '@/components/inzbc/pages';
 import Footer from '@/components/inzbc/Footer';
@@ -84,7 +86,156 @@ const TIMELINE: readonly Milestone[] = [
   },
 ] as const;
 
+/**
+ * Sector breakdown cards. Each image is one of INZBC's own sector briefing graphics
+ * (Sunil's 11 Oct 2026 Drive upload, public/sectors/) — INZBC is the primary source, so
+ * nothing here is re-sourced elsewhere. The stat and blurb for each card are read directly
+ * off that sector's own graphic, not estimated: every number here appears on the card's
+ * image too, so a card never asserts something its own picture doesn't already show.
+ */
+type SectorHighlight = Readonly<{
+  slug: string;
+  title: string;
+  stat: string;
+  blurb: string;
+  image: string;
+  alt: string;
+}>;
+
+const SECTOR_HIGHLIGHTS: readonly SectorHighlight[] = [
+  {
+    slug: 'apples',
+    title: 'Apples',
+    stat: '50% tariff cut in quota',
+    blurb: "New Zealand is the first country with preferential apple access under any Indian FTA: a 32,500 MT quota in year one, rising to 45,000 MT by year six, within a 1 April–31 August seasonal window.",
+    image: '/sectors/apples.png',
+    alt: 'NZ India FTA sector graphic for apples: 50% tariff cut in quota, 32,500 MT year one quota rising to 45,000 MT by year six, seasonal window 1 April to 31 August',
+  },
+  {
+    slug: 'seafood',
+    title: 'Seafood',
+    stat: '33% tariffs phased out over 7 years',
+    blurb: 'Greater access for New Zealand exporters to a fast-growing Indian market, covering salmon, mussels, prawns & shrimp, white fish and more.',
+    image: '/sectors/seafood.png',
+    alt: 'NZ India FTA sector graphic for seafood: 33% of tariffs phased out over 7 years, covering salmon, mussels, prawns and shrimp, and white fish',
+  },
+  {
+    slug: 'skilled-workforce',
+    title: 'Skilled workforce & mobility',
+    stat: '1,667 three-year visas, annually',
+    blurb: 'Temporary employment entry capped at 5,000 holders, professional mobility across IT, engineering, healthcare, education and construction, student mobility with no cap on numbers, and up to 1,000 working-holiday places a year.',
+    image: '/sectors/skilled.png',
+    alt: 'NZ India FTA sector graphic for skilled workforce and mobility: 1,667 three-year visas annually capped at 5,000 holders, plus student and working-holiday mobility',
+  },
+  {
+    slug: 'tourism',
+    title: 'Tourism',
+    stat: 'Tariff elimination on day one',
+    blurb: 'Opens the door to a travel market of more than 1.4 billion people, with tariffs on tourism-related services eliminated from day one and a phase-out period of up to 10 years.',
+    image: '/sectors/tourism.png',
+    alt: 'NZ India FTA sector graphic for tourism: tariff elimination on day one for tourism-related services, phase-out period up to 10 years, India outbound travel market of 1.4 billion people',
+  },
+  {
+    slug: 'investment',
+    title: 'Investment & innovation',
+    stat: '100% tariff elimination on day one',
+    blurb: 'Stronger protections for investments and intellectual property, with full tariff elimination on day one for investment-related goods and a phase-out period of up to 10 years.',
+    image: '/sectors/investment.png',
+    alt: 'NZ India FTA sector graphic for investment and innovation: 100% tariff elimination on day one for investment-related goods, phase-out period up to 10 years',
+  },
+] as const;
+
+/** One sector card — a real button, so it opens with Enter or Space for free. */
+function SectorCard({
+  sector,
+  delay,
+  onOpen,
+}: {
+  sector: SectorHighlight;
+  delay: number;
+  onOpen: (sector: SectorHighlight, trigger: HTMLButtonElement) => void;
+}) {
+  const ref = useRef<HTMLButtonElement>(null);
+  return (
+    <Reveal delay={delay}>
+      <button
+        ref={ref}
+        type="button"
+        onClick={() => ref.current && onOpen(sector, ref.current)}
+        className={`group flex h-full w-full flex-col overflow-hidden rounded-2xl bg-mist text-left transition-shadow hover:shadow-lg ${FOCUS}`}
+      >
+        <Image src={sector.image} alt={sector.alt} loading="lazy" className="aspect-square w-full object-cover" />
+        <div className="flex flex-1 flex-col p-6">
+          <span className="inline-flex w-fit items-center rounded-full bg-lime/25 px-3 py-1 text-xs font-semibold text-ink">
+            {sector.stat}
+          </span>
+          <h3 className="mt-3 font-heading text-xl text-ink">{sector.title}</h3>
+          <p className="mt-2 flex-1 text-sm text-foreground">{sector.blurb}</p>
+          <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-plum">
+            View the full breakdown
+            <ArrowUpRight aria-hidden="true" size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </span>
+        </div>
+      </button>
+    </Reveal>
+  );
+}
+
+/** The full-size sector graphic, in the same shared accessible dialog the Council bios and
+    News articles use (focus trap, Esc/backdrop close, focus-return, scroll lock, reduced
+    motion all come from there). */
+function SectorDialog({
+  sector,
+  triggerEl,
+  onClose,
+}: {
+  sector: SectorHighlight | null;
+  triggerEl: HTMLButtonElement | null;
+  onClose: () => void;
+}) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const isOpen = sector !== null;
+  const titleId = sector ? `sector-dialog-title-${sector.slug}` : undefined;
+
+  if (!sector) return null;
+
+  return (
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      triggerEl={triggerEl}
+      titleId={titleId}
+      initialFocusRef={closeButtonRef}
+      widthClassName="w-[min(34rem,calc(100vw-2rem))]"
+    >
+      <div className="relative">
+        <Image src={sector.image} alt={sector.alt} loading="lazy" className="w-full object-cover" />
+        <button
+          ref={closeButtonRef}
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className={`absolute right-3 top-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-ink shadow-sm hover:bg-white ${FOCUS}`}
+        >
+          <X aria-hidden="true" size={20} />
+        </button>
+      </div>
+      <div className="p-6 sm:p-8">
+        <h2 id={titleId} className="font-heading text-2xl text-ink">
+          {sector.title}
+        </h2>
+        <p className="mt-3 text-foreground">{sector.blurb}</p>
+        <p className="mt-6 text-xs text-foreground/60">Source: INZBC sector briefing graphics.</p>
+      </div>
+    </Dialog>
+  );
+}
+
 export default function FtaPage() {
+  const [activeSector, setActiveSector] = useState<{ sector: SectorHighlight; trigger: HTMLButtonElement } | null>(null);
+  const openSector = (sector: SectorHighlight, trigger: HTMLButtonElement) => setActiveSector({ sector, trigger });
+  const closeSector = () => setActiveSector(null);
+
   return (
     <div className="min-h-screen bg-white font-paragraph text-foreground">
       <ScrollProgress />
@@ -257,6 +408,35 @@ export default function FtaPage() {
               </p>
             </Reveal>
           </div>
+        </section>
+
+        <section className="bg-mist px-6 py-24" aria-labelledby="fta-sectors-title">
+          <div className="mx-auto max-w-6xl">
+            <Reveal>
+              <h2
+                id="fta-sectors-title"
+                className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl"
+              >
+                Sector by sector
+              </h2>
+              <p className="mt-4 max-w-2xl text-lg text-foreground">
+                The same agreement reads differently depending on what you export. Select a
+                sector for the full breakdown.
+              </p>
+            </Reveal>
+
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {SECTOR_HIGHLIGHTS.map((sector, index) => (
+                <SectorCard key={sector.slug} sector={sector} delay={index * 0.05} onOpen={openSector} />
+              ))}
+            </div>
+          </div>
+
+          <SectorDialog
+            sector={activeSector?.sector ?? null}
+            triggerEl={activeSector?.trigger ?? null}
+            onClose={closeSector}
+          />
         </section>
 
         {/* One large photo carries the moment; a smaller supporting pair sits underneath.

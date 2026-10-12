@@ -122,6 +122,7 @@ export const INDIA_NETWORK: readonly PartnerMark[] = [
   { name: 'PHD Chamber of Commerce and Industry', href: 'https://www.phdcci.in/', logo: '/partners/phdcci.png', relationship: 'India industry network' },
   { name: 'ASSOCHAM', href: 'https://www.assocham.org/', logo: '/partners/assocham.jpg', relationship: '2026 MoU partner' },
   { name: 'Trade Promotion Council of India', href: 'https://www.tpci.in/', logo: '/partners/tpci.png', relationship: 'India industry network' },
+  { name: 'Federation of Indian Export Organisations', href: 'https://www.fieo.org/', logo: '/partners/fieo.jpg', relationship: 'India industry network' },
   // NABARD and HSIIDC: nabard.org and hsiidc.org.in both refused every connection attempt
   // from here (curl and a rendering fetch both got ECONNREFUSED/timeout) — not a scraping
   // failure, the sites themselves are unreachable from this environment. No logo file.
@@ -134,9 +135,9 @@ export const INDIA_NETWORK: readonly PartnerMark[] = [
 ] as const;
 
 export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null; logo?: string }[] = [
-  { name: 'MFAT', href: 'https://www.mfat.govt.nz/' },
-  { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/' },
-  { name: 'Business Canterbury', href: 'https://www.businesscanterbury.co.nz/' },
+  { name: 'MFAT', href: 'https://www.mfat.govt.nz/', logo: '/partners/mfat.svg' },
+  { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/', logo: '/partners/nzte.png' },
+  { name: 'Business Canterbury', href: 'https://www.businesscanterbury.co.nz/', logo: '/partners/business-canterbury.webp' },
   { name: 'BusinessNZ', href: 'https://businessnz.org.nz/' },
   { name: 'ExportNZ', href: 'https://exportnz.org.nz/' },
   { name: 'ASEAN New Zealand Business Council', href: 'https://asean.org.nz/', logo: '/partners/asean-nz.png' },
@@ -147,6 +148,11 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   { name: 'BNZBA', href: 'https://www.bnzba.co.nz/', logo: '/partners/bnzba.png' },
   { name: 'NZ India Research Institute', href: 'https://www.wgtn.ac.nz/nziri' },
   { name: 'ThinkNew New Zealand', href: null },
+  // Added from Sunil's 11 Oct 2026 Drive upload ("Our Strategic network" / "Industry
+  // Chambers" folders). Education New Zealand and EMA had no logo file in that upload —
+  // text-only rather than invent one, same as NABARD/HSIIDC/NZ Asian Leaders above.
+  { name: 'Education New Zealand', href: 'https://enz.govt.nz/' },
+  { name: 'Employers and Manufacturers Association (EMA)', href: 'https://www.ema.co.nz/' },
 ] as const;
 
 export const SOCIALS = [

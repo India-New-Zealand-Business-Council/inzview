@@ -957,7 +957,22 @@ function Hero() {
 
         <div className="home-hero__visual">
           <div className="home-hero__image-wrap">
-            <Image src="/events/modi-luxon-auckland-2026.jpeg" alt="Prime Ministers Narendra Modi and Christopher Luxon in conversation during the Indian Prime Minister's official visit to Auckland" width="1200" height="1600" loading="eager" fetchPriority="high" className="home-hero__image" />
+            {/* Replaces the old dinner-table shot with the bilateral meeting photo (Sunil's
+                Drive upload, "CL NM 3.png", 13 Oct 2026) - both PMs seated together, flags
+                behind them. The source is landscape (2730x1820) against this box's portrait
+                aspect-ratio (0.78), so object-position is overridden per-image here rather
+                than changing the box for every hero photo - 44% keeps both faces inside the
+                crop; dead-center or the old 62% cut one of them out entirely. */}
+            <Image
+              src="/events/modi-luxon-bilateral-meeting-2026.jpg"
+              alt="Prime Minister Narendra Modi and Prime Minister Christopher Luxon in a bilateral meeting, seated beside the Indian and New Zealand flags"
+              width="2730"
+              height="1820"
+              loading="eager"
+              fetchPriority="high"
+              className="home-hero__image"
+              style={{ objectPosition: '44% center' }}
+            />
             <div className="home-hero__image-shade" aria-hidden="true" />
             <HeroRoute />
             <div aria-hidden="true" className="home-hero__route-label home-hero__route-label--start">
