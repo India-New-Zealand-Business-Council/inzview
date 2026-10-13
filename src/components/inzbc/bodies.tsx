@@ -1885,18 +1885,19 @@ function FtaBriefingsBody() {
     'workshop-on-boosting-india-nz-trade-ties-held-in-wellington',
   ];
   // The hero panel used to hardcode the Vangelis Vitalis explainer as "Featured" — it still
-  // showed that way months after the event had happened. Now it's computed: whichever of the
-  // explainer or the curated briefings is the nearest upcoming one, or failing that, whichever
-  // is most recent, labelled either way so it's never shown as something to look forward to
-  // once it's already past.
-  const featuredSlugs = [...briefingSlugs, 'inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event'];
-  const featuredPool = sortEventsByDateDesc(INZBC_EVENTS).filter((e) => featuredSlugs.includes(e.sourceSlug));
+  // showed that way months after the event had happened. The first fix only looked at the
+  // curated briefings list above, which doesn't include the Summit (deliberately — that list
+  // is "briefings/dialogues", not trade shows), so it kept surfacing Vangelis Vitalis as
+  // "most recent" even with a genuinely upcoming event on the books. This looks across every
+  // INZBC event, same as the FTA Centre page's own "next event" panel, so the two pages never
+  // disagree about what's current: nearest upcoming event if one exists, else most recent.
+  const featuredPool = sortEventsByDateDesc(INZBC_EVENTS);
   const todayKey = new Date().toISOString().slice(0, 10);
   const upcomingFeatured = [...featuredPool].reverse().find((e) => e.sortKey >= todayKey);
-  const ftaExplainer = upcomingFeatured ?? featuredPool[0];
-  const ftaExplainerIsUpcoming = ftaExplainer.sortKey >= todayKey;
+  const featured = upcomingFeatured ?? featuredPool[0];
+  const featuredIsUpcoming = featured.sortKey >= todayKey;
   const briefings = sortEventsByDateDesc(INZBC_EVENTS).filter(
-    (e) => briefingSlugs.includes(e.sourceSlug) && e.sourceSlug !== ftaExplainer.sourceSlug,
+    (e) => briefingSlugs.includes(e.sourceSlug) && e.sourceSlug !== featured.sourceSlug,
   );
 
   return (
@@ -1904,27 +1905,27 @@ function FtaBriefingsBody() {
       <section className="bg-white px-6 py-24" aria-labelledby="explainer-title">
         <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-ink sm:flex sm:items-stretch">
           <Reveal className="sm:w-1/2">
-            <Image src={`/blog/${ftaExplainer.cover}`} alt={ftaExplainer.title} loading="lazy" className="h-56 w-full object-cover sm:h-full" />
+            <Image src={`/blog/${featured.cover}`} alt={featured.title} loading="lazy" className="h-56 w-full object-cover sm:h-full" />
           </Reveal>
           <Reveal delay={0.08} className="p-8 text-white sm:w-1/2 md:p-12">
             <p className="text-sm font-medium uppercase tracking-wide text-lime">
-              {ftaExplainerIsUpcoming ? 'Upcoming' : 'Most recent'}
+              {featuredIsUpcoming ? 'Upcoming' : 'Most recent'}
             </p>
             <h2 id="explainer-title" className="mt-3 font-heading text-2xl md:text-3xl">
-              {ftaExplainer.title}
+              {featured.title}
             </h2>
-            <p className="mt-4 text-white/75">{ftaExplainer.description}</p>
+            <p className="mt-4 text-white/75">{featured.description}</p>
             <p className="mt-2 text-sm text-white/60">
-              {ftaExplainer.date} &middot; {ftaExplainer.venue}
+              {featured.date} &middot; {featured.venue}
             </p>
             <p className="mt-6">
               <a
-                href={`https://www.inzbc.org/post/${ftaExplainer.sourceSlug}`}
+                href={`https://www.inzbc.org/post/${featured.sourceSlug}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`font-medium text-lime underline underline-offset-4 hover:text-white ${FOCUS}`}
               >
-                {ftaExplainerIsUpcoming ? 'Read more and register' : 'Read the recap'}
+                {featuredIsUpcoming ? 'Read more and register' : 'Read the recap'}
               </a>
             </p>
           </Reveal>
