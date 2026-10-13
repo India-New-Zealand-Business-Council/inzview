@@ -1033,14 +1033,6 @@ export default function HomePage() {
             >
               <p>Member network</p>
               <strong>2000+ touch points</strong>
-              <a
-                href="https://www.inzbc.org/post/india-new-zealand-business-council-welcomes-landmark-nz-india-free-trade-agreement"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="home-proof__source home-focus-dark"
-              >
-                INZBC published figure / Dec 2025
-              </a>
             </div>
           </div>
         </section>
@@ -1478,7 +1470,7 @@ export default function HomePage() {
               aria-label="Public sector and industry stakeholders"
               data-reel="scale"
             >
-              <span>Also working alongside</span>
+              <span>Strategic networks</span>
               <div>
                 {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo }) =>
                   href ? (
