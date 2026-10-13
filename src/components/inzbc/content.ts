@@ -105,8 +105,13 @@ export type PartnerMark = {
 };
 
 export const BUSINESS_PARTNERS: readonly PartnerMark[] = [
+  // bnz.png had an opaque white background baked in, mismatched against this grid's tinted
+  // card (same issue as assocham.png/fieo.png above) — keyed the white out to transparent
+  // 14 Oct 2026, logo mark itself (navy/orange, no white in the art) untouched.
   { name: 'Bank of New Zealand', href: 'https://www.bnz.co.nz/', logo: '/partners/bnz.png', relationship: 'Strategic partner' },
-  { name: 'High Commission of India, Wellington', href: 'https://www.hciwellington.gov.in/', logo: '/partners/hci-wellington.webp', relationship: 'Strategic partner' },
+  // hci-wellington.png: replaced the red version with the blue one Sunil supplied via
+  // Drive (14 Oct 2026) — the High Commission rebranded this logo's colour.
+  { name: 'High Commission of India, Wellington', href: 'https://www.hciwellington.gov.in/', logo: '/partners/hci-wellington.png', relationship: 'Strategic partner' },
   // University of Auckland and Duco Consultancy removed on Sunil's instruction (11 Oct 2026) —
   // he's sourcing High Commission of India logos to fill these two Strategic Partner slots.
   { name: 'Zespri', href: 'https://www.zespri.com/en-NZ', logo: '/partners/zespri.png', relationship: 'Strategic partner' },
