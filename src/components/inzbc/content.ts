@@ -142,25 +142,26 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   { name: 'MFAT', href: 'https://www.mfat.govt.nz/', logo: '/partners/mfat.svg' },
   { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/', logo: '/partners/nzte.png' },
   { name: 'Business Canterbury', href: 'https://www.businesscanterbury.co.nz/', logo: '/partners/business-canterbury.webp' },
-  { name: 'BusinessNZ', href: 'https://businessnz.org.nz/' },
+  // businessnz.png, ema.png, enz.svg, nzal.png and nziri.png (below) all downloaded
+  // directly from each organisation's own live site on 14 Oct 2026, on Sunil's instruction
+  // not to leave any of these without a logo. The Drive-supplied ENZ/EMA files kept coming
+  // back corrupted through this session's Drive download path (see git history) — fetching
+  // straight from enz.govt.nz / ema.co.nz instead sidestepped that entirely.
+  { name: 'BusinessNZ', href: 'https://businessnz.org.nz/', logo: '/partners/businessnz.png' },
   { name: 'ExportNZ', href: 'https://exportnz.org.nz/', logo: '/partners/export-nz.png' },
   { name: 'ASEAN New Zealand Business Council', href: 'https://asean.org.nz/', logo: '/partners/asean-nz.png' },
-  // NZAL's only logo asset (nzasianleaders.org) is white-on-transparent, made for a dark
-  // background — invisible on this site's light chips. Left text-only rather than ship a
-  // logo that renders blank.
-  { name: 'NZ Asian Leaders', href: 'https://nzasianleaders.org/' },
+  // NZAL's own main logo (nzasianleaders.org) is white-on-transparent, made for a dark
+  // background — invisible on this site's light chips. Used their apple-touch-icon mark
+  // instead (coloured, square), rather than either an invisible logo or no logo at all.
+  { name: 'NZ Asian Leaders', href: 'https://nzasianleaders.org/', logo: '/partners/nzal.png' },
   { name: 'BNZBA', href: 'https://www.bnzba.co.nz/', logo: '/partners/bnzba.png' },
-  { name: 'NZ India Research Institute', href: 'https://www.wgtn.ac.nz/nziri' },
-  { name: 'ThinkNew New Zealand', href: null },
+  { name: 'NZ India Research Institute', href: 'https://www.wgtn.ac.nz/nziri', logo: '/partners/nziri.png' },
+  // "ThinkNew New Zealand" removed on Sunil's instruction (14 Oct 2026) — see the removal
+  // note this replaced in git history if it needs restoring.
   // Added from Sunil's 11 Oct 2026 Drive upload ("Our Strategic network" folder).
   { name: 'Asia New Zealand Foundation Te Whītau Tūhono', href: 'https://www.asianz.org.nz/', logo: '/partners/asia-nz-foundation.png' },
-  // Education New Zealand and EMA do have logo files in that same Drive folder
-  // (ENZ_200x150.png, EMA Black.png), but both are small PNGs that came back corrupted/
-  // truncated every time they were pulled through this session's download path — same
-  // failure as the ENZ logo attempt on 11 Oct 2026. Left text-only rather than ship a
-  // damaged file; retry once a reliable transfer path is available.
-  { name: 'Education New Zealand', href: 'https://enz.govt.nz/' },
-  { name: 'Employers and Manufacturers Association (EMA)', href: 'https://www.ema.co.nz/' },
+  { name: 'Education New Zealand', href: 'https://enz.govt.nz/', logo: '/partners/enz.svg' },
+  { name: 'Employers and Manufacturers Association (EMA)', href: 'https://www.ema.co.nz/', logo: '/partners/ema.png' },
 ] as const;
 
 export const SOCIALS = [
