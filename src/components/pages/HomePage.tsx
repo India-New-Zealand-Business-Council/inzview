@@ -14,7 +14,6 @@ import {
   CalendarDays,
   ChevronDown,
   Globe2,
-  Mail,
   Menu,
   UsersRound,
   X,
@@ -23,7 +22,6 @@ import {
   ART,
   BENEFITS,
   LINKS,
-  SOCIALS,
   STATS,
   BUSINESS_PARTNERS,
   INDIA_NETWORK,
@@ -32,6 +30,7 @@ import {
 import { NAV } from '@/components/inzbc/pages';
 import { NEWS_POSTS } from '@/components/inzbc/news';
 import { useNewsDialog, NewsArticleDialog } from '@/components/inzbc/News';
+import Footer from '@/components/inzbc/Footer';
 import ClickSpark from '@/components/home/ClickSpark';
 import EffectsWorld from '@/components/home/EffectsWorld';
 import KineticHeading from '@/components/home/KineticHeading';
@@ -1619,50 +1618,7 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="home-footer">
-        <div className="home-footer__horizon" aria-hidden="true">
-          <span />
-        </div>
-        <div className="home-shell home-footer__top" data-reel="rise">
-          <Link to="/" className="home-footer__logo home-focus-light" aria-label="INZBC home">
-            <Image src={ART.logo} width="400" height="114" alt="India New Zealand Business Council" />
-          </Link>
-          <nav className="home-footer__nav" aria-label="Footer navigation">
-            {NAV.map((item) => (
-              <Link key={item.href} to={item.href} className="home-focus-light">
-                {item.label}
-              </Link>
-            ))}
-            <Link to="/partners" className="home-focus-light">
-              Partners
-            </Link>
-          </nav>
-        </div>
-        <div
-          className="home-shell home-footer__bottom"
-          data-reel="rise"
-          style={{ '--reel-delay': '100ms' } as React.CSSProperties}
-        >
-          <p>India New Zealand Business Council / Established 1988</p>
-          <nav className="home-footer__socials" aria-label="Social media">
-            {SOCIALS.map((social) => (
-              <a
-                key={social.name}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="home-focus-light"
-              >
-                {social.name}
-              </a>
-            ))}
-          </nav>
-          <a href={LINKS.email} className="home-footer__email home-focus-light">
-            <Mail aria-hidden="true" size={16} />
-            Secretariat@inzbc.org
-          </a>
-        </div>
-        </footer>
+      <Footer />
       </div>
     </ClickSpark>
   );

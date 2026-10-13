@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ART, LINKS, SOCIALS } from './content';
-import { NAV } from './pages';
+import { ART, FOOTER_COLUMNS, FOOTER_TAGLINE, LINKS, SOCIALS } from './content';
 import { Image } from '@/components/ui/image';
 
 // One focus treatment for the whole file, matching bodies.tsx's FOCUS constant.
@@ -8,83 +7,95 @@ const FOCUS =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
 
 /**
- * Shared footer for every inner route, via InnerPage.tsx. Home has its own bespoke footer
- * (HomePage.tsx's <footer className="home-footer">, styled by HomePage.css) — that markup
- * isn't reused here, since its classes only exist in HomePage.css and pulling them in would
- * leak Home-specific CSS globally. This is the same content, rebuilt in plain Tailwind to
- * match bodies.tsx's convention: logo, one flat nav row (the same NAV pages.ts already gives
- * StickyHeader, plus Partners, matching what Home's footer nav includes), the tagline, socials
- * and the secretariat email — all real, sourced content, nothing invented.
+ * Shared footer for every page, Home included — this is the one footer, rendered once from
+ * here, not two independently-maintained copies. Home used to have its own bespoke footer
+ * markup (HomePage.tsx's `<footer className="home-footer">`, styled by HomePage.css) and this
+ * component covered only the ten inner routes; they'd drifted (this one had no social icons,
+ * Home's had no column structure) because there was never one source of truth. Sunil asked
+ * for the footer to be the same everywhere, which this now guarantees structurally rather
+ * than by remembering to update both next time.
  *
- * Not built: a categorised multi-column footer (About Us / Events / Trade / Members / News
- * Centre). No legacy/wix-studio snippet has that structure sourced anywhere, and Home's own
- * current footer doesn't have it either — it's one flat link row. Building columns would mean
- * inventing which links go in which category, which is exactly what this project's sourcing
- * rule forbids. If the live site's real column structure is needed, it has to come from
- * Sunil/the live site directly, the same way the postal address conflict was resolved.
+ * Column structure and copy are FOOTER_COLUMNS/FOOTER_TAGLINE in content.ts, sourced from
+ * inzbc.org's own live footer on Sunil's instruction (checked 14 Oct 2026) rather than the
+ * single flat nav row this used to show — see that file for the link-destination mapping.
  */
-// Every nav/social/email link below is a 44px-min tap target, matching HomePage.css's
-// .home-footer__nav a / .home-footer__socials a / .home-footer__email — this is the same
-// footer content on the ten inner routes, and it had no padding at all until this pass, so
-// their real tap height was one line of text-sm (~20px).
-const LINK = `inline-flex min-h-11 items-center rounded-sm text-white/80 hover:text-white ${FOCUS}`;
+const LINK = `inline-flex min-h-11 items-center rounded-sm text-white/70 hover:text-white ${FOCUS}`;
 
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="bg-navy px-6 py-12 text-white">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-8">
-        {/* Sized to match StickyHeader's own logo (w-[clamp(185px,17vw,222px)]) instead of
-            the old fixed h-8, which rendered it at ~1/3 that width given the logo's wide
-            aspect ratio - cramped next to the nav bar on every inner page. The white pill
-            behind it matches HomePage.css's .home-footer__logo: since the logo became a
-            transparent PNG, its dark ink text has no backing of its own and needs one to
-            stay legible on this footer's dark navy background. */}
-        <Link
-          to="/"
-          aria-label="INZBC home"
-          className={`inline-flex items-center rounded-xl bg-white px-3 py-2 ${FOCUS}`}
-        >
-          <Image
-            src={ART.logo}
-            alt="India New Zealand Business Council"
-            className="h-auto w-[clamp(185px,17vw,222px)]"
-          />
-        </Link>
-
-        <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-          {/* NAV (pages.ts) already ends with About, so only Partners — which NAV doesn't
-              carry — needs adding here. */}
-          {NAV.map((item) => (
-            <Link key={item.href} to={item.href} className={LINK}>
-              {item.label}
-            </Link>
-          ))}
-          <Link to="/partners" className={LINK}>
-            Partners
-          </Link>
-        </nav>
-      </div>
-
-      <div className="mx-auto mt-10 flex max-w-6xl flex-wrap items-center justify-between gap-6 border-t border-white/15 pt-6 text-sm text-white/70">
-        <p>India New Zealand Business Council / Established 1988</p>
-
-        <nav aria-label="Social media" className="flex flex-wrap gap-x-5 gap-y-1">
-          {SOCIALS.map((social) => (
-            <a
-              key={social.name}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`inline-flex min-h-11 items-center rounded-sm hover:text-white ${FOCUS}`}
+    <footer className="bg-navy px-6 py-16 text-white">
+      <div className="mx-auto max-w-6xl">
+        <div className="flex flex-wrap items-start justify-between gap-10 border-b border-white/15 pb-10">
+          <div className="max-w-sm">
+            <Link
+              to="/"
+              aria-label="INZBC home"
+              className={`inline-flex items-center rounded-xl bg-white px-3 py-2 ${FOCUS}`}
             >
-              {social.name}
-            </a>
-          ))}
-        </nav>
+              <Image
+                src={ART.logo}
+                alt="India New Zealand Business Council"
+                className="h-auto w-[clamp(185px,17vw,222px)]"
+              />
+            </Link>
+            <p className="mt-4 text-sm text-white/70">{FOOTER_TAGLINE}</p>
+          </div>
 
-        <a href={LINKS.email} className={`inline-flex min-h-11 items-center rounded-sm hover:text-white ${FOCUS}`}>
-          Secretariat@inzbc.org
-        </a>
+          <nav
+            aria-label="Footer navigation"
+            className="grid grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-3 md:grid-cols-5"
+          >
+            {FOOTER_COLUMNS.map((column) => (
+              <div key={column.heading}>
+                <p className="text-xs font-semibold uppercase tracking-wide text-white/50">{column.heading}</p>
+                <ul className="mt-3 space-y-2 text-sm">
+                  {column.links.map((link) =>
+                    'external' in link && link.external ? (
+                      <li key={link.label}>
+                        <a href={link.href} target="_blank" rel="noopener noreferrer" className={LINK}>
+                          {link.label}
+                        </a>
+                      </li>
+                    ) : (
+                      <li key={link.label}>
+                        <Link to={link.href} className={LINK}>
+                          {link.label}
+                        </Link>
+                      </li>
+                    ),
+                  )}
+                </ul>
+              </div>
+            ))}
+          </nav>
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-6 text-sm text-white/70">
+          <p>
+            &copy; INZBC {year}. All rights reserved. India New Zealand Business Council / Established 1988.
+          </p>
+
+          <nav aria-label="Social media" className="flex flex-wrap items-center gap-5">
+            {SOCIALS.map((social) => (
+              <a
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.label}
+                className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm hover:opacity-80 ${FOCUS}`}
+              >
+                <Image src={social.icon} alt="" className="h-5 w-5" />
+              </a>
+            ))}
+          </nav>
+
+          <a href={LINKS.email} className={`inline-flex min-h-11 items-center rounded-sm hover:text-white ${FOCUS}`}>
+            Secretariat@inzbc.org
+          </a>
+        </div>
       </div>
     </footer>
   );
