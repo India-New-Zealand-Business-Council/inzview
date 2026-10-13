@@ -45,7 +45,7 @@ export default function Footer() {
 
           <nav
             aria-label="Footer navigation"
-            className="grid grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-3 md:grid-cols-5"
+            className="grid flex-1 grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-3 md:grid-cols-5"
           >
             {FOOTER_COLUMNS.map((column) => (
               <div key={column.heading}>
@@ -87,7 +87,7 @@ export default function Footer() {
                 aria-label={social.label}
                 className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm hover:opacity-80 ${FOCUS}`}
               >
-                <Image src={social.icon} alt="" className="h-5 w-5" />
+                <Image src={social.icon} alt="" className="h-7 w-7" />
               </a>
             ))}
           </nav>
