@@ -120,9 +120,13 @@ export const INDIA_NETWORK: readonly PartnerMark[] = [
   { name: 'FICCI', href: 'https://www.ficci.in/', logo: '/partners/ficci.png', relationship: 'India industry network' },
   { name: 'Confederation of Indian Industry', href: 'https://www.cii.in/', logo: '/partners/cii.svg', relationship: 'India industry network' },
   { name: 'PHD Chamber of Commerce and Industry', href: 'https://www.phdcci.in/', logo: '/partners/phdcci.png', relationship: 'India industry network' },
-  { name: 'ASSOCHAM', href: 'https://www.assocham.org/', logo: '/partners/assocham.jpg', relationship: '2026 MoU partner' },
+  // assocham.png and fieo.png: the only source files for these two (assocham.jpg,
+  // fieo.jpg) were plain white-background JPEGs, which showed as a visible white box
+  // against this grid's tinted card background. Re-exported as transparent PNGs by
+  // keying out the white (14 Oct 2026) rather than left mismatched.
+  { name: 'ASSOCHAM', href: 'https://www.assocham.org/', logo: '/partners/assocham.png', relationship: '2026 MoU partner' },
   { name: 'Trade Promotion Council of India', href: 'https://www.tpci.in/', logo: '/partners/tpci.png', relationship: 'India industry network' },
-  { name: 'Federation of Indian Export Organisations', href: 'https://www.fieo.org/', logo: '/partners/fieo.jpg', relationship: 'India industry network' },
+  { name: 'Federation of Indian Export Organisations', href: 'https://www.fieo.org/', logo: '/partners/fieo.png', relationship: 'India industry network' },
   // NABARD and HSIIDC: nabard.org and hsiidc.org.in both refused every connection attempt
   // from here (curl and a rendering fetch both got ECONNREFUSED/timeout) — not a scraping
   // failure, the sites themselves are unreachable from this environment. No logo file.
@@ -139,7 +143,7 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/', logo: '/partners/nzte.png' },
   { name: 'Business Canterbury', href: 'https://www.businesscanterbury.co.nz/', logo: '/partners/business-canterbury.webp' },
   { name: 'BusinessNZ', href: 'https://businessnz.org.nz/' },
-  { name: 'ExportNZ', href: 'https://exportnz.org.nz/' },
+  { name: 'ExportNZ', href: 'https://exportnz.org.nz/', logo: '/partners/export-nz.png' },
   { name: 'ASEAN New Zealand Business Council', href: 'https://asean.org.nz/', logo: '/partners/asean-nz.png' },
   // NZAL's only logo asset (nzasianleaders.org) is white-on-transparent, made for a dark
   // background — invisible on this site's light chips. Left text-only rather than ship a
@@ -148,9 +152,13 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   { name: 'BNZBA', href: 'https://www.bnzba.co.nz/', logo: '/partners/bnzba.png' },
   { name: 'NZ India Research Institute', href: 'https://www.wgtn.ac.nz/nziri' },
   { name: 'ThinkNew New Zealand', href: null },
-  // Added from Sunil's 11 Oct 2026 Drive upload ("Our Strategic network" / "Industry
-  // Chambers" folders). Education New Zealand and EMA had no logo file in that upload —
-  // text-only rather than invent one, same as NABARD/HSIIDC/NZ Asian Leaders above.
+  // Added from Sunil's 11 Oct 2026 Drive upload ("Our Strategic network" folder).
+  { name: 'Asia New Zealand Foundation Te Whītau Tūhono', href: 'https://www.asianz.org.nz/', logo: '/partners/asia-nz-foundation.png' },
+  // Education New Zealand and EMA do have logo files in that same Drive folder
+  // (ENZ_200x150.png, EMA Black.png), but both are small PNGs that came back corrupted/
+  // truncated every time they were pulled through this session's download path — same
+  // failure as the ENZ logo attempt on 11 Oct 2026. Left text-only rather than ship a
+  // damaged file; retry once a reliable transfer path is available.
   { name: 'Education New Zealand', href: 'https://enz.govt.nz/' },
   { name: 'Employers and Manufacturers Association (EMA)', href: 'https://www.ema.co.nz/' },
 ] as const;

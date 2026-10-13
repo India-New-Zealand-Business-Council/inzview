@@ -1799,7 +1799,7 @@ function PartnersBody() {
 
           <Reveal delay={0.2}>
             <div className="mt-10 border-t border-ink/10 pt-8">
-              <p className="text-xs font-medium uppercase tracking-wide text-foreground/60">Also working alongside</p>
+              <p className="text-xs font-medium uppercase tracking-wide text-foreground/60">Strategic networks</p>
               <ul className="mt-3 flex flex-wrap gap-2 text-sm text-foreground">
                 {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo }) => (
                   <li key={name}>
@@ -1810,7 +1810,7 @@ function PartnersBody() {
                         rel="noopener noreferrer"
                         className={`inline-flex min-h-11 items-center gap-1.5 rounded-full border border-ink/10 px-3.5 text-xs font-medium transition-colors hover:border-ink/25 ${FOCUS}`}
                       >
-                        {logo ? <Image src={logo} alt="" loading="lazy" className="h-4 w-auto" /> : null}
+                        {logo ? <Image src={logo} alt="" loading="lazy" className="h-6 w-auto" /> : null}
                         {name}
                       </a>
                     ) : (
