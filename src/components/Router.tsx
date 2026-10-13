@@ -5,7 +5,7 @@ import HomePage from '@/components/pages/HomePage';
 import FtaPage from '@/components/pages/FtaPage';
 import FtaExplainerPage from '@/components/pages/FtaExplainerPage';
 import InnerPage from '@/components/inzbc/InnerPage';
-import { EVENT_SLUGS } from '@/components/inzbc/bodies';
+import { EVENT_SLUGS, INZBC_EVENTS } from '@/components/inzbc/bodies';
 import { PAGES } from '@/components/inzbc/pages';
 
 function Layout() {
@@ -27,16 +27,21 @@ function Layout() {
  * to a path that would otherwise hit the catch-all below and land on the homepage. Every
  * sourced claim on the site would stop being checkable, silently, with nothing logged.
  *
- * So the path is answered here instead. An event slug goes to its own row in the archive;
- * anything else — old news posts, and the two the homepage cites by hand — goes to /news,
- * which is the closest thing this build has to the old blog. Neither is as good as the
+ * So the path is answered here instead. An event slug goes to its own row in the archive —
+ * /events#slug if it's still upcoming (it won't have a row on /events/past yet, since that
+ * page only renders what EventsBody already filtered out as not-upcoming), /events/past#slug
+ * otherwise; anything else — old news posts, and the two the homepage cites by hand — goes to
+ * /news, which is the closest thing this build has to the old blog. Neither is as good as the
  * original article, but both beat a silent bounce to the homepage.
  *
  * This route is inert until the domain moves: nothing on the site links to /post/ today.
  */
 function PostRedirect() {
   const { slug = '' } = useParams();
-  return <Navigate to={EVENT_SLUGS.has(slug) ? `/events/past#${slug}` : '/news'} replace />;
+  if (!EVENT_SLUGS.has(slug)) return <Navigate to="/news" replace />;
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const isUpcoming = INZBC_EVENTS.some((e) => e.sourceSlug === slug && e.sortKey >= todayKey);
+  return <Navigate to={isUpcoming ? `/events#${slug}` : `/events/past#${slug}`} replace />;
 }
 
 // Routes are generated from the same table the navigation reads, so a nav item and its
