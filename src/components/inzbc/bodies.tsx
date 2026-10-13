@@ -1873,9 +1873,6 @@ function PartnersBody() {
  * weren't billed as.
  */
 function FtaBriefingsBody() {
-  const ftaExplainer = INZBC_EVENTS.find(
-    (e) => e.sourceSlug === 'inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event',
-  )!;
   // Hand-picked, not a keyword filter: these are genuinely briefings/dialogues with
   // ministers, high commissioners and officials, not trade shows or delegations that happen
   // to be recent. Keeps the page honest about what it actually contains.
@@ -1887,7 +1884,20 @@ function FtaBriefingsBody() {
     'indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties',
     'workshop-on-boosting-india-nz-trade-ties-held-in-wellington',
   ];
-  const briefings = sortEventsByDateDesc(INZBC_EVENTS).filter((e) => briefingSlugs.includes(e.sourceSlug));
+  // The hero panel used to hardcode the Vangelis Vitalis explainer as "Featured" — it still
+  // showed that way months after the event had happened. Now it's computed: whichever of the
+  // explainer or the curated briefings is the nearest upcoming one, or failing that, whichever
+  // is most recent, labelled either way so it's never shown as something to look forward to
+  // once it's already past.
+  const featuredSlugs = [...briefingSlugs, 'inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event'];
+  const featuredPool = sortEventsByDateDesc(INZBC_EVENTS).filter((e) => featuredSlugs.includes(e.sourceSlug));
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const upcomingFeatured = [...featuredPool].reverse().find((e) => e.sortKey >= todayKey);
+  const ftaExplainer = upcomingFeatured ?? featuredPool[0];
+  const ftaExplainerIsUpcoming = ftaExplainer.sortKey >= todayKey;
+  const briefings = sortEventsByDateDesc(INZBC_EVENTS).filter(
+    (e) => briefingSlugs.includes(e.sourceSlug) && e.sourceSlug !== ftaExplainer.sourceSlug,
+  );
 
   return (
     <>
@@ -1897,7 +1907,9 @@ function FtaBriefingsBody() {
             <Image src={`/blog/${ftaExplainer.cover}`} alt={ftaExplainer.title} loading="lazy" className="h-56 w-full object-cover sm:h-full" />
           </Reveal>
           <Reveal delay={0.08} className="p-8 text-white sm:w-1/2 md:p-12">
-            <p className="text-sm font-medium uppercase tracking-wide text-lime">Featured</p>
+            <p className="text-sm font-medium uppercase tracking-wide text-lime">
+              {ftaExplainerIsUpcoming ? 'Upcoming' : 'Most recent'}
+            </p>
             <h2 id="explainer-title" className="mt-3 font-heading text-2xl md:text-3xl">
               {ftaExplainer.title}
             </h2>
@@ -1912,7 +1924,7 @@ function FtaBriefingsBody() {
                 rel="noopener noreferrer"
                 className={`font-medium text-lime underline underline-offset-4 hover:text-white ${FOCUS}`}
               >
-                Read the invitation
+                {ftaExplainerIsUpcoming ? 'Read more and register' : 'Read the recap'}
               </a>
             </p>
           </Reveal>

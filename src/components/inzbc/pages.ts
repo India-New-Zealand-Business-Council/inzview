@@ -81,7 +81,16 @@ export const PAGES: PageDef[] = [
     heroImagePosition: '50% 40%',
     heroCompact: true,
   },
-  { path: '/news', title: "News", lede: "Updates from INZBC and the NZ\u2013India trade relationship." },
+  {
+    path: '/news',
+    title: "News",
+    lede: "Updates from INZBC and the NZ\u2013India trade relationship.",
+    // The formal exchange of ratifying documents at Parliament, 21 September 2026 \u2014 from
+    // Sunil's 11 Oct 2026 Drive upload, the same event the FTA briefings hero draws from.
+    heroImage: '/events/group-photo-fta-parliament-21-sep-2026.jpeg',
+    heroImageAlt: 'Ministers, officials and delegates at Parliament for the exchange of ratifying documents for the New Zealand\u2013India Free Trade Agreement, 21 September 2026',
+    heroImagePosition: '50% 30%',
+  },
   {
     path: '/partners',
     title: "Partners",
