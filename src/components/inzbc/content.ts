@@ -169,3 +169,62 @@ export const SOCIALS = [
   { name: 'LinkedIn', href: LINKS.linkedin, icon: ART.socialLinkedin, label: 'Connect with us' },
   { name: 'X', href: LINKS.x, icon: ART.socialX, label: 'Follow us on X' },
 ] as const;
+
+/* Footer column structure, sourced from inzbc.org's live footer (checked 14 Oct 2026) on
+   Sunil's instruction to match it rather than keep this rebuild's one flat nav row. Link
+   destinations are mapped to where each old-site page actually lives in this rebuild (the
+   same mapping Router.tsx's §5 redirect table already uses for these same old URLs), not
+   guessed:
+     - "Our Sponsors" -> /partners (old site's own /our-sponsors redirects here)
+     - "Trade Shows" -> /trade-resources (old /trade-shows redirects here)
+     - "Trade Bazaar" -> /india-market-opportunities (old /trade-bazaar redirects here)
+     - "Membership Form" -> /membership (old /membership-form redirects here)
+     - "Our Patron" -> /about-inzbc: there's no standalone Patron page in this rebuild (the
+       one Patron photo that exists lives in a Membership-page gallery, not its own page),
+       and About INZBC is the closest real page rather than a dead link or an invented one.
+   "Join INZBC" is the one external link in the set (Member Jungle, same as every other
+   "Join INZBC" button on this site) — everything else routes within this site. */
+export const FOOTER_COLUMNS = [
+  {
+    heading: 'About Us',
+    links: [
+      { label: 'About INZBC', href: '/about-inzbc' },
+      { label: 'Executive Council', href: '/executive-council' },
+      { label: 'Our Sponsors', href: '/partners' },
+      { label: 'Our Patron', href: '/about-inzbc' },
+    ],
+  },
+  {
+    heading: 'Events',
+    links: [
+      { label: 'Events Calendar', href: '/events' },
+      { label: 'Past Events', href: '/events/past' },
+    ],
+  },
+  {
+    heading: 'Trade',
+    links: [
+      { label: 'Trade Shows', href: '/trade-resources' },
+      { label: 'Trade Bazaar', href: '/india-market-opportunities' },
+    ],
+  },
+  {
+    heading: 'Members',
+    links: [
+      { label: 'Member Directory', href: '/membership/directory' },
+      { label: 'Join INZBC', href: LINKS.join, external: true },
+      { label: 'Membership Form', href: '/membership' },
+    ],
+  },
+  {
+    heading: 'News Centre',
+    links: [
+      { label: 'News', href: '/news' },
+      { label: 'Newsletters', href: '/newsletters' },
+      { label: 'Publications', href: '/publications' },
+    ],
+  },
+] as const;
+
+export const FOOTER_TAGLINE =
+  'The India New Zealand Business Council is a premier trade organisation in New Zealand, working since 1988 to build trade relations between India and New Zealand.';

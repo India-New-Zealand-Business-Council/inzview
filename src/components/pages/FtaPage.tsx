@@ -144,6 +144,56 @@ const SECTOR_HIGHLIGHTS: readonly SectorHighlight[] = [
     image: '/sectors/investment.png',
     alt: 'NZ India FTA sector graphic for investment and innovation: 100% tariff elimination on day one for investment-related goods, phase-out period up to 10 years',
   },
+  // Six more cards added 14 Oct 2026 from the same Drive folder as the five above — the
+  // first pass only used five of the eleven graphics actually in that folder.
+  {
+    slug: 'technology',
+    title: 'Technology & IT services',
+    stat: 'Zero duty on IT services exports',
+    blurb: 'Zero duty on IT services exports to a market of 1.4+ billion people, covering software development & engineering, cloud services, data analytics & AI, cybersecurity, IT consulting & support and fintech & digital solutions, with a phase-out period of up to 10 years.',
+    image: '/sectors/tech.png',
+    alt: 'NZ India FTA sector graphic for technology and IT services: zero duty on IT services exports, phase-out period up to 10 years, key service areas software development, cloud services, data analytics and AI, cybersecurity, IT consulting and fintech',
+  },
+  {
+    slug: 'education',
+    title: 'Education',
+    stat: 'Phase-out period up to 10 years',
+    blurb: 'Stronger market access for New Zealand education providers into one of the world’s fastest-growing student markets, covering higher education, vocational education and training, and online/digital delivery, with a phase-out period of up to 10 years.',
+    image: '/sectors/education.png',
+    alt: 'NZ India FTA sector graphic for education: phase-out period up to 10 years, covering higher education, vocational education and training, and online/digital delivery',
+  },
+  {
+    slug: 'kiwifruit',
+    title: 'Kiwifruit',
+    stat: 'Duty-free in quota',
+    blurb: 'Best access of any major kiwifruit exporter to India: duty-free within a 6,250 MT year-one quota, rising to 15,000 MT by year six, within a 1 April–15 October seasonal window.',
+    image: '/sectors/kiwifruit.png',
+    alt: 'NZ India FTA sector graphic for kiwifruit: duty-free in quota, 6,250 MT year one quota rising to 15,000 MT by year six, seasonal window 1 April to 15 October',
+  },
+  {
+    slug: 'wine',
+    title: 'Wine',
+    stat: 'Tariffs reduced up to 150%',
+    blurb: 'Tariffs on New Zealand wine — including Sauvignon Blanc, Pinot Noir, Chardonnay and other premium varietals — reduced significantly over time, by up to 150%, with a phase-out period of up to 10 years.',
+    image: '/sectors/wine.png',
+    alt: 'NZ India FTA sector graphic for wine: tariffs reduced up to 150% significantly over time, phase-out period up to 10 years, key wines Sauvignon Blanc, Pinot Noir and Chardonnay',
+  },
+  {
+    slug: 'manuka-honey',
+    title: 'Mānuka honey',
+    stat: '66% to 16.5% tariff cut over 5 years',
+    blurb: 'New Zealand is the first country with preferential honey access in any Indian FTA: tariffs cut from 66% to 16.5% over 5 years, within a 200 MT annual quota and a 1 April–30 June seasonal window.',
+    image: '/sectors/manuka.png',
+    alt: 'NZ India FTA sector graphic for Mānuka honey: 66% to 16.5% tariff cut over 5 years, 200 MT annual quota, seasonal window 1 April to 30 June',
+  },
+  {
+    slug: 'wool',
+    title: 'Wool',
+    stat: '100% tariff eliminated on day one',
+    blurb: 'Immediate duty-free access for New Zealand wool exporters under the NZ India FTA, with 100% tariff elimination on day one supporting price competitiveness and market access in a premium market.',
+    image: '/sectors/wool.png',
+    alt: 'NZ India FTA sector graphic for wool: 100% tariff eliminated on day one under the NZ India FTA',
+  },
 ] as const;
 
 /** One sector card — a real button, so it opens with Enter or Space for free. */
@@ -454,15 +504,19 @@ export default function FtaPage() {
             pointing at a June briefing months after it had already happened). */}
         {nextEvent ? (
           <section className="bg-white px-6 py-24" aria-labelledby="fta-explainer-title">
-            <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-ink sm:flex sm:items-stretch">
-              <Reveal className="sm:w-1/2">
-                {nextEvent.cover ? (
-                  <Image src={`/blog/${nextEvent.cover}`} alt={`Cover for ${nextEvent.title}`} loading="lazy" className="h-56 w-full object-cover sm:h-full" />
-                ) : (
-                  <span className="hidden h-full w-full bg-white/10 sm:block" aria-hidden="true" />
-                )}
-              </Reveal>
-              <Reveal delay={0.08} className="p-8 text-white sm:w-1/2 md:p-12">
+            <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-ink">
+              {/* This cover is a wide banner (~3:1, text and a logo mark spread across its
+                  full width) rather than a photo with a forgiving centre crop. The previous
+                  side-by-side half-width layout used object-cover on that banner inside a
+                  roughly square box, cropping both the left-hand text and the right-hand
+                  logo mark down to a sliver of the Sky Tower/Taj Mahal silhouette in the
+                  middle — which read as a stray, half-cropped graphic rather than the real
+                  banner. Stacked full-width with a matching aspect ratio shows the whole
+                  banner with no horizontal cropping. */}
+              {nextEvent.cover ? (
+                <Image src={`/blog/${nextEvent.cover}`} alt={`Cover for ${nextEvent.title}`} loading="lazy" className="aspect-[3/1] w-full object-cover" />
+              ) : null}
+              <Reveal delay={0.08} className="p-8 text-white md:p-12">
                 <p className="text-sm font-medium text-lime">Next INZBC event</p>
                 <h2 id="fta-explainer-title" className="mt-1 font-heading text-2xl md:text-3xl">
                   {nextEvent.title}
