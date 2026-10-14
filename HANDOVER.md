@@ -113,6 +113,16 @@ when it names the client as the source — the flag-and-ask habit this note was 
 example of is what caught it before publish. Delete this whole note once 20 October has
 actually passed.
 
+**The 20 October tense change is automatic.** `FTA_IN_FORCE` in `content.ts` compares the
+clock with the start of 20 October 2026 in New Zealand (NZDT, UTC+13). MFAT and the Indian
+PIB give that date and do not give a clock time, so midnight NZDT is the boundary used here.
+The Home hero pill, Home's FTA summary and status, the 57% stat note and the Export to India
+paragraph read "comes into effect" before it and "in force since" after it. The page is
+client-rendered, so this happens in the browser and nobody needs to publish again on the day.
+A tab left open past midnight keeps the old tense until reload. News posts are dated articles
+and keep their original wording. Once the date has passed, delete the false branches and the
+flag.
+
 **Photography must be INZBC's own.** The four event photographs came from INZBC's Flickr.
 They are all Summit 2018 because that is what the archive holds, and the caption says so.
 Google Images was offered and not used: images of unknown provenance on an organisation's
@@ -237,10 +247,11 @@ Needs INZBC to supply something:
 Code work that can start now:
 
 5. **Individual partner logos.** The wall is one flattened JPEG, so no logo is clickable.
-6. **36 tap targets under 44px.** Mostly nav links at 42px and inline text links inside
-   paragraphs, where a 44px box would break line spacing. A real trade, worth revisiting. The
-   shared inner-page footer's nav/social/email links (no padding at all, ~20px real tap
-   height) were the largest single group and are fixed as of 27 Aug 2026.
+6. **Tap targets under 44px.** Checked in code 14 Oct 2026: header links, dropdown rows,
+   the mobile menu and footer text links set a 44px minimum height. The dropdown caret is
+   44px tall and 24px wide, and a short header label is only as wide as the word. Inline
+   text links inside paragraphs are still not 44px, because a 44px box would break line
+   spacing. That remaining case is an accepted trade, not an open bug.
 
 ## Domain cutover
 
@@ -271,11 +282,10 @@ of them break silently.
    top-level routes but, as above, nothing under `/post/`.
 
 `inzbusinesssummit.com` is **not** part of this. It is a separate domain, parked at Wix with
-no site connected, and it serves Wix's "ConnectYourDomain" error to anyone who follows the
-three Summit buttons on Home, `/events` and `Sections.tsx`. Moving `inzbc.org` will not
-touch it. It was left in place on 23 August 2026 on the understanding that the domain gets
-reconnected as its own task — if that does not happen, those three buttons need repointing
-at `/events` instead, which is a five-minute change.
+no site connected. Moving `inzbc.org` will not touch it. The Home button now points at
+`/events`, and the `/events` page no longer has a Summit button (both checked in code
+14 Oct 2026). `Sections.tsx` is not in this tree. `LINKS.summitSite` is kept in `content.ts`
+so those buttons can be restored once INZBC reconnects the domain.
 
 ## Content parity
 

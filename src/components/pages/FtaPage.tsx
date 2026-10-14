@@ -13,9 +13,10 @@ import { Image } from '@/components/ui/image';
  * NZ-India FTA Centre.
  *
  * Facts are sourced from MFAT's Key Outcomes summary (linked at the bottom of the timeline)
- * and, for status/tariff figures, the Wix Studio build's fta-centre.html snippet. The FTA is
- * signed but NOT in force — that distinction is load-bearing for this page and is not to be
- * softened or restated.
+ * and, for status/tariff figures, the Wix Studio build's fta-centre.html snippet. Status:
+ * signed 27 April 2026, ratified 21 September 2026, in force from 20 October 2026. The
+ * headline already says that, and it stays true on both sides of the date. Do not revive
+ * "signed, not in force".
  *
  * Structural choice: the "what changes" content is organised as a phase-in timeline (day one
  * through the 15-year investment horizon), not a grid of same-size cards. The facts genuinely
