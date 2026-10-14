@@ -77,7 +77,7 @@ export default function Footer() {
             &copy; INZBC {year}. All rights reserved. India New Zealand Business Council / Established 1988.
           </p>
 
-          <nav aria-label="Social media" className="flex flex-wrap items-center gap-4">
+          <nav aria-label="Social media" className="flex flex-wrap items-center gap-3">
             {SOCIALS.map((social) => (
               <a
                 key={social.name}
@@ -85,9 +85,10 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className={`inline-flex h-11 w-11 items-center justify-center rounded-sm hover:opacity-80 ${FOCUS}`}
+                className={`inline-flex h-11 w-11 items-center justify-center rounded-full transition-opacity hover:opacity-80 ${FOCUS}`}
+                style={{ backgroundColor: social.color }}
               >
-                <Image src={social.icon} alt="" className="h-10 w-10" />
+                <Image src={social.icon} alt="" className="h-5 w-5" />
               </a>
             ))}
           </nav>

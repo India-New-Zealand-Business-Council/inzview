@@ -81,34 +81,6 @@ function Card({
   );
 }
 
-/**
- * An organic "blob" icon badge, same silhouette family as the live site's old social-icon
- * graphics but built as a real SVG path rather than a CSS border-radius approximation, which reads
- * as a rounded rectangle rather than a true blob. One diagonal gradient per instance, using
- * this project's own brand hex values (from tailwind.config.mjs) rather than the old site's
- * blue — the shape is what's being matched here, not that palette, per the standing
- * "modernised, not the old blue gradient" instruction.
- */
-const BLOB_PATH =
-  'M64 6C79 9 91 22 93 38C95 54 87 66 76 76C68 83 58 90 46 88C36 86 30 78 21 71C11 63 3 54 4 42C5 30 15 25 19 15C24 4 37 8 48 5C53 4 59 5 64 6Z';
-
-function Blob({ id, from, to, size = 96 }: { id: string; from: string; to: string; size?: number }) {
-  return (
-    <svg viewBox="0 0 100 100" width={size} height={size} aria-hidden="true">
-      <defs>
-        <linearGradient id={id} x1="10%" y1="0%" x2="90%" y2="100%">
-          <stop offset="0%" stopColor={from} />
-          <stop offset="100%" stopColor={to} />
-        </linearGradient>
-      </defs>
-      {/* The small satellite circle is the same detail the reference blobs have at one edge -
-          a separate dot, not part of the main path, so it can float slightly outside it. */}
-      <circle cx="90" cy="34" r="5" fill={`url(#${id})`} />
-      <path d={BLOB_PATH} fill={`url(#${id})`} />
-    </svg>
-  );
-}
-
 /** An inline text link. */
 function TextLink({ href, children, external = false }: { href: string; children: React.ReactNode; external?: boolean }) {
   const cls = `rounded-sm font-medium text-plum underline ${FOCUS}`;
@@ -1099,13 +1071,16 @@ function ConnectBody() {
         </div>
       </section>
 
-      {/* Blob-shaped icon cards, modernised from the live site's dated blue-gradient version:
-          current palette tokens instead (navy/plum/forest/ink, all dark enough for a white
-          icon+label per HANDOVER.md's rule that lime never carries light text/icons, so lime
-          isn't one of the four). Labels are the live site's own real copy. Icons are the same
-          four social logo images content.ts's ART/SOCIALS already supply Footer.tsx — real
-          brand marks, not lucide's generic (and now-deprecated upstream) outline glyphs,
-          which is what these were until 15 Oct 2026.
+      {/* Plain brand-coloured circles, not the old blob shapes: those were each hand-picked
+          from the site's general palette (navy/plum/forest/ink) rather than each platform's
+          own colour, and clashed against each other exactly the way Sunil flagged (15 Oct
+          2026 — "remove the outside colors, just use logos, bigger"). A solid circle in each
+          platform's real brand colour, behind a plain white glyph (SOCIALS' own icon+color,
+          the same pair Footer.tsx now uses), reads as one consistent row instead of four
+          competing abstract shapes, and the icon itself survives on any background instead of
+          needing a bespoke gradient tuned per icon. Sized noticeably bigger than Footer's —
+          this section's whole job is to be the visible "follow us" moment, not a quiet
+          wayfinding row at the bottom of a page.
 
           pt-8, not py-20 like the section above it: both are bg-white with no visual seam
           between them, so their two py-20s stacked (160px) read as one big dead gap rather
@@ -1118,12 +1093,12 @@ function ConnectBody() {
               Follow INZBC
             </h2>
           </Reveal>
-          <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4">
+          <div className="mt-12 grid grid-cols-2 gap-10 sm:grid-cols-4">
             {[
-              { name: 'X', icon: ART.socialX, href: LINKS.x, label: 'Follow us on X', from: '#3d2a66', to: '#160933' },
-              { name: 'LinkedIn', icon: ART.socialLinkedin, href: LINKS.linkedin, label: 'Connect with us on LinkedIn', from: '#8a3d87', to: '#61145f' },
-              { name: 'YouTube', icon: ART.socialYoutube, href: LINKS.youtube, label: 'Watch our videos on YouTube', from: '#2f6b62', to: '#1b4640' },
-              { name: 'Facebook', icon: ART.socialFacebook, href: LINKS.facebook, label: 'Find us on Facebook', from: '#402d66', to: '#1a0b3f' },
+              { ...SOCIALS[3], label: 'Follow us on X' },
+              { ...SOCIALS[2], label: 'Connect with us on LinkedIn' },
+              { ...SOCIALS[1], label: 'Watch our videos on YouTube' },
+              { ...SOCIALS[0], label: 'Find us on Facebook' },
             ].map((social, i) => (
               <Reveal key={social.name} delay={i * 0.06}>
                 <a
@@ -1132,15 +1107,11 @@ function ConnectBody() {
                   rel="noopener noreferrer"
                   className={`group flex flex-col items-center gap-4 rounded-sm ${FOCUS}`}
                 >
-                  {/* Same icon images as Footer.tsx's SOCIALS, not lucide's deprecated brand
-                      glyphs — real logo marks instead of generic outline icons. */}
-                  <span className="relative flex h-24 w-24 items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                    <Blob id={`blob-${social.name}`} from={social.from} to={social.to} size={96} />
-                    <Image
-                      src={social.icon}
-                      alt=""
-                      className="absolute left-1/2 top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2"
-                    />
+                  <span
+                    className="flex h-28 w-28 items-center justify-center rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105"
+                    style={{ backgroundColor: social.color }}
+                  >
+                    <Image src={social.icon} alt="" className="h-12 w-12" />
                   </span>
                   <span className="text-center text-sm font-medium text-ink">{social.label}</span>
                 </a>

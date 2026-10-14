@@ -65,10 +65,24 @@ export const ART = {
   newsletterMockup: '/art/newsletter-mockup.png',
   ftaFlyer: '/art/fta-flyer.png',
   ftaNewEra: '/art/fta-new-era.jpg',
-  socialFacebook: '/art/social-facebook.png',
-  socialLinkedin: '/art/social-linkedin.png',
-  socialYoutube: '/art/social-youtube.png',
-  socialX: '/art/social-x.png',
+  // .svg, not the original blob-shaped .png: those four were the old Wix build's dated
+  // blue-gradient blob icons, and socialX's glyph was still the pre-2023 Twitter bird, not
+  // the current X mark — wrong branding, not just a style mismatch. Replaced 15 Oct 2026
+  // (Simple Icons source paths) on Sunil's instruction that the Connect page's social row
+  // "remove the outside colors, just use logos, bigger" — applied everywhere these four are
+  // used, not just that one page, so Footer stays in sync with it.
+  //
+  // White glyph, not each brand's own colour: an <img>-loaded external SVG can't pick up a
+  // CSS text colour the way an inlined one could, and these four sit on both light (Connect
+  // page) and dark (Footer, navy) backgrounds. Each caller supplies the real brand colour
+  // itself as a plain solid-colour circle behind the glyph — Facebook #1877F2, LinkedIn
+  // #0A66C2, YouTube #FF0000, X #000000 — so the icon reads correctly on any background
+  // instead of disappearing (black-on-navy) or clashing (random per-icon gradient blobs,
+  // the exact thing being removed here).
+  socialFacebook: '/art/social-facebook.svg',
+  socialLinkedin: '/art/social-linkedin.svg',
+  socialYoutube: '/art/social-youtube.svg',
+  socialX: '/art/social-x.svg',
 } as const;
 
 /* The three headline numbers repeated across Home and the summary bands. Each carries its
@@ -172,11 +186,13 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   { name: 'Employers and Manufacturers Association (EMA)', href: 'https://www.ema.co.nz/', logo: '/partners/ema.png' },
 ] as const;
 
+// color is each glyph's real brand colour, for the solid circle every caller renders behind
+// the (white) glyph — see ART's own comment on why the colour lives here, not in the SVG.
 export const SOCIALS = [
-  { name: 'Facebook', href: LINKS.facebook, icon: ART.socialFacebook, label: 'Find us on Facebook' },
-  { name: 'YouTube', href: LINKS.youtube, icon: ART.socialYoutube, label: 'Watch our videos' },
-  { name: 'LinkedIn', href: LINKS.linkedin, icon: ART.socialLinkedin, label: 'Connect with us' },
-  { name: 'X', href: LINKS.x, icon: ART.socialX, label: 'Follow us on X' },
+  { name: 'Facebook', href: LINKS.facebook, icon: ART.socialFacebook, label: 'Find us on Facebook', color: '#1877F2' },
+  { name: 'YouTube', href: LINKS.youtube, icon: ART.socialYoutube, label: 'Watch our videos', color: '#FF0000' },
+  { name: 'LinkedIn', href: LINKS.linkedin, icon: ART.socialLinkedin, label: 'Connect with us', color: '#0A66C2' },
+  { name: 'X', href: LINKS.x, icon: ART.socialX, label: 'Follow us on X', color: '#000000' },
 ] as const;
 
 /* Footer column structure, sourced from inzbc.org's live footer (checked 14 Oct 2026) on
