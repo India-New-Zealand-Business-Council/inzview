@@ -121,7 +121,6 @@ export const PAGES: PageDef[] = [
     heroImageAlt: 'The Lotus Temple in New Delhi, lit at night',
     heroImagePosition: '50% 55%',
   },
-  { path: '/membership/directory', title: "Member directory", lede: "The directory of INZBC members is hosted on Member Jungle, the provisional system of record for membership." },
   {
     path: '/events/past',
     title: "Past events",
@@ -154,7 +153,7 @@ export const PAGES: PageDef[] = [
 export type NavItem = { label: string; href: string; children?: { label: string; href: string }[] };
 
 export const NAV: NavItem[] = [
-  { label: 'The FTA', href: '/fta' },
+  { label: 'FTA Centre', href: '/fta' },
   { label: 'Trade', href: '/trade-resources' },
   {
     label: 'Events',

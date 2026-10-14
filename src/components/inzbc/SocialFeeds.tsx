@@ -6,8 +6,9 @@ import { LINKS } from './content';
  * public embed method, not the old site's POWr app (a paid third-party Wix app with no
  * equivalent here) and not a hand-built approximation of one.
  *
- * X/Twitter is not: see TwitterTimeline's own comment for why the live widget was replaced
- * with its fallback card as the permanent state, not a last resort.
+ * Neither X/Twitter nor LinkedIn are: see LinkedInFeed's own comment (below, this used to be
+ * the X panel) for why a live widget isn't shipped for either, as the permanent state rather
+ * than a last resort.
  *
  * The Facebook SDK ships no types, so the injected `window.FB` global is typed `any` below —
  * there's no @types package for it and declaring a full ambient type for two methods isn't
@@ -69,21 +70,25 @@ function FeedFallback({ platform, href }: { platform: string; href: string }) {
 }
 
 /**
- * Not a live embed, on purpose — this used to attempt platform.twitter.com/widgets.js the
- * same way FacebookPage still does. That script itself loads fine (verified: 200 OK, not a
- * dead URL, and renaming anything to "x.com" doesn't change this), but the timeline it
- * renders comes from X's backend API, which X locked down after the 2023 platform changes.
- * For accounts without special API access the widget silently renders nothing — no error
- * event fires, because the script itself succeeded; the empty result is inside a
- * cross-origin iframe X controls, which this page has no way to inspect or detect from the
- * outside. That combination means the old code could show "Loading the latest posts…"
- * forever with no way to notice the load had actually failed and fall back — worse than
- * just being honest about it. This is the same real, working fallback card FeedFallback
- * already provides for Facebook's actual failure case, used here as the primary state
- * instead of a last resort, because for X it currently always is one.
+ * This panel used to be X/Twitter: platform.twitter.com/widgets.js loads fine (verified:
+ * 200 OK, not a dead URL), but the timeline it renders comes from X's backend API, which X
+ * locked down after the 2023 platform changes. For accounts without special API access the
+ * widget silently renders nothing — no error event fires, because the script itself
+ * succeeded; the empty result is inside a cross-origin iframe X controls, which this page
+ * has no way to inspect or detect from the outside. That combination could show "Loading the
+ * latest posts…" forever with no way to notice the load had actually failed and fall back.
+ *
+ * Replaced with LinkedIn on Sunil's instruction (14 Oct 2026) — X "can't show the latest
+ * things like Facebook does", put LinkedIn there instead. LinkedIn has the same problem X
+ * does, one step earlier: it has no public embed for a company page's post feed at all (only
+ * a single-post embed, for one post at a time, and only once you already have that post's own
+ * URL) — and its company-posts page itself 302s straight to a login wall for a logged-out
+ * fetch (checked 14 Oct 2026), so there's no way to pull real post URLs to embed individually
+ * either. Same honest fallback card as the old X panel, for the same reason: a link to the
+ * real profile instead of a feed this page cannot actually show.
  */
-function TwitterTimeline() {
-  return <FeedFallback platform="X" href={LINKS.x} />;
+function LinkedInFeed() {
+  return <FeedFallback platform="LinkedIn" href={LINKS.linkedin} />;
 }
 
 function FacebookPage() {
@@ -151,9 +156,9 @@ export default function SocialFeeds() {
     <div className="grid gap-6 sm:grid-cols-2">
       <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
         <div className="flex items-center justify-between bg-navy px-6 py-4">
-          <h3 className="font-heading text-lg text-white">Follow us on X</h3>
+          <h3 className="font-heading text-lg text-white">Follow us on LinkedIn</h3>
         </div>
-        <TwitterTimeline />
+        <LinkedInFeed />
       </div>
       <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
         <div className="flex items-center justify-between bg-navy px-6 py-4">

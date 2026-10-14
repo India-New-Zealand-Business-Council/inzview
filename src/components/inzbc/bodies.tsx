@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  ArrowUpRight,
-  Facebook as FacebookIcon,
-  Linkedin as LinkedinIcon,
-  Mail,
-  MapPin,
-  Twitter as TwitterIcon,
-  Youtube as YoutubeIcon,
-} from 'lucide-react';
+import { ArrowUpRight, Mail, MapPin } from 'lucide-react';
 import { Reveal } from './motion';
 import { ART, BENEFITS, LINKS, STATS, BUSINESS_PARTNERS, INDIA_NETWORK, PUBLIC_SECTOR_NETWORK } from './content';
 import SocialFeeds from './SocialFeeds';
@@ -156,7 +148,7 @@ function ContactForm() {
   ]
     .filter(Boolean)
     .join('\n');
-  const mailto = `${LINKS.email}?subject=${encodeURIComponent(fields.subject || 'Message from inzbc.org')}&body=${encodeURIComponent(body)}`;
+  const mailto = `${LINKS.commsEmail}?subject=${encodeURIComponent(fields.subject || 'Message from inzbc.org')}&body=${encodeURIComponent(body)}`;
 
   const inputCls =
     'mt-1 w-full rounded-md border border-ink/15 bg-white px-3 py-2 text-sm text-ink placeholder:text-foreground/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
@@ -294,6 +286,7 @@ export const INZBC_EVENTS: readonly EventItem[] = [
   },
   {
     sourceSlug: 'boardroom-to-border-a-leadership-dialogue-on-strategy-trade-india-nz-opportunities',
+    cover: 'boardroom-to-border-a-leadership-dialogue-on-strategy-trade-india-nz-opportunities.png',
     title: 'Boardroom to Border: A Leadership Dialogue on Strategy, Trade & India-NZ Opportunities',
     date: '26 June 2025',
     venue: 'Drawing Room – Rātā 222 and 223, University of Canterbury',
@@ -993,40 +986,6 @@ function MembershipBody() {
         </div>
       </section>
 
-      <section className="bg-mist px-6 py-20 text-center">
-        <div className="mx-auto max-w-2xl">
-          <Reveal>
-            {/* Real council headshots, not a stand-in illustration — same photos and names as
-                the Executive Council page. These are the council and secretariat, not the
-                member directory itself (that's on Member Jungle, per this page's lede), so the
-                caption says exactly that rather than implying these faces are a directory
-                sample. No count badge — this project's standing rule is not to invent member
-                numbers, and a "+N" tail would be exactly that. */}
-            <div className="mb-6 flex justify-center -space-x-3">
-              {[
-                ['Sunil Kaushal', '/council/sunil-kaushal.png'],
-                ['Edwin Paul', '/council/edwin-paul.png'],
-                ['Rachel Lynch', '/council/rachel-lynch.jpg'],
-                ['Bharat Chawla', '/council/bharat-chawla.jpg'],
-                ['Sreedhar Venkatram', '/council/sreedhar-venkatram.jpeg'],
-                ['Tony Martin', '/council/tony-martin.png'],
-              ].map(([name, photo]) => (
-                <Image key={name} src={photo} alt={name} title={name} width={56} height={56} loading="lazy" className="h-14 w-14 rounded-full border-2 border-mist object-cover" />
-              ))}
-            </div>
-            <p className="text-xs text-foreground/60">The council and secretariat &mdash; some of who you&rsquo;ll meet</p>
-            <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Member directory</h2>
-            <p className="mt-4 text-foreground">
-              See who is already trading across the corridor &mdash; exporters, importers,
-              investors, universities and government agencies.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Btn href="/membership/directory">Explore the directory</Btn>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-3xl">
           <Reveal>
@@ -1096,7 +1055,7 @@ function ConnectBody() {
                 <div>
                   <p className="font-semibold text-ink">Email</p>
                   <p className="mt-1">
-                    <TextLink href={LINKS.email}>Secretariat@inzbc.org</TextLink>
+                    <TextLink href={LINKS.commsEmail}>Comms@inzbc.org</TextLink>
                   </p>
                 </div>
               </div>
@@ -1120,10 +1079,12 @@ function ConnectBody() {
             {/* The live site's own contact widget has shown different values across
                 checks this session (also seen "Sunil@inzbc.org"/"PO Box 20092", and
                 separately "Gm@inzbc.org"/"Edwin Paul, Chair@inzbc.org") - it's the live
-                page itself that's inconsistent, not a gap in what's been checked. Using
-                Secretariat@inzbc.org / PO Box 26061 here because that's the pair already
-                published consistently everywhere else on this site (Home, Footer), not a
-                fresh guess. */}
+                page itself that's inconsistent, not a gap in what's been checked. PO Box
+                26061 here because that's the address already published consistently
+                everywhere else on this site (Home, Footer), not a fresh guess. The email
+                address, unlike the postal one, was deliberately changed to Comms@inzbc.org
+                on this page only (Sunil's instruction, 14 Oct 2026) — Footer and Home still
+                say Secretariat@inzbc.org. */}
           </Reveal>
 
           <Reveal delay={0.1}>
@@ -1131,7 +1092,7 @@ function ConnectBody() {
               <h2 className="font-heading text-2xl text-ink">Send a message</h2>
               <ContactForm />
               <p className="mt-5 text-sm text-foreground">
-                Prefer email directly? <TextLink href={LINKS.email}>Email the secretariat</TextLink>.
+                Prefer email directly? <TextLink href={LINKS.commsEmail}>Email INZBC</TextLink>.
               </p>
             </div>
           </Reveal>
@@ -1141,11 +1102,10 @@ function ConnectBody() {
       {/* Blob-shaped icon cards, modernised from the live site's dated blue-gradient version:
           current palette tokens instead (navy/plum/forest/ink, all dark enough for a white
           icon+label per HANDOVER.md's rule that lime never carries light text/icons, so lime
-          isn't one of the four). Labels are the live site's own real copy. Lucide's brand
-          icons (Facebook/Linkedin/Twitter/Youtube) are marked deprecated upstream but present
-          and working in the pinned lucide-react@0.487.0 (verified against that version's
-          published types), so used as-is rather than hand-drawing inline SVGs for four
-          standard glyphs.
+          isn't one of the four). Labels are the live site's own real copy. Icons are the same
+          four social logo images content.ts's ART/SOCIALS already supply Footer.tsx — real
+          brand marks, not lucide's generic (and now-deprecated upstream) outline glyphs,
+          which is what these were until 15 Oct 2026.
 
           pt-8, not py-20 like the section above it: both are bg-white with no visual seam
           between them, so their two py-20s stacked (160px) read as one big dead gap rather
@@ -1160,10 +1120,10 @@ function ConnectBody() {
           </Reveal>
           <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4">
             {[
-              { name: 'X', Icon: TwitterIcon, href: LINKS.x, label: 'Follow us on X', from: '#3d2a66', to: '#160933' },
-              { name: 'LinkedIn', Icon: LinkedinIcon, href: LINKS.linkedin, label: 'Connect with us on LinkedIn', from: '#8a3d87', to: '#61145f' },
-              { name: 'YouTube', Icon: YoutubeIcon, href: LINKS.youtube, label: 'Watch our videos on YouTube', from: '#2f6b62', to: '#1b4640' },
-              { name: 'Facebook', Icon: FacebookIcon, href: LINKS.facebook, label: 'Find us on Facebook', from: '#402d66', to: '#1a0b3f' },
+              { name: 'X', icon: ART.socialX, href: LINKS.x, label: 'Follow us on X', from: '#3d2a66', to: '#160933' },
+              { name: 'LinkedIn', icon: ART.socialLinkedin, href: LINKS.linkedin, label: 'Connect with us on LinkedIn', from: '#8a3d87', to: '#61145f' },
+              { name: 'YouTube', icon: ART.socialYoutube, href: LINKS.youtube, label: 'Watch our videos on YouTube', from: '#2f6b62', to: '#1b4640' },
+              { name: 'Facebook', icon: ART.socialFacebook, href: LINKS.facebook, label: 'Find us on Facebook', from: '#402d66', to: '#1a0b3f' },
             ].map((social, i) => (
               <Reveal key={social.name} delay={i * 0.06}>
                 <a
@@ -1172,13 +1132,14 @@ function ConnectBody() {
                   rel="noopener noreferrer"
                   className={`group flex flex-col items-center gap-4 rounded-sm ${FOCUS}`}
                 >
+                  {/* Same icon images as Footer.tsx's SOCIALS, not lucide's deprecated brand
+                      glyphs — real logo marks instead of generic outline icons. */}
                   <span className="relative flex h-24 w-24 items-center justify-center transition-transform duration-300 group-hover:scale-105">
                     <Blob id={`blob-${social.name}`} from={social.from} to={social.to} size={96} />
-                    <social.Icon
-                      aria-hidden="true"
-                      size={30}
-                      strokeWidth={1.8}
-                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white"
+                    <Image
+                      src={social.icon}
+                      alt=""
+                      className="absolute left-1/2 top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2"
                     />
                   </span>
                   <span className="text-center text-sm font-medium text-ink">{social.label}</span>
@@ -1239,7 +1200,7 @@ function ConnectBody() {
               anywhere yet &mdash; the secretariat can talk you through current options directly.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Btn href={`${LINKS.email}?subject=Sponsorship%20enquiry`}>
+              <Btn href={`${LINKS.commsEmail}?subject=Sponsorship%20enquiry`}>
                 Enquire about sponsorship
               </Btn>
             </div>
@@ -1247,13 +1208,15 @@ function ConnectBody() {
         </div>
       </section>
 
-      {/* No legacy/wix-studio snippet mentions promotional videos, so these are sourced
-          directly from the live page's own schema.org VideoObject structured data (real IDs
-          and titles, not invented) rather than left as a marker, now that real content is
-          available. Linked thumbnail + "Watch on YouTube" rather than a live iframe: no
-          embed pattern exists anywhere in this codebase to build against, four autoplaying
-          iframes would be a real page-weight cost, and thumbnails can be verified statically
-          where iframe rendering cannot be, in an environment with no browser access. */}
+      {/* Refreshed 15 Oct 2026 — the previous four (2018/2019 Summit highlights, a 2014-17
+          reel, a COVID-19 explainer) were years stale. These four are the channel's actual
+          most recent uploads, pulled from its own public RSS feed
+          (youtube.com/feeds/videos.xml?channel_id=UC9MQW-VliLqOdT4GUktKfZQ), real IDs and
+          titles, not invented. Linked thumbnail + "Watch on YouTube" rather than a live
+          iframe: no embed pattern exists anywhere in this codebase to build against, four
+          autoplaying iframes would be a real page-weight cost, and thumbnails can be verified
+          statically where iframe rendering cannot be, in an environment with no browser
+          access. */}
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <Reveal>
@@ -1263,10 +1226,10 @@ function ConnectBody() {
           </Reveal>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { id: 'sQ2vE96V7s8', title: 'INZBC SUMMIT 2018 - Highlights' },
-              { id: 'D82PuQR--hU', title: 'Summit 2019 Highlights' },
-              { id: '-8TjFht41p4', title: 'INZBC Video Events Highlights 2014-17' },
-              { id: 'mlRXLKGi4cE', title: 'Economic impact of COVID19 on NZ India trade relations.' },
+              { id: 'vPf6NofD2lk', title: 'INZBC End of the Year Highlights 2025' },
+              { id: '5H4Tn9vIe-Y', title: 'Dr Samir Saran & Hon Todd McClay join INZBC for a Fireside Chat' },
+              { id: 'U_rsj0vAjfM', title: 'India–New Zealand Business Forum 2025: Celebrating Partnership, Progress & Opportunity' },
+              { id: 'AK0-eXOyC-g', title: 'Minister Todd McClay: Building a Future-Focused India–New Zealand Trade Partnership' },
             ].map((video, i) => (
               <Reveal key={video.id} delay={i * 0.06}>
                 <a
@@ -2300,41 +2263,6 @@ function IndiaMarketOpportunitiesBody() {
   );
 }
 
-/* --- Member directory ------------------------------------------------------------------ */
-
-function DirectoryBody() {
-  return (
-    <section className="bg-white px-6 py-20">
-      <div className="mx-auto max-w-3xl">
-        <Reveal>
-          <p>
-            <Btn href={LINKS.directory} external>
-              Open the directory
-            </Btn>
-          </p>
-
-          <h2 className="mt-14 font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">For members</h2>
-          <p className="mt-4 text-foreground">
-            Log in to Member Jungle to update your profile, manage renewals and access
-            member-only resources. This site does not store membership data.
-          </p>
-
-          <h2 className="mt-14 font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-            Not a member yet?
-          </h2>
-          <p className="mt-4 text-foreground">
-            The directory is open to INZBC members.{' '}
-            <TextLink href={LINKS.join} external>
-              Apply for membership
-            </TextLink>
-            , or <TextLink href="/membership">read what membership includes</TextLink> first.
-          </p>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
 /* --- Past events ----------------------------------------------------------------------- */
 
 function EventsPastBody() {
@@ -2605,7 +2533,6 @@ export const BODIES: Record<string, React.ComponentType> = {
   '/trade-resources': TradeResourcesBody,
   '/fta/briefings': FtaBriefingsBody,
   '/india-market-opportunities': IndiaMarketOpportunitiesBody,
-  '/membership/directory': DirectoryBody,
   '/events/past': EventsPastBody,
   '/executive-council': CouncilBody,
   '/about-inzbc': AboutBody,

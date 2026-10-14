@@ -28,6 +28,9 @@ export const LINKS = {
   linkedin: 'https://www.linkedin.com/company/inzbc/posts/?feedView=all',
   x: 'https://x.com/inzbc',
   email: 'mailto:Secretariat@inzbc.org',
+  // Connect page only, per Sunil's instruction (14 Oct 2026) — every other mention of an
+  // INZBC email address on this site (Footer, Home) stays Secretariat@inzbc.org.
+  commsEmail: 'mailto:Comms@inzbc.org',
 } as const;
 
 /*
@@ -217,7 +220,6 @@ export const FOOTER_COLUMNS = [
   {
     heading: 'Members',
     links: [
-      { label: 'Member Directory', href: '/membership/directory' },
       { label: 'Join INZBC', href: LINKS.join, external: true },
       { label: 'Membership Form', href: '/membership' },
     ],

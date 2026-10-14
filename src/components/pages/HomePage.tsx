@@ -1264,10 +1264,7 @@ export default function HomePage() {
                 working across the corridor.
               </p>
               <div className="home-membership__actions">
-                <Action href="/membership/directory">Explore the directory</Action>
-                <Action href={LINKS.join} variant="outline-light">
-                  Become a member
-                </Action>
+                <Action href={LINKS.join}>Become a member</Action>
               </div>
             </HomeBlock>
             <div className="home-membership__benefits">
