@@ -156,7 +156,7 @@ function ContactForm() {
   ]
     .filter(Boolean)
     .join('\n');
-  const mailto = `${LINKS.email}?subject=${encodeURIComponent(fields.subject || 'Message from inzbc.org')}&body=${encodeURIComponent(body)}`;
+  const mailto = `${LINKS.commsEmail}?subject=${encodeURIComponent(fields.subject || 'Message from inzbc.org')}&body=${encodeURIComponent(body)}`;
 
   const inputCls =
     'mt-1 w-full rounded-md border border-ink/15 bg-white px-3 py-2 text-sm text-ink placeholder:text-foreground/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
@@ -1052,10 +1052,18 @@ function ConnectBody() {
         <div className="mx-auto grid max-w-6xl gap-14 md:grid-cols-2">
           <Reveal>
             <h2 className="font-heading text-3xl text-ink md:text-4xl">Contact</h2>
-            <p className="mt-3 max-w-sm text-foreground">
-              Sunil Kaushal, Chief Executive, and the secretariat team. Email is the preferred
-              way to reach them.
-            </p>
+            <div className="mt-5 flex items-center gap-4">
+              <Image
+                src="/council/sunil-kaushal.png"
+                alt="Sunil Kaushal, INZBC Chief Executive"
+                loading="lazy"
+                className="h-16 w-16 flex-none rounded-full object-cover shadow-sm"
+              />
+              <p className="max-w-sm text-foreground">
+                Sunil Kaushal, Chief Executive, and the secretariat team. Email is the
+                preferred way to reach them.
+              </p>
+            </div>
 
             <div className="mt-10 space-y-8">
               <div className="flex gap-4">
@@ -1063,7 +1071,7 @@ function ConnectBody() {
                 <div>
                   <p className="font-semibold text-ink">Email</p>
                   <p className="mt-1">
-                    <TextLink href={LINKS.email}>Secretariat@inzbc.org</TextLink>
+                    <TextLink href={LINKS.commsEmail}>Comms@inzbc.org</TextLink>
                   </p>
                 </div>
               </div>
@@ -1087,10 +1095,11 @@ function ConnectBody() {
             {/* The live site's own contact widget has shown different values across
                 checks this session (also seen "Sunil@inzbc.org"/"PO Box 20092", and
                 separately "Gm@inzbc.org"/"Edwin Paul, Chair@inzbc.org") - it's the live
-                page itself that's inconsistent, not a gap in what's been checked. Using
-                Secretariat@inzbc.org / PO Box 26061 here because that's the pair already
-                published consistently everywhere else on this site (Home, Footer), not a
-                fresh guess. */}
+                page itself that's inconsistent, not a gap in what's been checked. PO Box
+                26061 here because that's the address already published consistently
+                everywhere else on this site (Home, Footer), not a fresh guess. The email
+                address, unlike the postal one, is deliberately Comms@inzbc.org on this page
+                only (Sunil's instruction) — Footer and Home still say Secretariat@inzbc.org. */}
           </Reveal>
 
           <Reveal delay={0.1}>
@@ -1098,7 +1107,7 @@ function ConnectBody() {
               <h2 className="font-heading text-2xl text-ink">Send a message</h2>
               <ContactForm />
               <p className="mt-5 text-sm text-foreground">
-                Prefer email directly? <TextLink href={LINKS.email}>Email the secretariat</TextLink>.
+                Prefer email directly? <TextLink href={LINKS.commsEmail}>Email INZBC</TextLink>.
               </p>
             </div>
           </Reveal>
@@ -1196,17 +1205,32 @@ function ConnectBody() {
         </div>
       </section>
 
-      <section className="bg-mist px-6 py-20 text-center">
-        <div className="mx-auto max-w-3xl">
+      {/* Real photo, not a stock sponsorship graphic — the document exchange that ratified
+          the FTA, with New Zealand's Trade Minister, the High Commissioner of India and PM
+          Luxon behind them (close-up companion shot to the one used on /fta/briefings; from
+          Sunil's 7 Oct 2026 photo set, previously downloaded but unused). Sponsorship funds
+          exactly this kind of work, so it stands in for "what INZBC actually does" rather
+          than an empty text band. */}
+      <section className="bg-mist px-6 py-20">
+        <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
           <Reveal>
+            <Image
+              src="/events/ihc-todd-mcclay.jpeg"
+              alt="New Zealand's Minister for Trade and Investment and India's High Commissioner exchanging ratifying documentation for the NZ–India FTA, with PM Christopher Luxon behind them"
+              loading="lazy"
+              className="aspect-[4/3] w-full rounded-2xl object-cover shadow-sm"
+            />
+          </Reveal>
+          <Reveal delay={0.08}>
             <h2 className="font-heading text-3xl text-ink md:text-4xl">Become a sponsor</h2>
             <p className="mt-4 text-foreground">
               Sponsorship supports the trade missions, briefings and research INZBC publishes
-              across the NZ&ndash;India corridor. Tiers and inclusions aren&rsquo;t published
-              anywhere yet &mdash; the secretariat can talk you through current options directly.
+              across the NZ&ndash;India corridor &mdash; the kind of work pictured here. Tiers
+              and inclusions aren&rsquo;t published anywhere yet &mdash; the secretariat can
+              talk you through current options directly.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Btn href={`${LINKS.email}?subject=Sponsorship%20enquiry`}>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Btn href={`${LINKS.commsEmail}?subject=Sponsorship%20enquiry`}>
                 Enquire about sponsorship
               </Btn>
             </div>
@@ -1214,13 +1238,14 @@ function ConnectBody() {
         </div>
       </section>
 
-      {/* No legacy/wix-studio snippet mentions promotional videos, so these are sourced
-          directly from the live page's own schema.org VideoObject structured data (real IDs
-          and titles, not invented) rather than left as a marker, now that real content is
-          available. Linked thumbnail + "Watch on YouTube" rather than a live iframe: no
-          embed pattern exists anywhere in this codebase to build against, four autoplaying
-          iframes would be a real page-weight cost, and thumbnails can be verified statically
-          where iframe rendering cannot be, in an environment with no browser access. */}
+      {/* Sourced from the channel's own public RSS feed
+          (youtube.com/feeds/videos.xml?channel_id=UC9MQW-VliLqOdT4GUktKfZQ), checked
+          15 Oct 2026 — real IDs and titles, its actual four most recent uploads, not the
+          2018/2019 Summit highlights and COVID-era clips this used to show. Linked thumbnail
+          + "Watch on YouTube" rather than a live iframe: no embed pattern exists anywhere in
+          this codebase to build against, four autoplaying iframes would be a real page-weight
+          cost, and thumbnails can be verified statically where iframe rendering cannot be, in
+          an environment with no browser access. */}
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <Reveal>
@@ -1230,10 +1255,10 @@ function ConnectBody() {
           </Reveal>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { id: 'sQ2vE96V7s8', title: 'INZBC SUMMIT 2018 - Highlights' },
-              { id: 'D82PuQR--hU', title: 'Summit 2019 Highlights' },
-              { id: '-8TjFht41p4', title: 'INZBC Video Events Highlights 2014-17' },
-              { id: 'mlRXLKGi4cE', title: 'Economic impact of COVID19 on NZ India trade relations.' },
+              { id: 'vPf6NofD2lk', title: 'INZBC End of the Year Highlights 2025' },
+              { id: '5H4Tn9vIe-Y', title: 'Dr Samir Saran & Hon Todd McClay join INZBC for a Fireside Chat' },
+              { id: 'U_rsj0vAjfM', title: 'India–New Zealand Business Forum 2025: Celebrating Partnership, Progress & Opportunity' },
+              { id: 'AK0-eXOyC-g', title: 'Minister Todd McClay: Building a Future-Focused India–New Zealand Trade Partnership' },
             ].map((video, i) => (
               <Reveal key={video.id} delay={i * 0.06}>
                 <a
@@ -1384,6 +1409,50 @@ const REPORTS = [
     cover: '/publications/report-pharma-2022.jpg',
     href: 'https://issuu.com/inzbc/docs/pharma_report_full_final_v9',
     featured: false,
+  },
+] as const;
+
+/** Every edition inzbc.org/newsletters itself lists (checked 15 Oct 2026) — titles, dates,
+    descriptions and links all real, newest first. The gap between Jan 2023 and Oct 2026 is
+    the live page's own archive, not a migration gap: it jumps straight from January 2023 to
+    October 2026, nothing in between is listed there either. Each links to its real
+    EmailOctopus web-version URL (eomail5.com / eocampaign1.com / bimaculatus.eocampaign1.com)
+    — the live site's actual send-archive host, not inzbc.org itself. */
+const NEWSLETTER_EDITIONS = [
+  {
+    label: 'October 2026',
+    body: 'The FTA entering into force, new INZBC leadership, the upcoming New Zealand–India Business Summit, inward business delegations and practical opportunities for members.',
+    href: 'https://eomail5.com/web-version?p=2239d6d8-58ef-11f1-b1e9-e3f1c453e32b&pt=campaign&t=1791147667&s=da8468d4566684b82f1938b41cb871ca3ac62c52f9f9d9b0a9d095d8051968e0',
+  },
+  {
+    label: 'September 2023',
+    body: 'A New Zealand trade delegation of around 50 business representatives to India, Trade Minister Damien O’Connor’s visit, and government strategy drawing on INZBC’s own report.',
+    href: 'https://eocampaign1.com/web-version?p=90a0335a-5c04-11ee-a1f9-3fcdf44071d3&pt=campaign&t=1695689157&s=dd1db88a9f06c8083a701af59bc41d7cb25260c33015274f6467d0c47e6b0e95',
+  },
+  {
+    label: 'July 2023',
+    body: 'A new Chair announcement, and momentum in the NZ–India relationship following INZBC’s report.',
+    href: 'https://eocampaign1.com/web-version?p=f60cb834-2771-11ee-a5d1-d54dd26e935c&pt=campaign&t=1689909353&s=54b6832af5e9179a4735e031bcd031ed30f24ccfe476ed97afbb1c379b7d69d9',
+  },
+  {
+    label: 'May 2023',
+    body: 'The "India & New Zealand — A Relationship Ready For Its Next Phase" report, plus education and horticulture sector conferences.',
+    href: 'https://bimaculatus.eocampaign1.com/web-version/dummy?p=14cd52d0-fdb8-11ed-88a1-0f1d847ada85&pt=campaign&t=1685506158&s=21b770f21a70401ccd6d0acb65c568966eda2c6e8628a354652da983d9946803',
+  },
+  {
+    label: 'April 2023',
+    body: 'The discussion document "India & New Zealand, A Relationship Ready For Its Next Phase", submitted to the New Zealand Government.',
+    href: 'https://bimaculatus.eocampaign1.com/web-version/dummy?p=e3bcda02-e3f0-11ed-bf3f-23f7b692b8c0&pt=campaign&t=1682534810&s=5e61567f4c9b8b47e03054b241df36c899ce4a1d84db2fc113b7e3d3f5f98d88',
+  },
+  {
+    label: 'March 2023',
+    body: 'Increased formal engagement between senior government officials, and a visiting Indian pharma delegation to New Zealand.',
+    href: 'https://bimaculatus.eocampaign1.com/web-version/dummy?p=e54d2802-b724-11ed-8752-55928061a93d&pt=campaign&t=1678063662&s=f248c90d6efe7aa1f293ab0c4fc46ff9d3737016f6e67359d345e5adf293c104',
+  },
+  {
+    label: 'January 2023',
+    body: 'An incoming pharma-company delegation from India, and INZBC’s 2022 annual report.',
+    href: 'https://bimaculatus.eocampaign1.com/web-version/dummy?p=8599f4a0-8fd6-11ed-9f8f-fd3f5d4bcd27&pt=campaign&t=1673396628&s=470c2fe51ac708f1c575ad9371a24424e73d2821720c1063388812b6074853bd',
   },
 ] as const;
 
@@ -1555,9 +1624,61 @@ function KiaOraIssueRow({
 
 function PublicationsBody() {
   const [featured, ...otherReports] = REPORTS;
+  const [latestNewsletter, ...otherNewsletters] = NEWSLETTER_EDITIONS;
 
   return (
     <>
+      <section className="bg-mist px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <Reveal>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Newsletters</h2>
+            <p className="mt-4 max-w-2xl text-foreground">
+              INZBC&rsquo;s email newsletter, straight from the real send archive &mdash; not
+              every month gets one, but every edition below is real and linked.
+            </p>
+          </Reveal>
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-5 lg:gap-10">
+            <Reveal className="lg:col-span-3">
+              <article className="flex h-full flex-col justify-center gap-3 rounded-2xl bg-white p-8 shadow-sm md:p-10">
+                <span className="text-xs font-medium uppercase tracking-[0.14em] text-plum">Latest edition</span>
+                <h3 className="font-heading text-2xl text-ink md:text-3xl">{latestNewsletter.label}</h3>
+                <p className="text-foreground">{latestNewsletter.body}</p>
+                <p className="mt-2">
+                  <Btn href={latestNewsletter.href} external>
+                    Read the {latestNewsletter.label} edition
+                  </Btn>
+                </p>
+              </article>
+            </Reveal>
+
+            <div className="flex flex-col gap-5 lg:col-span-2">
+              {otherNewsletters.map((edition, i) => (
+                <Reveal key={edition.label} delay={0.06 + i * 0.04}>
+                  <article>
+                    <h4 className="font-heading text-base text-ink">{edition.label}</h4>
+                    <p className="mt-1 text-sm text-foreground">{edition.body}</p>
+                    <p className="mt-2">
+                      <TextLink href={edition.href} external>
+                        Read this edition
+                      </TextLink>
+                    </p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+
+          <Reveal delay={0.1}>
+            <p className="mt-10">
+              <Btn href={LINKS.subscribe} external variant="outline">
+                Subscribe for future editions
+              </Btn>
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
       <section className="bg-white px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <Reveal>
