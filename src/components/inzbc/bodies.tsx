@@ -1630,13 +1630,14 @@ function KiaOraIssueRow({
   );
 }
 
-function PublicationsBody() {
-  const [featured, ...otherReports] = REPORTS;
+/** Shared by the Publications and Newsletters pages so there is one real send archive,
+ *  not two copies that can drift apart. bg picks the section background to fit each
+ *  page's own alternation. */
+function NewsletterArchive({ bg = 'mist' }: { bg?: 'mist' | 'white' }) {
   const [latestNewsletter, ...otherNewsletters] = NEWSLETTER_EDITIONS;
 
   return (
-    <>
-      <section className="bg-mist px-6 py-24">
+      <section className={bg === 'white' ? 'bg-white px-6 py-24' : 'bg-mist px-6 py-24'}>
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Newsletters</h2>
@@ -1696,6 +1697,15 @@ function PublicationsBody() {
           </Reveal>
         </div>
       </section>
+  );
+}
+
+function PublicationsBody() {
+  const [featured, ...otherReports] = REPORTS;
+
+  return (
+    <>
+      <NewsletterArchive bg="mist" />
 
       <section className="bg-white px-6 py-24">
         <div className="mx-auto max-w-6xl">
@@ -1809,7 +1819,14 @@ function PublicationsBody() {
 function NewslettersBody() {
   return (
     <>
-      <section className="bg-white px-6 py-20">
+      {/* This page is where News's and Publications' own "Read the latest issue" buttons
+          send people, so the real newsletter archive leads here — it used to open on the
+          Kia Ora India magazine instead, which is a different publication, and the actual
+          newsletter archive was nowhere on this page at all. The live newsletter's own latest
+          edition (October 2026) is now what "latest" means on arrival, not a June 2024 one. */}
+      <NewsletterArchive bg="white" />
+
+      <section className="bg-mist px-6 py-20">
         <div className="mx-auto max-w-3xl">
           <Reveal>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Kia Ora India</h2>
