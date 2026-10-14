@@ -257,6 +257,32 @@ export const INZBC_EVENTS: readonly EventItem[] = [
     description: 'A two-day summit on trade, innovation, technology, sport, education and talent between New Zealand and India, supported by MFAT and convened by Tātaki Auckland Unlimited with Sport New Zealand.',
     sortKey: '2026-11-12',
   },
+  // The two entries below were real INZBC events with real published posts (both already in
+  // news.ts) that had never been added here, so they never showed up on /events or
+  // /events/past at all — just as decorative photos elsewhere on the site (About, FTA
+  // Briefings, News hero). Added 15 Oct 2026 after Sunil flagged recent events missing from
+  // the Events page.
+  {
+    // Date: the post (published 22 Sep 2026) says "today"; independently corroborated as
+    // 21 Sep 2026 by news coverage (see /fta/briefings's heroImage comment in pages.ts, which
+    // sources the same occasion from a different photo).
+    sourceSlug: 'the-nz-india-fta-is-now-ratified-from-20-october-it-becomes-business',
+    cover: 'the-nz-india-fta-is-now-ratified-from-20-october-it-becomes-business.jpg',
+    title: 'Exchange of Diplomatic Notes: NZ–India FTA Ratified',
+    date: '21 September 2026',
+    venue: 'Parliament, Wellington',
+    description: "Trade and Investment Minister Hon Todd McClay and India's High Commissioner to New Zealand, H.E. Muanpuii Saiawi, exchanged the formal documents confirming ratification of the NZ–India FTA, in the presence of PM Christopher Luxon.",
+    sortKey: '2026-09-21',
+  },
+  {
+    sourceSlug: 'new-zealand-india-fta-business-opportunities',
+    cover: 'new-zealand-india-fta-business-opportunities.jpeg',
+    title: 'From Agreement to Business: A Fireside Conversation',
+    date: '23 September 2026',
+    venue: 'BNZ Place, Auckland',
+    description: "A standing-room-only fireside conversation with Minister for Trade and Investment Hon Todd McClay and India's High Commissioner, H.E. Ms Muanpuii Saiawi, moderated by INZBC Chief Executive Sunil Kaushal — also the High Commissioner's first engagement with INZBC members in Auckland.",
+    sortKey: '2026-09-23',
+  },
   {
     sourceSlug: 'inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event',
     cover: 'inside-the-nz-india-fta-with-vangelis-vitalis-auckland-event.png',
@@ -1877,6 +1903,8 @@ function FtaBriefingsBody() {
   // ministers, high commissioners and officials, not trade shows or delegations that happen
   // to be recent. Keeps the page honest about what it actually contains.
   const briefingSlugs = [
+    'the-nz-india-fta-is-now-ratified-from-20-october-it-becomes-business',
+    'new-zealand-india-fta-business-opportunities',
     'boardroom-to-border-a-leadership-dialogue-on-strategy-trade-india-nz-opportunities',
     'breakfast-dialogue-with-nz-high-commissioners-patrick-rata-david-pine-6-june-7-30am',
     'exclusive-inzbc-members-invitationdelegation-insights-from-india-pm-mission',
@@ -1943,20 +1971,6 @@ function FtaBriefingsBody() {
               sits inside &mdash; with ministers, high commissioners and government agencies on
               both sides.
             </p>
-          </Reveal>
-          {/* Not routed through INZBC_EVENTS/EventRow: that list exists only for posts
-              already migrated from inzbc.org's blog, and its outbound link assumes one. This
-              briefing has no blog post to link to yet — it's sourced directly from the event's
-              own title slide and speaker-name graphics, in the photo set Sunil forwarded
-              7 Oct 2026 — so it's a plain photo and caption instead of a fabricated link. */}
-          <Reveal delay={0.04}>
-            <figure className="mt-10 overflow-hidden rounded-2xl bg-white shadow-sm">
-              <Image src="/events/inzbc-from-agreement-to-business-panel-23-sep-2026.jpg" alt="Panel discussion for 'India New Zealand: From Agreement to Business', with New Zealand's Minister for Trade and Investment and the High Commissioner of India" width={1600} height={800} loading="lazy" className="aspect-[2/1] w-full object-cover" />
-              <figcaption className="px-5 py-4 text-sm text-foreground/70">
-                <span className="font-medium text-ink">India New Zealand: From Agreement to Business</span>
-                {' — 23 September 2026, Auckland.'}
-              </figcaption>
-            </figure>
           </Reveal>
           <div className="mt-10 space-y-2 divide-y divide-ink/10">
             {briefings.map((event, i) => (
@@ -2324,8 +2338,14 @@ function DirectoryBody() {
 /* --- Past events ----------------------------------------------------------------------- */
 
 function EventsPastBody() {
-  const inzbcGroups = groupEventsByYear(INZBC_EVENTS);
-  const expoGroups = groupEventsByYear(EXPO_EVENTS);
+  // Excludes anything still upcoming (the Summit, currently) — this page groups purely by
+  // year, so without this a future-dated event would land in its year's group here too and
+  // show up on both "Upcoming" and "Past", the same double-listing EventsBody already guards
+  // against on the main Events page.
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const pastInzbcEvents = INZBC_EVENTS.filter((e) => e.sortKey < todayKey);
+  const inzbcGroups = groupEventsByYear(pastInzbcEvents);
+  const expoGroups = groupEventsByYear(EXPO_EVENTS.filter((e) => e.sortKey < todayKey));
 
   // INZBC's own event photography, from their Flickr account. Summit 2018 is what that
   // archive holds; the caption says so rather than implying these are recent.
@@ -2345,7 +2365,7 @@ function EventsPastBody() {
               Event archive
             </h2>
             <p className="mt-4 max-w-2xl text-foreground">
-              {INZBC_EVENTS.length} events INZBC has run or co-run since 2020, newest first.
+              {pastInzbcEvents.length} events INZBC has run or co-run since 2020, newest first.
               Every cover, date and venue below links back to INZBC&rsquo;s own account of it.
             </p>
           </Reveal>
