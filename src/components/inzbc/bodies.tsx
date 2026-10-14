@@ -1999,6 +1999,23 @@ function TradeResourcesBody() {
             <p className="mt-5">
               <TextLink href="/fta">See the full phase-in timeline on the FTA Centre</TextLink>
             </p>
+
+            {/* Reused verbatim from the "Key steps for businesses" list in the INZBC-published
+                article at news.ts's 'new-zealand-india-fta-business-opportunities' entry —
+                already sourced and reviewed there, so repeating it here (where exporters are
+                actually likely to look for it) isn't a fresh claim. */}
+            <h3 className="mt-10 font-heading text-lg text-plum">Before 20 October</h3>
+            <ol className="mt-4 list-decimal space-y-2 pl-5 text-foreground">
+              <li>Become an INZBC member.</li>
+              <li>Confirm whether your goods or services are covered by the agreement.</li>
+              <li>Check the tariff classification and implementation schedule for your products.</li>
+              <li>Review the applicable rules of origin and supporting documentation.</li>
+              <li>Understand Indian customs, labelling, registration and regulatory requirements.</li>
+              <li>Select the state, city and customer group that best fits your offer.</li>
+              <li>Identify credible distributors, customers, investors or joint-venture partners.</li>
+              <li>Review pricing, payment terms, foreign exchange and trade-finance arrangements.</li>
+              <li>Prepare a long-term market plan rather than relying on one-off transactions.</li>
+            </ol>
           </Reveal>
           <Reveal delay={0.08}>
             <Card title="Sector guidance">
@@ -2028,16 +2045,71 @@ function TradeResourcesBody() {
               specific commitments on both sides &mdash; the sourced guide above only tracks the
               outcomes for New Zealand exporters so far.
             </p>
-            <p className="mt-5">
+            <p className="mt-4 text-foreground">
+              On the Indian side, Indian Customs has committed to releasing goods within 48
+              hours, and to endeavour to release perishable goods and express consignments
+              within 24 hours &mdash; relevant to New Zealand businesses moving goods either
+              way across the corridor.
+            </p>
+            <p className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
               <TextLink href={LINKS.mfatFtaText} external>
                 Read the full agreement text on MFAT
+              </TextLink>
+              <TextLink href="https://www.hciwellington.gov.in/page/trade-services/" external>
+                India Trade Portal &mdash; High Commission of India, Wellington
               </TextLink>
             </p>
           </Reveal>
         </div>
       </section>
 
-      <section className="bg-white px-6 py-24" aria-labelledby="missions-title">
+      <section className="bg-white px-6 py-24" aria-labelledby="resources-title">
+        <div className="mx-auto max-w-3xl">
+          <Reveal>
+            <h2 id="resources-title" className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              Useful FTA resources
+            </h2>
+            <p className="mt-4 text-foreground">
+              Official guidance on the agreement itself, tariff lookups and NZTE&rsquo;s own
+              India programmes &mdash; the same set INZBC points members to.
+            </p>
+            <ul className="mt-6 space-y-3 text-foreground">
+              <li>
+                <TextLink href={LINKS.mfatFta} external>
+                  MFAT: New Zealand&ndash;India FTA information
+                </TextLink>
+              </li>
+              <li>
+                <TextLink href="https://www.tariff-finder.govt.nz/" external>
+                  MFAT Tariff Finder
+                </TextLink>
+              </li>
+              <li>
+                <TextLink href="https://my.nzte.govt.nz/article/20260220-what-the-nz-india-fta-means-for-exporters" external>
+                  NZTE: What the NZ&ndash;India FTA means for exporters
+                </TextLink>
+              </li>
+              <li>
+                <TextLink href="https://my.nzte.govt.nz/article/20260203-india-market-guide" external>
+                  NZTE India Market Guide
+                </TextLink>
+              </li>
+              <li>
+                <TextLink href="https://my.nzte.govt.nz/article/20260812-illuminate-india-programme" external>
+                  NZTE Illuminate India programme
+                </TextLink>
+              </li>
+              <li>
+                <TextLink href="https://www.beehive.govt.nz/release/new-zealand-and-india-ratify-free-trade-agreement" external>
+                  Government announcement: New Zealand and India ratify Free Trade Agreement
+                </TextLink>
+              </li>
+            </ul>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-mist px-6 py-24" aria-labelledby="missions-title">
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <h2 id="missions-title" className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
@@ -2081,7 +2153,7 @@ function TradeResourcesBody() {
         </div>
       </section>
 
-      <section className="bg-mist px-6 py-24" aria-labelledby="intelligence-title">
+      <section className="bg-white px-6 py-24" aria-labelledby="intelligence-title">
         <div className="mx-auto max-w-3xl">
           <Reveal>
             <h2 id="intelligence-title" className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">

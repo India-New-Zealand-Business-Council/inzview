@@ -468,7 +468,97 @@ export default function FtaPage() {
           </div>
         </section>
 
-        <section className="bg-mist px-6 py-24" aria-labelledby="fta-sectors-title">
+        {/* The timeline above covers tariffs; this covers everything else MFAT's Key Outcomes
+            summary names that a tariff schedule doesn't capture — rules of origin, the
+            institutional machinery, and the specific side arrangements (organic trade,
+            geographical indications, the Treaty of Waitangi exception) that determine whether
+            a business can actually use the tariff access above. Added 15 Oct 2026 on Sunil's
+            instruction to bring this page up to the depth of MFAT's own FTA hub, not a
+            rewrite of what was already there. */}
+        <section className="bg-mist px-6 py-24" aria-labelledby="fta-beyond-title">
+          <div className="mx-auto max-w-3xl">
+            <Reveal>
+              <h2
+                id="fta-beyond-title"
+                className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl"
+              >
+                Beyond tariffs
+              </h2>
+              <p className="mt-4 text-lg text-foreground">
+                Preferential tariffs only apply to goods that actually qualify under the
+                agreement&rsquo;s rules — and the agreement covers more than tariffs.
+              </p>
+            </Reveal>
+
+            <div className="mt-12 space-y-10 border-t border-ink/10 pt-10">
+              <Reveal delay={0.04}>
+                <h3 className="font-heading text-xl text-plum">Rules of origin</h3>
+                <p className="mt-3 text-foreground">
+                  A product only qualifies for preferential tariff treatment if it is wholly
+                  obtained in New Zealand or India, or meets the agreement&rsquo;s
+                  product-specific rules of origin — the criteria set for each product to stop
+                  goods from a third country claiming preferential access via transshipment.
+                  Claiming the tariff requires correct Harmonised System classification, a
+                  certificate of origin completed as the agreement prescribes, and supporting
+                  invoices and shipping documents — exporters need to map their own supply
+                  chain against these rules before relying on the tariff numbers above.
+                </p>
+              </Reveal>
+
+              <Reveal delay={0.08}>
+                <h3 className="font-heading text-xl text-plum">Dairy fast-track, and the TEE visa split</h3>
+                <p className="mt-3 text-foreground">
+                  The agreement includes a dedicated fast-track mechanism for New Zealand
+                  dairy products to enter India duty-free for further manufacturing and
+                  export. On people movement, the 1,667 three-year Temporary Employment Entry
+                  visas a year split into 1,467 for thirteen skilled occupations on
+                  Immigration New Zealand&rsquo;s Green List, and 200 reserved for specific
+                  Indian occupations — yoga instructors, musicians, chefs and ayurvedic
+                  practitioners. Indian students in New Zealand get a 20-hour weekly work
+                  limit during study and two to four years of post-graduation work rights,
+                  depending on qualification level.
+                </p>
+              </Reveal>
+
+              <Reveal delay={0.12}>
+                <h3 className="font-heading text-xl text-plum">Organic trade, and geographical indications</h3>
+                <p className="mt-3 text-foreground">
+                  An Interim Organic Mutual Recognition Arrangement allows two-way trade in
+                  unprocessed and processed organic horticultural products, including wine,
+                  from day one — New Zealand&rsquo;s first access to India&rsquo;s market for
+                  organic products on this basis. Separately, a side letter commits both
+                  countries to review geographical indication protections, with a view to
+                  matching the protections agreed with the EU; that review starts on
+                  signature and is due within six months of entry into force.
+                </p>
+              </Reveal>
+
+              <Reveal delay={0.16}>
+                <h3 className="font-heading text-xl text-plum">Investment, institutions and Māori interests</h3>
+                <p className="mt-3 text-foreground">
+                  India will establish a dedicated &ldquo;New Zealand Investment Desk&rdquo;
+                  to assist New Zealand investors, alongside New Zealand&rsquo;s commitment to
+                  promote US$20 billion in private investment into India over 15 years.
+                  Implementation runs through new standing bodies — a Committee on Trade in
+                  Goods, a Trade and Sustainable Development Committee, a Committee on
+                  Economic Cooperation and Technical Assistance, an Agriculture Productivity
+                  Partnership, and a Wine, Whisky and Distilled Spirits Working Group. The
+                  agreement&rsquo;s Cultural chapter is to be implemented consistently with
+                  the Treaty of Waitangi, with a framework to pursue Māori economic and
+                  cultural aspirations specifically.
+                </p>
+              </Reveal>
+            </div>
+
+            <Reveal delay={0.2}>
+              <p className="mt-10 text-sm text-foreground/70">
+                Source: <TextLink href={LINKS.mfatKeyOutcomes}>MFAT&rsquo;s Key Outcomes summary</TextLink>.
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="bg-white px-6 py-24" aria-labelledby="fta-sectors-title">
           <div className="mx-auto max-w-6xl">
             <Reveal>
               <h2
@@ -546,6 +636,50 @@ export default function FtaPage() {
             </div>
           </section>
         ) : null}
+
+        <section className="bg-mist px-6 py-24" aria-labelledby="fta-resources-title">
+          <div className="mx-auto max-w-3xl">
+            <Reveal>
+              <h2
+                id="fta-resources-title"
+                className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl"
+              >
+                Useful FTA resources
+              </h2>
+              <p className="mt-4 text-foreground">
+                Official guidance on the agreement itself, tariff lookups and NZTE&rsquo;s own
+                India programmes — the same set INZBC points members to.
+              </p>
+              <ul className="mt-6 space-y-3 text-foreground">
+                <li>
+                  <TextLink href={LINKS.mfatFta}>MFAT: New Zealand&ndash;India FTA information</TextLink>
+                </li>
+                <li>
+                  <TextLink href={LINKS.mfatFtaText}>Full text of the agreement</TextLink>
+                </li>
+                <li>
+                  <TextLink href={LINKS.mfatKeyOutcomes}>MFAT&rsquo;s Key Outcomes summary</TextLink>
+                </li>
+                <li>
+                  <TextLink href="https://www.tariff-finder.govt.nz/">MFAT Tariff Finder</TextLink>
+                </li>
+                <li>
+                  <TextLink href="https://my.nzte.govt.nz/article/20260220-what-the-nz-india-fta-means-for-exporters">
+                    NZTE: What the NZ&ndash;India FTA means for exporters
+                  </TextLink>
+                </li>
+                <li>
+                  <TextLink href="https://my.nzte.govt.nz/article/20260203-india-market-guide">NZTE India Market Guide</TextLink>
+                </li>
+                <li>
+                  <TextLink href="https://my.nzte.govt.nz/article/20260812-illuminate-india-programme">
+                    NZTE Illuminate India programme
+                  </TextLink>
+                </li>
+              </ul>
+            </Reveal>
+          </div>
+        </section>
       </main>
 
       <Footer />
