@@ -28,9 +28,8 @@ export const LINKS = {
   linkedin: 'https://www.linkedin.com/company/inzbc/posts/?feedView=all',
   x: 'https://x.com/inzbc',
   email: 'mailto:Secretariat@inzbc.org',
-  // Connect page only, per Sunil's instruction (14 Oct 2026) — every other mention of an
-  // INZBC email address on this site (Footer, Home) stays Secretariat@inzbc.org.
-  commsEmail: 'mailto:Comms@inzbc.org',
+  // Comms@inzbc.org (Connect page email, Sunil's instruction 14 Oct 2026) reverted along
+  // with the rest of that page's changes on 15 Oct 2026 — see git history to restore.
 } as const;
 
 /*

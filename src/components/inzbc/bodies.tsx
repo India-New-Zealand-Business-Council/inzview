@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Mail, MapPin } from 'lucide-react';
+import {
+  ArrowUpRight,
+  Facebook as FacebookIcon,
+  Linkedin as LinkedinIcon,
+  Mail,
+  MapPin,
+  Twitter as TwitterIcon,
+  Youtube as YoutubeIcon,
+} from 'lucide-react';
 import { Reveal } from './motion';
 import { ART, BENEFITS, LINKS, STATS, BUSINESS_PARTNERS, INDIA_NETWORK, PUBLIC_SECTOR_NETWORK } from './content';
 import SocialFeeds from './SocialFeeds';
@@ -81,6 +89,34 @@ function Card({
   );
 }
 
+/**
+ * An organic "blob" icon badge, same silhouette family as the live site's old social-icon
+ * graphics but built as a real SVG path rather than a CSS border-radius approximation, which reads
+ * as a rounded rectangle rather than a true blob. One diagonal gradient per instance, using
+ * this project's own brand hex values (from tailwind.config.mjs) rather than the old site's
+ * blue — the shape is what's being matched here, not that palette, per the standing
+ * "modernised, not the old blue gradient" instruction.
+ */
+const BLOB_PATH =
+  'M64 6C79 9 91 22 93 38C95 54 87 66 76 76C68 83 58 90 46 88C36 86 30 78 21 71C11 63 3 54 4 42C5 30 15 25 19 15C24 4 37 8 48 5C53 4 59 5 64 6Z';
+
+function Blob({ id, from, to, size = 96 }: { id: string; from: string; to: string; size?: number }) {
+  return (
+    <svg viewBox="0 0 100 100" width={size} height={size} aria-hidden="true">
+      <defs>
+        <linearGradient id={id} x1="10%" y1="0%" x2="90%" y2="100%">
+          <stop offset="0%" stopColor={from} />
+          <stop offset="100%" stopColor={to} />
+        </linearGradient>
+      </defs>
+      {/* The small satellite circle is the same detail the reference blobs have at one edge -
+          a separate dot, not part of the main path, so it can float slightly outside it. */}
+      <circle cx="90" cy="34" r="5" fill={`url(#${id})`} />
+      <path d={BLOB_PATH} fill={`url(#${id})`} />
+    </svg>
+  );
+}
+
 /** An inline text link. */
 function TextLink({ href, children, external = false }: { href: string; children: React.ReactNode; external?: boolean }) {
   const cls = `rounded-sm font-medium text-plum underline ${FOCUS}`;
@@ -120,7 +156,7 @@ function ContactForm() {
   ]
     .filter(Boolean)
     .join('\n');
-  const mailto = `${LINKS.commsEmail}?subject=${encodeURIComponent(fields.subject || 'Message from inzbc.org')}&body=${encodeURIComponent(body)}`;
+  const mailto = `${LINKS.email}?subject=${encodeURIComponent(fields.subject || 'Message from inzbc.org')}&body=${encodeURIComponent(body)}`;
 
   const inputCls =
     'mt-1 w-full rounded-md border border-ink/15 bg-white px-3 py-2 text-sm text-ink placeholder:text-foreground/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
@@ -1027,7 +1063,7 @@ function ConnectBody() {
                 <div>
                   <p className="font-semibold text-ink">Email</p>
                   <p className="mt-1">
-                    <TextLink href={LINKS.commsEmail}>Comms@inzbc.org</TextLink>
+                    <TextLink href={LINKS.email}>Secretariat@inzbc.org</TextLink>
                   </p>
                 </div>
               </div>
@@ -1051,12 +1087,10 @@ function ConnectBody() {
             {/* The live site's own contact widget has shown different values across
                 checks this session (also seen "Sunil@inzbc.org"/"PO Box 20092", and
                 separately "Gm@inzbc.org"/"Edwin Paul, Chair@inzbc.org") - it's the live
-                page itself that's inconsistent, not a gap in what's been checked. PO Box
-                26061 here because that's the address already published consistently
-                everywhere else on this site (Home, Footer), not a fresh guess. The email
-                address, unlike the postal one, was deliberately changed to Comms@inzbc.org
-                on this page only (Sunil's instruction, 14 Oct 2026) — Footer and Home still
-                say Secretariat@inzbc.org. */}
+                page itself that's inconsistent, not a gap in what's been checked. Using
+                Secretariat@inzbc.org / PO Box 26061 here because that's the pair already
+                published consistently everywhere else on this site (Home, Footer), not a
+                fresh guess. */}
           </Reveal>
 
           <Reveal delay={0.1}>
@@ -1064,23 +1098,21 @@ function ConnectBody() {
               <h2 className="font-heading text-2xl text-ink">Send a message</h2>
               <ContactForm />
               <p className="mt-5 text-sm text-foreground">
-                Prefer email directly? <TextLink href={LINKS.commsEmail}>Email INZBC</TextLink>.
+                Prefer email directly? <TextLink href={LINKS.email}>Email the secretariat</TextLink>.
               </p>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* Plain brand-coloured circles, not the old blob shapes: those were each hand-picked
-          from the site's general palette (navy/plum/forest/ink) rather than each platform's
-          own colour, and clashed against each other exactly the way Sunil flagged (15 Oct
-          2026 — "remove the outside colors, just use logos, bigger"). A solid circle in each
-          platform's real brand colour, behind a plain white glyph (SOCIALS' own icon+color,
-          the same pair Footer.tsx now uses), reads as one consistent row instead of four
-          competing abstract shapes, and the icon itself survives on any background instead of
-          needing a bespoke gradient tuned per icon. Sized noticeably bigger than Footer's —
-          this section's whole job is to be the visible "follow us" moment, not a quiet
-          wayfinding row at the bottom of a page.
+      {/* Blob-shaped icon cards, modernised from the live site's dated blue-gradient version:
+          current palette tokens instead (navy/plum/forest/ink, all dark enough for a white
+          icon+label per HANDOVER.md's rule that lime never carries light text/icons, so lime
+          isn't one of the four). Labels are the live site's own real copy. Lucide's brand
+          icons (Facebook/Linkedin/Twitter/Youtube) are marked deprecated upstream but present
+          and working in the pinned lucide-react@0.487.0 (verified against that version's
+          published types), so used as-is rather than hand-drawing inline SVGs for four
+          standard glyphs.
 
           pt-8, not py-20 like the section above it: both are bg-white with no visual seam
           between them, so their two py-20s stacked (160px) read as one big dead gap rather
@@ -1093,12 +1125,12 @@ function ConnectBody() {
               Follow INZBC
             </h2>
           </Reveal>
-          <div className="mt-12 grid grid-cols-2 gap-10 sm:grid-cols-4">
+          <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4">
             {[
-              { ...SOCIALS[3], label: 'Follow us on X' },
-              { ...SOCIALS[2], label: 'Connect with us on LinkedIn' },
-              { ...SOCIALS[1], label: 'Watch our videos on YouTube' },
-              { ...SOCIALS[0], label: 'Find us on Facebook' },
+              { name: 'X', Icon: TwitterIcon, href: LINKS.x, label: 'Follow us on X', from: '#3d2a66', to: '#160933' },
+              { name: 'LinkedIn', Icon: LinkedinIcon, href: LINKS.linkedin, label: 'Connect with us on LinkedIn', from: '#8a3d87', to: '#61145f' },
+              { name: 'YouTube', Icon: YoutubeIcon, href: LINKS.youtube, label: 'Watch our videos on YouTube', from: '#2f6b62', to: '#1b4640' },
+              { name: 'Facebook', Icon: FacebookIcon, href: LINKS.facebook, label: 'Find us on Facebook', from: '#402d66', to: '#1a0b3f' },
             ].map((social, i) => (
               <Reveal key={social.name} delay={i * 0.06}>
                 <a
@@ -1107,11 +1139,14 @@ function ConnectBody() {
                   rel="noopener noreferrer"
                   className={`group flex flex-col items-center gap-4 rounded-sm ${FOCUS}`}
                 >
-                  <span
-                    className="flex h-28 w-28 items-center justify-center rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105"
-                    style={{ backgroundColor: social.color }}
-                  >
-                    <Image src={social.icon} alt="" className="h-12 w-12" />
+                  <span className="relative flex h-24 w-24 items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                    <Blob id={`blob-${social.name}`} from={social.from} to={social.to} size={96} />
+                    <social.Icon
+                      aria-hidden="true"
+                      size={30}
+                      strokeWidth={1.8}
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white"
+                    />
                   </span>
                   <span className="text-center text-sm font-medium text-ink">{social.label}</span>
                 </a>
@@ -1171,7 +1206,7 @@ function ConnectBody() {
               anywhere yet &mdash; the secretariat can talk you through current options directly.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Btn href={`${LINKS.commsEmail}?subject=Sponsorship%20enquiry`}>
+              <Btn href={`${LINKS.email}?subject=Sponsorship%20enquiry`}>
                 Enquire about sponsorship
               </Btn>
             </div>
@@ -1179,15 +1214,13 @@ function ConnectBody() {
         </div>
       </section>
 
-      {/* Refreshed 15 Oct 2026 — the previous four (2018/2019 Summit highlights, a 2014-17
-          reel, a COVID-19 explainer) were years stale. These four are the channel's actual
-          most recent uploads, pulled from its own public RSS feed
-          (youtube.com/feeds/videos.xml?channel_id=UC9MQW-VliLqOdT4GUktKfZQ), real IDs and
-          titles, not invented. Linked thumbnail + "Watch on YouTube" rather than a live
-          iframe: no embed pattern exists anywhere in this codebase to build against, four
-          autoplaying iframes would be a real page-weight cost, and thumbnails can be verified
-          statically where iframe rendering cannot be, in an environment with no browser
-          access. */}
+      {/* No legacy/wix-studio snippet mentions promotional videos, so these are sourced
+          directly from the live page's own schema.org VideoObject structured data (real IDs
+          and titles, not invented) rather than left as a marker, now that real content is
+          available. Linked thumbnail + "Watch on YouTube" rather than a live iframe: no
+          embed pattern exists anywhere in this codebase to build against, four autoplaying
+          iframes would be a real page-weight cost, and thumbnails can be verified statically
+          where iframe rendering cannot be, in an environment with no browser access. */}
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <Reveal>
@@ -1197,10 +1230,10 @@ function ConnectBody() {
           </Reveal>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { id: 'vPf6NofD2lk', title: 'INZBC End of the Year Highlights 2025' },
-              { id: '5H4Tn9vIe-Y', title: 'Dr Samir Saran & Hon Todd McClay join INZBC for a Fireside Chat' },
-              { id: 'U_rsj0vAjfM', title: 'India–New Zealand Business Forum 2025: Celebrating Partnership, Progress & Opportunity' },
-              { id: 'AK0-eXOyC-g', title: 'Minister Todd McClay: Building a Future-Focused India–New Zealand Trade Partnership' },
+              { id: 'sQ2vE96V7s8', title: 'INZBC SUMMIT 2018 - Highlights' },
+              { id: 'D82PuQR--hU', title: 'Summit 2019 Highlights' },
+              { id: '-8TjFht41p4', title: 'INZBC Video Events Highlights 2014-17' },
+              { id: 'mlRXLKGi4cE', title: 'Economic impact of COVID19 on NZ India trade relations.' },
             ].map((video, i) => (
               <Reveal key={video.id} delay={i * 0.06}>
                 <a
