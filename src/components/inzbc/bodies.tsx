@@ -1423,6 +1423,14 @@ const NEWSLETTER_EDITIONS = [
     label: 'October 2026',
     body: 'The FTA entering into force, new INZBC leadership, the upcoming New Zealand–India Business Summit, inward business delegations and practical opportunities for members.',
     href: 'https://eomail5.com/web-version?p=2239d6d8-58ef-11f1-b1e9-e3f1c453e32b&pt=campaign&t=1791147667&s=da8468d4566684b82f1938b41cb871ca3ac62c52f9f9d9b0a9d095d8051968e0',
+    // The edition's own real cover, not a generic mockup: EmailOctopus generates an
+    // opengraph-preview screenshot per campaign for link previews (<meta property="og:image">
+    // on the web-version page itself); cropped to the logo + banner, the part below it is
+    // just plain email body text. Only this edition's template includes one — checked the
+    // other six, none of the pre-2026 "bimaculatus.eocampaign1.com" ones carry an og:image at
+    // all (older send template), so they stay text-only rather than mix real covers with
+    // placeholders.
+    cover: '/publications/newsletter-oct-2026-cover.png',
   },
   {
     label: 'September 2023',
@@ -1640,15 +1648,25 @@ function PublicationsBody() {
 
           <div className="mt-10 grid gap-6 lg:grid-cols-5 lg:gap-10">
             <Reveal className="lg:col-span-3">
-              <article className="flex h-full flex-col justify-center gap-3 rounded-2xl bg-white p-8 shadow-sm md:p-10">
-                <span className="text-xs font-medium uppercase tracking-[0.14em] text-plum">Latest edition</span>
-                <h3 className="font-heading text-2xl text-ink md:text-3xl">{latestNewsletter.label}</h3>
-                <p className="text-foreground">{latestNewsletter.body}</p>
-                <p className="mt-2">
-                  <Btn href={latestNewsletter.href} external>
-                    Read the {latestNewsletter.label} edition
-                  </Btn>
-                </p>
+              <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm">
+                {'cover' in latestNewsletter ? (
+                  <Image
+                    src={latestNewsletter.cover}
+                    alt={`Cover of the INZBC ${latestNewsletter.label} newsletter`}
+                    loading="lazy"
+                    className="aspect-[21/10] w-full object-cover"
+                  />
+                ) : null}
+                <div className="flex flex-1 flex-col justify-center gap-3 p-8 md:p-10">
+                  <span className="text-xs font-medium uppercase tracking-[0.14em] text-plum">Latest edition</span>
+                  <h3 className="font-heading text-2xl text-ink md:text-3xl">{latestNewsletter.label}</h3>
+                  <p className="text-foreground">{latestNewsletter.body}</p>
+                  <p className="mt-2">
+                    <Btn href={latestNewsletter.href} external>
+                      Read the {latestNewsletter.label} edition
+                    </Btn>
+                  </p>
+                </div>
               </article>
             </Reveal>
 
