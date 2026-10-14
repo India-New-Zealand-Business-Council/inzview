@@ -21,6 +21,7 @@ import {
 import {
   ART,
   BENEFITS,
+  FTA_IN_FORCE,
   LINKS,
   STATS,
   BUSINESS_PARTNERS,
@@ -95,7 +96,7 @@ const HOME_STATS = [
   {
     figure: STATS[2].figure,
     label: STATS[2].label,
-    note: 'From 20 October 2026, when the agreement enters into force.',
+    note: STATS[2].note,
   },
 ] as const;
 
@@ -933,7 +934,7 @@ function Hero() {
             <span className="home-hero__status-dot" aria-hidden="true" />
             FTA signed 27 April 2026
             <span aria-hidden="true">/</span>
-            Comes into effect 20 October 2026
+            {FTA_IN_FORCE ? 'In force since 20 October 2026' : 'Comes into effect 20 October 2026'}
           </div>
           <KineticHeading
             as="h1"
@@ -1040,16 +1041,24 @@ export default function HomePage() {
           headingId="fta-title"
           title="A signed agreement. A new field of possibility."
           summary={
-            <p>
-              Signed in New Delhi and ratified by both countries, the agreement will
-              eliminate or reduce tariffs across 95% of New Zealand&rsquo;s current export
-              trade with India. 57% becomes duty-free from 20 October 2026, when it enters
-              into force.
-            </p>
+            FTA_IN_FORCE ? (
+              <p>
+                Signed in New Delhi and ratified by both countries, the agreement eliminates
+                or reduces tariffs across 95% of New Zealand&rsquo;s current export trade with
+                India. 57% became duty-free on 20 October 2026, when it entered into force.
+              </p>
+            ) : (
+              <p>
+                Signed in New Delhi and ratified by both countries, the agreement will
+                eliminate or reduce tariffs across 95% of New Zealand&rsquo;s current export
+                trade with India. 57% becomes duty-free from 20 October 2026, when it enters
+                into force.
+              </p>
+            )
           }
           status={{
             label: 'Current status',
-            value: 'Comes into effect 20 October 2026',
+            value: FTA_IN_FORCE ? 'In force since 20 October 2026' : 'Comes into effect 20 October 2026',
             note: 'Signed 27 April 2026. Ratified 21 September 2026.',
           }}
           stats={HOME_STATS}

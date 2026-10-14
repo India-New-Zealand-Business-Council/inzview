@@ -74,10 +74,20 @@ export const ART = {
    its own detailed timeline/breakdown, sourced separately from MFAT's Key Outcomes summary
    and legacy/wix-studio's fta-centre.html snippet — a wider, page-specific source set, not a
    drift from this one. */
+/* MFAT and the Indian PIB both say the NZ-India FTA enters into force on 20 October 2026.
+   Neither states a clock time. This treats that as the start of 20 October in New Zealand
+   (NZDT, UTC+13). Copy that would be false on one side of that instant checks this flag,
+   so the published site changes tense on the day without another push. Once the date has
+   passed, delete the false branches and this flag. */
+export const FTA_IN_FORCE_AT = Date.parse('2026-10-20T00:00:00+13:00');
+export const FTA_IN_FORCE = Date.now() >= FTA_IN_FORCE_AT;
+
 export const STATS = [
   { figure: 'NZ$3.95bn', label: 'Two-way trade', note: 'Year ended December 2025.' },
   { figure: '95%', label: 'Of NZ exports covered', note: 'Receiving tariff elimination or reduction.' },
-  { figure: '57%', label: 'Duty free from day one', note: 'From 20 October 2026, when the agreement enters into force.' },
+  { figure: '57%', label: 'Duty free from day one', note: FTA_IN_FORCE
+    ? 'Since 20 October 2026, when the agreement entered into force.'
+    : 'From 20 October 2026, when the agreement enters into force.' },
 ] as const;
 
 export const BENEFITS = [
