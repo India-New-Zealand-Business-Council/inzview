@@ -13,6 +13,8 @@ import {
   BookOpenText,
   CalendarDays,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Globe2,
   Menu,
   UsersRound,
@@ -186,6 +188,81 @@ const GALLERY_PHOTOS = [
     alt: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting',
   },
 ] as const;
+
+/** One photo at a time, same height as the social-link column beside it. Auto-advances,
+    but a manual scroll/swipe or the arrow buttons pause the auto-advance for a bit so it
+    doesn't fight the person using it. */
+function GalleryCarousel({ photos }: { photos: readonly { src: string; alt: string }[] }) {
+  const stripRef = useRef<HTMLDivElement>(null);
+  const resumeRef = useRef<ReturnType<typeof setTimeout>>();
+
+  const scrollToIndex = (index: number) => {
+    const strip = stripRef.current;
+    if (!strip) return;
+    const slide = strip.children[index] as HTMLElement | undefined;
+    slide?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  };
+
+  const currentIndex = () => {
+    const strip = stripRef.current;
+    if (!strip) return 0;
+    return Math.round(strip.scrollLeft / strip.clientWidth);
+  };
+
+  const pauseAutoAdvance = () => {
+    window.clearTimeout(resumeRef.current);
+    resumeRef.current = setTimeout(() => {
+      resumeRef.current = undefined;
+    }, 6000);
+  };
+
+  const goTo = (delta: 1 | -1) => {
+    pauseAutoAdvance();
+    scrollToIndex((currentIndex() + delta + photos.length) % photos.length);
+  };
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (resumeRef.current) return;
+      scrollToIndex((currentIndex() + 1) % photos.length);
+    }, 4500);
+    return () => clearInterval(id);
+  }, [photos.length]);
+
+  return (
+    <div className="home-gallery__carousel">
+      <div
+        className="home-gallery__strip"
+        role="list"
+        ref={stripRef}
+        onPointerDown={pauseAutoAdvance}
+        onWheel={pauseAutoAdvance}
+      >
+        {photos.map((photo) => (
+          <div className="home-gallery__photo" role="listitem" key={photo.src}>
+            <Image src={photo.src} alt={photo.alt} loading="lazy" />
+          </div>
+        ))}
+      </div>
+      <button
+        type="button"
+        aria-label="Previous photo"
+        className="home-gallery__nav home-gallery__nav--prev"
+        onClick={() => goTo(-1)}
+      >
+        <ChevronLeft aria-hidden="true" size={20} />
+      </button>
+      <button
+        type="button"
+        aria-label="Next photo"
+        className="home-gallery__nav home-gallery__nav--next"
+        onClick={() => goTo(1)}
+      >
+        <ChevronRight aria-hidden="true" size={20} />
+      </button>
+    </div>
+  );
+}
 
 // BUSINESS_PARTNERS, INDIA_NETWORK and PUBLIC_SECTOR_NETWORK now live in content.ts, shared
 // with the /partners page (bodies.tsx PartnersBody) so the two can't drift apart again.
@@ -1222,13 +1299,7 @@ export default function HomePage() {
               <h2 id="gallery-title" className="home-gallery__title">
                 INZBC in the room
               </h2>
-              <div className="home-gallery__strip" role="list">
-                {GALLERY_PHOTOS.map((photo) => (
-                  <div className="home-gallery__photo" role="listitem" key={photo.src}>
-                    <Image src={photo.src} alt={photo.alt} loading="lazy" />
-                  </div>
-                ))}
-              </div>
+              <GalleryCarousel photos={GALLERY_PHOTOS} />
             </div>
 
             {/* Static link-outs, not live SDK embeds — that exact pattern (a script injected
