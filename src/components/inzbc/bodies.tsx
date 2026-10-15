@@ -799,10 +799,13 @@ function EventsBody() {
  * ("inventing a member number is exactly the claim this site must not make," per that
  * snippet's own comment).
  *
- * Photo: one real INZBC event photo (an Indian High Commission symposium), not used anywhere
- * else on the site — cut down from a five-photo collage on Sunil's instruction (15 Oct 2026).
- * Real council headshots (public/council/) stand in for "who's already in the directory"
- * instead of a stock illustration.
+ * Photos: five real INZBC event photos from Sunil's newest Drive upload (15 Oct 2026,
+ * "Gallery" folder) — cut to one on 15 Oct 2026, back to five on 16 Oct 2026 with fresh
+ * photos (the earlier five moved on; see git history). Two of these five (the signing
+ * ceremony and Luxon/Goyal) are also used in Home's photo strip, on Sunil's instruction to
+ * use this new set in more than one place — not exclusive to this page the way the single
+ * symposium photo was kept 15 Oct 2026. Real council headshots (public/council/) stand in
+ * for "who's already in the directory" instead of a stock illustration.
  */
 function MembershipBody() {
   const reasons = [
@@ -829,20 +832,21 @@ function MembershipBody() {
       <section className="bg-white px-6 py-24">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
           <Reveal>
-            {/* Down to one photo (15 Oct 2026, on Sunil's instruction) from a five-photo
-                collage — this one specifically because it's a real group photo (six people,
-                standing) and, checked across every other page on this site, the only one of
-                the five that wasn't already reused somewhere else. The other four are still
-                real, sourced images; they just moved off this page rather than being deleted,
-                so check git history before re-adding any of them elsewhere. */}
-            <Image
-              src="/blog/indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties.jpg"
-              alt="Indian High Commission symposium on trade and diplomatic ties, with New Zealand and Indian officials"
-              width={1600}
-              height={1066}
-              loading="lazy"
-              className="aspect-[4/3] w-full rounded-2xl object-cover shadow-sm"
-            />
+            {/* Five-photo showcase again (16 Oct 2026), this time from Sunil's newest Drive
+                upload (15 Oct 2026, "Gallery" folder) — the actual FTA signing ceremony and
+                delegation group (27 April 2026, Delhi), the "From Agreement to Business"
+                event (23 September 2026, Auckland — stage and full-room audience), and PM
+                Luxon with Minister Piyush Goyal at the Business Forum. None of these five are
+                used anywhere else on the site. */}
+            <div className="grid grid-cols-2 grid-rows-2 gap-3">
+              <Image src="/events/fta-signing-delegation-group-27-apr-2026.jpg" alt="New Zealand and Indian delegation members celebrating together after the NZ–India FTA signing, 27 April 2026" width={4000} height={3000} loading="lazy" className="row-span-2 aspect-square w-full rounded-2xl object-cover" />
+              <Image src="/events/fta-signing-ceremony-27-apr-2026.jpg" alt="Ministers signing the New Zealand–India Free Trade Agreement, 27 April 2026" width={6048} height={4032} loading="lazy" className="aspect-[2/1] w-full rounded-2xl object-cover" />
+              <Image src="/events/luxon-goyal-business-forum-2026.jpg" alt="New Zealand Prime Minister Christopher Luxon and India's Minister of Commerce and Industry Piyush Goyal at the India–New Zealand Business Forum" width={9504} height={6336} loading="lazy" className="aspect-[2/1] w-full rounded-2xl object-cover" />
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <Image src="/events/inzbc-from-agreement-to-business-stage-23-sep-2026.jpeg" alt="The welcome address at INZBC's 'From Agreement to Business' event, Auckland, 23 September 2026" width={2000} height={1333} loading="lazy" className="aspect-[4/3] w-full rounded-2xl object-cover" />
+              <Image src="/events/inzbc-from-agreement-to-business-audience-23-sep-2026.jpeg" alt="A full room of attendees at INZBC's 'From Agreement to Business' event, Auckland, 23 September 2026" width={1600} height={1067} loading="lazy" className="aspect-[4/3] w-full rounded-2xl object-cover" />
+            </div>
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">

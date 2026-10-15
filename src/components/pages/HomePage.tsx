@@ -124,8 +124,19 @@ const EVENT_PHOTOS = [
     covers the Modi visit collage elsewhere on this page. Sourced from the same places every
     other photo on this site is (Sunil's Drive uploads, the old site's own blog covers), not
     a fresh scrape — inzbc.org has no separate photo-gallery page, and its Facebook albums
-    sit behind a login wall, so there is nothing further to pull from either. */
+    sit behind a login wall, so there is nothing further to pull from either. The first two
+    (signing ceremony, Luxon/Goyal) are from Sunil's newest upload (15 Oct 2026) and are also
+    used in the Membership page's photo showcase — on Sunil's instruction, not exclusive to
+    one page. */
 const GALLERY_PHOTOS = [
+  {
+    src: '/events/fta-signing-ceremony-27-apr-2026.jpg',
+    alt: 'Ministers signing the New Zealand–India Free Trade Agreement, 27 April 2026',
+  },
+  {
+    src: '/events/luxon-goyal-business-forum-2026.jpg',
+    alt: 'New Zealand Prime Minister Christopher Luxon and India’s Minister of Commerce and Industry Piyush Goyal at the India–New Zealand Business Forum',
+  },
   {
     src: '/events/ficci-mou-signing-pm-luxon-mission-2026.jpg',
     alt: 'INZBC and FICCI signing a memorandum of understanding, during the New Zealand Prime Minister’s mission to India',
