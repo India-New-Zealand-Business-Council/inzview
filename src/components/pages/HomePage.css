@@ -372,6 +372,118 @@
   }
 }
 
+/* Replaces the old "Advocate · Interpret · Connect" marquee in the same slot: that was pure
+   decoration (aria-hidden, repeated the three words already shown above it in the capability
+   band) over a lot of empty space. A real, scrollable photo strip plus a real social link
+   fills the same gap with actual content. */
+.home-gallery__layout {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .home-gallery__layout {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+}
+
+.home-gallery__title {
+  margin: 0 0 1.25rem;
+  color: var(--home-ink);
+  font-family: Poppins, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.home-gallery__strip {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.25rem 0.25rem 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(26, 11, 63, 0.25) transparent;
+}
+
+.home-gallery__photo {
+  flex: 0 0 auto;
+  width: min(74vw, 280px);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 1rem;
+  scroll-snap-align: start;
+  box-shadow: 0 16px 40px rgba(26, 11, 63, 0.12);
+}
+
+.home-gallery__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-gallery__social {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  border-radius: 1.25rem;
+  padding: 2rem;
+  background: var(--home-navy);
+  color: #fff;
+  text-decoration: none;
+  transition: transform 220ms var(--home-ease-out);
+}
+
+.home-gallery__social:hover {
+  transform: translate3d(0, -3px, 0);
+}
+
+.home-gallery__social-icon {
+  display: inline-flex;
+  height: 3.25rem;
+  width: 3.25rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+.home-gallery__social-icon img {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.home-gallery__social-label {
+  margin-top: 0.75rem;
+  font-family: Poppins, system-ui, sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.home-gallery__social p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.home-gallery__social-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 1.25rem;
+  color: var(--home-lime);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
 .home-lede-dark {
   color: var(--home-ink);
   font-size: clamp(1.2rem, 2vw, 1.55rem);

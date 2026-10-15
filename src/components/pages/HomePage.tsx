@@ -120,6 +120,62 @@ const EVENT_PHOTOS = [
   },
 ] as const;
 
+/** Real INZBC event photography — none repeated from EVENT_PHOTOS above, which already
+    covers the Modi visit collage elsewhere on this page. Sourced from the same places every
+    other photo on this site is (Sunil's Drive uploads, the old site's own blog covers), not
+    a fresh scrape — inzbc.org has no separate photo-gallery page, and its Facebook albums
+    sit behind a login wall, so there is nothing further to pull from either. */
+const GALLERY_PHOTOS = [
+  {
+    src: '/events/ficci-mou-signing-pm-luxon-mission-2026.jpg',
+    alt: 'INZBC and FICCI signing a memorandum of understanding, during the New Zealand Prime Minister’s mission to India',
+  },
+  {
+    src: '/events/fta-briefing-document-exchange-india-high-commission.jpg',
+    alt: "New Zealand's Minister for Trade and Investment exchanging ratifying documentation with the High Commissioner of India, 21 September 2026",
+  },
+  {
+    src: '/events/group-photo-fta-parliament-21-sep-2026.jpeg',
+    alt: 'Ministers, officials and delegates at Parliament for the exchange of ratifying documents for the New Zealand–India Free Trade Agreement, 21 September 2026',
+  },
+  {
+    src: '/events/sunil-kaushal-todd-mclay-gift-presentation.jpg',
+    alt: "INZBC Chief Executive Sunil Kaushal presenting a gift to New Zealand's Minister for Trade and Investment",
+  },
+  {
+    src: '/events/nz-india-business-delegation-delhi-2026.jpg',
+    alt: 'New Zealand business delegation in Delhi, 2026',
+  },
+  {
+    src: '/events/nz-parliament-india-delegation-21-sep-2026.jpg',
+    alt: "New Zealand and Indian delegates at New Zealand's Parliament, 21 September 2026",
+  },
+  {
+    src: '/events/ihc-todd-mcclay.jpeg',
+    alt: "New Zealand's Minister for Trade and Investment and India's High Commissioner exchanging ratifying documentation, with PM Christopher Luxon behind them",
+  },
+  {
+    src: '/events/summit-group.jpg',
+    alt: 'Delegates and speakers at the INZBC Summit 2018 in Auckland',
+  },
+  {
+    src: '/events/summit-delegates.jpg',
+    alt: 'Delegates at the INZBC Summit 2018 venue',
+  },
+  {
+    src: '/events/summit-speakers.jpg',
+    alt: 'Speakers at the INZBC Summit 2018',
+  },
+  {
+    src: '/events/summit-conversation.jpg',
+    alt: 'Attendees in conversation at the INZBC Summit 2018',
+  },
+  {
+    src: '/events/modi-luxon-bilateral-meeting-2026.jpg',
+    alt: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting',
+  },
+] as const;
+
 // BUSINESS_PARTNERS, INDIA_NETWORK and PUBLIC_SECTOR_NETWORK now live in content.ts, shared
 // with the /partners page (bodies.tsx PartnersBody) so the two can't drift apart again.
 
@@ -1147,7 +1203,44 @@ export default function HomePage() {
               </HomeBlock>
             ))}
           </div>
-          <ReelSignal words={['Advocate', 'Interpret', 'Connect']} />
+        </section>
+
+        <section className="home-gallery home-section" aria-labelledby="gallery-title">
+          <div className="home-shell home-gallery__layout">
+            <div className="home-gallery__strip-wrap">
+              <h2 id="gallery-title" className="home-gallery__title">
+                INZBC in the room
+              </h2>
+              <div className="home-gallery__strip" role="list">
+                {GALLERY_PHOTOS.map((photo) => (
+                  <div className="home-gallery__photo" role="listitem" key={photo.src}>
+                    <Image src={photo.src} alt={photo.alt} loading="lazy" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Static link-out, not a live Facebook SDK embed — that exact embed (script
+                injected into document.body) is what broke the Connect page until it was
+                pulled out (15 Oct 2026). Same real brand icon/colour Footer.tsx already uses,
+                just no script tag, so it can't take the homepage down with it. */}
+            <a
+              href={LINKS.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="home-gallery__social home-focus-dark"
+            >
+              <span className="home-gallery__social-icon" style={{ backgroundColor: '#1877F2' }}>
+                <Image src={ART.socialFacebook} alt="" />
+              </span>
+              <span className="home-gallery__social-label">Follow us on Facebook</span>
+              <p>Photos and updates from events, delegations and briefings across the corridor.</p>
+              <span className="home-gallery__social-cta">
+                View on Facebook
+                <ArrowUpRight aria-hidden="true" size={16} />
+              </span>
+            </a>
+          </div>
         </section>
 
         <section className="home-pathways home-section" aria-labelledby="pathways-title">
