@@ -182,7 +182,13 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   // note this replaced in git history if it needs restoring.
   // Added from Sunil's 11 Oct 2026 Drive upload ("Our Strategic network" folder).
   { name: 'Asia New Zealand Foundation Te Whītau Tūhono', href: 'https://www.asianz.org.nz/', logo: '/partners/asia-nz-foundation.png' },
-  { name: 'Education New Zealand', href: 'https://enz.govt.nz/', logo: '/partners/enz.svg' },
+  // enz.svg (their only logo asset) removed 15 Oct 2026 — same issue as NZAL's main logo
+  // above, but worse: it's not just white-on-transparent, the file is a broken Adobe
+  // Illustrator export (wrapped in a non-standard <switch>/i:pgf fallback block) that
+  // rendered as a blank image under every renderer tried, not just on a light background.
+  // No other logo asset exists anywhere on enz.govt.nz. Text-only rather than ship a blank
+  // image a second time.
+  { name: 'Education New Zealand', href: 'https://enz.govt.nz/' },
   { name: 'Employers and Manufacturers Association (EMA)', href: 'https://www.ema.co.nz/', logo: '/partners/ema.png' },
 ] as const;
 

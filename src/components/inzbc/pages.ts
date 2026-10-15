@@ -34,9 +34,12 @@ export const PAGES: PageDef[] = [
     path: '/publications',
     title: "Publications",
     lede: "The India Report, Kia Ora India and the Trade Intelligence Digest: research, sector analysis and the stories of businesses already trading across the corridor.",
-    heroImage: '/blog/cancer-collaboration-for-university-of-auckland-and-tata-memorial-hospital.jpg',
-    heroImageAlt: '',
-    heroImagePosition: '50% 30%',
+    // Was a cancer-research collaboration photo — real, but unrelated to publications. This
+    // is INZBC's own "Available Now" promo banner for the Kia Ora India magazine (June 2024
+    // issue), already in public/blog/, actually about what this page is.
+    heroImage: '/blog/kia-ora-india-inzbc-magazine-latest-issue-june-2024.jpg',
+    heroImageAlt: 'Kia Ora India magazine, the NZ–India trade magazine published by INZBC',
+    heroImagePosition: '50% 50%',
     heroCta: { label: 'Read the 2025 trade report', href: LINKS.reportIssuu },
   },
   { path: '/newsletters', title: "Newsletters", lede: "Trade news, FTA developments and event announcements, with every past edition kept in the archive." },
@@ -45,9 +48,11 @@ export const PAGES: PageDef[] = [
     path: '/events',
     title: "Events",
     lede: "Briefings, delegations, networking and the annual INZBC Summit \u2014 the main ways to engage with the NZ\u2013India trade community.",
-    heroImage: '/blog/remarks-by-shri-v-muraleedharan-minister-of-state-for-external-affairs-government-of-india.jpg',
-    heroImageAlt: '',
-    heroImagePosition: '50% 40%',
+    // Real 2026 delegation welcome, from Sunil's 7 Oct 2026 photo set \u2014 a current event photo
+    // instead of an unrelated ministerial-remarks blog image.
+    heroImage: '/events/inzbc-welcome-auckland-2026.jpeg',
+    heroImageAlt: 'INZBC welcoming the Indian delegation to New Zealand, 2026',
+    heroImagePosition: '50% 30%',
   },
   {
     path: '/fta/briefings',
@@ -125,9 +130,12 @@ export const PAGES: PageDef[] = [
     path: '/events/past',
     title: "Past events",
     lede: "Reports, recordings and summaries from previous INZBC events.",
-    heroImage: '/blog/keynote-address-by-hon-nanaia-mahuta-foreign-affairs-minister-new-zealand-at-the-inzbc-summit-2021.png',
-    heroImageAlt: '',
-    heroImagePosition: '50% 45%',
+    // INZBC Summit 2018 — the same archive photo set this page's own gallery section uses
+    // further down, so the hero now matches what the page actually shows.
+    heroImage: '/events/summit-group.jpg',
+    heroImageAlt: 'Delegates and speakers at the INZBC Summit 2018 in Auckland',
+    heroImagePosition: '50% 30%',
+    heroCompact: true,
   },
   {
     path: '/executive-council',
