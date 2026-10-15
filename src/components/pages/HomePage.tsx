@@ -1220,26 +1220,31 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Static link-out, not a live Facebook SDK embed — that exact embed (script
-                injected into document.body) is what broke the Connect page until it was
-                pulled out (15 Oct 2026). Same real brand icon/colour Footer.tsx already uses,
-                just no script tag, so it can't take the homepage down with it. */}
-            <a
-              href={LINKS.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="home-gallery__social home-focus-dark"
-            >
-              <span className="home-gallery__social-icon" style={{ backgroundColor: '#1877F2' }}>
-                <Image src={ART.socialFacebook} alt="" />
-              </span>
-              <span className="home-gallery__social-label">Follow us on Facebook</span>
-              <p>Photos and updates from events, delegations and briefings across the corridor.</p>
-              <span className="home-gallery__social-cta">
-                View on Facebook
-                <ArrowUpRight aria-hidden="true" size={16} />
-              </span>
-            </a>
+            {/* Static link-outs, not live SDK embeds — that exact pattern (a script injected
+                into document.body) is what broke the Connect page until it was pulled out
+                (15 Oct 2026). Same real brand icons/colours Footer.tsx already uses, just no
+                script tag, so none of these three can take the homepage down with them. */}
+            <div className="home-gallery__social-stack">
+              {[
+                { name: 'Facebook', href: LINKS.facebook, icon: ART.socialFacebook, color: '#1877F2', label: 'Follow us on Facebook' },
+                { name: 'LinkedIn', href: LINKS.linkedin, icon: ART.socialLinkedin, color: '#0A66C2', label: 'Connect with us on LinkedIn' },
+                { name: 'YouTube', href: LINKS.youtube, icon: ART.socialYoutube, color: '#FF0000', label: 'Watch our videos on YouTube' },
+              ].map((social) => (
+                <a
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="home-gallery__social home-focus-dark"
+                >
+                  <span className="home-gallery__social-icon" style={{ backgroundColor: social.color }}>
+                    <Image src={social.icon} alt="" />
+                  </span>
+                  <span className="home-gallery__social-label">{social.label}</span>
+                  <ArrowUpRight aria-hidden="true" size={16} className="home-gallery__social-arrow" />
+                </a>
+              ))}
+            </div>
           </div>
         </section>
 
