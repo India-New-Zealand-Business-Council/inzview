@@ -799,11 +799,10 @@ function EventsBody() {
  * ("inventing a member number is exactly the claim this site must not make," per that
  * snippet's own comment).
  *
- * Photos: three real INZBC event photos, none used elsewhere on the site (checked against
- * HomePage.tsx and FtaPage.tsx before picking) — an Indian High Commission symposium, the BNZ
- * India Business Forum (also the page's hero, via pages.ts), and a QualityNZ investment-decade
- * event. Real council headshots (public/council/) stand in for "who's already in the
- * directory" instead of a stock illustration.
+ * Photo: one real INZBC event photo (an Indian High Commission symposium), not used anywhere
+ * else on the site — cut down from a five-photo collage on Sunil's instruction (15 Oct 2026).
+ * Real council headshots (public/council/) stand in for "who's already in the directory"
+ * instead of a stock illustration.
  */
 function MembershipBody() {
   const reasons = [
@@ -830,22 +829,20 @@ function MembershipBody() {
       <section className="bg-white px-6 py-24">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
           <Reveal>
-            {/* Three photos, not one — a big square plus two half-square (2:1) photos
-                stacked beside it, so the section reads as a small gallery of the network in
-                action rather than a single illustrative image. */}
-            <div className="grid grid-cols-2 grid-rows-2 gap-3">
-              <Image src="/blog/indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties.jpg" alt="Indian High Commission symposium on trade and diplomatic ties, with New Zealand and Indian officials" width={1600} height={1066} loading="lazy" className="row-span-2 aspect-square w-full rounded-2xl object-cover" />
-              <Image src="/blog/collaboration-and-cooperation-key-to-india-and-nz-s-future-international-education-success.jpg" alt="An INZBC roundtable discussion between New Zealand and Indian delegates" width={1600} height={1066} loading="lazy" className="aspect-[2/1] w-full rounded-2xl object-cover" />
-              <Image src="/blog/indian-envoy-calls-for-stronger-business-ties-mutual-presence.jpg" alt="A speaker addressing delegates at an INZBC summit" width={640} height={559} loading="lazy" className="aspect-[2/1] w-full rounded-2xl object-cover" />
-            </div>
-            <div className="mt-3 grid grid-cols-2 gap-3">
-              {/* The outgoing High Commissioner this slot used to show (Sanjiv Kohli) has
-                  since been succeeded; swapped for current 2026 delegation photography from
-                  Sunil's 7 Oct 2026 photo set rather than leave a photo of a departed official
-                  in a "the network in action" gallery. */}
-              <Image src="/events/nz-india-business-delegation-delhi-2026.jpg" alt="New Zealand business delegation in Delhi, 2026" width={1280} height={853} loading="lazy" className="aspect-[4/3] w-full rounded-2xl object-cover" />
-              <Image src="/blog/veteran-business-leader-bhav-dhillon-appointed-inzbc-patron.jpg" alt="Bhav Dhillon speaking on an INZBC panel" width={906} height={680} loading="lazy" className="aspect-[4/3] w-full rounded-2xl object-cover" />
-            </div>
+            {/* Down to one photo (15 Oct 2026, on Sunil's instruction) from a five-photo
+                collage — this one specifically because it's a real group photo (six people,
+                standing) and, checked across every other page on this site, the only one of
+                the five that wasn't already reused somewhere else. The other four are still
+                real, sourced images; they just moved off this page rather than being deleted,
+                so check git history before re-adding any of them elsewhere. */}
+            <Image
+              src="/blog/indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties.jpg"
+              alt="Indian High Commission symposium on trade and diplomatic ties, with New Zealand and Indian officials"
+              width={1600}
+              height={1066}
+              loading="lazy"
+              className="aspect-[4/3] w-full rounded-2xl object-cover shadow-sm"
+            />
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
