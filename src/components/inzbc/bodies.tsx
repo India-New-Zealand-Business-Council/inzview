@@ -2126,6 +2126,60 @@ function FtaBriefingsBody() {
 
 /* --- Trade resources ------------------------------------------------------------------ */
 
+/** Thumbnails are each source's own real preview image where one exists (checked via each
+    page's og:image meta tag, 15 Oct 2026) — only MFAT's FTA page actually has one (their own
+    India flag photo, downloaded to public/blog/mfat-india-flag.jpg). MFAT Tariff Finder
+    (a web app, not a content page), the three NZTE articles (behind myNZTE's member login,
+    title "myNZTE" on a logged-out fetch) and Beehive (no og/twitter meta at all) have none,
+    so those use a real INZBC event photo closest in subject to what the link is about
+    instead of a fake screenshot, except Tariff Finder, which gets a plain icon card rather
+    than force an unrelated photo onto a tariff lookup tool. */
+type TradeResourceLink = Readonly<{ source: string; title: string; href: string; image?: string }>;
+
+const TRADE_RESOURCE_LINKS: readonly TradeResourceLink[] = [
+  {
+    source: 'MFAT',
+    title: 'New Zealand–India FTA information',
+    href: LINKS.mfatFta,
+    image: '/blog/mfat-india-flag.jpg',
+  },
+  {
+    source: 'NZTE',
+    title: 'What the NZ–India FTA means for exporters',
+    href: 'https://my.nzte.govt.nz/article/20260220-what-the-nz-india-fta-means-for-exporters',
+    image: '/events/nz-india-business-delegation-delhi-2026.jpg',
+  },
+  {
+    source: 'NZTE',
+    title: 'India Market Guide',
+    href: 'https://my.nzte.govt.nz/article/20260203-india-market-guide',
+    image: '/events/lotus-temple-new-delhi.jpg',
+  },
+  {
+    source: 'NZTE',
+    title: 'Illuminate India programme',
+    href: 'https://my.nzte.govt.nz/article/20260812-illuminate-india-programme',
+    image: '/events/ficci-mou-signing-pm-luxon-mission-2026.jpg',
+  },
+  {
+    source: 'Government announcement',
+    title: 'New Zealand and India ratify Free Trade Agreement',
+    href: 'https://www.beehive.govt.nz/release/new-zealand-and-india-ratify-free-trade-agreement',
+    image: '/events/group-photo-fta-parliament-21-sep-2026.jpeg',
+  },
+  {
+    source: 'High Commission of India, Wellington',
+    title: 'India Trade Portal',
+    href: 'https://www.hciwellington.gov.in/page/trade-services/',
+    image: '/events/ihc-todd-mcclay.jpeg',
+  },
+  {
+    source: 'MFAT',
+    title: 'Tariff Finder',
+    href: 'https://www.tariff-finder.govt.nz/',
+  },
+] as const;
+
 function TradeResourcesBody() {
   // Real trade missions INZBC itself has run recently, not a generic "missions happen" line.
   // Filtered from the same INZBC_EVENTS archive the Events page uses, not a separate list to
@@ -2194,7 +2248,7 @@ function TradeResourcesBody() {
       </section>
 
       <section className="bg-mist px-6 py-24" aria-labelledby="import-title">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
           <Reveal>
             <h2 id="import-title" className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
               Import from India
@@ -2220,52 +2274,57 @@ function TradeResourcesBody() {
               </TextLink>
             </p>
           </Reveal>
+          <Reveal delay={0.08}>
+            <Image
+              src="/blog/indian-high-commission-holds-a-symposium-to-promote-trade-and-diplomatic-ties.jpg"
+              alt="Indian High Commission symposium on trade and diplomatic ties, with New Zealand and Indian officials"
+              loading="lazy"
+              className="aspect-[4/3] w-full rounded-2xl object-cover shadow-sm"
+            />
+          </Reveal>
         </div>
       </section>
 
       <section className="bg-white px-6 py-24" aria-labelledby="resources-title">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-6xl">
           <Reveal>
             <h2 id="resources-title" className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
               Useful FTA resources
             </h2>
-            <p className="mt-4 text-foreground">
+            <p className="mt-4 max-w-2xl text-foreground">
               Official guidance on the agreement itself, tariff lookups and NZTE&rsquo;s own
               India programmes &mdash; the same set INZBC points members to.
             </p>
-            <ul className="mt-6 space-y-3 text-foreground">
-              <li>
-                <TextLink href={LINKS.mfatFta} external>
-                  MFAT: New Zealand&ndash;India FTA information
-                </TextLink>
-              </li>
-              <li>
-                <TextLink href="https://www.tariff-finder.govt.nz/" external>
-                  MFAT Tariff Finder
-                </TextLink>
-              </li>
-              <li>
-                <TextLink href="https://my.nzte.govt.nz/article/20260220-what-the-nz-india-fta-means-for-exporters" external>
-                  NZTE: What the NZ&ndash;India FTA means for exporters
-                </TextLink>
-              </li>
-              <li>
-                <TextLink href="https://my.nzte.govt.nz/article/20260203-india-market-guide" external>
-                  NZTE India Market Guide
-                </TextLink>
-              </li>
-              <li>
-                <TextLink href="https://my.nzte.govt.nz/article/20260812-illuminate-india-programme" external>
-                  NZTE Illuminate India programme
-                </TextLink>
-              </li>
-              <li>
-                <TextLink href="https://www.beehive.govt.nz/release/new-zealand-and-india-ratify-free-trade-agreement" external>
-                  Government announcement: New Zealand and India ratify Free Trade Agreement
-                </TextLink>
-              </li>
-            </ul>
           </Reveal>
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {TRADE_RESOURCE_LINKS.map((resource, i) => (
+              <Reveal key={resource.href} delay={i * 0.05}>
+                <a
+                  href={resource.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`group flex h-full flex-col overflow-hidden rounded-2xl bg-mist shadow-sm transition-transform hover:-translate-y-1 ${FOCUS}`}
+                >
+                  {'image' in resource ? (
+                    <Image src={resource.image} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover" />
+                  ) : (
+                    <span className="flex aspect-[16/9] w-full items-center justify-center bg-navy">
+                      <ArrowUpRight aria-hidden="true" size={28} className="text-lime" />
+                    </span>
+                  )}
+                  <span className="flex flex-1 flex-col gap-1 p-5">
+                    <span className="text-xs font-medium uppercase tracking-wide text-plum">{resource.source}</span>
+                    <span className="font-heading text-base text-ink">{resource.title}</span>
+                    <span className="mt-auto flex items-center gap-1 pt-3 text-sm font-medium text-plum">
+                      Visit
+                      <ArrowUpRight aria-hidden="true" size={14} className="transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </span>
+                </a>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
