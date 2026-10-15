@@ -87,6 +87,58 @@ const TIMELINE: readonly Milestone[] = [
   },
 ] as const;
 
+/** Thumbnails are each source's own real preview image where one exists (checked via each
+    page's og:image meta tag, 15 Oct 2026) — MFAT's three pages all have one of their own;
+    the three NZTE articles sit behind myNZTE's member login (no public preview), so those
+    use a real INZBC event photo matched to subject instead, same approach as the matching
+    card grid on /trade-resources. Tariff Finder (a web app, not a content page) gets a plain
+    icon card rather than force an unrelated photo onto it. */
+type FtaResourceLink = Readonly<{ source: string; title: string; href: string; image?: string }>;
+
+const FTA_RESOURCE_LINKS: readonly FtaResourceLink[] = [
+  {
+    source: 'MFAT',
+    title: 'New Zealand–India FTA information',
+    href: LINKS.mfatFta,
+    image: '/blog/mfat-india-flag.jpg',
+  },
+  {
+    source: 'MFAT',
+    title: 'Full text of the agreement',
+    href: LINKS.mfatFtaText,
+    image: '/blog/mfat-nz-india-flags.jpg',
+  },
+  {
+    source: 'MFAT',
+    title: 'Key Outcomes summary',
+    href: LINKS.mfatKeyOutcomes,
+    image: '/blog/mfat-key-outcomes.jpg',
+  },
+  {
+    source: 'NZTE',
+    title: 'What the NZ–India FTA means for exporters',
+    href: 'https://my.nzte.govt.nz/article/20260220-what-the-nz-india-fta-means-for-exporters',
+    image: '/events/nz-india-business-delegation-delhi-2026.jpg',
+  },
+  {
+    source: 'NZTE',
+    title: 'India Market Guide',
+    href: 'https://my.nzte.govt.nz/article/20260203-india-market-guide',
+    image: '/events/lotus-temple-new-delhi.jpg',
+  },
+  {
+    source: 'NZTE',
+    title: 'Illuminate India programme',
+    href: 'https://my.nzte.govt.nz/article/20260812-illuminate-india-programme',
+    image: '/events/ficci-mou-signing-pm-luxon-mission-2026.jpg',
+  },
+  {
+    source: 'MFAT',
+    title: 'Tariff Finder',
+    href: 'https://www.tariff-finder.govt.nz/',
+  },
+] as const;
+
 /**
  * Sector breakdown cards. Each image is one of INZBC's own sector briefing graphics
  * (Sunil's 11 Oct 2026 Drive upload, public/sectors/) — INZBC is the primary source, so
@@ -638,7 +690,7 @@ export default function FtaPage() {
         ) : null}
 
         <section className="bg-mist px-6 py-24" aria-labelledby="fta-resources-title">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-6xl">
             <Reveal>
               <h2
                 id="fta-resources-title"
@@ -646,38 +698,40 @@ export default function FtaPage() {
               >
                 Useful FTA resources
               </h2>
-              <p className="mt-4 text-foreground">
+              <p className="mt-4 max-w-2xl text-foreground">
                 Official guidance on the agreement itself, tariff lookups and NZTE&rsquo;s own
                 India programmes — the same set INZBC points members to.
               </p>
-              <ul className="mt-6 space-y-3 text-foreground">
-                <li>
-                  <TextLink href={LINKS.mfatFta}>MFAT: New Zealand&ndash;India FTA information</TextLink>
-                </li>
-                <li>
-                  <TextLink href={LINKS.mfatFtaText}>Full text of the agreement</TextLink>
-                </li>
-                <li>
-                  <TextLink href={LINKS.mfatKeyOutcomes}>MFAT&rsquo;s Key Outcomes summary</TextLink>
-                </li>
-                <li>
-                  <TextLink href="https://www.tariff-finder.govt.nz/">MFAT Tariff Finder</TextLink>
-                </li>
-                <li>
-                  <TextLink href="https://my.nzte.govt.nz/article/20260220-what-the-nz-india-fta-means-for-exporters">
-                    NZTE: What the NZ&ndash;India FTA means for exporters
-                  </TextLink>
-                </li>
-                <li>
-                  <TextLink href="https://my.nzte.govt.nz/article/20260203-india-market-guide">NZTE India Market Guide</TextLink>
-                </li>
-                <li>
-                  <TextLink href="https://my.nzte.govt.nz/article/20260812-illuminate-india-programme">
-                    NZTE Illuminate India programme
-                  </TextLink>
-                </li>
-              </ul>
             </Reveal>
+
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {FTA_RESOURCE_LINKS.map((resource, i) => (
+                <Reveal key={resource.href} delay={i * 0.05}>
+                  <a
+                    href={resource.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-transform hover:-translate-y-1 ${FOCUS}`}
+                  >
+                    {'image' in resource ? (
+                      <Image src={resource.image} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover" />
+                    ) : (
+                      <span className="flex aspect-[16/9] w-full items-center justify-center bg-ink">
+                        <ArrowUpRight aria-hidden="true" size={28} className="text-lime" />
+                      </span>
+                    )}
+                    <span className="flex flex-1 flex-col gap-1 p-5">
+                      <span className="text-xs font-medium uppercase tracking-wide text-plum">{resource.source}</span>
+                      <span className="font-heading text-base text-ink">{resource.title}</span>
+                      <span className="mt-auto flex items-center gap-1 pt-3 text-sm font-medium text-plum">
+                        Visit
+                        <ArrowUpRight aria-hidden="true" size={14} className="transition-transform group-hover:translate-x-0.5" />
+                      </span>
+                    </span>
+                  </a>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </section>
       </main>
