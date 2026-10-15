@@ -199,8 +199,10 @@ function GalleryCarousel({ photos }: { photos: readonly { src: string; alt: stri
   const scrollToIndex = (index: number) => {
     const strip = stripRef.current;
     if (!strip) return;
-    const slide = strip.children[index] as HTMLElement | undefined;
-    slide?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    // Scroll the strip itself only — scrollIntoView() also walks up to the page's own
+    // scroll container and was yanking the whole page down to this section on every
+    // auto-advance tick while someone was mid-scroll past it.
+    strip.scrollTo({ left: index * strip.clientWidth, behavior: 'smooth' });
   };
 
   const currentIndex = () => {
