@@ -47,7 +47,11 @@ export const NEWS_POSTS: readonly NewsPost[] = [
     title: 'Registrations are Open: New Zealand–India Business, Sport and Innovation Summit',
     date: '10 October 2026 (approximate — see note in news.ts)',
     sortKey: '2026-10-10',
-    cover: 'registrations-are-open-new-zealand-india-business-sport-and-innovation-summit.webp',
+    // Replaced the old sliver crop (980x326, cropping both the title block and most of the
+    // Taj Mahal) with the real complete banner Sunil supplied via Drive ("Main page" folder,
+    // NZINDIA26_Hero_SQ.jpg) on 17 Oct 2026 — pillarboxed to this card's 16:10 box so nothing
+    // in the 1:1 original gets cropped.
+    cover: 'registrations-are-open-new-zealand-india-business-sport-and-innovation-summit.jpg',
     alt: 'Promotional banner for the New Zealand–India Business, Sport and Innovation Summit',
     excerpt: "You're invited to the New Zealand–India Business, Sport and Innovation Summit, taking place in Tāmaki Makaurau, Auckland, on 12 and 13 November 2026.",
     body: [
@@ -126,6 +130,10 @@ export const NEWS_POSTS: readonly NewsPost[] = [
     title: 'India New Zealand: From Agreement to Business',
     date: '23 September 2026',
     sortKey: '2026-09-23',
+    // The source graphic (600x170) is wider than every card box that shows it (16:10 or
+    // 16:9), so object-fit: cover was cropping both edges — the flower logo on the left,
+    // "FREE TRADE AGREEMENT" on the right. Letterboxed to 16:10 in the file itself (17 Oct
+    // 2026) with the banner's own dark corner colour as the fill, so cover is a no-op now.
     cover: 'india-new-zealand-from-agreement-to-business.png',
     alt: 'INZBC graphic marking the FTA entering into force on 20 October',
     excerpt: 'The New Zealand India Free Trade Agreement will enter into force on 20 October 2026. This moves the relationship from negotiation to implementation.',

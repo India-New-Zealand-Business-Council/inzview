@@ -1564,14 +1564,6 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-
-            <p className="home-advertise-note">
-              Kia Ora India carries advertising.{' '}
-              <a href={`${LINKS.email}?subject=Advertising%20enquiry`} className="home-focus-dark">
-                Enquire about advertising
-              </a>
-              .
-            </p>
           </div>
         </section>
 

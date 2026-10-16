@@ -41,6 +41,7 @@ function MemberTrigger({
           alt={`${member.name}, ${member.title}`}
           loading="lazy"
           className="aspect-square w-full grayscale object-cover"
+          style={member.photoPosition ? { objectPosition: member.photoPosition } : undefined}
         />
       ) : null}
       <div className="p-6">
@@ -82,6 +83,7 @@ function MemberDialog({
             aria-hidden="true"
             loading="lazy"
             className="aspect-square w-full grayscale object-cover sm:aspect-[16/10]"
+            style={member.photoPosition ? { objectPosition: member.photoPosition } : undefined}
           />
         ) : null}
         <button

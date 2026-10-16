@@ -1867,19 +1867,6 @@
   max-width: 17ch;
 }
 
-.home-advertise-note {
-  margin: 2.25rem 0 0;
-  color: rgba(58, 55, 66, 0.74);
-  font-size: 0.76rem;
-}
-
-.home-advertise-note a {
-  border-radius: 0.25rem;
-  color: var(--home-plum);
-  font-weight: 600;
-  text-underline-offset: 0.2em;
-}
-
 /* Latest news */
 
 /* Directly follows home-intelligence (Publications) — same "two full home-section paddings

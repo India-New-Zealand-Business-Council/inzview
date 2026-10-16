@@ -44,6 +44,11 @@ export type CouncilMember = Readonly<{
   title: string;
   bio: string;
   photo?: string;
+  /** CSS object-position for `photo`. Only needed when the source isn't close to square —
+      Alyesha's is a tall portrait headshot (800x969), and the grid's aspect-square crop plus
+      the dialog's much wider aspect-[16/10] crop both default to a centred crop, which was
+      cutting her head off in both places. Defaults to center when unset. */
+  photoPosition?: string;
   linkedin?: string;
 }>;
 
@@ -185,6 +190,7 @@ export const COUNCIL: readonly CouncilGroup[] = [
         name: 'Alyesha Bagasra',
         title: 'Ex-Officio (MFAT)',
         photo: '/council/alyesha-bagasra.jpg',
+        photoPosition: '50% 8%',
         bio: 'Ex-officio representative to INZBC from the Ministry of Foreign Affairs and Trade (MFAT).',
       },
     ],

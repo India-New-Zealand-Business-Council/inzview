@@ -122,10 +122,6 @@ export type PartnerMark = {
 };
 
 export const BUSINESS_PARTNERS: readonly PartnerMark[] = [
-  // bnz.png had an opaque white background baked in, mismatched against this grid's tinted
-  // card (same issue as assocham.png/fieo.png above) — keyed the white out to transparent
-  // 14 Oct 2026, logo mark itself (navy/orange, no white in the art) untouched.
-  { name: 'Bank of New Zealand', href: 'https://www.bnz.co.nz/', logo: '/partners/bnz.png', relationship: 'Strategic partner' },
   // hci-wellington.png: replaced the red version with the blue one Sunil supplied via
   // Drive (14 Oct 2026) — the High Commission rebranded this logo's colour.
   { name: 'High Commission of India, Wellington', href: 'https://www.hciwellington.gov.in/', logo: '/partners/hci-wellington.png', relationship: 'Strategic partner' },
@@ -163,6 +159,10 @@ export const INDIA_NETWORK: readonly PartnerMark[] = [
 export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null; logo?: string }[] = [
   { name: 'MFAT', href: 'https://www.mfat.govt.nz/', logo: '/partners/mfat.svg' },
   { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/', logo: '/partners/nzte.png' },
+  // Moved down from Business network's Strategic Partner tier into this smaller-logo tier
+  // on Sunil's instruction (17 Oct 2026). bnz.png had an opaque white background baked in,
+  // keyed out to transparent 14 Oct 2026 — logo mark itself (navy/orange) untouched.
+  { name: 'Bank of New Zealand', href: 'https://www.bnz.co.nz/', logo: '/partners/bnz.png' },
   { name: 'Business Canterbury', href: 'https://www.businesscanterbury.co.nz/', logo: '/partners/business-canterbury.webp' },
   // businessnz.png, ema.png, enz.svg, nzal.png and nziri.png (below) all downloaded
   // directly from each organisation's own live site on 14 Oct 2026, on Sunil's instruction
