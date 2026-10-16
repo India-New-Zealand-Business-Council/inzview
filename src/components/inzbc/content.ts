@@ -27,10 +27,10 @@ export const LINKS = {
   youtube: 'https://www.youtube.com/channel/UC9MQW-VliLqOdT4GUktKfZQ',
   linkedin: 'https://www.linkedin.com/company/inzbc/posts/?feedView=all',
   x: 'https://x.com/inzbc',
-  email: 'mailto:Secretariat@inzbc.org',
-  // Connect page only, per Sunil's instruction — every other mention of an INZBC email
-  // address on this site (Footer, Home) stays Secretariat@inzbc.org.
-  commsEmail: 'mailto:Comms@inzbc.org',
+  // Was Secretariat@inzbc.org everywhere except Connect (which used a separate commsEmail
+  // constant for Comms@inzbc.org, per Sunil's earlier instruction). Unified to Comms@inzbc.org
+  // site-wide on Sunil's instruction (17 Oct 2026) — one address, one constant.
+  email: 'mailto:Comms@inzbc.org',
 } as const;
 
 /*

@@ -94,7 +94,7 @@ export default function Footer() {
           </nav>
 
           <a href={LINKS.email} className={`inline-flex min-h-11 items-center rounded-sm hover:text-white ${FOCUS}`}>
-            Secretariat@inzbc.org
+            Comms@inzbc.org
           </a>
         </div>
       </div>

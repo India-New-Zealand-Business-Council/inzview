@@ -1745,7 +1745,7 @@ export default function HomePage() {
                   <p>
                     Sunil Kaushal<br />
                     <a href={LINKS.email} className="home-focus-light">
-                      Secretariat@inzbc.org
+                      Comms@inzbc.org
                     </a>
                   </p>
                 </div>

@@ -156,7 +156,7 @@ function ContactForm() {
   ]
     .filter(Boolean)
     .join('\n');
-  const mailto = `${LINKS.commsEmail}?subject=${encodeURIComponent(fields.subject || 'Message from inzbc.org')}&body=${encodeURIComponent(body)}`;
+  const mailto = `${LINKS.email}?subject=${encodeURIComponent(fields.subject || 'Message from inzbc.org')}&body=${encodeURIComponent(body)}`;
 
   const inputCls =
     'mt-1 w-full rounded-md border border-ink/15 bg-white px-3 py-2 text-sm text-ink placeholder:text-foreground/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
@@ -1072,7 +1072,7 @@ function ConnectBody() {
                 <div>
                   <p className="font-semibold text-ink">Email</p>
                   <p className="mt-1">
-                    <TextLink href={LINKS.commsEmail}>Comms@inzbc.org</TextLink>
+                    <TextLink href={LINKS.email}>Comms@inzbc.org</TextLink>
                   </p>
                 </div>
               </div>
@@ -1099,8 +1099,8 @@ function ConnectBody() {
                 page itself that's inconsistent, not a gap in what's been checked. PO Box
                 26061 here because that's the address already published consistently
                 everywhere else on this site (Home, Footer), not a fresh guess. The email
-                address, unlike the postal one, is deliberately Comms@inzbc.org on this page
-                only (Sunil's instruction) — Footer and Home still say Secretariat@inzbc.org. */}
+                address is Comms@inzbc.org site-wide (LINKS.email, unified 17 Oct 2026) —
+                this page used to be the only one saying Comms instead of Secretariat. */}
           </Reveal>
 
           <Reveal delay={0.1}>
@@ -1108,7 +1108,7 @@ function ConnectBody() {
               <h2 className="font-heading text-2xl text-ink">Send a message</h2>
               <ContactForm />
               <p className="mt-5 text-sm text-foreground">
-                Prefer email directly? <TextLink href={LINKS.commsEmail}>Email INZBC</TextLink>.
+                Prefer email directly? <TextLink href={LINKS.email}>Email INZBC</TextLink>.
               </p>
             </div>
           </Reveal>
@@ -1232,7 +1232,7 @@ function ConnectBody() {
               talk you through current options directly.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Btn href={`${LINKS.commsEmail}?subject=Sponsorship%20enquiry`}>
+              <Btn href={`${LINKS.email}?subject=Sponsorship%20enquiry`}>
                 Enquire about sponsorship
               </Btn>
             </div>
