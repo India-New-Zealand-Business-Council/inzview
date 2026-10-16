@@ -639,43 +639,6 @@ function useEffectsReel(rootRef: React.RefObject<HTMLDivElement>) {
   }, [rootRef]);
 }
 
-function HeroRoute() {
-  const shouldReduceMotion = useReducedMotion();
-  const route = 'M42 240C166 245 210 74 356 83C420 87 455 126 500 55';
-
-  return (
-    <svg
-      aria-hidden="true"
-      className="home-hero__route"
-      viewBox="0 0 540 300"
-      fill="none"
-      focusable="false"
-    >
-      <path className="home-hero__route-track" d={route} />
-      <motion.path
-        className="home-hero__route-active"
-        d={route}
-        initial={shouldReduceMotion ? false : { pathLength: 0, opacity: 0.45 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{
-          pathLength: { duration: 1.2, delay: 0.35, ease: [0.23, 1, 0.32, 1] },
-          opacity: { duration: 0.3, delay: 0.25, ease: [0.23, 1, 0.32, 1] },
-        }}
-      />
-      <circle className="home-hero__route-origin" cx="42" cy="240" r="5" />
-      <motion.circle
-        className="home-hero__route-destination"
-        cx="500"
-        cy="55"
-        r="5"
-        initial={shouldReduceMotion ? false : { opacity: 0, transform: 'scale(0.92)' }}
-        animate={{ opacity: 1, transform: 'scale(1)' }}
-        transition={{ duration: 0.45, delay: 1.25, ease: [0.23, 1, 0.32, 1] }}
-      />
-    </svg>
-  );
-}
-
 function EventsGallery() {
   const photoClasses = [
     'home-events__photo--main',
@@ -1139,13 +1102,6 @@ function Hero() {
               style={{ objectPosition: '44% center' }}
             />
             <div className="home-hero__image-shade" aria-hidden="true" />
-            <HeroRoute />
-            <div aria-hidden="true" className="home-hero__route-label home-hero__route-label--start">
-              New Zealand
-            </div>
-            <div aria-hidden="true" className="home-hero__route-label home-hero__route-label--end">
-              India
-            </div>
           </div>
           <div className="home-hero__caption">
             <span>Auckland / July 2026</span>

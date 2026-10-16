@@ -229,6 +229,9 @@ export const NEWS_POSTS: readonly NewsPost[] = [
     title: 'NZ Parliament Passes India FTA: Turning Agreement into Business Opportunity',
     date: '16 September 2026',
     sortKey: '2026-09-16',
+    // Same source graphic as the "From Agreement to Business" cover (600x170, wider than
+    // every card box that shows it) — letterboxed to 16:10 in the file itself, same fix,
+    // 17 Oct 2026.
     cover: 'nz-parliament-passes-india-fta-turning-agreement-into-business-opportunity.png',
     alt: 'INZBC graphic marking the New Zealand Parliament passing the India FTA legislation',
     excerpt: 'The NZ Parliament passed the legislation for the NZ–India FTA. INZBC welcomes this important milestone, but for New Zealand businesses the real work starts when the agreement enters into force.',
@@ -297,10 +300,12 @@ export const NEWS_POSTS: readonly NewsPost[] = [
     title: 'India New Zealand Business Council Welcomes Landmark NZ–India Free Trade Agreement',
     date: '22 December 2025',
     sortKey: '2025-12-22',
-    // inzbc.org doesn't carry a cover image for this post (checked 12 Oct 2026) - reusing the
-    // same existing site banner NewsBody already used for it, rather than inventing a photo.
-    cover: undefined,
-    alt: '',
+    // inzbc.org still doesn't carry a cover image for this post (checked again 17 Oct 2026).
+    // This announcement is specifically about the FTA Todd McClay and Piyush Goyal signed —
+    // using the real photo of that signing (same one used elsewhere for the 27 Apr 2026
+    // ceremony) rather than leaving the card blank.
+    cover: 'fta-signing-document-exchange-27-apr-2026.jpg',
+    alt: 'India’s Minister of Commerce and Industry Piyush Goyal and New Zealand’s Minister for Trade and Investment Todd McClay exchanging signed FTA documentation, 27 April 2026',
     excerpt: "The India New Zealand Business Council (INZBC) warmly welcomes the announcement of the New Zealand–India Free Trade Agreement (FTA), a milestone that marks a new era of partnership and opportunity for both nations.",
     body: [
       { type: 'p', text: 'FOR IMMEDIATE RELEASE' },
@@ -370,6 +375,11 @@ export const NEWS_POSTS: readonly NewsPost[] = [
     title: 'Breakfast Dialogue with NZ High Commissioners Patrick Rata & David Pine',
     date: '20 May 2025',
     sortKey: '2025-05-20',
+    // 1080x1350 portrait flyer, narrower than every card box that shows it — was scaling to
+    // full width and cropping the header/date off the top and the sponsor logos off the
+    // bottom, showing only the lower half of both headshots in between. Pillarboxed to 16:10
+    // in the file itself (17 Oct 2026); the flyer's own background is already white, so the
+    // padding is invisible rather than a visible bar.
     cover: 'breakfast-dialogue-with-nz-high-commissioners-patrick-rata-david-pine-6-june-7-30am.png',
     alt: 'Event flyer for the Breakfast Dialogue with NZ High Commissioners Patrick Rata and David Pine',
     excerpt: 'The India New Zealand Business Council, in association with the New Zealand Nepal Chamber of Commerce and the Sri Lanka Business Association in New Zealand, hosts an exclusive morning briefing with two of New Zealand’s senior diplomats in South Asia.',
