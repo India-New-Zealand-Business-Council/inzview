@@ -44,10 +44,11 @@ export type CouncilMember = Readonly<{
   title: string;
   bio: string;
   photo?: string;
-  /** CSS object-position for `photo`. Only needed when the source isn't close to square —
-      Alyesha's is a tall portrait headshot (800x969), and the grid's aspect-square crop plus
-      the dialog's much wider aspect-[16/10] crop both default to a centred crop, which was
-      cutting her head off in both places. Defaults to center when unset. */
+  /** CSS object-position for the grid thumbnail's `photo` crop (aspect-square). Only needed
+      when the source isn't close to square — Alyesha's is a tall portrait headshot
+      (800x969), and a centred crop was cutting her head off. The bio dialog doesn't crop at
+      all (object-contain, see Council.tsx), so this only affects the grid. Defaults to
+      center when unset. */
   photoPosition?: string;
   linkedin?: string;
 }>;

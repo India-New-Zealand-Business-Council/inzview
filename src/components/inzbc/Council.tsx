@@ -77,13 +77,16 @@ function MemberDialog({
     <Dialog open={isOpen} onClose={onClose} triggerEl={triggerEl} titleId={titleId} initialFocusRef={closeButtonRef}>
       <div className="relative">
         {member.photo ? (
+          // object-contain, not object-cover: the dialog is the "see the real photo" view,
+          // so it shows the whole image at whatever aspect it actually is instead of forcing
+          // it into a fixed box and cropping into people's heads - the grid thumbnail next
+          // door already does that crop, this is deliberately the uncropped one.
           <Image
             src={member.photo}
             alt=""
             aria-hidden="true"
             loading="lazy"
-            className="aspect-square w-full grayscale object-cover sm:aspect-[16/10]"
-            style={member.photoPosition ? { objectPosition: member.photoPosition } : undefined}
+            className="max-h-[65vh] w-full bg-mist object-contain grayscale"
           />
         ) : null}
         <button
