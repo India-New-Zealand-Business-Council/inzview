@@ -166,6 +166,9 @@ const GALLERY_PHOTOS = [
   {
     src: '/events/ihc-todd-mcclay.jpeg',
     alt: "New Zealand's Minister for Trade and Investment and India's High Commissioner exchanging ratifying documentation, with PM Christopher Luxon behind them",
+    // Near-square source (1065x1032) in a wide carousel box — bias top so cover doesn't
+    // crop into the three people's heads (same fix as the carousel photos above).
+    position: '50% 8%',
   },
   // Replaced the old Summit 2018 archive set (17 Oct 2026, Sunil's instruction) — real recent
   // event photography instead. `position` biases the one-at-a-time carousel's crop toward

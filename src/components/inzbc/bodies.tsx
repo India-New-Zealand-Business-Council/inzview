@@ -1220,6 +1220,7 @@ function ConnectBody() {
               alt="New Zealand's Minister for Trade and Investment and India's High Commissioner exchanging ratifying documentation for the NZ–India FTA, with PM Christopher Luxon behind them"
               loading="lazy"
               className="aspect-[4/3] w-full rounded-2xl object-cover shadow-sm"
+              style={{ objectPosition: '50% 8%' }}
             />
           </Reveal>
           <Reveal delay={0.08}>
@@ -2135,7 +2136,7 @@ function FtaBriefingsBody() {
     so those use a real INZBC event photo closest in subject to what the link is about
     instead of a fake screenshot, except Tariff Finder, which gets a plain icon card rather
     than force an unrelated photo onto a tariff lookup tool. */
-type TradeResourceLink = Readonly<{ source: string; title: string; href: string; image?: string }>;
+type TradeResourceLink = Readonly<{ source: string; title: string; href: string; image?: string; imagePosition?: string }>;
 
 const TRADE_RESOURCE_LINKS: readonly TradeResourceLink[] = [
   {
@@ -2173,6 +2174,8 @@ const TRADE_RESOURCE_LINKS: readonly TradeResourceLink[] = [
     title: 'India Trade Portal',
     href: 'https://www.hciwellington.gov.in/page/trade-services/',
     image: '/events/ihc-todd-mcclay.jpeg',
+    // Near-square source in a wide 16:9 card — bias top so cover doesn't crop into heads.
+    imagePosition: '50% 8%',
   },
   {
     source: 'MFAT',
@@ -2308,7 +2311,13 @@ function TradeResourcesBody() {
                   className={`group flex h-full flex-col overflow-hidden rounded-2xl bg-mist shadow-sm transition-transform hover:-translate-y-1 ${FOCUS}`}
                 >
                   {'image' in resource ? (
-                    <Image src={resource.image} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover" />
+                    <Image
+                      src={resource.image}
+                      alt=""
+                      loading="lazy"
+                      className="aspect-[16/9] w-full object-cover"
+                      style={resource.imagePosition ? { objectPosition: resource.imagePosition } : undefined}
+                    />
                   ) : (
                     <span className="flex aspect-[16/9] w-full items-center justify-center bg-navy">
                       <ArrowUpRight aria-hidden="true" size={28} className="text-lime" />
