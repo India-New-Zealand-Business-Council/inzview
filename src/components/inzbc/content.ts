@@ -219,9 +219,9 @@ export const SOCIALS = [
      - "Trade Shows" -> /trade-resources (old /trade-shows redirects here)
      - "Trade Bazaar" -> /india-market-opportunities (old /trade-bazaar redirects here)
      - "Membership Form" -> /membership (old /membership-form redirects here)
-     - "Our Patron" -> /about-inzbc: there's no standalone Patron page in this rebuild (the
-       one Patron photo that exists lives in a Membership-page gallery, not its own page),
-       and About INZBC is the closest real page rather than a dead link or an invented one.
+     - "Our Patron" -> /our-patron: a real dedicated page now (added 17 Oct 2026, copied from
+       the old site's own /our-patron on Sunil's instruction), not the /about-inzbc stand-in
+       this used to point at for lack of one.
    "Join INZBC" is the one external link in the set (Member Jungle, same as every other
    "Join INZBC" button on this site) — everything else routes within this site. */
 export const FOOTER_COLUMNS = [
@@ -231,7 +231,7 @@ export const FOOTER_COLUMNS = [
       { label: 'About INZBC', href: '/about-inzbc' },
       { label: 'Executive Council', href: '/executive-council' },
       { label: 'Our Sponsors', href: '/partners' },
-      { label: 'Our Patron', href: '/about-inzbc' },
+      { label: 'Our Patron', href: '/our-patron' },
     ],
   },
   {

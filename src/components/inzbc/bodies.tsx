@@ -2833,6 +2833,68 @@ function AboutBody() {
   );
 }
 
+/* --- Our Patron ------------------------------------------------------------------------ */
+
+/** Copied verbatim from inzbc.org/our-patron (checked live, 17 Oct 2026), on Sunil's
+    instruction — real text, real photo (the same headshot the old page uses), not a
+    rewrite. The hero already carries the photo (see pages.ts); this just adds the bio. */
+function PatronBody() {
+  return (
+    <section className="bg-white px-6 py-24">
+      <div className="mx-auto max-w-3xl">
+        <Reveal>
+          <p className="text-lg text-foreground">
+            INZBC is delighted to assert the presence of Bhav Dhillon as its Official Patron.
+          </p>
+          <p className="mt-6 text-foreground">
+            Renowned for his exceptional contributions to fostering India-New Zealand
+            relations, Dhillon has been a steadfast advocate for deeper trade, cultural, and
+            diplomatic ties between the two nations.
+          </p>
+          <p className="mt-6 text-foreground">
+            As the Managing Director of both Cemix and Dunlop Drymix, leading manufacturers
+            of construction products, bagged cement &amp; concrete in New Zealand, his
+            business acumen has played a pivotal role in shaping the industry.
+          </p>
+          <p className="mt-6 text-foreground">
+            Beyond his remarkable success in business, Dhillon has distinguished himself as
+            an influential community leader. As the former Honorary Consul of India in
+            Auckland, he played a crucial role in fortifying bilateral relations, serving as
+            a bridge between India and New Zealand.
+          </p>
+          <p className="mt-6 text-foreground">
+            Dhillon&rsquo;s leadership extends across multiple platforms. He chairs the
+            Indian Weekender, the Kiwi Indian Hall of Fame, and the &ldquo;There&rsquo;s a
+            Better Way&rdquo; Foundation, where his philanthropic efforts support at-risk
+            youth, demonstrating his unwavering commitment to giving back to society. His
+            former role as Chair of Foundation North, New Zealand&rsquo;s largest community
+            trust managing over $2 billion in funds, further attests to his ability to lead
+            with integrity and purpose.
+          </p>
+          <p className="mt-6 text-foreground">
+            Recognized for his contributions, Bhav Dhillon has been the recipient of numerous
+            prestigious awards, including the Pravasi Bharatiya Samman, India&rsquo;s highest
+            honor for overseas Indians, the Hind Rattan Award, Rotary International&rsquo;s
+            Indian Diaspora Award, and the NRI Honour from the Government of Punjab. These
+            accolades underscore his profound impact not only in New Zealand but also across
+            the Indian diaspora.
+          </p>
+          <p className="mt-6 text-foreground">
+            Through his tireless efforts in business, philanthropy, and community service,
+            Dhillon has earned his place as one of the most well-regarded and influential
+            figures within New Zealand&rsquo;s Kiwi-Indian community and beyond.
+          </p>
+          <p className="mt-6 text-foreground">
+            As the esteemed Patron of India NZ Business Council he will be a definite asset
+            in supporting our members and furthering the bilateral trade relationship
+            between India and New Zealand.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 /** The body for an inner route, keyed by its path in pages.ts. Deliberately no '/fta' entry:
     that path is routed straight to the dedicated FtaPage.tsx component instead (see
     Router.tsx, which filters '/fta' out of the PAGES-driven InnerPage loop for exactly this
@@ -2851,4 +2913,5 @@ export const BODIES: Record<string, React.ComponentType> = {
   '/events/past': EventsPastBody,
   '/executive-council': CouncilBody,
   '/about-inzbc': AboutBody,
+  '/our-patron': PatronBody,
 };

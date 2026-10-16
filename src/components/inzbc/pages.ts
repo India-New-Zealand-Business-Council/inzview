@@ -157,6 +157,18 @@ export const PAGES: PageDef[] = [
     heroImagePosition: '50% 30%',
     heroCta: { label: 'Join INZBC', href: LINKS.join },
   },
+  {
+    // Same URL as the old inzbc.org page this replaces (checked live, 17 Oct 2026) — the
+    // footer's "Our Patron" link used to point at /about-inzbc for lack of a real page here;
+    // this is that real page, copied from the old site on Sunil's instruction.
+    path: '/our-patron',
+    title: "Our Patron",
+    lede: "Bhav Dhillon, Official Patron of the India New Zealand Business Council.",
+    heroImage: '/council/bhav-dhillon.jpg',
+    heroImageAlt: 'Bhav Dhillon, Official Patron of the India New Zealand Business Council',
+    heroImagePosition: '50% 15%',
+    heroCompact: true,
+  },
 ];
 
 export type NavItem = { label: string; href: string; children?: { label: string; href: string }[] };
