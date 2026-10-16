@@ -647,16 +647,13 @@ export default function FtaPage() {
         {nextEvent ? (
           <section className="bg-white px-6 py-24" aria-labelledby="fta-explainer-title">
             <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-ink">
-              {/* This cover is a wide banner (~3:1, text and a logo mark spread across its
-                  full width) rather than a photo with a forgiving centre crop. The previous
-                  side-by-side half-width layout used object-cover on that banner inside a
-                  roughly square box, cropping both the left-hand text and the right-hand
-                  logo mark down to a sliver of the Sky Tower/Taj Mahal silhouette in the
-                  middle — which read as a stray, half-cropped graphic rather than the real
-                  banner. Stacked full-width with a matching aspect ratio shows the whole
-                  banner with no horizontal cropping. */}
+              {/* The cover file itself is 16:10 (1728x1080) — the real complete Summit
+                  banner, pillarboxed to that ratio on 17 Oct 2026 so nothing in it gets
+                  cropped (see news.ts). This box has to match that same ratio: it was still
+                  aspect-[3/1] from when the cover was a different, wider-cropped sliver, and
+                  that mismatch was cropping the new file's top and bottom off instead. */}
               {nextEvent.cover ? (
-                <Image src={`/blog/${nextEvent.cover}`} alt={`Cover for ${nextEvent.title}`} loading="lazy" className="aspect-[3/1] w-full object-cover" />
+                <Image src={`/blog/${nextEvent.cover}`} alt={`Cover for ${nextEvent.title}`} loading="lazy" className="aspect-[8/5] w-full object-cover" />
               ) : null}
               <Reveal delay={0.08} className="p-8 text-white md:p-12">
                 <p className="text-sm font-medium text-lime">Next INZBC event</p>
