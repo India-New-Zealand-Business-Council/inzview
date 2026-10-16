@@ -1173,7 +1173,10 @@ function ConnectBody() {
           see that file's own comment for the full reasoning and what the fallback state is
           if either script fails to load. */}
       <section className="bg-mist px-6 py-20">
-        <div className="mx-auto max-w-3xl">
+        {/* max-w-3xl was leaving a lot of dead white space either side of these two cards,
+            on a page whose other sections (the icon row right above this) run to max-w-5xl —
+            matching that width instead of a narrower one of its own. */}
+        <div className="mx-auto max-w-5xl">
           <SocialFeeds />
         </div>
       </section>
