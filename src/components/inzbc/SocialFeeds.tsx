@@ -52,7 +52,9 @@ function loadScriptOnce(src: string, id: string, onReady: () => void, onError: (
 
 function FeedFallback({ platform, href }: { platform: string; href: string }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-3 p-10 text-center">
+    // min-h matches FacebookPage's data-height (760) so the two cards sit level in the
+    // sm:grid-cols-2 row instead of this one looking stubby next to a tall live feed.
+    <div className="flex min-h-[760px] flex-col items-center justify-center gap-3 p-10 text-center">
       <p className="text-sm text-foreground/70">
         {platform}&rsquo;s feed didn&rsquo;t load here.
       </p>
@@ -116,7 +118,7 @@ function FacebookPage() {
   if (state === 'error') return <FeedFallback platform="Facebook" href={LINKS.facebook} />;
 
   return (
-    <div className={state === 'loading' ? 'flex min-h-[500px] items-center justify-center' : undefined}>
+    <div className={state === 'loading' ? 'flex min-h-[760px] items-center justify-center' : undefined}>
       {state === 'loading' ? (
         <p role="status" className="text-sm text-foreground/60">
           Loading the latest posts&hellip;
@@ -127,7 +129,12 @@ function FacebookPage() {
         data-href={LINKS.facebook}
         data-tabs="timeline"
         data-width="500"
-        data-height="500"
+        // Was 500 — fine for the narrower max-w-3xl card this plugin was built for, but once
+        // the card widened to match the rest of the page (17 Oct 2026), the wider layout
+        // pushed the actual posts below this fixed height, leaving only the cover/header
+        // visible. The plugin fills whatever height you give it with posts, it doesn't
+        // scroll to fit — so the fix is more height, not less width.
+        data-height="760"
         data-small-header="false"
         data-adapt-container-width="true"
         data-hide-cover="false"
