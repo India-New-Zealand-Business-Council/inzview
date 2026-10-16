@@ -1661,17 +1661,27 @@ export default function HomePage() {
               data-reel="scale"
             >
               <span>Strategic networks</span>
-              <div>
-                {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo }) =>
-                  href ? (
+              {/* Grid, not a flex-wrap pill row — with this many differently-shaped logos
+                  (square icons next to wide wordmarks), letting each pill's width follow its
+                  own logo read as disordered. A fixed-size cell per entry doesn't. */}
+              <div className="home-partners__stakeholders-grid">
+                {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo }) => {
+                  const content = (
+                    <>
+                      <span className="home-partners__stakeholder-art">
+                        {logo ? <Image src={logo} alt="" loading="lazy" /> : <strong>{name}</strong>}
+                      </span>
+                      {logo ? <span className="home-partners__stakeholder-name">{name}</span> : null}
+                    </>
+                  );
+                  return href ? (
                     <a key={name} href={href} target="_blank" rel="noopener noreferrer" className="home-focus-dark">
-                      {logo ? <Image src={logo} alt="" loading="lazy" /> : null}
-                      {name}
+                      {content}
                     </a>
                   ) : (
-                    <span key={name}>{name}</span>
-                  ),
-                )}
+                    <span key={name}>{content}</span>
+                  );
+                })}
               </div>
             </section>
             <div className="home-partners__action">

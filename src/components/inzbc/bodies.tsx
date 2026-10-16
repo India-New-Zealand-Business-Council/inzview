@@ -1885,8 +1885,7 @@ function PartnersBody() {
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Who INZBC works with</h2>
             <p className="mt-4 max-w-2xl text-foreground">
               Strategic partners, associate partners, and government and industry stakeholders
-              across both markets &mdash; each one linked, matching the same real logos and
-              URLs Home uses, not a flattened image.
+              across both markets.
             </p>
           </Reveal>
 
@@ -1951,27 +1950,36 @@ function PartnersBody() {
           <Reveal delay={0.2}>
             <div className="mt-10 border-t border-ink/10 pt-8">
               <p className="text-xs font-medium uppercase tracking-wide text-foreground/60">Strategic networks</p>
-              <ul className="mt-3 flex flex-wrap gap-2 text-sm text-foreground">
-                {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo }) => (
-                  <li key={name}>
-                    {href ? (
-                      <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`inline-flex min-h-11 items-center gap-1.5 rounded-full border border-ink/10 px-3.5 text-xs font-medium transition-colors hover:border-ink/25 ${FOCUS}`}
-                      >
-                        {logo ? <Image src={logo} alt="" loading="lazy" className="h-10 w-auto" /> : null}
-                        {name}
-                      </a>
-                    ) : (
-                      <span className="inline-flex min-h-11 items-center rounded-full border border-ink/10 px-3.5 text-xs font-medium text-foreground/70">
-                        {name}
+              {/* Same uniform card grid as the two sections above, not the old flex-wrap
+                  pill row — that let each chip's width follow its logo's own aspect ratio,
+                  which with this many very different logo shapes (square icons next to wide
+                  wordmarks) read as disordered rather than as one consistent list. */}
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo }) => {
+                  const content = (
+                    <>
+                      <span className="flex h-12 items-center justify-center">
+                        {logo ? (
+                          <Image src={logo} alt={`${name} logo`} loading="lazy" className="max-h-12 max-w-full object-contain" />
+                        ) : (
+                          <strong className="text-sm text-ink">{name}</strong>
+                        )}
                       </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
+                      {logo ? <span className="text-center text-xs text-foreground/70">{name}</span> : null}
+                    </>
+                  );
+                  const className = `group flex flex-col items-center justify-center gap-2 rounded-xl border border-ink/10 p-4 text-center transition-colors hover:border-ink/25 hover:bg-mist ${FOCUS}`;
+                  return href ? (
+                    <a key={name} href={href} target="_blank" rel="noopener noreferrer" className={className}>
+                      {content}
+                    </a>
+                  ) : (
+                    <span key={name} className={className}>
+                      {content}
+                    </span>
+                  );
+                })}
+              </div>
               {/* ThinkNew New Zealand appears on inzbc.org's own partner graphic with no
                   verifiable official site under that name — named above without a link
                   rather than guessed. Everything else here is a real, checked URL. */}

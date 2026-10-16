@@ -1440,8 +1440,7 @@
   margin-top: 2rem;
 }
 
-/* Same pill-link treatment as .home-partners__stakeholders a — reused rather than
-   reinvented, and it already carries the 44px tap target this project holds to. */
+/* Pill-link treatment, carrying the 44px tap target this project holds to. */
 .home-events__actions--secondary {
   margin-top: 0.9rem;
 }
@@ -2145,34 +2144,59 @@
   padding-block: 1.25rem;
 }
 
-.home-partners__stakeholders > div {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 0.5rem;
+.home-partners__stakeholders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 0.6rem;
 }
 
-.home-partners__stakeholders a,
-.home-partners__stakeholders span {
-  display: inline-flex;
-  min-height: 44px;
+.home-partners__stakeholders-grid > a,
+.home-partners__stakeholders-grid > span {
+  display: flex;
+  min-height: 72px;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
   border: 1px solid rgba(26, 11, 63, 0.1);
-  border-radius: 999px;
-  color: rgba(58, 55, 66, 0.78);
-  font-size: 0.7rem;
-  font-weight: 500;
-  padding: 0.55rem 0.9rem;
+  border-radius: 0.85rem;
+  padding: 0.6rem;
   text-decoration: none;
   transition:
     border-color 180ms var(--home-ease-out),
-    color 180ms var(--home-ease-out);
+    background-color 180ms var(--home-ease-out);
 }
 
-.home-partners__stakeholders img {
-  height: 44px;
+.home-partners__stakeholder-art {
+  display: flex;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-partners__stakeholder-art img {
+  display: block;
+  height: 100%;
   width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.home-partners__stakeholder-art strong {
+  color: var(--home-plum);
+  font-family: 'INZBC Editorial', Georgia, serif;
+  font-size: 0.78rem;
+  font-style: italic;
+  font-weight: 600;
+  text-align: center;
+}
+
+.home-partners__stakeholder-name {
+  color: rgba(58, 55, 66, 0.78);
+  font-size: 0.64rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
 }
 
 .home-partners__action {
@@ -2809,9 +2833,9 @@
     background: #c7f694;
   }
 
-  .home-partners__stakeholders a:hover {
+  .home-partners__stakeholders-grid > a:hover {
     border-color: rgba(97, 20, 95, 0.3);
-    color: var(--home-plum);
+    background: var(--home-mist);
   }
 }
 
@@ -3011,10 +3035,6 @@
 
   .home-partners__stakeholders {
     grid-template-columns: 1fr;
-  }
-
-  .home-partners__stakeholders > div {
-    justify-content: flex-start;
   }
 
   .home-footer__bottom {
@@ -3375,8 +3395,8 @@
     grid-template-columns: 1fr;
   }
 
-  .home-partners__stakeholders a {
-    width: 100%;
+  .home-partners__stakeholders-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .home-contact-form__head {

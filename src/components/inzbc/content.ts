@@ -122,9 +122,13 @@ export type PartnerMark = {
 };
 
 export const BUSINESS_PARTNERS: readonly PartnerMark[] = [
-  // hci-wellington.png: replaced the red version with the blue one Sunil supplied via
-  // Drive (14 Oct 2026) — the High Commission rebranded this logo's colour.
-  { name: 'High Commission of India, Wellington', href: 'https://www.hciwellington.gov.in/', logo: '/partners/hci-wellington.png', relationship: 'Strategic partner' },
+  // bnz.png had an opaque white background baked in, mismatched against this grid's tinted
+  // card (same issue as assocham.png/fieo.png below) — keyed the white out to transparent
+  // 14 Oct 2026, logo mark itself (navy/orange, no white in the art) untouched. Briefly
+  // moved into the small-logo Strategic networks tier on 17 Oct 2026 over a misreading of
+  // "the Bharat NZ blue logo" as this one — "Bharat" is Hindi for India, so that instruction
+  // actually meant the High Commission of India logo below, not this one. Moved back here.
+  { name: 'Bank of New Zealand', href: 'https://www.bnz.co.nz/', logo: '/partners/bnz.png', relationship: 'Strategic partner' },
   // University of Auckland and Duco Consultancy removed on Sunil's instruction (11 Oct 2026) —
   // he's sourcing High Commission of India logos to fill these two Strategic Partner slots.
   { name: 'Zespri', href: 'https://www.zespri.com/en-NZ', logo: '/partners/zespri.png', relationship: 'Strategic partner' },
@@ -156,40 +160,45 @@ export const INDIA_NETWORK: readonly PartnerMark[] = [
   { name: 'HSIIDC', href: 'https://hsiidc.org.in/', relationship: 'India industry network' },
 ] as const;
 
+// Alphabetised (17 Oct 2026, on Sunil's instruction) — this tier had grown by insertion
+// order across several sessions and looked disordered as a result; a fixed, obvious order
+// is the point here, not any particular grouping logic.
 export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null; logo?: string }[] = [
-  { name: 'MFAT', href: 'https://www.mfat.govt.nz/', logo: '/partners/mfat.svg' },
-  { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/', logo: '/partners/nzte.png' },
-  // Moved down from Business network's Strategic Partner tier into this smaller-logo tier
-  // on Sunil's instruction (17 Oct 2026). bnz.png had an opaque white background baked in,
-  // keyed out to transparent 14 Oct 2026 — logo mark itself (navy/orange) untouched.
-  { name: 'Bank of New Zealand', href: 'https://www.bnz.co.nz/', logo: '/partners/bnz.png' },
+  { name: 'ASEAN New Zealand Business Council', href: 'https://asean.org.nz/', logo: '/partners/asean-nz.png' },
+  // Added from Sunil's 11 Oct 2026 Drive upload ("Our Strategic network" folder).
+  { name: 'Asia New Zealand Foundation Te Whītau Tūhono', href: 'https://www.asianz.org.nz/', logo: '/partners/asia-nz-foundation.png' },
   { name: 'Business Canterbury', href: 'https://www.businesscanterbury.co.nz/', logo: '/partners/business-canterbury.webp' },
-  // businessnz.png, ema.png, enz.svg, nzal.png and nziri.png (below) all downloaded
+  // businessnz.png, ema.png, education-nz.png, nzal.png and nziri.png (below) all downloaded
   // directly from each organisation's own live site on 14 Oct 2026, on Sunil's instruction
   // not to leave any of these without a logo. The Drive-supplied ENZ/EMA files kept coming
   // back corrupted through this session's Drive download path (see git history) — fetching
   // straight from enz.govt.nz / ema.co.nz instead sidestepped that entirely.
   { name: 'BusinessNZ', href: 'https://businessnz.org.nz/', logo: '/partners/businessnz.png' },
+  { name: 'BNZBA', href: 'https://www.bnzba.co.nz/', logo: '/partners/bnzba.png' },
+  // education-nz.png: enz.svg (their site's only logo asset) is a broken Adobe Illustrator
+  // export (a non-standard <switch>/i:pgf fallback block with no real fallback content) that
+  // renders blank under every tool tried, still true after ENZ's mid-2025 rebrand to "New
+  // Zealand Education" — checked again 17 Oct 2026. This is their real FernMark wordmark
+  // instead, a plain JPEG linked from ENZ's own 2025 rebrand announcement (not the broken
+  // svg, not a redrawn logo), white background keyed to transparent the same way as the
+  // other JPEG-sourced logos on this page.
+  { name: 'Education New Zealand', href: 'https://enz.govt.nz/', logo: '/partners/education-nz.png' },
+  { name: 'Employers and Manufacturers Association (EMA)', href: 'https://www.ema.co.nz/', logo: '/partners/ema.png' },
   { name: 'ExportNZ', href: 'https://exportnz.org.nz/', logo: '/partners/export-nz.png' },
-  { name: 'ASEAN New Zealand Business Council', href: 'https://asean.org.nz/', logo: '/partners/asean-nz.png' },
+  // hci-wellington.png: replaced the red version with the blue one Sunil supplied via Drive
+  // (14 Oct 2026) — the High Commission rebranded this logo's colour. Moved into this tier
+  // 17 Oct 2026 — "the Bharat NZ blue logo" meant this one ("Bharat" is Hindi for India),
+  // not Bank of New Zealand (see BUSINESS_PARTNERS above).
+  { name: 'High Commission of India, Wellington', href: 'https://www.hciwellington.gov.in/', logo: '/partners/hci-wellington.png' },
+  { name: 'MFAT', href: 'https://www.mfat.govt.nz/', logo: '/partners/mfat.svg' },
+  { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/', logo: '/partners/nzte.png' },
   // NZAL's own main logo (nzasianleaders.org) is white-on-transparent, made for a dark
   // background — invisible on this site's light chips. Used their apple-touch-icon mark
   // instead (coloured, square), rather than either an invisible logo or no logo at all.
   { name: 'NZ Asian Leaders', href: 'https://nzasianleaders.org/', logo: '/partners/nzal.png' },
-  { name: 'BNZBA', href: 'https://www.bnzba.co.nz/', logo: '/partners/bnzba.png' },
   { name: 'NZ India Research Institute', href: 'https://www.wgtn.ac.nz/nziri', logo: '/partners/nziri.png' },
   // "ThinkNew New Zealand" removed on Sunil's instruction (14 Oct 2026) — see the removal
   // note this replaced in git history if it needs restoring.
-  // Added from Sunil's 11 Oct 2026 Drive upload ("Our Strategic network" folder).
-  { name: 'Asia New Zealand Foundation Te Whītau Tūhono', href: 'https://www.asianz.org.nz/', logo: '/partners/asia-nz-foundation.png' },
-  // enz.svg (their only logo asset) removed 15 Oct 2026 — same issue as NZAL's main logo
-  // above, but worse: it's not just white-on-transparent, the file is a broken Adobe
-  // Illustrator export (wrapped in a non-standard <switch>/i:pgf fallback block) that
-  // rendered as a blank image under every renderer tried, not just on a light background.
-  // No other logo asset exists anywhere on enz.govt.nz. Text-only rather than ship a blank
-  // image a second time.
-  { name: 'Education New Zealand', href: 'https://enz.govt.nz/' },
-  { name: 'Employers and Manufacturers Association (EMA)', href: 'https://www.ema.co.nz/', logo: '/partners/ema.png' },
 ] as const;
 
 // color is each glyph's real brand colour, for the solid circle every caller renders behind
