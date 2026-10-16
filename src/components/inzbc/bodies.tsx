@@ -2837,12 +2837,33 @@ function AboutBody() {
 
 /** Copied verbatim from inzbc.org/our-patron (checked live, 17 Oct 2026), on Sunil's
     instruction — real text, real photo (the same headshot the old page uses), not a
-    rewrite. The hero already carries the photo (see pages.ts); this just adds the bio. */
+    rewrite. His photo runs as a sticky side portrait next to the bio, not as the page's
+    hero banner (Sunil's instruction, 17 Oct 2026) — the plain hero from pages.ts just
+    carries the title above this section. */
 function PatronBody() {
   return (
-    <section className="bg-white px-6 py-24">
-      <div className="mx-auto max-w-3xl">
+    <section className="bg-white px-6 py-20 md:py-28">
+      <div className="mx-auto grid max-w-5xl gap-12 lg:grid-cols-[22rem_minmax(0,1fr)] lg:gap-16">
         <Reveal>
+          <div className="lg:sticky lg:top-28">
+            <div className="overflow-hidden rounded-[2rem] shadow-xl shadow-ink/10">
+              <Image
+                src="/council/bhav-dhillon.jpg"
+                alt="Bhav Dhillon, Official Patron of the India New Zealand Business Council"
+                loading="lazy"
+                className="aspect-square w-full object-cover"
+              />
+            </div>
+            <div className="mt-6 border-l-2 border-lime pl-4">
+              <p className="font-heading text-xl text-ink">Bhav Dhillon</p>
+              <p className="mt-1 text-sm font-medium text-plum">
+                Official Patron, India New Zealand Business Council
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.08}>
           <p className="text-lg text-foreground">
             INZBC is delighted to assert the presence of Bhav Dhillon as its Official Patron.
           </p>
