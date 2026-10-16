@@ -2567,13 +2567,14 @@ function EventsPastBody() {
   const inzbcGroups = groupEventsByYear(pastInzbcEvents);
   const expoGroups = groupEventsByYear(EXPO_EVENTS.filter((e) => e.sortKey < todayKey));
 
-  // INZBC's own event photography, from their Flickr account. Summit 2018 is what that
-  // archive holds; the caption says so rather than implying these are recent.
+  // Replaced the old Summit 2018 archive set with real recent INZBC event photography on
+  // Sunil's instruction (17 Oct 2026, Drive "Gallery" folder) — the 2018 set is still on
+  // Facebook/Flickr (linked below) but isn't the lead gallery here any more.
   const summit2018Photos = [
-    { src: '/events/summit-group.jpg', alt: 'Delegates and speakers at the INZBC Summit 2018 in Auckland' },
-    { src: '/events/summit-delegates.jpg', alt: 'Delegates at the INZBC Summit 2018 venue' },
-    { src: '/events/summit-speakers.jpg', alt: 'Speakers at the INZBC Summit 2018' },
-    { src: '/events/summit-conversation.jpg', alt: 'Attendees in conversation at the INZBC Summit 2018' },
+    { src: '/events/fta-signing-document-exchange-27-apr-2026.jpg', alt: 'India’s Minister of Commerce and Industry Piyush Goyal and New Zealand’s Minister for Trade and Investment Todd McClay exchanging signed FTA documentation, 27 April 2026' },
+    { src: '/events/fta-signing-gift-exchange-27-apr-2026.jpg', alt: 'Ministers Piyush Goyal and Todd McClay exchanging gifts after the NZ–India FTA signing, 27 April 2026' },
+    { src: '/events/inzbc-from-agreement-to-business-podium-23-sep-2026.jpeg', alt: "A speaker at INZBC's 'From Agreement to Business' event, Auckland, 23 September 2026" },
+    { src: '/events/inzbc-from-agreement-to-business-panel-23-sep-2026.jpeg', alt: "A panel session at INZBC's 'From Agreement to Business' event, Auckland, 23 September 2026" },
   ];
 
   return (
@@ -2611,10 +2612,10 @@ function EventsPastBody() {
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-              Summit 2018, Auckland
+              INZBC in the room
             </h2>
             <p className="mt-4 max-w-2xl text-foreground">
-              Photographs from INZBC&rsquo;s own archive. More are on Facebook and Flickr.
+              Photographs from INZBC&rsquo;s own events. More, including the 2018 Summit archive, are on Facebook and Flickr.
             </p>
           </Reveal>
           <div className="mt-10 grid gap-6 sm:grid-cols-2">

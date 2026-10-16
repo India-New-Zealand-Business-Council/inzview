@@ -167,21 +167,29 @@ const GALLERY_PHOTOS = [
     src: '/events/ihc-todd-mcclay.jpeg',
     alt: "New Zealand's Minister for Trade and Investment and India's High Commissioner exchanging ratifying documentation, with PM Christopher Luxon behind them",
   },
+  // Replaced the old Summit 2018 archive set (17 Oct 2026, Sunil's instruction) — real recent
+  // event photography instead. `position` biases the one-at-a-time carousel's crop toward
+  // these people's heads rather than the room's object-fit: cover default centre crop, which
+  // was cutting heads off when the carousel's box is wider than the photo.
   {
-    src: '/events/summit-group.jpg',
-    alt: 'Delegates and speakers at the INZBC Summit 2018 in Auckland',
+    src: '/events/fta-signing-document-exchange-27-apr-2026.jpg',
+    alt: 'India’s Minister of Commerce and Industry Piyush Goyal and New Zealand’s Minister for Trade and Investment Todd McClay exchanging signed FTA documentation, 27 April 2026',
+    position: '50% 15%',
   },
   {
-    src: '/events/summit-delegates.jpg',
-    alt: 'Delegates at the INZBC Summit 2018 venue',
+    src: '/events/fta-signing-gift-exchange-27-apr-2026.jpg',
+    alt: 'Ministers Piyush Goyal and Todd McClay exchanging gifts after the NZ–India FTA signing, 27 April 2026',
+    position: '50% 15%',
   },
   {
-    src: '/events/summit-speakers.jpg',
-    alt: 'Speakers at the INZBC Summit 2018',
+    src: '/events/inzbc-from-agreement-to-business-podium-23-sep-2026.jpeg',
+    alt: "A speaker at INZBC's 'From Agreement to Business' event, Auckland, 23 September 2026",
+    position: '50% 20%',
   },
   {
-    src: '/events/summit-conversation.jpg',
-    alt: 'Attendees in conversation at the INZBC Summit 2018',
+    src: '/events/inzbc-from-agreement-to-business-panel-23-sep-2026.jpeg',
+    alt: "A panel session at INZBC's 'From Agreement to Business' event, Auckland, 23 September 2026",
+    position: '50% 20%',
   },
   {
     src: '/events/modi-luxon-bilateral-meeting-2026.jpg',
@@ -192,7 +200,11 @@ const GALLERY_PHOTOS = [
 /** One photo at a time, same height as the social-link column beside it. Auto-advances,
     but a manual scroll/swipe or the arrow buttons pause the auto-advance for a bit so it
     doesn't fight the person using it. */
-function GalleryCarousel({ photos }: { photos: readonly { src: string; alt: string }[] }) {
+function GalleryCarousel({
+  photos,
+}: {
+  photos: readonly { src: string; alt: string; position?: string }[];
+}) {
   const stripRef = useRef<HTMLDivElement>(null);
   const resumeRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -242,7 +254,12 @@ function GalleryCarousel({ photos }: { photos: readonly { src: string; alt: stri
       >
         {photos.map((photo) => (
           <div className="home-gallery__photo" role="listitem" key={photo.src}>
-            <Image src={photo.src} alt={photo.alt} loading="lazy" />
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              loading="lazy"
+              style={photo.position ? { objectPosition: photo.position } : undefined}
+            />
           </div>
         ))}
       </div>

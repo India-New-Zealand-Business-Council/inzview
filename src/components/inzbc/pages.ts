@@ -130,12 +130,13 @@ export const PAGES: PageDef[] = [
     path: '/events/past',
     title: "Past events",
     lede: "Reports, recordings and summaries from previous INZBC events.",
-    // INZBC Summit 2018 — the same archive photo set this page's own gallery section uses
-    // further down, so the hero now matches what the page actually shows.
-    heroImage: '/events/summit-group.jpg',
-    heroImageAlt: 'Delegates and speakers at the INZBC Summit 2018 in Auckland',
-    heroImagePosition: '50% 30%',
-    heroCompact: true,
+    // Same photo this page's own gallery section leads with further down (replaced the old
+    // Summit 2018 archive shot, 17 Oct 2026). High-res source, so no heroCompact workaround
+    // needed this time — object-position biased toward the top so the full-width crop keeps
+    // both ministers' heads in frame rather than cutting them off.
+    heroImage: '/events/fta-signing-document-exchange-27-apr-2026.jpg',
+    heroImageAlt: 'India’s Minister of Commerce and Industry Piyush Goyal and New Zealand’s Minister for Trade and Investment Todd McClay exchanging signed FTA documentation, 27 April 2026',
+    heroImagePosition: '50% 20%',
   },
   {
     path: '/executive-council',
