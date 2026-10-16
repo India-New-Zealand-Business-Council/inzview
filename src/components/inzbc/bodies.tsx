@@ -250,7 +250,9 @@ export const INZBC_EVENTS: readonly EventItem[] = [
     // upcoming, unlike the seven 2020 webinars that page still lists as "upcoming" (those are
     // stale leftovers, see the comment above this array; they're not migrated here).
     sourceSlug: 'registrations-are-open-new-zealand-india-business-sport-and-innovation-summit',
-    cover: 'registrations-are-open-new-zealand-india-business-sport-and-innovation-summit.webp',
+    // Reframed 17 Oct 2026 (was a 980x326 sliver crop, now the real complete banner,
+    // pillarboxed to 16:10) — the file moved from .webp to .jpg, see news.ts for the story.
+    cover: 'registrations-are-open-new-zealand-india-business-sport-and-innovation-summit.jpg',
     title: 'New Zealand–India Business, Sport and Innovation Summit',
     date: '12–13 November 2026',
     venue: 'Auckland University of Technology (12 Nov) and the New Zealand International Convention Centre (13 Nov), Tāmaki Makaurau, Auckland',
