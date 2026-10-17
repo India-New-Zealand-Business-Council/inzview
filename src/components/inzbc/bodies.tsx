@@ -2797,8 +2797,8 @@ function AboutBody() {
               Chapters across both countries
             </h2>
             <p className="mt-6 text-foreground">
-              INZBC operates through chapters in Auckland, Wellington, Christchurch, Mumbai and
-              Delhi, each led by a chapter head on the executive team &mdash; putting the
+              INZBC operates through chapters in Auckland, Wellington, Christchurch, Mumbai,
+              Delhi and Chennai, each led by a chapter head on the executive team &mdash; putting the
               council, and its members, in the room in both countries, not just one.
             </p>
             <p className="mt-6">
