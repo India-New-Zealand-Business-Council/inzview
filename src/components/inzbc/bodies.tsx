@@ -821,7 +821,7 @@ function MembershipBody() {
     ],
     [
       'Networks',
-      'Business development, delegations and introductions across the NZ–India corridor, through chapters in Auckland, Wellington, Christchurch, Mumbai and Delhi. Membership puts you in the same room as exporters, importers, investors and government agencies already active in the market.',
+      'Business development, delegations and introductions across the NZ–India corridor, through chapters in Auckland, Wellington, Christchurch, Mumbai, Delhi and Chennai. Membership puts you in the same room as exporters, importers, investors and government agencies already active in the market.',
     ],
     [
       'Events',
@@ -991,7 +991,7 @@ function MembershipBody() {
               </div>
             </dl>
             <p className="mt-4 text-sm text-white/50">
-              Chapters in Auckland, Wellington, Christchurch, Mumbai and Delhi.
+              Chapters in Auckland, Wellington, Christchurch, Mumbai, Delhi and Chennai.
             </p>
           </Reveal>
         </div>
