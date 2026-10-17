@@ -14,8 +14,8 @@
  *   - Kanwaljit Singh Bakshi, Michael Henstock, Selwyn Thomas and Sreedhar Venkatram moved out
  *     of Executive Team into two new groups: Chapter Heads (Michael, Selwyn, Sreedhar) and Ex
  *     Officio (Kanwaljit, plus two MFAT representatives named for the first time here).
- *   - Rachael McGuckian and Alyesha Bagasra are new additions, named by Sunil as MFAT's two
- *     ex-officio representatives. Neither has a bio on file — their entries carry only the
+ *   - Rachael McGuckian and Alysha Bagasra are new additions, named by Sunil as ex-officio
+ *     representatives (Alysha from MFAT; Rachael from NZTA, corrected 17 Oct 2026). Neither has a bio on file — their entries carry only the
  *     role Sunil stated, not an invented biography. Photos supplied by Sunil 16 Oct 2026.
  *
  * Three single-word spelling fixes were made to copied text in the 12 Oct pass (all other
@@ -30,7 +30,7 @@
  * Kanwaljit Singh Bakshi and Selwyn Thomas — were missing because the account's Wix Media
  * Manager (checked 12 Oct 2026) doesn't hold them; their real photos were on the live
  * inzbc.org page itself all along and were downloaded directly from there on 13 Oct 2026,
- * same source as the other ten. Rachael McGuckian's and Alyesha Bagasra's photos are colour,
+ * same source as the other ten. Rachael McGuckian's and Alysha Bagasra's photos are colour,
  * supplied by Sunil 16 Oct 2026 — Council.tsx's grayscale filter still applies to them too.
  *
  * Colour: every one of the original 14 photos is already a black-and-white source file by
@@ -45,7 +45,7 @@ export type CouncilMember = Readonly<{
   bio: string;
   photo?: string;
   /** CSS object-position for the grid thumbnail's `photo` crop (aspect-square). Only needed
-      when the source isn't close to square — Alyesha's is a tall portrait headshot
+      when the source isn't close to square — Alysha's is a tall portrait headshot
       (800x969), and a centred crop was cutting her head off. The bio dialog doesn't crop at
       all (object-contain, see Council.tsx), so this only affects the grid. Defaults to
       center when unset. */
@@ -179,16 +179,19 @@ export const COUNCIL: readonly CouncilGroup[] = [
         linkedin: 'https://www.linkedin.com/in/kanwaljit-singh-bakshi-08873120/',
         bio: 'Kanwaljit has worked as a Member of Parliament in New Zealand for twelve years. During this time, he have had the opportunity to work with various communities, governmental sectors, and the public sector, as well as people from diverse backgrounds across the country. His lifelong goal has been to help people by identifying their concerns, addressing their issues, and contributing to building a better and more productive society. He wants to continue to contribute and is committed to continuing his efforts towards this end. As an immigrant who moved to New Zealand, he started a business from scratch and took it to a successful level, which has equipped me with a multitude of skills. His experience in business administration and organization, as well as my background as a Member of Parliament will be invaluable to the Business Council.',
       },
-      // Photos supplied by Sunil 16 Oct 2026. "Ayesha" was a guess at the spelling — her own
-      // supplied file is named "Alyesha Bagasra.jpg", so that's the spelling used here.
+      // Photos supplied by Sunil 16 Oct 2026. Spelling corrected to "Alysha" by Sunil 17 Oct
+      // 2026 — the supplied photo's filename ("Alyesha Bagasra.jpg") was misspelt, so the
+      // image path keeps that spelling.
+      // Rachael's organisation changed from MFAT to NZTA by Sunil 17 Oct 2026. Bio uses the
+      // acronym only, as given, rather than guessing its expansion.
       {
         name: 'Rachael McGuckian',
-        title: 'Ex-Officio (MFAT)',
+        title: 'Ex-Officio (NZTA)',
         photo: '/council/rachael-mcguckian.jpg',
-        bio: 'Ex-officio representative to INZBC from the Ministry of Foreign Affairs and Trade (MFAT).',
+        bio: 'Ex-officio representative to INZBC from NZTA.',
       },
       {
-        name: 'Alyesha Bagasra',
+        name: 'Alysha Bagasra',
         title: 'Ex-Officio (MFAT)',
         photo: '/council/alyesha-bagasra.jpg',
         photoPosition: '50% 8%',
