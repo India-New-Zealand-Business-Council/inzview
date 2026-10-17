@@ -15,7 +15,7 @@
  *     of Executive Team into two new groups: Chapter Heads (Michael, Selwyn, Sreedhar) and Ex
  *     Officio (Kanwaljit, plus two MFAT representatives named for the first time here).
  *   - Rachael McGuckian and Alysha Bagasra are new additions, named by Sunil as ex-officio
- *     representatives (Alysha from MFAT; Rachael from NZTA, corrected 17 Oct 2026). Neither has a bio on file — their entries carry only the
+ *     representatives (Alysha from MFAT; Rachael from NZTE, corrected 17 Oct 2026). Neither has a bio on file — their entries carry only the
  *     role Sunil stated, not an invented biography. Photos supplied by Sunil 16 Oct 2026.
  *
  * Three single-word spelling fixes were made to copied text in the 12 Oct pass (all other
@@ -182,13 +182,12 @@ export const COUNCIL: readonly CouncilGroup[] = [
       // Photos supplied by Sunil 16 Oct 2026. Spelling corrected to "Alysha" by Sunil 17 Oct
       // 2026 — the supplied photo's filename ("Alyesha Bagasra.jpg") was misspelt, so the
       // image path keeps that spelling.
-      // Rachael's organisation changed from MFAT to NZTA by Sunil 17 Oct 2026. Bio uses the
-      // acronym only, as given, rather than guessing its expansion.
+      // Rachael's organisation changed from MFAT to NZTE by Sunil 17 Oct 2026.
       {
         name: 'Rachael McGuckian',
-        title: 'Ex-Officio (NZTA)',
+        title: 'Ex-Officio (NZTE)',
         photo: '/council/rachael-mcguckian.jpg',
-        bio: 'Ex-officio representative to INZBC from NZTA.',
+        bio: 'Ex-officio representative to INZBC from New Zealand Trade and Enterprise (NZTE).',
       },
       {
         name: 'Alysha Bagasra',
