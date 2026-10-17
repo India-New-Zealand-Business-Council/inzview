@@ -187,6 +187,7 @@ export const COUNCIL: readonly CouncilGroup[] = [
         name: 'Rachael McGuckian',
         title: 'Ex-Officio (NZTE)',
         photo: '/council/rachael-mcguckian.jpg',
+        linkedin: 'https://www.linkedin.com/in/rachaelmcguckian/',
         bio: 'Ex-officio representative to INZBC from New Zealand Trade and Enterprise (NZTE).',
       },
       {
@@ -194,6 +195,7 @@ export const COUNCIL: readonly CouncilGroup[] = [
         title: 'Ex-Officio (MFAT)',
         photo: '/council/alyesha-bagasra.jpg',
         photoPosition: '50% 8%',
+        linkedin: 'https://www.linkedin.com/in/alyshab092/',
         bio: 'Ex-officio representative to INZBC from the Ministry of Foreign Affairs and Trade (MFAT).',
       },
     ],
