@@ -1,6 +1,7 @@
 /**
  * The 12 most recent posts from inzbc.org/news (newest first), copied verbatim from each
- * post's own page on 12 October 2026. This is the one file to edit when Sunil wants an
+ * post's own page on 12 October 2026, plus any media release Sunil supplies directly (each
+ * noted on its own entry). This is the one file to edit when Sunil wants an
  * article's wording changed - NewsBody (bodies.tsx) and the Home "Latest news" section both
  * render from this data and never need to change for a text edit.
  *
@@ -38,10 +39,45 @@ export type NewsPost = {
   alt: string;
   excerpt: string;
   body: NewsBlock[];
-  sourceUrl: string;
+  /** The post's page on inzbc.org. Unset for posts that were never published there. */
+  sourceUrl?: string;
 };
 
 export const NEWS_POSTS: readonly NewsPost[] = [
+  {
+    // Media release supplied by Sunil via Drive ("Latest News" folder, "NZ India FTA Goes Live
+    // 20 October 25.docx") on 17 Oct 2026, copied verbatim. The document's own header line,
+    // "EMBARGOED UNTIL 12:01 AM NZDT, TUESDAY 20 OCTOBER 2026", is left off the page; Sunil
+    // chose to publish ahead of it. Not on inzbc.org, so no sourceUrl. Cover is the signing
+    // photo supplied alongside it ("Copy of FTA Signing (13).jpg"), byte-identical to the
+    // file already in public/blog/.
+    slug: 'nz-india-fta-enters-into-force-opening-new-opportunities-for-business',
+    title: 'NZ India FTA Enters Into Force, Opening New Opportunities for Business',
+    date: '20 October 2026',
+    sortKey: '2026-10-20',
+    cover: 'fta-signing-document-exchange-27-apr-2026.jpg',
+    alt: 'India’s Minister of Commerce and Industry Piyush Goyal and New Zealand’s Minister for Trade and Investment Todd McClay holding the signed FTA documents',
+    excerpt: 'The New Zealand-India Free Trade Agreement enters into force today, marking a new phase in the economic relationship between the two countries.',
+    body: [
+      { type: 'p', text: 'MEDIA RELEASE' },
+      { type: 'p', text: 'The New Zealand-India Free Trade Agreement enters into force today, marking a new phase in the economic relationship between the two countries. The agreement improves market access across a wide range of sectors and gives greater certainty for businesses looking to trade, invest and build long-term commercial partnerships in India.' },
+      { type: 'p', text: 'India New Zealand Business Council (INZBC) Chair Bharat Chawla said the agreement is an important milestone and kicks off the next phase of the relationship.' },
+      { type: 'p', text: '"The agreement improves the conditions for businesses to operate but the real value will come from the commercial partnerships, investment and trade that grow from here," says Mr Chawla.' },
+      { type: 'p', text: "From today, 57 percent of New Zealand's current exports to India become tariff free, rising to 82 percent as the agreement is implemented. Tariffs will also be reduced on a further 13 percent of current exports." },
+      { type: 'p', text: 'Two-way trade between New Zealand and India was worth NZ$3.95 billion in the year ended December 2025 and last year Prime Minister Christopher Luxon and Prime Minister Narendra Modi set an aspirational goal of growing trade to NZ$7 billion by 2030.' },
+      { type: 'p', text: 'INZBC Chief Executive Sunil Kaushal said the agreement creates new opportunities across sectors but success will depend on businesses taking advantage of them.' },
+      { type: 'p', text: '"Market access is important but long-term success in India comes from understanding the market, building trusted relationships and committing for the long term.' },
+      { type: 'p', text: "\"India is one of the world's fastest-growing major economies. New Zealand businesses have strengths in areas such as food and beverage, technology, education, advanced manufacturing and professional services that are highly valued in that market.\"" },
+      { type: 'p', text: 'The agreement delivers immediate benefits, with more than 95 percent of forestry exports tariff free into India from day one, alongside sheep meat, wool and coal. The agreement also includes commitments aimed at improving customs processes and reducing barriers to trade.' },
+      { type: 'p', text: "Mr Kaushal said INZBC's focus now shifts from supporting the case for an agreement to helping businesses turn the opportunities it creates into commercial outcomes." },
+      { type: 'p', text: '"We have spent many years building momentum in the relationship. The agreement gives businesses access and the next stage is about implementation.' },
+      { type: 'p', text: '"INZBC is committed to helping businesses understand the opportunities available, make the right connections and build the relationships that underpin successful trade between New Zealand and India."' },
+      { type: 'p', text: 'ENDS' },
+      { type: 'h', text: 'About INZBC' },
+      { type: 'p', text: 'The India New Zealand Business Council has worked since 1988 to strengthen trade, investment and economic cooperation between India and New Zealand. INZBC is an independent, member-based organisation that supports businesses, exporters, importers and investors across the bilateral relationship.' },
+      { type: 'p', text: 'Media contact: Sunil Kaushal, Chief Executive, INZBC, 021 280 4189, [sunil@inzbc.org](mailto:sunil@inzbc.org)' },
+    ],
+  },
   {
     slug: 'registrations-are-open-new-zealand-india-business-sport-and-innovation-summit',
     title: 'Registrations are Open: New Zealand–India Business, Sport and Innovation Summit',
