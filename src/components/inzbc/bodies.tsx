@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   ArrowUpRight,
   Facebook as FacebookIcon,
+  Instagram as InstagramIcon,
   Linkedin as LinkedinIcon,
   Mail,
   MapPin,
@@ -1137,14 +1138,17 @@ function ConnectBody() {
               Follow INZBC
             </h2>
           </Reveal>
-          <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4">
+          {/* Flex-wrap, not a fixed column grid, since Instagram (17 Oct 2026) made it five: a
+              4-col grid would leave the fifth alone on its own row, left-aligned. */}
+          <div className="mt-12 flex flex-wrap justify-center gap-8">
             {[
               { name: 'X', Icon: TwitterIcon, href: LINKS.x, label: 'Follow us on X', from: '#3d2a66', to: '#160933' },
               { name: 'LinkedIn', Icon: LinkedinIcon, href: LINKS.linkedin, label: 'Connect with us on LinkedIn', from: '#8a3d87', to: '#61145f' },
               { name: 'YouTube', Icon: YoutubeIcon, href: LINKS.youtube, label: 'Watch our videos on YouTube', from: '#2f6b62', to: '#1b4640' },
               { name: 'Facebook', Icon: FacebookIcon, href: LINKS.facebook, label: 'Find us on Facebook', from: '#402d66', to: '#1a0b3f' },
+              { name: 'Instagram', Icon: InstagramIcon, href: LINKS.instagram, label: 'Follow us on Instagram', from: '#8a3d87', to: '#1a0b3f' },
             ].map((social, i) => (
-              <Reveal key={social.name} delay={i * 0.06}>
+              <Reveal key={social.name} delay={i * 0.06} className="w-36">
                 <a
                   href={social.href}
                   target="_blank"
