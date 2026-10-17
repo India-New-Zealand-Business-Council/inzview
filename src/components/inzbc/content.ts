@@ -27,6 +27,8 @@ export const LINKS = {
   youtube: 'https://www.youtube.com/channel/UC9MQW-VliLqOdT4GUktKfZQ',
   linkedin: 'https://www.linkedin.com/company/inzbc/posts/?feedView=all',
   x: 'https://x.com/inzbc',
+  // Supplied by Sunil 17 Oct 2026.
+  instagram: 'https://www.instagram.com/indianewzealand/',
   // Was Secretariat@inzbc.org everywhere except Connect (which used a separate commsEmail
   // constant for Comms@inzbc.org, per Sunil's earlier instruction). Unified to Comms@inzbc.org
   // site-wide on Sunil's instruction (17 Oct 2026) — one address, one constant.
@@ -83,6 +85,8 @@ export const ART = {
   socialLinkedin: '/art/social-linkedin.svg',
   socialYoutube: '/art/social-youtube.svg',
   socialX: '/art/social-x.svg',
+  // Added 17 Oct 2026, same Simple Icons source and white fill as the four above.
+  socialInstagram: '/art/social-instagram.svg',
 } as const;
 
 /* The three headline numbers repeated across Home and the summary bands. Each carries its
@@ -208,6 +212,7 @@ export const SOCIALS = [
   { name: 'YouTube', href: LINKS.youtube, icon: ART.socialYoutube, label: 'Watch our videos', color: '#FF0000' },
   { name: 'LinkedIn', href: LINKS.linkedin, icon: ART.socialLinkedin, label: 'Connect with us', color: '#0A66C2' },
   { name: 'X', href: LINKS.x, icon: ART.socialX, label: 'Follow us on X', color: '#000000' },
+  { name: 'Instagram', href: LINKS.instagram, icon: ART.socialInstagram, label: 'Follow us on Instagram', color: '#E4405F' },
 ] as const;
 
 /* Footer column structure, sourced from inzbc.org's live footer (checked 14 Oct 2026) on
