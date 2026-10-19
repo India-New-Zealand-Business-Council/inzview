@@ -171,6 +171,12 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   { name: 'ASEAN New Zealand Business Council', href: 'https://asean.org.nz/', logo: '/partners/asean-nz.png' },
   // Added from Sunil's 11 Oct 2026 Drive upload ("Our Strategic network" folder).
   { name: 'Asia New Zealand Foundation Te Whītau Tūhono', href: 'https://www.asianz.org.nz/', logo: '/partners/asia-nz-foundation.png' },
+  // Auckland Business Chamber, NZ Nepal Chamber of Commerce and the Sri Lanka chamber added
+  // 19 Oct 2026 on Sunil's instruction. auckland-business-chamber.svg is the chamber's own
+  // mark via Wikimedia Commons (aucklandchamber.co.nz blocks every fetch from here behind a
+  // Cloudflare challenge). nzncc.png came straight from nzncc.co.nz's site header, its near-white background keyed
+  // to transparent like the other JPEG-style logos here.
+  { name: 'Auckland Business Chamber', href: 'https://aucklandchamber.co.nz/', logo: '/partners/auckland-business-chamber.svg' },
   { name: 'Business Canterbury', href: 'https://www.businesscanterbury.co.nz/', logo: '/partners/business-canterbury.webp' },
   // businessnz.png, ema.png, education-nz.png, nzal.png and nziri.png (below) all downloaded
   // directly from each organisation's own live site on 14 Oct 2026, on Sunil's instruction
@@ -195,12 +201,18 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   // not Bank of New Zealand (see BUSINESS_PARTNERS above).
   { name: 'High Commission of India, Wellington', href: 'https://www.hciwellington.gov.in/', logo: '/partners/hci-wellington.png' },
   { name: 'MFAT', href: 'https://www.mfat.govt.nz/', logo: '/partners/mfat.svg' },
+  { name: 'New Zealand Nepal Chamber of Commerce', href: 'https://www.nzncc.co.nz/', logo: '/partners/nzncc.png' },
   { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/', logo: '/partners/nzte.png' },
   // NZAL's own main logo (nzasianleaders.org) is white-on-transparent, made for a dark
   // background — invisible on this site's light chips. Used their apple-touch-icon mark
   // instead (coloured, square), rather than either an invisible logo or no logo at all.
   { name: 'NZ Asian Leaders', href: 'https://nzasianleaders.org/', logo: '/partners/nzal.png' },
   { name: 'NZ India Research Institute', href: 'https://www.wgtn.ac.nz/nziri', logo: '/partners/nziri.png' },
+  // No official site or logo file could be found for a body under this exact name (searches
+  // turn up the Colombo-based Sri Lanka-Australia-New Zealand Business Council and an
+  // Auckland "Sri Lanka New Zealand Business Council", neither confirmed as this one), so it's
+  // named but not linked, and shows as a wordmark until the real logo file is supplied.
+  { name: 'Sri Lanka New Zealand Business Chamber', href: null },
   // "ThinkNew New Zealand" removed on Sunil's instruction (14 Oct 2026) — see the removal
   // note this replaced in git history if it needs restoring.
 ] as const;

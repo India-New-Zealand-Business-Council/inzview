@@ -201,7 +201,10 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_50a74d8e93b6440a88500da8eef1e143~mv2.jpg',
     alt: 'INZBC business leaders shaking hands at an official event',
-    position: '50% 30%',
+    // Both people stand in the right half of this 4:3 frame (the INZBC banner fills the
+    // left), so a centred crop in a narrower carousel box cut the man on the right in half.
+    // Anchor the crop to the right edge instead.
+    position: '100% 30%',
   },
   {
     src: 'https://static.wixstatic.com/media/df219d_181dd30a32ae4babba147c9b90733229~mv2.jpg',
