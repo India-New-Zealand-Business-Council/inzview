@@ -2118,6 +2118,10 @@
   justify-content: center;
 }
 
+.home-partners__stakeholder-art[data-stacked='true'] {
+  height: 3.5rem;
+}
+
 .home-partners__stakeholder-art img {
   display: block;
   height: 100%;

@@ -1645,10 +1645,10 @@ export default function HomePage() {
                   (square icons next to wide wordmarks), letting each pill's width follow its
                   own logo read as disordered. A fixed-size cell per entry doesn't. */}
               <div className="home-partners__stakeholders-grid">
-                {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo }) => {
+                {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo, stacked }) => {
                   const content = (
                     <>
-                      <span className="home-partners__stakeholder-art">
+                      <span className="home-partners__stakeholder-art" data-stacked={stacked ? 'true' : undefined}>
                         {logo ? <Image src={logo} alt="" loading="lazy" /> : <strong>{name}</strong>}
                       </span>
                       {logo ? <span className="home-partners__stakeholder-name">{name}</span> : null}

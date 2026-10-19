@@ -1964,12 +1964,12 @@ function PartnersBody() {
                   which with this many very different logo shapes (square icons next to wide
                   wordmarks) read as disordered rather than as one consistent list. */}
               <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo }) => {
+                {PUBLIC_SECTOR_NETWORK.map(({ name, href, logo, stacked }) => {
                   const content = (
                     <>
-                      <span className="flex h-12 items-center justify-center">
+                      <span className={`flex ${stacked ? 'h-20' : 'h-12'} items-center justify-center`}>
                         {logo ? (
-                          <Image src={logo} alt={`${name} logo`} loading="lazy" className="max-h-12 max-w-full object-contain" />
+                          <Image src={logo} alt={`${name} logo`} loading="lazy" className={`${stacked ? 'max-h-20' : 'max-h-12'} max-w-full object-contain`} />
                         ) : (
                           <strong className="text-sm text-ink">{name}</strong>
                         )}
