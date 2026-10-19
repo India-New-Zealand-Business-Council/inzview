@@ -18,6 +18,7 @@ Retrieved 13 August 2026.
 | `auckland-business-chamber.svg` | Auckland Business Chamber | https://commons.wikimedia.org/wiki/File:Auckland_Business_Chamber_logo.svg (retrieved 19 Oct 2026; Commons states public domain, text and simple shapes only, trademark rights still apply; aucklandchamber.co.nz itself sits behind a Cloudflare challenge that blocks every fetch from this environment) |
 | `nzncc.png` | New Zealand Nepal Chamber of Commerce | https://www.nzncc.co.nz/ header logo (retrieved 19 Oct 2026, near-white background keyed to transparent) |
 | `slbanz.webp` | Sri Lankan Business Association in New Zealand | Supplied by INZBC 19 Oct 2026 (2000x667 source, downscaled to 480px); site https://slbanz.co.nz/ |
+| `nzte.png`, `mfat.png` | New Zealand Trade & Enterprise, MFAT | Supplied by INZBC 19 Oct 2026, trimmed to the mark (MFAT's white background keyed to transparent). Replace the earlier corrupt `nzte.png` and padded `mfat.svg` |
 
 Pre-existing files (`ais.png`, `assocham.jpg`, `bnz.png`, `ficci.png`, `fonterra.png`,
 `nzaal.webp`, `phdcci.png`, `zespri.png`) were already in the repository. `zespri.png` was

@@ -167,7 +167,9 @@ export const INDIA_NETWORK: readonly PartnerMark[] = [
 // Alphabetised (17 Oct 2026, on Sunil's instruction) — this tier had grown by insertion
 // order across several sessions and looked disordered as a result; a fixed, obvious order
 // is the point here, not any particular grouping logic.
-export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null; logo?: string }[] = [
+// stacked: the logo is a tall lockup (emblem above wordmark). At the shared wide-logo height
+// its text shrinks to unreadable, so both renderers give these a taller logo slot.
+export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null; logo?: string; stacked?: boolean }[] = [
   { name: 'ASEAN New Zealand Business Council', href: 'https://asean.org.nz/', logo: '/partners/asean-nz.png' },
   // Added from Sunil's 11 Oct 2026 Drive upload ("Our Strategic network" folder).
   { name: 'Asia New Zealand Foundation Te Whītau Tūhono', href: 'https://www.asianz.org.nz/', logo: '/partners/asia-nz-foundation.png' },
@@ -200,9 +202,12 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   // 17 Oct 2026 — "the Bharat NZ blue logo" meant this one ("Bharat" is Hindi for India),
   // not Bank of New Zealand (see BUSINESS_PARTNERS above).
   { name: 'High Commission of India, Wellington', href: 'https://www.hciwellington.gov.in/', logo: '/partners/hci-wellington.png' },
-  { name: 'MFAT', href: 'https://www.mfat.govt.nz/', logo: '/partners/mfat.svg' },
+  // mfat.png and nzte.png: replaced 19 Oct 2026 with the files Sunil supplied. The old
+  // nzte.png was a corrupt file that never rendered, and mfat.svg had so much empty canvas
+  // around the mark that it showed tiny. Both trimmed to the mark, MFAT's white keyed out.
+  { name: 'MFAT', href: 'https://www.mfat.govt.nz/', logo: '/partners/mfat.png', stacked: true },
   { name: 'New Zealand Nepal Chamber of Commerce', href: 'https://www.nzncc.co.nz/', logo: '/partners/nzncc.png' },
-  { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/', logo: '/partners/nzte.png' },
+  { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/', logo: '/partners/nzte.png', stacked: true },
   // NZAL's own main logo (nzasianleaders.org) is white-on-transparent, made for a dark
   // background — invisible on this site's light chips. Used their apple-touch-icon mark
   // instead (coloured, square), rather than either an invisible logo or no logo at all.
