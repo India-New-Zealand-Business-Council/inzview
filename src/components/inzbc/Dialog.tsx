@@ -53,7 +53,7 @@ export function Dialog({
     triggerEl?.focus();
     // triggerEl intentionally excluded: this should only run when open flips to false, not on
     // every trigger change (the trigger changes before open does on open).
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [open]);
 
   // Esc to close, and a Tab/Shift+Tab trap confined to the dialog's own focusable elements.

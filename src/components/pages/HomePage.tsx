@@ -198,6 +198,26 @@ const GALLERY_PHOTOS = [
     src: '/events/modi-luxon-bilateral-meeting-2026.jpg',
     alt: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting',
   },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_50a74d8e93b6440a88500da8eef1e143~mv2.jpg',
+    alt: 'INZBC business leaders shaking hands at an official event',
+    position: '50% 30%',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_181dd30a32ae4babba147c9b90733229~mv2.jpg',
+    alt: 'Speaker addressing audience at INZBC event with Indian flag',
+    position: '50% 20%',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_5647342feafb44bbb29bc772daa41296~mv2.jpg',
+    alt: 'Business professional speaking at podium during INZBC event',
+    position: '50% 25%',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_a983173d04484d5299070e65e813ddd8~mv2.jpg',
+    alt: 'Three professionals holding New Zealand sports jersey at INZBC event',
+    position: '50% 35%',
+  },
 ] as const;
 
 /** One photo at a time, same height as the social-link column beside it. Auto-advances,
