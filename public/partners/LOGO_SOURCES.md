@@ -17,6 +17,7 @@ Retrieved 13 August 2026.
 | `cii.svg` | Confederation of Indian Industry | https://commons.wikimedia.org/wiki/File:Official_logo_of_the_Confederation_of_Indian_Industry_(CII).svg (Commons states public domain — below the threshold of originality; trademark rights still apply) |
 | `auckland-business-chamber.svg` | Auckland Business Chamber | https://commons.wikimedia.org/wiki/File:Auckland_Business_Chamber_logo.svg (retrieved 19 Oct 2026; Commons states public domain, text and simple shapes only, trademark rights still apply; aucklandchamber.co.nz itself sits behind a Cloudflare challenge that blocks every fetch from this environment) |
 | `nzncc.png` | New Zealand Nepal Chamber of Commerce | https://www.nzncc.co.nz/ header logo (retrieved 19 Oct 2026, near-white background keyed to transparent) |
+| `slbanz.webp` | Sri Lankan Business Association in New Zealand | Supplied by INZBC 19 Oct 2026 (2000x667 source, downscaled to 480px); site https://slbanz.co.nz/ |
 
 Pre-existing files (`ais.png`, `assocham.jpg`, `bnz.png`, `ficci.png`, `fonterra.png`,
 `nzaal.webp`, `phdcci.png`, `zespri.png`) were already in the repository. `zespri.png` was
