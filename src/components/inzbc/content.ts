@@ -171,7 +171,7 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   { name: 'ASEAN New Zealand Business Council', href: 'https://asean.org.nz/', logo: '/partners/asean-nz.png' },
   // Added from Sunil's 11 Oct 2026 Drive upload ("Our Strategic network" folder).
   { name: 'Asia New Zealand Foundation Te Whītau Tūhono', href: 'https://www.asianz.org.nz/', logo: '/partners/asia-nz-foundation.png' },
-  // Auckland Business Chamber, NZ Nepal Chamber of Commerce and the Sri Lanka chamber added
+  // Auckland Business Chamber, NZ Nepal Chamber of Commerce and SLBANZ added
   // 19 Oct 2026 on Sunil's instruction. auckland-business-chamber.svg is the chamber's own
   // mark via Wikimedia Commons (aucklandchamber.co.nz blocks every fetch from here behind a
   // Cloudflare challenge). nzncc.png came straight from nzncc.co.nz's site header, its near-white background keyed
@@ -208,11 +208,9 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   // instead (coloured, square), rather than either an invisible logo or no logo at all.
   { name: 'NZ Asian Leaders', href: 'https://nzasianleaders.org/', logo: '/partners/nzal.png' },
   { name: 'NZ India Research Institute', href: 'https://www.wgtn.ac.nz/nziri', logo: '/partners/nziri.png' },
-  // No official site or logo file could be found for a body under this exact name (searches
-  // turn up the Colombo-based Sri Lanka-Australia-New Zealand Business Council and an
-  // Auckland "Sri Lanka New Zealand Business Council", neither confirmed as this one), so it's
-  // named but not linked, and shows as a wordmark until the real logo file is supplied.
-  { name: 'Sri Lanka New Zealand Business Chamber', href: null },
+  // slbanz.webp: logo Sunil supplied 19 Oct 2026 (2000px source, downscaled to 480px). Its
+  // yellow field is part of the brand mark, so it's kept rather than keyed out.
+  { name: 'Sri Lankan Business Association in New Zealand', href: 'https://slbanz.co.nz/', logo: '/partners/slbanz.webp' },
   // "ThinkNew New Zealand" removed on Sunil's instruction (14 Oct 2026) — see the removal
   // note this replaced in git history if it needs restoring.
 ] as const;
