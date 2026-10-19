@@ -205,7 +205,8 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   // mfat.png and nzte.png: replaced 19 Oct 2026 with the files Sunil supplied. The old
   // nzte.png was a corrupt file that never rendered, and mfat.svg had so much empty canvas
   // around the mark that it showed tiny. Both trimmed to the mark, MFAT's white keyed out.
-  { name: 'MFAT', href: 'https://www.mfat.govt.nz/', logo: '/partners/mfat.png', stacked: true },
+  // Named as its own logo reads, not "MFAT" (Sunil's instruction, 19 Oct 2026).
+  { name: 'New Zealand Foreign Affairs & Trade', href: 'https://www.mfat.govt.nz/', logo: '/partners/mfat.png', stacked: true },
   { name: 'New Zealand Nepal Chamber of Commerce', href: 'https://www.nzncc.co.nz/', logo: '/partners/nzncc.png' },
   { name: 'New Zealand Trade & Enterprise', href: 'https://www.nzte.govt.nz/', logo: '/partners/nzte.png', stacked: true },
   // NZAL's own main logo (nzasianleaders.org) is white-on-transparent, made for a dark
