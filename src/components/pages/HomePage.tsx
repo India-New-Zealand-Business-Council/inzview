@@ -131,6 +131,23 @@ const EVENT_PHOTOS = [
     used in the Membership page's photo showcase — on Sunil's instruction, not exclusive to
     one page. */
 const GALLERY_PHOTOS = [
+  // Three photos Sunil supplied 20 Oct 2026, cropped to 3:2 at 1600x1067 like the rest of
+  // this set. Alt text describes only what's visible: no event name or date was supplied.
+  {
+    src: '/events/inzbc-group-photo-council-lunch.jpg',
+    alt: 'INZBC members and guests in a group photo in front of the Indian and New Zealand flags',
+    position: '50% 40%',
+  },
+  {
+    src: '/events/press-conference-nz-india-flags.jpg',
+    alt: 'A press conference at a podium in front of the New Zealand and Indian flags',
+    position: '50% 10%',
+  },
+  {
+    src: '/events/inzbc-leaders-group-photo.jpg',
+    alt: 'Four people posing together at an INZBC event',
+    position: '50% 0%',
+  },
   {
     src: '/events/fta-signing-ceremony-27-apr-2026.jpg',
     alt: 'Ministers signing the New Zealand–India Free Trade Agreement, 27 April 2026',

@@ -153,9 +153,9 @@ export const COUNCIL: readonly CouncilGroup[] = [
       },
       {
         name: 'Selwyn Thomas',
-        // "Souther India Chapter Head" -> "Southern India Chapter Head" (spelling fix, see
-        // file header) - the one fix explicitly called out when this task was set.
-        title: 'Southern India Chapter Head',
+        // Was "Southern India Chapter Head" (itself a spelling fix of "Souther", see file
+        // header). Renamed to Chennai Chapter Head on Sunil's instruction, 20 Oct 2026.
+        title: 'Chennai Chapter Head',
         photo: '/council/selwyn-thomas.jpg',
         linkedin: 'https://www.linkedin.com/in/selwynthomas/',
         bio: 'Selwyn Thomas is an internationally recognised leader in people analytics, digital transformation and human resource management. He is President and CEO of Talent Tribe Global Consulting, headquartered in Auckland, with offices in Melbourne and Toronto, and a global support centre in Chennai, India. Across a 32-year career, Selwyn has held senior leadership roles across media, finance, insurance, consulting, manufacturing, hospitality, entertainment, NGOs and digital technology. He has also served as Associate Director, People and Infrastructure, Ernst & Young Asia Pacific, and HR Director for Alstom’s Transportation Division. Selwyn is a sought-after advisor, consultant and keynote speaker, with specialist expertise in organisational transformation, job grading, compensation review, performance systems and workforce strategy. He has also been a guest lecturer across key HR disciplines. He holds a Bachelor of Commerce from Madras Christian College and a Master’s in Human Resource Management from Bosco Institute for Social Sciences.',
