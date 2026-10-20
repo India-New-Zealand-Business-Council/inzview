@@ -133,20 +133,22 @@ const EVENT_PHOTOS = [
 const GALLERY_PHOTOS = [
   // Three photos Sunil supplied 20 Oct 2026, cropped to 3:2 at 1600x1067 like the rest of
   // this set. Alt text describes only what's visible: no event name or date was supplied.
+  // `fit: 'contain'` shows each one whole: the carousel box is near-square on desktop, so a
+  // cover crop cut people at both sides (Sunil, 21 Oct 2026). A blurred copy fills the bars.
   {
     src: '/events/inzbc-group-photo-council-lunch.jpg',
     alt: 'INZBC members and guests in a group photo in front of the Indian and New Zealand flags',
-    position: '50% 40%',
+    fit: 'contain',
   },
   {
     src: '/events/press-conference-nz-india-flags.jpg',
     alt: 'A press conference at a podium in front of the New Zealand and Indian flags',
-    position: '50% 10%',
+    fit: 'contain',
   },
   {
     src: '/events/inzbc-leaders-group-photo.jpg',
     alt: 'Four people posing together at an INZBC event',
-    position: '50% 0%',
+    fit: 'contain',
   },
   {
     src: '/events/fta-signing-ceremony-27-apr-2026.jpg',
@@ -246,7 +248,7 @@ const GALLERY_PHOTOS = [
 function GalleryCarousel({
   photos,
 }: {
-  photos: readonly { src: string; alt: string; position?: string }[];
+  photos: readonly { src: string; alt: string; position?: string; fit?: 'contain' }[];
 }) {
   const stripRef = useRef<HTMLDivElement>(null);
   const resumeRef = useRef<ReturnType<typeof setTimeout>>();
@@ -296,7 +298,15 @@ function GalleryCarousel({
         onWheel={pauseAutoAdvance}
       >
         {photos.map((photo) => (
-          <div className="home-gallery__photo" role="listitem" key={photo.src}>
+          <div
+            className="home-gallery__photo"
+            data-fit={photo.fit}
+            role="listitem"
+            key={photo.src}
+          >
+            {photo.fit === 'contain' ? (
+              <Image src={photo.src} alt="" aria-hidden="true" loading="lazy" className="home-gallery__photo-fill" />
+            ) : null}
             <Image
               src={photo.src}
               alt={photo.alt}
