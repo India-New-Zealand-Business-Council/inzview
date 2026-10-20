@@ -461,6 +461,26 @@
   object-fit: cover;
 }
 
+/* Whole photo, no crop: the photo sits on a blurred, darkened copy of itself instead of
+   plain bars, so the box still reads as full. */
+.home-gallery__photo[data-fit='contain'] {
+  position: relative;
+  background: var(--home-navy);
+}
+
+.home-gallery__photo[data-fit='contain'] img {
+  position: relative;
+  object-fit: contain;
+}
+
+.home-gallery__photo[data-fit='contain'] .home-gallery__photo-fill {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  filter: blur(24px) brightness(0.7);
+  transform: scale(1.15);
+}
+
 .home-gallery__nav {
   position: absolute;
   top: 50%;
