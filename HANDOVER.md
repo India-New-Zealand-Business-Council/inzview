@@ -103,16 +103,6 @@ content.ts. The old Wix Studio site said "now in effect" before it actually was,
 wrong at the time — the lesson isn't "never say it's in force", it's "don't say it before
 confirming it independently."
 
-**11-12 Oct 2026: a "28 October" instruction came through and was reverted.** On 11 Oct, an
-instruction said Sunil wanted the entry-into-force date changed to 28 October; every site
-mention was updated to match, flagged unconfirmed (no public source ever said 28), and left
-uncommitted rather than shipped. On 12 Oct the person actually relaying these instructions
-confirmed directly: it's 20 October, as every public source already said. Reverted everywhere.
-Worth remembering only as a reminder that an instruction relayed secondhand can be wrong even
-when it names the client as the source — the flag-and-ask habit this note was already an
-example of is what caught it before publish. Delete this whole note once 20 October has
-actually passed.
-
 **Photography must be INZBC's own.** The four event photographs came from INZBC's Flickr.
 They are all Summit 2018 because that is what the archive holds, and the caption says so.
 Google Images was offered and not used: images of unknown provenance on an organisation's
@@ -221,54 +211,67 @@ the same bug.
 
 Needs INZBC to supply something:
 
-1. **India and NZ Industry Partner logos** (FICCI, CII, PHD Chamber and others). Names are
-   now live on `/partners` and Home — sourced 18 Aug 2026 by reading the composite graphics
-   on inzbc.org/our-sponsors directly. Individual logo files and links are still owed.
-2. **Contact form.** Needs a Wix Form so submissions reach the Secretariat. Currently an
-   email link, because a form that silently discards a message is worse than no form.
-3. **Event photography after 2018**, if the Summit 2018 set is not acceptable.
-4. **Member and industry counts** on the Membership page — inzbc.org's own member directory
+1. **Two India industry-network logos still missing: NABARD and HSIIDC.** Everything else in
+   this originally-18-Aug-2026 item is now resolved — every other partner (FICCI, CII, PHD
+   Chamber, ASSOCHAM, TPCI, FIEO, Bihar Foundation, the whole Business network and Strategic
+   network tiers) has a real logo file, sourced progressively through Oct 2026. NABARD and
+   HSIIDC are text-only because `nabard.org` and `hsiidc.org.in` both refuse every connection
+   attempt from this environment (not a scraping failure — the sites themselves are
+   unreachable here). Checked 20 Oct 2026.
+2. **Both forms on the site are mailto-only, not real submissions.** The Connect page's
+   `ContactForm` (`bodies.tsx`) and Home's quick-contact form (`HomePage.tsx`) both build a
+   `mailto:` link from what was typed and open the visitor's own email client — honestly
+   labelled as such in both, so nothing is silently discarded, but nothing reaches the
+   Secretariat unless the visitor's own client sends it. Needs a real Wix Form (or equivalent)
+   so a submission actually delivers. Checked 20 Oct 2026, still the real state of both.
+3. **News, events and sector-report content has no CMS — it's hardcoded TypeScript.** Per
+   `ADR-0007`, `inzview` is a plain Astro/React site: `content.ts` and `news.ts` hold every
+   post, event and figure as literal array entries. Adding or editing a post today means a
+   code change, a commit and a Vibe publish — not something a non-technical Secretariat staff
+   member can do themselves. There is no Wix CMS to map collections into on this stack (the
+   old plan assumed one); if INZBC wants self-service content editing, that's a new build
+   decision, not a gap this repo can close by itself. Checked 20 Oct 2026.
+4. **Event photography after 2018**, if the Summit 2018 set is not acceptable.
+5. **Member and industry counts** on the Membership page — inzbc.org's own member directory
    doesn't publish a count either (checked 18 Aug 2026), so this isn't a lookup INZBC's
    website already answers; they have to supply the number directly.
-5. **Sponsorship tier pricing and inclusions** — tier names (Strategic, Logistics, Education,
+6. **Sponsorship tier pricing and inclusions** — tier names (Strategic, Logistics, Education,
    Sponsors & Supporters) are now sourced and live on `/partners`; what each tier costs or
    includes isn't published anywhere and needs INZBC directly.
 
 Code work that can start now:
 
-5. **Individual partner logos.** The wall is one flattened JPEG, so no logo is clickable.
-6. **36 tap targets under 44px.** Mostly nav links at 42px and inline text links inside
+7. **36 tap targets under 44px.** Mostly nav links at 42px and inline text links inside
    paragraphs, where a 44px box would break line spacing. A real trade, worth revisiting. The
    shared inner-page footer's nav/social/email links (no padding at all, ~20px real tap
    height) were the largest single group and are fixed as of 27 Aug 2026.
 
 ## Domain cutover
 
-INZBC intends to move `inzbc.org` off the old live site and point it at this build once the
-rebuild is finished (confirmed 22 August 2026). Four things break at that moment, and three
-of them break silently.
+**Cutover has happened.** Confirmed live 20 October 2026 — `inzbc.org` now serves this build
+(the old Wix Studio site is retired). Four things were flagged to break at that moment; status
+of each, checked the same day:
 
-1. **Every `inzbc.org/post/...` link becomes a link into this site.** Seven places link out
-   to the old site as their source citation, three of them templated over data lists — 72
-   `sourceSlug` entries in `bodies.tsx` alone. Today those are outbound links to a different
-   domain and they work. The moment `inzbc.org` resolves here, they become self-links to
-   `/post/<slug>`, a route this build does not have, and `Router.tsx`'s catch-all sends every
-   one of them to the homepage without an error. Sourced claims would quietly stop being
-   checkable. Decide before cutover whether the posts get migrated behind a `/post/:slug`
-   route, redirected per-slug, or the citations are rewritten to point at an archive.
+1. **Every `inzbc.org/post/...` link becomes a link into this site.** Resolved before cutover:
+   `Router.tsx`'s `PostRedirect` (`post/:slug` route) sends each real `sourceSlug` to its
+   `/events#slug` or `/events/past#slug` row, everything else to `/news`. Spot-checked live
+   20 Oct 2026 (`/post/new-zealand-india-fta-business-opportunities` → 200, redirects
+   correctly) — not a silent homepage bounce.
 
-2. **`SITE_ORIGIN` in `src/lib/seo.ts` still names the wix-vibe preview host.** It feeds the
-   canonical tag and `/sitemap-pages.xml`. Left stale, the new inzbc.org would tell
-   Google that the canonical version of every page lives on the preview domain — worse than
-   having no canonical at all, because it actively points ranking somewhere else.
+2. **`SITE_ORIGIN` in `src/lib/seo.ts` still named the wix-vibe preview host.** Found still
+   stale on 20 Oct 2026, after cutover — fixed same day (commit `b5be70e`, now
+   `https://www.inzbc.org`). Not yet reflected in the live `/sitemap-pages.xml` as of this
+   writing: pushing to `main` syncs into the Vibe workspace, but publishing is a separate
+   manual step in the Vibe editor (same as every other change in this repo) — needs a
+   Relaunch/Publish before Google sees the corrected canonical.
 
 3. **The `| INZView` title suffix and `og:site_name`** come from the Wix dashboard's site
-   settings, not from this repo. They read as the internal build name on every page and in
-   every social share card. Nobody can fix this from code.
+   settings, not from this repo. Still unverified whether these were changed at cutover —
+   nobody can fix this from code; check the Wix dashboard directly, not this file.
 
-4. **Search Console.** The sitemap needs resubmitting for the new host, and the old site's
-   URLs want checking against the redirect table in `Router.tsx` — which covers the old
-   top-level routes but, as above, nothing under `/post/`.
+4. **Search Console.** Still needs the sitemap resubmitting for the new host now that it
+   actually resolves there — not yet done as of 20 Oct 2026. Do this only after item 2 above
+   is published, or it resubmits the still-stale preview-host sitemap.
 
 `inzbusinesssummit.com` is **not** part of this. It is a separate domain, parked at Wix with
 no site connected, and it serves Wix's "ConnectYourDomain" error to anyone who follows the
