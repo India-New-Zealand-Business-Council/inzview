@@ -420,6 +420,17 @@
   min-height: 320px;
 }
 
+/* Single column below 900px: no social stack to match height with, and a fixed 320px box
+   on a phone is near-square, which cut people off the sides of wide group photos. A 3:2
+   box shows the 3:2 gallery photos whole. */
+@media (max-width: 899px) {
+  .home-gallery__carousel {
+    flex: none;
+    min-height: 0;
+    aspect-ratio: 3 / 2;
+  }
+}
+
 .home-gallery__strip {
   display: flex;
   width: 100%;

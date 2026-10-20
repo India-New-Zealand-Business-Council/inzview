@@ -36,3 +36,15 @@ The composite source files (`1.png`, `3.png`, `5.png` — each two photos stacke
 style) and the originals these were cropped/resized from are not kept in the repo; only the
 processed files above are. If a different crop or the un-resized original is ever needed,
 ask Sunil for the source folder again rather than re-deriving it from what's published here.
+
+## Added 20 October 2026
+
+Three photos Sunil supplied in chat for the home page gallery. Cropped to 3:2 and resized to
+1600x1067 (JPEG quality 85) to match the rest of the gallery set, with every face kept in
+frame. No event name or date came with them, so the alt text only describes what is visible.
+
+| Local file | What it shows |
+|---|---|
+| `inzbc-group-photo-council-lunch.jpg` | Large group photo at a lunch venue, Indian and NZ flags behind |
+| `press-conference-nz-india-flags.jpg` | Press conference at a podium, NZ and Indian flags behind (cropped from a portrait original) |
+| `inzbc-leaders-group-photo.jpg` | Four people posing together indoors |

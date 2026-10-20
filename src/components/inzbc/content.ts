@@ -196,6 +196,8 @@ export const PUBLIC_SECTOR_NETWORK: readonly { name: string; href: string | null
   // other JPEG-sourced logos on this page.
   { name: 'Education New Zealand', href: 'https://enz.govt.nz/', logo: '/partners/education-nz.png' },
   { name: 'Employers and Manufacturers Association (EMA)', href: 'https://www.ema.co.nz/', logo: '/partners/ema.png' },
+  // export-nz.png: the old file had a white box, black border and wide padding baked in, so
+  // the mark showed tiny. Trimmed to the mark and white keyed out (20 Oct 2026).
   { name: 'ExportNZ', href: 'https://exportnz.org.nz/', logo: '/partners/export-nz.png' },
   // hci-wellington.png: replaced the red version with the blue one Sunil supplied via Drive
   // (14 Oct 2026) — the High Commission rebranded this logo's colour. Moved into this tier
