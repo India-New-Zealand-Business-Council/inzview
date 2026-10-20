@@ -29,12 +29,12 @@ export const SITE_NAME = 'India New Zealand Business Council';
  *
  * Feeds the canonical tag and every <loc> in /sitemap-pages.xml.
  *
- * This is the wix-vibe preview host because that is where the rebuild is currently served.
- * When INZBC points inzbc.org at this build, change this one constant — nothing else needs
- * to move, but leaving it stale would make every canonical on the live site point at the
- * preview domain, which is worse than having no canonical.
+ * inzbc.org now serves this build (confirmed live 20 Oct 2026 — the domain's own HTML
+ * references the wix-vibe-site.com preview host this constant used to point at, so the
+ * switch has happened). Updated to the real public domain; every canonical, sitemap <loc>
+ * and absolute og:image URL was pointing at the preview host until this changed.
  */
-export const SITE_ORIGIN = 'https://my-site-9qksqx7j-inzbcsecretariat.wix-vibe-site.com';
+export const SITE_ORIGIN = 'https://www.inzbc.org';
 
 /**
  * Default share image. The Modi–Luxon Auckland photo is the homepage hero and the only
