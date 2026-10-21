@@ -65,7 +65,7 @@ export const COUNCIL: readonly CouncilGroup[] = [
       {
         name: 'Bharat Chawla',
         title: 'Chair',
-        photo: '/council/bharat-chawla.jpg',
+        photo: '/council/bharat-chawla-2026.jpg',
         linkedin: 'https://www.linkedin.com/in/bharat-chawla-959b7921/',
         bio: "Bharat has been a member of the India New Zealand Business Council board for the last two years. He is also a former member of the Institute of Directors, New Zealand, and a Chartered Manager (CMI UK) / Fellow at the Institute of Managers and Leaders, Australia and New Zealand. The Superdiversity Institute of Law and the Ministry of Ethnic Communities selected him as the Top Diverse board-ready director. With a career spanning two decades in the International education space, Bharat has travelled to more than 40 countries and cultures. His unwavering commitment to integrity is evident in his approach to building business through solid relationships and exceptional customer service. Looking ahead, Bharat's primary goal is to foster a robust education policy partnership between India and New Zealand. His vision involves establishing New Zealand Education delivery centres in India and strengthening the collaboration between the two countries, with education at the forefront. I follow a straightforward rule: 'Together, we can make a small initiative a big success.' I enjoy collaborating to help and improve the partnership.",
       },
