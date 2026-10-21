@@ -137,7 +137,8 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_a983173d04484d5299070e65e813ddd8~mv2.jpg',
     alt: 'Three professionals holding New Zealand sports jersey at INZBC event',
-    position: '50% 35%',
+    // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
+    fit: 'contain',
   },
   {
     src: '/events/modi-luxon-bilateral-meeting-2026.jpg',
@@ -154,7 +155,8 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_5647342feafb44bbb29bc772daa41296~mv2.jpg',
     alt: 'Business professional speaking at podium during INZBC event',
-    position: '50% 25%',
+    // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
+    fit: 'contain',
   },
   // Replaced the old Summit 2018 archive set (17 Oct 2026, Sunil's instruction) — real recent
   // event photography instead. `position` biases the one-at-a-time carousel's crop toward
@@ -201,7 +203,8 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_181dd30a32ae4babba147c9b90733229~mv2.jpg',
     alt: 'Speaker addressing audience at INZBC event with Indian flag',
-    position: '50% 20%',
+    // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
+    fit: 'contain',
   },
 ] as const;
 
