@@ -414,24 +414,19 @@
   text-transform: uppercase;
 }
 
+/* One fixed 3:2 box at every width. The strip is absolutely positioned so the photos can't
+   size the box: before, the box grew to the tallest photo loaded so far (496px, then 720,
+   then 991 on desktop once a portrait photo loaded), so the order of the photos changed
+   the page layout. 3:2 is the height the gallery already opened at. */
 .home-gallery__carousel {
   position: relative;
-  flex: 1;
-  min-height: 320px;
-}
-
-/* Single column below 900px: no social stack to match height with, and a fixed 320px box
-   on a phone is near-square, which cut people off the sides of wide group photos. A 3:2
-   box shows the 3:2 gallery photos whole. */
-@media (max-width: 899px) {
-  .home-gallery__carousel {
-    flex: none;
-    min-height: 0;
-    aspect-ratio: 3 / 2;
-  }
+  flex: none;
+  aspect-ratio: 3 / 2;
 }
 
 .home-gallery__strip {
+  position: absolute;
+  inset: 0;
   display: flex;
   width: 100%;
   height: 100%;
