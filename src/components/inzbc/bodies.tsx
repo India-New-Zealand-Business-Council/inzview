@@ -1893,33 +1893,38 @@ function PartnersBody() {
           <Reveal>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-ink md:text-4xl">Who INZBC works with</h2>
             <p className="mt-4 max-w-2xl text-foreground">
-              Strategic partners, associate partners, and government and industry stakeholders
-              across both markets.
+              The businesses that partner with INZBC, and the government and industry
+              organisations we work with across both markets.
             </p>
           </Reveal>
 
+          {/* Business partners as full cards with a short blurb each (Sunil, 21 Oct 2026) —
+              the India and public-sector networks below stay logo-only. */}
           <Reveal delay={0.08}>
             <div className="mt-10">
-              <p className="text-xs font-medium uppercase tracking-wide text-foreground/60">Business network</p>
-              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+              <p className="text-xs font-medium uppercase tracking-wide text-foreground/60">Our partners</p>
+              <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {BUSINESS_PARTNERS.map((partner) => (
                   <a
                     key={partner.name}
                     href={partner.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-ink/10 p-4 text-center transition-colors hover:border-ink/25 hover:bg-mist ${FOCUS}`}
+                    className={`group flex flex-col rounded-2xl border border-ink/10 p-6 transition-colors hover:border-ink/25 hover:bg-mist ${FOCUS}`}
                   >
-                    <span className="flex h-12 items-center justify-center">
+                    <span className="flex h-16 items-center">
                       {partner.logo ? (
-                        <Image src={partner.logo} alt={`${partner.name} logo`} loading="lazy" className="max-h-12 max-w-full object-contain" />
-                      ) : (
-                        <strong className="text-sm text-ink">{partner.name}</strong>
-                      )}
+                        <Image src={partner.logo} alt={`${partner.name} logo`} loading="lazy" className="max-h-16 max-w-[180px] object-contain" />
+                      ) : null}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-foreground/70">
+                    <span className="mt-5 text-xs font-medium uppercase tracking-wide text-foreground/60">
                       {partner.relationship}
-                      <ArrowUpRight aria-hidden="true" size={12} className="opacity-0 transition-opacity group-hover:opacity-100" />
+                    </span>
+                    <span className="mt-1 font-heading text-lg font-semibold text-ink">{partner.name}</span>
+                    {partner.blurb ? <span className="mt-2 text-sm text-foreground">{partner.blurb}</span> : null}
+                    <span className="mt-auto inline-flex items-center gap-1 pt-5 text-sm font-medium text-ink">
+                      Visit website
+                      <ArrowUpRight aria-hidden="true" size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                     </span>
                   </a>
                 ))}

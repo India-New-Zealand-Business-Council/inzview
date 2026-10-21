@@ -185,7 +185,16 @@ export const NAV: NavItem[] = [
   { label: 'Membership', href: '/membership' },
   { label: 'Publications', href: '/publications' },
   { label: 'Connect', href: '/connect' },
-  { label: 'About', href: '/about-inzbc' },
+  {
+    label: 'About',
+    href: '/about-inzbc',
+    children: [
+      { label: 'About INZBC', href: '/about-inzbc' },
+      { label: 'Executive Council', href: '/executive-council' },
+      { label: 'Our Patron', href: '/our-patron' },
+      { label: 'Partners', href: '/partners' },
+    ],
+  },
 ];
 
 export const JOIN = LINKS.join;
