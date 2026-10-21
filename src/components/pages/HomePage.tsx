@@ -137,7 +137,7 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_a983173d04484d5299070e65e813ddd8~mv2.jpg',
     alt: 'Three professionals holding New Zealand sports jersey at INZBC event',
-    caption: 'New Zealand jersey presentation at an INZBC event',
+    caption: 'Presenting a New Zealand team jersey at an INZBC lunch',
     // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
@@ -149,7 +149,7 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_50a74d8e93b6440a88500da8eef1e143~mv2.jpg',
     alt: 'INZBC business leaders shaking hands at an official event',
-    caption: 'INZBC business leaders at an official event',
+    caption: 'Welcoming guests at an INZBC lunch',
     // Both people stand in the right half of this 4:3 frame (the INZBC banner fills the
     // left), so a centred crop in a narrower carousel box cut the man on the right in half.
     // Anchor the crop to the right edge instead.
@@ -158,7 +158,7 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_5647342feafb44bbb29bc772daa41296~mv2.jpg',
     alt: 'Business professional speaking at podium during INZBC event',
-    caption: 'Speaking at an INZBC event',
+    caption: 'Speaking to INZBC members and guests',
     // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
@@ -208,13 +208,13 @@ const GALLERY_PHOTOS = [
   {
     src: '/events/inzbc-group-photo-council-lunch.jpg',
     alt: 'INZBC members and guests in a group photo in front of the Indian and New Zealand flags',
-    caption: 'INZBC members and guests',
+    caption: 'INZBC members and guests at the council lunch',
     fit: 'contain',
   },
   {
     src: 'https://static.wixstatic.com/media/df219d_181dd30a32ae4babba147c9b90733229~mv2.jpg',
     alt: 'Speaker addressing audience at INZBC event with Indian flag',
-    caption: 'Addressing an INZBC audience',
+    caption: 'A guest speaker addresses the room',
     // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
