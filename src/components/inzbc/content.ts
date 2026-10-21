@@ -247,7 +247,7 @@ export const SOCIALS = [
    destinations are mapped to where each old-site page actually lives in this rebuild (the
    same mapping Router.tsx's §5 redirect table already uses for these same old URLs), not
    guessed:
-     - "Our Sponsors" -> /partners (old site's own /our-sponsors redirects here)
+     - "Partners" -> /partners (was "Our Sponsors"; the old site's own /our-sponsors redirects here)
      - "Trade Shows" -> /trade-resources (old /trade-shows redirects here)
      - "Trade Bazaar" -> /india-market-opportunities (old /trade-bazaar redirects here)
      - "Membership Form" -> /membership (old /membership-form redirects here)
