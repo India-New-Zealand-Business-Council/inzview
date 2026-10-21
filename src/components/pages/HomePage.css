@@ -405,7 +405,8 @@
 }
 
 .home-gallery__title {
-  margin: 0 0 1.25rem;
+  grid-column: 1 / -1;
+  margin: 0 0 -0.75rem;
   color: var(--home-ink);
   font-family: Poppins, system-ui, sans-serif;
   font-size: 0.78rem;
