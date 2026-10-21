@@ -137,19 +137,19 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_a983173d04484d5299070e65e813ddd8~mv2.jpg',
     alt: 'Three professionals holding New Zealand sports jersey at INZBC event',
-    caption: 'Presenting a New Zealand team jersey at an INZBC lunch',
+    caption: 'Artists Shiv Narandas and Jai Pancha presenting the new Kotahitanga shirt for the BlackCaps series against India in NZ to the Indian Minister of State for Textiles Hon Pabitra Margherita',
     // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
   {
     src: '/events/modi-luxon-bilateral-meeting-2026.jpg',
     alt: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting',
-    caption: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting',
+    caption: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting, July 2026',
   },
   {
     src: 'https://static.wixstatic.com/media/df219d_50a74d8e93b6440a88500da8eef1e143~mv2.jpg',
     alt: 'INZBC business leaders shaking hands at an official event',
-    caption: 'Welcoming guests at an INZBC lunch',
+    caption: 'NZ Minister Hon Mark Mitchell & Indian Minister of State for Textiles Hon Pabitra Margherita at INZBC event, October 2026',
     // Both people stand in the right half of this 4:3 frame (the INZBC banner fills the
     // left), so a centred crop in a narrower carousel box cut the man on the right in half.
     // Anchor the crop to the right edge instead.
@@ -158,7 +158,7 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_5647342feafb44bbb29bc772daa41296~mv2.jpg',
     alt: 'Business professional speaking at podium during INZBC event',
-    caption: 'Speaking to INZBC members and guests',
+    caption: 'INZBC Chair Bharat Chawla',
     // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
@@ -175,7 +175,7 @@ const GALLERY_PHOTOS = [
   {
     src: '/events/ihc-todd-mcclay.jpeg',
     alt: "New Zealand's Minister for Trade and Investment and India's High Commissioner exchanging ratifying documentation, with PM Christopher Luxon behind them",
-    caption: 'Exchanging the FTA ratifying documents, with PM Christopher Luxon',
+    caption: 'Hon Todd McClay and Indian High Commissioner Her Excellency Ms. Muanpuii Saiawi exchanging the FTA ratifying documents, with PM Rt Hon Christopher Luxon, September 2026',
     // Near-square source (1065x1032) in a wide carousel box — bias top so cover doesn't
     // crop into the three people's heads (same fix as the carousel photos above).
     position: '50% 8%',
@@ -183,12 +183,12 @@ const GALLERY_PHOTOS = [
   {
     src: '/events/ficci-mou-signing-pm-luxon-mission-2026.jpg',
     alt: 'INZBC and FICCI signing a memorandum of understanding, during the New Zealand Prime Minister’s mission to India',
-    caption: 'INZBC and FICCI sign an MoU during the Prime Minister’s mission to India',
+    caption: 'INZBC and FICCI sign an MoU during the Prime Minister’s mission to India, March 2025',
   },
   {
     src: '/events/luxon-goyal-business-forum-2026.jpg',
     alt: 'New Zealand Prime Minister Christopher Luxon and India’s Minister of Commerce and Industry Piyush Goyal at the India–New Zealand Business Forum',
-    caption: 'PM Christopher Luxon and Minister Piyush Goyal at the India–New Zealand Business Forum',
+    caption: 'PM Christopher Luxon and Minister Piyush Goyal at the India–New Zealand Business Forum, Delhi March 2025',
   },
   {
     src: '/events/nz-india-business-delegation-delhi-2026.jpg',
@@ -208,13 +208,13 @@ const GALLERY_PHOTOS = [
   {
     src: '/events/inzbc-group-photo-council-lunch.jpg',
     alt: 'INZBC members and guests in a group photo in front of the Indian and New Zealand flags',
-    caption: 'INZBC members and guests at the council lunch',
+    caption: 'INZBC members with Indian Minister of State for Textiles Hon Pabitra Margherita, October 2026',
     fit: 'contain',
   },
   {
     src: 'https://static.wixstatic.com/media/df219d_181dd30a32ae4babba147c9b90733229~mv2.jpg',
     alt: 'Speaker addressing audience at INZBC event with Indian flag',
-    caption: 'A guest speaker addresses the room',
+    caption: 'Indian High Commissioner Her Excellency Ms. Muanpuii Saiawi addressing an INZBC audience from Textiles and Tourism, October 2026',
     // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
