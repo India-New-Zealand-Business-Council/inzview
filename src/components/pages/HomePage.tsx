@@ -1289,10 +1289,12 @@ export default function HomePage() {
 
         <section className="home-gallery home-section" aria-labelledby="gallery-title">
           <div className="home-shell home-gallery__layout">
+            {/* Its own full-width grid row, so the photo and the social cards both start
+                below it and line up top and bottom. */}
+            <h2 id="gallery-title" className="home-gallery__title">
+              INZBC in the room
+            </h2>
             <div className="home-gallery__strip-wrap">
-              <h2 id="gallery-title" className="home-gallery__title">
-                INZBC in the room
-              </h2>
               <GalleryCarousel photos={GALLERY_PHOTOS} />
             </div>
 
