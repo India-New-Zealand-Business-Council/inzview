@@ -406,7 +406,7 @@
 
 .home-gallery__title {
   grid-column: 1 / -1;
-  margin: 0 0 -0.75rem;
+  margin: -1rem 0 -1rem;
   color: var(--home-ink);
   font-family: Poppins, system-ui, sans-serif;
   font-size: 0.78rem;
@@ -510,6 +510,24 @@
 
 /* Five compact cards (Facebook/LinkedIn/YouTube/Instagram/X), not one tall Facebook-only card — fills
    the full height of the photo strip beside it instead of leaving most of that column empty. */
+.home-gallery__caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.9rem 0 0;
+  color: var(--home-ink);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.home-gallery__caption-count {
+  flex: 0 0 auto;
+  color: rgba(26, 11, 63, 0.55);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
 .home-gallery__social-stack {
   display: flex;
   height: 100%;

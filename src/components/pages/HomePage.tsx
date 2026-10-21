@@ -137,16 +137,19 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_a983173d04484d5299070e65e813ddd8~mv2.jpg',
     alt: 'Three professionals holding New Zealand sports jersey at INZBC event',
+    caption: 'New Zealand jersey presentation at an INZBC event',
     // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
   {
     src: '/events/modi-luxon-bilateral-meeting-2026.jpg',
     alt: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting',
+    caption: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting',
   },
   {
     src: 'https://static.wixstatic.com/media/df219d_50a74d8e93b6440a88500da8eef1e143~mv2.jpg',
     alt: 'INZBC business leaders shaking hands at an official event',
+    caption: 'INZBC business leaders at an official event',
     // Both people stand in the right half of this 4:3 frame (the INZBC banner fills the
     // left), so a centred crop in a narrower carousel box cut the man on the right in half.
     // Anchor the crop to the right edge instead.
@@ -155,6 +158,7 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_5647342feafb44bbb29bc772daa41296~mv2.jpg',
     alt: 'Business professional speaking at podium during INZBC event',
+    caption: 'Speaking at an INZBC event',
     // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
@@ -165,11 +169,13 @@ const GALLERY_PHOTOS = [
   {
     src: '/events/fta-signing-document-exchange-27-apr-2026.jpg',
     alt: 'India’s Minister of Commerce and Industry Piyush Goyal and New Zealand’s Minister for Trade and Investment Todd McClay exchanging signed FTA documentation, 27 April 2026',
+    caption: 'Ministers Piyush Goyal and Todd McClay exchange the signed FTA, 27 April 2026',
     position: '50% 15%',
   },
   {
     src: '/events/ihc-todd-mcclay.jpeg',
     alt: "New Zealand's Minister for Trade and Investment and India's High Commissioner exchanging ratifying documentation, with PM Christopher Luxon behind them",
+    caption: 'Exchanging the FTA ratifying documents, with PM Christopher Luxon',
     // Near-square source (1065x1032) in a wide carousel box — bias top so cover doesn't
     // crop into the three people's heads (same fix as the carousel photos above).
     position: '50% 8%',
@@ -177,18 +183,22 @@ const GALLERY_PHOTOS = [
   {
     src: '/events/ficci-mou-signing-pm-luxon-mission-2026.jpg',
     alt: 'INZBC and FICCI signing a memorandum of understanding, during the New Zealand Prime Minister’s mission to India',
+    caption: 'INZBC and FICCI sign an MoU during the Prime Minister’s mission to India',
   },
   {
     src: '/events/luxon-goyal-business-forum-2026.jpg',
     alt: 'New Zealand Prime Minister Christopher Luxon and India’s Minister of Commerce and Industry Piyush Goyal at the India–New Zealand Business Forum',
+    caption: 'PM Christopher Luxon and Minister Piyush Goyal at the India–New Zealand Business Forum',
   },
   {
     src: '/events/nz-india-business-delegation-delhi-2026.jpg',
     alt: 'New Zealand business delegation in Delhi, 2026',
+    caption: 'New Zealand business delegation in Delhi, 2026',
   },
   {
     src: '/events/inzbc-from-agreement-to-business-panel-23-sep-2026.jpeg',
     alt: "A panel session at INZBC's 'From Agreement to Business' event, Auckland, 23 September 2026",
+    caption: '‘From Agreement to Business’ panel, Auckland, 23 September 2026',
     position: '50% 20%',
   },
   // Three photos Sunil supplied 20 Oct 2026, cropped to 3:2 at 1600x1067 like the rest of
@@ -198,11 +208,13 @@ const GALLERY_PHOTOS = [
   {
     src: '/events/inzbc-group-photo-council-lunch.jpg',
     alt: 'INZBC members and guests in a group photo in front of the Indian and New Zealand flags',
+    caption: 'INZBC members and guests',
     fit: 'contain',
   },
   {
     src: 'https://static.wixstatic.com/media/df219d_181dd30a32ae4babba147c9b90733229~mv2.jpg',
     alt: 'Speaker addressing audience at INZBC event with Indian flag',
+    caption: 'Addressing an INZBC audience',
     // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
@@ -214,10 +226,11 @@ const GALLERY_PHOTOS = [
 function GalleryCarousel({
   photos,
 }: {
-  photos: readonly { src: string; alt: string; position?: string; fit?: 'contain' }[];
+  photos: readonly { src: string; alt: string; caption: string; position?: string; fit?: 'contain' }[];
 }) {
   const stripRef = useRef<HTMLDivElement>(null);
   const resumeRef = useRef<ReturnType<typeof setTimeout>>();
+  const [shown, setShown] = useState(0);
 
   const scrollToIndex = (index: number) => {
     const strip = stripRef.current;
@@ -255,50 +268,61 @@ function GalleryCarousel({
   }, [photos.length]);
 
   return (
-    <div className="home-gallery__carousel">
-      <div
-        className="home-gallery__strip"
-        role="list"
-        ref={stripRef}
-        onPointerDown={pauseAutoAdvance}
-        onWheel={pauseAutoAdvance}
-      >
-        {photos.map((photo) => (
-          <div
-            className="home-gallery__photo"
-            data-fit={photo.fit}
-            role="listitem"
-            key={photo.src}
-          >
-            {photo.fit === 'contain' ? (
-              <Image src={photo.src} alt="" aria-hidden="true" loading="lazy" className="home-gallery__photo-fill" />
-            ) : null}
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              loading="lazy"
-              style={photo.position ? { objectPosition: photo.position } : undefined}
-            />
-          </div>
-        ))}
+    <>
+      <div className="home-gallery__carousel">
+        <div
+          className="home-gallery__strip"
+          role="list"
+          ref={stripRef}
+          onPointerDown={pauseAutoAdvance}
+          onWheel={pauseAutoAdvance}
+          onScroll={() => setShown(currentIndex())}
+        >
+          {photos.map((photo) => (
+            <div
+              className="home-gallery__photo"
+              data-fit={photo.fit}
+              role="listitem"
+              key={photo.src}
+            >
+              {photo.fit === 'contain' ? (
+                <Image src={photo.src} alt="" aria-hidden="true" loading="lazy" className="home-gallery__photo-fill" />
+              ) : null}
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                loading="lazy"
+                style={photo.position ? { objectPosition: photo.position } : undefined}
+              />
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          aria-label="Previous photo"
+          className="home-gallery__nav home-gallery__nav--prev"
+          onClick={() => goTo(-1)}
+        >
+          <ChevronLeft aria-hidden="true" size={20} />
+        </button>
+        <button
+          type="button"
+          aria-label="Next photo"
+          className="home-gallery__nav home-gallery__nav--next"
+          onClick={() => goTo(1)}
+        >
+          <ChevronRight aria-hidden="true" size={20} />
+        </button>
       </div>
-      <button
-        type="button"
-        aria-label="Previous photo"
-        className="home-gallery__nav home-gallery__nav--prev"
-        onClick={() => goTo(-1)}
-      >
-        <ChevronLeft aria-hidden="true" size={20} />
-      </button>
-      <button
-        type="button"
-        aria-label="Next photo"
-        className="home-gallery__nav home-gallery__nav--next"
-        onClick={() => goTo(1)}
-      >
-        <ChevronRight aria-hidden="true" size={20} />
-      </button>
-    </div>
+      {/* Follows whichever photo is in view. Not aria-live: it changes every 4.5s on its own,
+          and each photo's alt text already describes it. */}
+      <p className="home-gallery__caption">
+        <span>{photos[shown]?.caption}</span>
+        <span className="home-gallery__caption-count">
+          {shown + 1} / {photos.length}
+        </span>
+      </p>
+    </>
   );
 }
 
