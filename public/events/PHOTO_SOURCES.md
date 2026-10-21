@@ -48,3 +48,11 @@ frame. No event name or date came with them, so the alt text only describes what
 | `inzbc-group-photo-council-lunch.jpg` | Large group photo at a lunch venue, Indian and NZ flags behind |
 | `press-conference-nz-india-flags.jpg` | Press conference at a podium, NZ and Indian flags behind (cropped from a portrait original) |
 | `inzbc-leaders-group-photo.jpg` | Four people posing together indoors |
+
+## Added 21 October 2026
+
+Sent by Sunil Kaushal over WhatsApp with its caption, added to the Home gallery as photo 3.
+
+| Local file | What it shows |
+|---|---|
+| `iyer-santner-t20-series-christchurch-2026.jpg` | India T20 captain Shreyas Iyer and BlackCaps captain Mitchell Santner with the T20I series trophy, Christchurch |

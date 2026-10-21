@@ -137,7 +137,7 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_a983173d04484d5299070e65e813ddd8~mv2.jpg',
     alt: 'Three professionals holding New Zealand sports jersey at INZBC event',
-    caption: 'Artists Shiv Narandas and Jai Pancha presenting the new Kotahitanga shirt for the BlackCaps series against India in NZ to the Indian Minister of State for Textiles Hon Pabitra Margherita',
+    caption: 'Artists Shiv Narandas and Jai Pancha presenting the new Kotahitanga shirt for the BlackCaps ODI series against India in NZ to the Indian Minister of State for Textiles Hon Pabitra Margherita',
     // Portrait (3000x4000): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
@@ -145,6 +145,14 @@ const GALLERY_PHOTOS = [
     src: '/events/modi-luxon-bilateral-meeting-2026.jpg',
     alt: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting',
     caption: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting, July 2026',
+  },
+  // Sunil, 21 Oct 2026: added as photo 3, caption his own.
+  {
+    src: '/events/iyer-santner-t20-series-christchurch-2026.jpg',
+    alt: 'India T20 captain Shreyas Iyer and BlackCaps captain Mitchell Santner either side of the T20I series trophy at a cricket ground',
+    caption: 'Indian Cricket team T20 captain Shreyas Iyer (L) & BlackCaps captain Mitchell Santner (R) before the T20 series in Christchurch',
+    // Portrait (1279x1600): shown whole in the 3:2 box rather than cropped.
+    fit: 'contain',
   },
   {
     src: 'https://static.wixstatic.com/media/df219d_50a74d8e93b6440a88500da8eef1e143~mv2.jpg',
