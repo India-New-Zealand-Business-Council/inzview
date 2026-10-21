@@ -123,6 +123,9 @@ export type PartnerMark = {
   href: string;
   logo?: string;
   relationship: string;
+  // Short description for the /partners page cards (Sunil, 21 Oct 2026: business partners
+  // only). Facts checked against each organisation's own site or news coverage that day.
+  blurb?: string;
 };
 
 export const BUSINESS_PARTNERS: readonly PartnerMark[] = [
@@ -132,14 +135,20 @@ export const BUSINESS_PARTNERS: readonly PartnerMark[] = [
   // moved into the small-logo Strategic networks tier on 17 Oct 2026 over a misreading of
   // "the Bharat NZ blue logo" as this one — "Bharat" is Hindi for India, so that instruction
   // actually meant the High Commission of India logo below, not this one. Moved back here.
-  { name: 'Bank of New Zealand', href: 'https://www.bnz.co.nz/', logo: '/partners/bnz.png', relationship: 'Strategic partner' },
+  { name: 'Bank of New Zealand', href: 'https://www.bnz.co.nz/', logo: '/partners/bnz.png', relationship: 'Strategic partner',
+    blurb: 'One of New Zealand’s largest banks, serving personal, business and corporate customers since 1861.' },
   // University of Auckland and Duco Consultancy removed on Sunil's instruction (11 Oct 2026) —
   // he's sourcing High Commission of India logos to fill these two Strategic Partner slots.
-  { name: 'Zespri', href: 'https://www.zespri.com/en-NZ', logo: '/partners/zespri.png', relationship: 'Strategic partner' },
-  { name: 'Fonterra', href: 'https://www.fonterra.com/nz/en.html', logo: '/partners/fonterra.png', relationship: 'Partner' },
-  { name: 'Slumberzone New Zealand', href: 'https://slumberzone.co.nz/', logo: '/partners/slumberzone.webp', relationship: 'Associate partner' },
-  { name: 'Auckland Institute of Studies', href: 'https://www.ais.ac.nz/', logo: '/partners/ais.png', relationship: 'Associate partner' },
-  { name: 'New Zealand Airline Academy', href: 'https://www.nzaal.co.nz/', logo: '/partners/nzaal.webp', relationship: 'Associate partner' },
+  { name: 'Zespri', href: 'https://www.zespri.com/en-NZ', logo: '/partners/zespri.png', relationship: 'Strategic partner',
+    blurb: 'Owned by New Zealand’s kiwifruit growers, Zespri markets New Zealand kiwifruit around the world, India included.' },
+  { name: 'Fonterra', href: 'https://www.fonterra.com/nz/en.html', logo: '/partners/fonterra.png', relationship: 'Partner',
+    blurb: 'New Zealand’s farmer-owned dairy co-operative, and one of the world’s largest dairy exporters.' },
+  { name: 'Slumberzone New Zealand', href: 'https://slumberzone.co.nz/', logo: '/partners/slumberzone.webp', relationship: 'Associate partner',
+    blurb: 'An Auckland family business, founded in 2005, that makes and sells beds and mattresses, now expanding into manufacturing in India.' },
+  { name: 'Auckland Institute of Studies', href: 'https://www.ais.ac.nz/', logo: '/partners/ais.png', relationship: 'Associate partner',
+    blurb: 'A private tertiary institute founded in Auckland in 1990, teaching business, IT, tourism and hospitality to students from New Zealand and around the world.' },
+  { name: 'New Zealand Airline Academy', href: 'https://www.nzaal.co.nz/', logo: '/partners/nzaal.webp', relationship: 'Associate partner',
+    blurb: 'A flight school at Oamaru Airport training pilots from private licence to commercial and instructor ratings, with close links to India’s aviation industry.' },
 ] as const;
 
 export const INDIA_NETWORK: readonly PartnerMark[] = [
@@ -253,7 +262,7 @@ export const FOOTER_COLUMNS = [
     links: [
       { label: 'About INZBC', href: '/about-inzbc' },
       { label: 'Executive Council', href: '/executive-council' },
-      { label: 'Our Sponsors', href: '/partners' },
+      { label: 'Partners', href: '/partners' },
       { label: 'Our Patron', href: '/our-patron' },
     ],
   },
