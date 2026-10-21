@@ -131,87 +131,13 @@ const EVENT_PHOTOS = [
     used in the Membership page's photo showcase — on Sunil's instruction, not exclusive to
     one page. */
 const GALLERY_PHOTOS = [
-  // Three photos Sunil supplied 20 Oct 2026, cropped to 3:2 at 1600x1067 like the rest of
-  // this set. Alt text describes only what's visible: no event name or date was supplied.
-  // `fit: 'contain'` shows each one whole: the carousel box is near-square on desktop, so a
-  // cover crop cut people at both sides (Sunil, 21 Oct 2026). A blurred copy fills the bars.
+  // Cut from 21 to 12 and reordered on Sunil's instruction (21 Oct 2026), by position in
+  // the 21-photo list as it stood: 21, 17, 18, 20, 13, 12, 6, 5, 10, 16, 1, 19. Removed
+  // from this gallery only (files kept): 2, 3, 4, 7, 8, 9, 11, 14, 15.
   {
-    src: '/events/inzbc-group-photo-council-lunch.jpg',
-    alt: 'INZBC members and guests in a group photo in front of the Indian and New Zealand flags',
-    fit: 'contain',
-  },
-  {
-    src: '/events/press-conference-nz-india-flags.jpg',
-    alt: 'A press conference at a podium in front of the New Zealand and Indian flags',
-    fit: 'contain',
-  },
-  {
-    src: '/events/inzbc-leaders-group-photo.jpg',
-    alt: 'Four people posing together at an INZBC event',
-    fit: 'contain',
-  },
-  {
-    src: '/events/fta-signing-ceremony-27-apr-2026.jpg',
-    alt: 'Ministers signing the New Zealand–India Free Trade Agreement, 27 April 2026',
-  },
-  {
-    src: '/events/luxon-goyal-business-forum-2026.jpg',
-    alt: 'New Zealand Prime Minister Christopher Luxon and India’s Minister of Commerce and Industry Piyush Goyal at the India–New Zealand Business Forum',
-  },
-  {
-    src: '/events/ficci-mou-signing-pm-luxon-mission-2026.jpg',
-    alt: 'INZBC and FICCI signing a memorandum of understanding, during the New Zealand Prime Minister’s mission to India',
-  },
-  {
-    src: '/events/fta-briefing-document-exchange-india-high-commission.jpg',
-    alt: "New Zealand's Minister for Trade and Investment exchanging ratifying documentation with the High Commissioner of India, 21 September 2026",
-  },
-  {
-    src: '/events/group-photo-fta-parliament-21-sep-2026.jpeg',
-    alt: 'Ministers, officials and delegates at Parliament for the exchange of ratifying documents for the New Zealand–India Free Trade Agreement, 21 September 2026',
-  },
-  {
-    src: '/events/sunil-kaushal-todd-mclay-gift-presentation.jpg',
-    alt: "INZBC Chief Executive Sunil Kaushal presenting a gift to New Zealand's Minister for Trade and Investment",
-  },
-  {
-    src: '/events/nz-india-business-delegation-delhi-2026.jpg',
-    alt: 'New Zealand business delegation in Delhi, 2026',
-  },
-  {
-    src: '/events/nz-parliament-india-delegation-21-sep-2026.jpg',
-    alt: "New Zealand and Indian delegates at New Zealand's Parliament, 21 September 2026",
-  },
-  {
-    src: '/events/ihc-todd-mcclay.jpeg',
-    alt: "New Zealand's Minister for Trade and Investment and India's High Commissioner exchanging ratifying documentation, with PM Christopher Luxon behind them",
-    // Near-square source (1065x1032) in a wide carousel box — bias top so cover doesn't
-    // crop into the three people's heads (same fix as the carousel photos above).
-    position: '50% 8%',
-  },
-  // Replaced the old Summit 2018 archive set (17 Oct 2026, Sunil's instruction) — real recent
-  // event photography instead. `position` biases the one-at-a-time carousel's crop toward
-  // these people's heads rather than the room's object-fit: cover default centre crop, which
-  // was cutting heads off when the carousel's box is wider than the photo.
-  {
-    src: '/events/fta-signing-document-exchange-27-apr-2026.jpg',
-    alt: 'India’s Minister of Commerce and Industry Piyush Goyal and New Zealand’s Minister for Trade and Investment Todd McClay exchanging signed FTA documentation, 27 April 2026',
-    position: '50% 15%',
-  },
-  {
-    src: '/events/fta-signing-gift-exchange-27-apr-2026.jpg',
-    alt: 'Ministers Piyush Goyal and Todd McClay exchanging gifts after the NZ–India FTA signing, 27 April 2026',
-    position: '50% 15%',
-  },
-  {
-    src: '/events/inzbc-from-agreement-to-business-podium-23-sep-2026.jpeg',
-    alt: "A speaker at INZBC's 'From Agreement to Business' event, Auckland, 23 September 2026",
-    position: '50% 20%',
-  },
-  {
-    src: '/events/inzbc-from-agreement-to-business-panel-23-sep-2026.jpeg',
-    alt: "A panel session at INZBC's 'From Agreement to Business' event, Auckland, 23 September 2026",
-    position: '50% 20%',
+    src: 'https://static.wixstatic.com/media/df219d_a983173d04484d5299070e65e813ddd8~mv2.jpg',
+    alt: 'Three professionals holding New Zealand sports jersey at INZBC event',
+    position: '50% 35%',
   },
   {
     src: '/events/modi-luxon-bilateral-meeting-2026.jpg',
@@ -226,19 +152,56 @@ const GALLERY_PHOTOS = [
     position: '100% 30%',
   },
   {
-    src: 'https://static.wixstatic.com/media/df219d_181dd30a32ae4babba147c9b90733229~mv2.jpg',
-    alt: 'Speaker addressing audience at INZBC event with Indian flag',
-    position: '50% 20%',
-  },
-  {
     src: 'https://static.wixstatic.com/media/df219d_5647342feafb44bbb29bc772daa41296~mv2.jpg',
     alt: 'Business professional speaking at podium during INZBC event',
     position: '50% 25%',
   },
+  // Replaced the old Summit 2018 archive set (17 Oct 2026, Sunil's instruction) — real recent
+  // event photography instead. `position` biases the one-at-a-time carousel's crop toward
+  // these people's heads rather than the room's object-fit: cover default centre crop, which
+  // was cutting heads off when the carousel's box is wider than the photo.
   {
-    src: 'https://static.wixstatic.com/media/df219d_a983173d04484d5299070e65e813ddd8~mv2.jpg',
-    alt: 'Three professionals holding New Zealand sports jersey at INZBC event',
-    position: '50% 35%',
+    src: '/events/fta-signing-document-exchange-27-apr-2026.jpg',
+    alt: 'India’s Minister of Commerce and Industry Piyush Goyal and New Zealand’s Minister for Trade and Investment Todd McClay exchanging signed FTA documentation, 27 April 2026',
+    position: '50% 15%',
+  },
+  {
+    src: '/events/ihc-todd-mcclay.jpeg',
+    alt: "New Zealand's Minister for Trade and Investment and India's High Commissioner exchanging ratifying documentation, with PM Christopher Luxon behind them",
+    // Near-square source (1065x1032) in a wide carousel box — bias top so cover doesn't
+    // crop into the three people's heads (same fix as the carousel photos above).
+    position: '50% 8%',
+  },
+  {
+    src: '/events/ficci-mou-signing-pm-luxon-mission-2026.jpg',
+    alt: 'INZBC and FICCI signing a memorandum of understanding, during the New Zealand Prime Minister’s mission to India',
+  },
+  {
+    src: '/events/luxon-goyal-business-forum-2026.jpg',
+    alt: 'New Zealand Prime Minister Christopher Luxon and India’s Minister of Commerce and Industry Piyush Goyal at the India–New Zealand Business Forum',
+  },
+  {
+    src: '/events/nz-india-business-delegation-delhi-2026.jpg',
+    alt: 'New Zealand business delegation in Delhi, 2026',
+  },
+  {
+    src: '/events/inzbc-from-agreement-to-business-panel-23-sep-2026.jpeg',
+    alt: "A panel session at INZBC's 'From Agreement to Business' event, Auckland, 23 September 2026",
+    position: '50% 20%',
+  },
+  // Three photos Sunil supplied 20 Oct 2026, cropped to 3:2 at 1600x1067 like the rest of
+  // this set. Alt text describes only what's visible: no event name or date was supplied.
+  // `fit: 'contain'` shows each one whole: the carousel box is near-square on desktop, so a
+  // cover crop cut people at both sides (Sunil, 21 Oct 2026). A blurred copy fills the bars.
+  {
+    src: '/events/inzbc-group-photo-council-lunch.jpg',
+    alt: 'INZBC members and guests in a group photo in front of the Indian and New Zealand flags',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_181dd30a32ae4babba147c9b90733229~mv2.jpg',
+    alt: 'Speaker addressing audience at INZBC event with Indian flag',
+    position: '50% 20%',
   },
 ] as const;
 
