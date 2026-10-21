@@ -154,6 +154,14 @@ const GALLERY_PHOTOS = [
     // Portrait (1279x1600): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
+  // Supplied 21 Oct 2026 as photo 4, caption as given.
+  {
+    src: '/events/inzbc-luxon-vicelich-20-oct-2026.jpg',
+    alt: 'INZBC Chair and CEO Sunil Kaushal with Prime Minister Christopher Luxon and Carmen Vicelich',
+    caption: 'INZBC Chair (L) & CEO Sunil Kaushal (R) with Prime Minister Rt Hon Christopher Luxon & former board member Carmen Vicelich, 20 October 2026',
+    // Near-square (1600x1383): anchor the 3:2 crop to the top so all four heads stay in.
+    position: '50% 0%',
+  },
   {
     src: 'https://static.wixstatic.com/media/df219d_50a74d8e93b6440a88500da8eef1e143~mv2.jpg',
     alt: 'INZBC business leaders shaking hands at an official event',
