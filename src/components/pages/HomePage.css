@@ -515,6 +515,9 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
+  /* Two lines reserved, so the row (and the social cards stretched to it) doesn't change
+     height as the carousel moves between short and long captions. */
+  min-height: 2.8em;
   margin: 0.9rem 0 0;
   color: var(--home-ink);
   font-size: 0.95rem;
