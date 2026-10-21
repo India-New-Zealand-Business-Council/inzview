@@ -1172,7 +1172,7 @@ function ConnectBody() {
         </div>
       </section>
 
-      {/* Real, live Twitter/X and Facebook embeds — official public embed methods
+      {/* Real, live X and Facebook embeds — official public embed methods
           (SocialFeeds.tsx), not the old site's POWr app. Not visually verified this session;
           see that file's own comment for the full reasoning and what the fallback state is
           if either script fails to load. */}
