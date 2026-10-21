@@ -45,6 +45,24 @@ export type NewsPost = {
 
 export const NEWS_POSTS: readonly NewsPost[] = [
   {
+    // Sunil's op-ed in Newsroom (20 Oct 2026), added 21 Oct 2026. The article is paywalled, so
+    // only the headline, standfirst and opening lines Sunil supplied are reproduced here, with
+    // a link out to the full piece. Headline, standfirst, byline and date checked against the
+    // Newsroom page itself. Cover is INZBC's own Delhi delegation photo, not Newsroom's image.
+    slug: 'the-india-fta-is-here-are-nz-businesses-looking-in-the-wrong-places',
+    title: 'The India FTA is here – are NZ businesses looking in the wrong places?',
+    date: '20 October 2026',
+    sortKey: '2026-10-20',
+    cover: 'nz-india-business-delegation-delhi-2026.jpg',
+    alt: 'New Zealand business delegation in Delhi, 2026',
+    excerpt: 'Free trade with India will be about far more than wood and wool, as digital services company Valocity is proving. By INZBC Chief Executive Sunil Kaushal, in Newsroom.',
+    body: [
+      { type: 'p', text: 'By Sunil Kaushal, Chief Executive of the India New Zealand Business Council. Published in Newsroom, 20 October 2026.' },
+      { type: 'p', text: 'The real measure of this agreement goes beyond whether New Zealand sells more of today’s products to India. The free trade agreement changes the rules. What New Zealand businesses do with them will decide what the agreement is worth.' },
+      { type: 'p', text: '[Read the full article on Newsroom](https://newsroom.co.nz/2026/10/20/the-india-fta-is-here-are-nz-businesses-looking-in-the-wrong-places/) (subscriber content).' },
+    ],
+  },
+  {
     // Media release supplied by Sunil via Drive ("Latest News" folder, "NZ India FTA Goes Live
     // 20 October 25.docx") on 17 Oct 2026, copied verbatim. The document's own header line,
     // "EMBARGOED UNTIL 12:01 AM NZDT, TUESDAY 20 OCTOBER 2026", is left off the page; Sunil
