@@ -507,7 +507,7 @@
   right: 0.75rem;
 }
 
-/* Four compact cards (Facebook/LinkedIn/YouTube/Instagram), not one tall Facebook-only card — fills
+/* Five compact cards (Facebook/LinkedIn/YouTube/Instagram/X), not one tall Facebook-only card — fills
    the full height of the photo strip beside it instead of leaving most of that column empty. */
 .home-gallery__social-stack {
   display: flex;
@@ -522,7 +522,7 @@
   align-items: center;
   gap: 1rem;
   border-radius: 1.1rem;
-  padding: 1.5rem 1.75rem;
+  padding: 1rem 1.75rem;
   background: var(--home-navy);
   color: #fff;
   text-decoration: none;

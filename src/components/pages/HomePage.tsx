@@ -1299,13 +1299,14 @@ export default function HomePage() {
             {/* Static link-outs, not live SDK embeds — that exact pattern (a script injected
                 into document.body) is what broke the Connect page until it was pulled out
                 (15 Oct 2026). Same real brand icons/colours Footer.tsx already uses, just no
-                script tag, so none of these four can take the homepage down with them. */}
+                script tag, so none of these five can take the homepage down with them. */}
             <div className="home-gallery__social-stack">
               {[
                 { name: 'Facebook', href: LINKS.facebook, icon: ART.socialFacebook, color: '#1877F2', label: 'Follow us on Facebook' },
                 { name: 'LinkedIn', href: LINKS.linkedin, icon: ART.socialLinkedin, color: '#0A66C2', label: 'Connect with us on LinkedIn' },
                 { name: 'YouTube', href: LINKS.youtube, icon: ART.socialYoutube, color: '#FF0000', label: 'Watch our videos on YouTube' },
                 { name: 'Instagram', href: LINKS.instagram, icon: ART.socialInstagram, color: '#E4405F', label: 'Follow us on Instagram' },
+                { name: 'X', href: LINKS.x, icon: ART.socialX, color: '#000000', label: 'Follow us on X' },
               ].map((social) => (
                 <a
                   key={social.name}

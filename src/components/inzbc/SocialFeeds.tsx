@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { LINKS } from './content';
+
+const X_HANDLE = new URL(LINKS.x).pathname.replace(/\//g, '');
 
 /**
  * Facebook is a real, live embed (connect.facebook.net's Page Plugin SDK) — the official
  * public embed method, not the old site's POWr app (a paid third-party Wix app with no
  * equivalent here) and not a hand-built approximation of one.
  *
- * X/Twitter is not: see TwitterTimeline's own comment for why the live widget was replaced
- * with its fallback card as the permanent state, not a last resort.
+ * X/Twitter is the same: X's official widgets.js timeline, with a detectable fallback — see
+ * TwitterTimeline's own comment.
  *
- * The Facebook SDK ships no types, so the injected `window.FB` global is typed `any` below —
+ * Neither SDK ships types, so the injected `window.FB` / `window.twttr` globals are typed `any` below —
  * there's no @types package for it and declaring a full ambient type for two methods isn't
  * worth it.
  *
@@ -71,21 +73,88 @@ function FeedFallback({ platform, href }: { platform: string; href: string }) {
 }
 
 /**
- * Not a live embed, on purpose — this used to attempt platform.twitter.com/widgets.js the
- * same way FacebookPage still does. That script itself loads fine (verified: 200 OK, not a
- * dead URL, and renaming anything to "x.com" doesn't change this), but the timeline it
- * renders comes from X's backend API, which X locked down after the 2023 platform changes.
- * For accounts without special API access the widget silently renders nothing — no error
- * event fires, because the script itself succeeded; the empty result is inside a
- * cross-origin iframe X controls, which this page has no way to inspect or detect from the
- * outside. That combination means the old code could show "Loading the latest posts…"
- * forever with no way to notice the load had actually failed and fall back — worse than
- * just being honest about it. This is the same real, working fallback card FeedFallback
- * already provides for Facebook's actual failure case, used here as the primary state
- * instead of a last resort, because for X it currently always is one.
+ * Live timeline via X's own widgets.js, created programmatically with
+ * twttr.widgets.createTimeline() rather than the <a class="twitter-timeline"> auto-scan: the
+ * promise it returns resolves to undefined when X refuses to render the timeline, which the
+ * anchor markup never reports. That, plus a timeout for a script that loads but never
+ * finishes, means a failed load falls back to FeedFallback instead of sitting on "Loading…"
+ * forever. A "View on X" link stays under the live feed too, since X can still render an
+ * empty timeline inside its own cross-origin iframe that this page cannot inspect.
  */
+const TWITTER_TIMEOUT_MS = 12000;
+
 function TwitterTimeline() {
-  return <FeedFallback platform="X" href={LINKS.x} />;
+  const [state, setState] = useState<LoadState>('loading');
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const timeout = window.setTimeout(() => {
+      if (!cancelled) setState((current) => (current === 'loading' ? 'error' : current));
+    }, TWITTER_TIMEOUT_MS);
+
+    loadScriptOnce(
+      'https://platform.twitter.com/widgets.js',
+      'twitter-wjs',
+      () => {
+        const container = containerRef.current;
+        const widgets = (window as any).twttr?.widgets;
+        if (cancelled || !container || !widgets?.createTimeline) {
+          if (!cancelled) setState('error');
+          return;
+        }
+        container.innerHTML = '';
+        widgets
+          .createTimeline({ sourceType: 'profile', screenName: X_HANDLE }, container, {
+            height: 760,
+            chrome: 'noheader nofooter',
+            dnt: true,
+          })
+          .then((el: HTMLElement | undefined) => {
+            if (!cancelled) setState(el ? 'ready' : 'error');
+          })
+          .catch(() => {
+            if (!cancelled) setState('error');
+          });
+      },
+      () => {
+        if (!cancelled) setState('error');
+      },
+    );
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeout);
+    };
+  }, []);
+
+  if (state === 'error') return <FeedFallback platform="X" href={LINKS.x} />;
+
+  return (
+    <div>
+      {/* The container stays laid out (not display:none) while loading so the widget can
+          measure its width; the status text just sits over it until the timeline arrives. */}
+      <div className="relative min-h-[760px]">
+        {state === 'loading' ? (
+          <p role="status" className="absolute inset-0 flex items-center justify-center text-sm text-foreground/60">
+            Loading the latest posts&hellip;
+          </p>
+        ) : null}
+        <div ref={containerRef} />
+      </div>
+      {state === 'ready' ? (
+        <div className="border-t border-black/5 px-6 py-3 text-center">
+          <a
+            href={LINKS.x}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-navy underline-offset-4 hover:underline"
+          >
+            View @{X_HANDLE} on X
+          </a>
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 function FacebookPage() {
@@ -108,9 +177,9 @@ function FacebookPage() {
     };
   }, []);
 
-  // Same reasoning as TwitterTimeline's separate effect above: this has to run after React
-  // commits the render that removes the fb-page div's display:none, not inline from the
-  // script's onload, or XFBML.parse() measures a hidden element.
+  // This has to run after React commits the render that removes the fb-page div's
+  // display:none, not inline from the script's onload, or XFBML.parse() measures a hidden
+  // element.
   useEffect(() => {
     if (state === 'ready') (window as any).FB?.XFBML?.parse();
   }, [state]);
