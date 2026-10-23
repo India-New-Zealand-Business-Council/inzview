@@ -193,7 +193,7 @@ function ContactForm() {
         Message
         <textarea required rows={4} value={fields.message} onChange={set('message')} className={inputCls} />
       </label>
-      <p className="text-xs text-foreground/60">
+      <p className="text-xs text-foreground/75">
         Sending opens your own email client with this message ready to go.
       </p>
       <button
@@ -883,7 +883,7 @@ function MembershipBody() {
         <Reveal delay={0.06}>
           <div className="mx-auto mt-12 grid max-w-3xl gap-x-12 gap-y-10 sm:grid-cols-2">
             <div>
-              <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-foreground/60">
+              <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-foreground/75">
                 New Zealand
               </h3>
               <dl className="mt-4 divide-y divide-ink/10">
@@ -904,7 +904,7 @@ function MembershipBody() {
               </dl>
             </div>
             <div>
-              <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-foreground/60">
+              <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-foreground/75">
                 India
               </h3>
               <dl className="mt-4 divide-y divide-ink/10">
@@ -918,7 +918,7 @@ function MembershipBody() {
                   </div>
                 ))}
               </dl>
-              <p className="mt-4 text-xs text-foreground/60">
+              <p className="mt-4 text-xs text-foreground/75">
                 Annual fees, excluding GST and transaction charges.
               </p>
             </div>
@@ -1902,7 +1902,7 @@ function PartnersBody() {
               the India and public-sector networks below stay logo-only. */}
           <Reveal delay={0.08}>
             <div className="mt-10">
-              <p className="text-xs font-medium uppercase tracking-wide text-foreground/60">Our partners</p>
+              <p className="text-xs font-medium uppercase tracking-wide text-foreground/75">Our partners</p>
               <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {BUSINESS_PARTNERS.map((partner) => (
                   <a
@@ -1917,7 +1917,7 @@ function PartnersBody() {
                         <Image src={partner.logo} alt={`${partner.name} logo`} loading="lazy" className="max-h-16 max-w-[180px] object-contain" />
                       ) : null}
                     </span>
-                    <span className="mt-5 text-xs font-medium uppercase tracking-wide text-foreground/60">
+                    <span className="mt-5 text-xs font-medium uppercase tracking-wide text-foreground/75">
                       {partner.relationship}
                     </span>
                     <span className="mt-1 font-heading text-lg font-semibold text-ink">{partner.name}</span>
@@ -1934,7 +1934,7 @@ function PartnersBody() {
 
           <Reveal delay={0.14}>
             <div className="mt-10">
-              <p className="text-xs font-medium uppercase tracking-wide text-foreground/60">India industry network</p>
+              <p className="text-xs font-medium uppercase tracking-wide text-foreground/75">India industry network</p>
               <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {INDIA_NETWORK.map((partner) => (
                   <a
@@ -1963,7 +1963,7 @@ function PartnersBody() {
 
           <Reveal delay={0.2}>
             <div className="mt-10 border-t border-ink/10 pt-8">
-              <p className="text-xs font-medium uppercase tracking-wide text-foreground/60">Strategic networks</p>
+              <p className="text-xs font-medium uppercase tracking-wide text-foreground/75">Strategic networks</p>
               {/* Same uniform card grid as the two sections above, not the old flex-wrap
                   pill row — that let each chip's width follow its logo's own aspect ratio,
                   which with this many very different logo shapes (square icons next to wide
@@ -2540,11 +2540,11 @@ function IndiaMarketOpportunitiesBody() {
 
           <dl className="mt-10 space-y-8 border-t border-ink/10 pt-8">
             {SECTOR_OUTCOMES.map(({ sector, outcome }, i) => (
-              <Reveal key={sector} delay={i * 0.06}>
-                <div className={i > 0 ? 'border-t border-ink/10 pt-8' : ''}>
-                  <dt className="font-heading text-xl text-plum">{sector}</dt>
-                  <dd className="mt-2 text-foreground">{outcome}</dd>
-                </div>
+              // Reveal is the dt/dd group itself: a <dl> may hold one wrapping <div> per
+              // group, not two, so an extra div here broke the list for screen readers.
+              <Reveal key={sector} delay={i * 0.06} className={i > 0 ? 'border-t border-ink/10 pt-8' : ''}>
+                <dt className="font-heading text-xl text-plum">{sector}</dt>
+                <dd className="mt-2 text-foreground">{outcome}</dd>
               </Reveal>
             ))}
           </dl>

@@ -47,7 +47,7 @@ export default function FtaExplainerPage() {
           <div className="mx-auto max-w-2xl text-center">
             <Reveal>
               <p className="text-foreground">Coming soon.</p>
-              <p className="mt-6 text-sm text-foreground/70">
+              <p className="mt-6 text-sm text-foreground/80">
                 All answers cite the approved FTA corpus only. Content is human-reviewed before
                 publication.
               </p>

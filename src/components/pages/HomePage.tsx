@@ -298,6 +298,9 @@ function GalleryCarousel({
         <div
           className="home-gallery__strip"
           role="list"
+          aria-label="Event photos"
+          // Focusable so a keyboard user can scroll the strip with the arrow keys (WCAG 2.1.1).
+          tabIndex={0}
           ref={stripRef}
           onPointerDown={pauseAutoAdvance}
           onWheel={pauseAutoAdvance}

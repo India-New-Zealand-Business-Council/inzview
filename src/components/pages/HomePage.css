@@ -526,7 +526,8 @@
 
 .home-gallery__caption-count {
   flex: 0 0 auto;
-  color: rgba(26, 11, 63, 0.55);
+  /* 0.55 measured 4.11:1 on white, under WCAG AA's 4.5:1 for small text. */
+  color: rgba(26, 11, 63, 0.72);
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
 }
