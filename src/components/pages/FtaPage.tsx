@@ -196,24 +196,11 @@ const SECTOR_HIGHLIGHTS: readonly SectorHighlight[] = [
     image: '/sectors/investment.png',
     alt: 'NZ India FTA sector graphic for investment and innovation: 100% tariff elimination on day one for investment-related goods, phase-out period up to 10 years',
   },
-  // Six more cards added 14 Oct 2026 from the same Drive folder as the five above — the
-  // first pass only used five of the eleven graphics actually in that folder.
-  {
-    slug: 'technology',
-    title: 'Technology & IT services',
-    stat: 'Zero duty on IT services exports',
-    blurb: 'Zero duty on IT services exports to a market of 1.4+ billion people, covering software development & engineering, cloud services, data analytics & AI, cybersecurity, IT consulting & support and fintech & digital solutions, with a phase-out period of up to 10 years.',
-    image: '/sectors/tech.png',
-    alt: 'NZ India FTA sector graphic for technology and IT services: zero duty on IT services exports, phase-out period up to 10 years, key service areas software development, cloud services, data analytics and AI, cybersecurity, IT consulting and fintech',
-  },
-  {
-    slug: 'education',
-    title: 'Education',
-    stat: 'Phase-out period up to 10 years',
-    blurb: 'Stronger market access for New Zealand education providers into one of the world’s fastest-growing student markets, covering higher education, vocational education and training, and online/digital delivery, with a phase-out period of up to 10 years.',
-    image: '/sectors/education.png',
-    alt: 'NZ India FTA sector graphic for education: phase-out period up to 10 years, covering higher education, vocational education and training, and online/digital delivery',
-  },
+  // More cards added 14 Oct 2026 from the same Drive folder as the five above. Technology &
+  // IT services, Education and Wine were removed on 23 Oct 2026: their graphics print figures
+  // MFAT's Key Outcomes does not support (wine is a 66–83% reduction over ten years, not "up to
+  // 150%"; no IT-services duty or ten-year phase-out for services). Restore them only with
+  // corrected graphics checked against MFAT.
   {
     slug: 'kiwifruit',
     title: 'Kiwifruit',
@@ -221,14 +208,6 @@ const SECTOR_HIGHLIGHTS: readonly SectorHighlight[] = [
     blurb: 'Best access of any major kiwifruit exporter to India: duty-free within a 6,250 MT year-one quota, rising to 15,000 MT by year six, within a 1 April–15 October seasonal window.',
     image: '/sectors/kiwifruit.png',
     alt: 'NZ India FTA sector graphic for kiwifruit: duty-free in quota, 6,250 MT year one quota rising to 15,000 MT by year six, seasonal window 1 April to 15 October',
-  },
-  {
-    slug: 'wine',
-    title: 'Wine',
-    stat: 'Tariffs reduced up to 150%',
-    blurb: 'Tariffs on New Zealand wine — including Sauvignon Blanc, Pinot Noir, Chardonnay and other premium varietals — reduced significantly over time, by up to 150%, with a phase-out period of up to 10 years.',
-    image: '/sectors/wine.png',
-    alt: 'NZ India FTA sector graphic for wine: tariffs reduced up to 150% significantly over time, phase-out period up to 10 years, key wines Sauvignon Blanc, Pinot Noir and Chardonnay',
   },
   {
     slug: 'manuka-honey',
