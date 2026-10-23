@@ -56,4 +56,14 @@ Sent by Sunil Kaushal over WhatsApp with its caption, added to the Home gallery 
 | Local file | What it shows |
 |---|---|
 | `iyer-santner-t20-series-christchurch-2026.jpg` | India T20 captain Shreyas Iyer and BlackCaps captain Mitchell Santner with the T20I series trophy, Christchurch |
-| `inzbc-luxon-vicelich-20-oct-2026.jpg` | INZBC Chair and CEO with PM Christopher Luxon and Carmen Vicelich, 20 October 2026 (Home gallery photo 4) |
+| `inzbc-luxon-vicelich-20-oct-2026.jpg` | INZBC Chair and CEO with PM Christopher Luxon and Carmen Vicelich, 20 October 2026 (Home gallery photo 5) |
+
+## Added 24 October 2026
+
+Sent by Sunil Kaushal over WhatsApp with its caption, added to the Home gallery as photo 4.
+Cropped from the 2000x1500 original to the group, at 1600x863, on his request to cut the empty
+space.
+
+| Local file | What it shows |
+|---|---|
+| `inzbc-board-fta-entry-into-force-22-oct-2026.jpg` | INZBC board members with Minister Todd McClay, Indian High Commissioner Muanpuii Saiawi and Auckland Mayor Wayne Brown at the FTA entry into force event, Auckland, 22 October 2026 |
