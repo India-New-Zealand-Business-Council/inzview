@@ -2230,7 +2230,7 @@ function TradeResourcesBody() {
             <p className="mt-6 text-lg text-foreground">
               {exportsCovered.figure} of New Zealand&rsquo;s current exports to India get
               tariff elimination or reduction under the NZ&ndash;India FTA, with{' '}
-              {dutyFreeDayOne.figure} duty-free from 20 October 2026, when it enters into
+              {dutyFreeDayOne.figure} duty-free since 20 October 2026, when it entered into
               force. Sheep meat,
               wool and coal clear immediately; apples get preferential access for the first
               time in any Indian FTA; kiwifruit and mānuka honey follow within five years;
