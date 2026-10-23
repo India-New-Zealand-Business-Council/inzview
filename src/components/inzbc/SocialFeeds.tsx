@@ -135,7 +135,7 @@ function TwitterTimeline() {
           measure its width; the status text just sits over it until the timeline arrives. */}
       <div className="relative min-h-[760px]">
         {state === 'loading' ? (
-          <p role="status" className="absolute inset-0 flex items-center justify-center text-sm text-foreground/60">
+          <p role="status" className="absolute inset-0 flex items-center justify-center text-sm text-foreground/75">
             Loading the latest posts&hellip;
           </p>
         ) : null}
@@ -189,7 +189,7 @@ function FacebookPage() {
   return (
     <div className={state === 'loading' ? 'flex min-h-[760px] items-center justify-center' : undefined}>
       {state === 'loading' ? (
-        <p role="status" className="text-sm text-foreground/60">
+        <p role="status" className="text-sm text-foreground/75">
           Loading the latest posts&hellip;
         </p>
       ) : null}
