@@ -154,7 +154,16 @@ const GALLERY_PHOTOS = [
     // Portrait (1279x1600): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
-  // Supplied 21 Oct 2026 as photo 4, caption as given.
+  // Sunil, 24 Oct 2026: added as photo 4, caption his own with names spelt as elsewhere on
+  // this site. Cropped from 2000x1500 to the group (1600x863) to cut the empty ceiling and
+  // floor; shown whole, as with the other group photos.
+  {
+    src: '/events/inzbc-board-fta-entry-into-force-22-oct-2026.jpg',
+    alt: 'INZBC board members in a group photo with Trade Minister Todd McClay, Indian High Commissioner Muanpuii Saiawi and Auckland Mayor Wayne Brown, in front of the New Zealand and Indian flags',
+    caption: 'INZBC board members with Minister Hon Todd McClay, Indian High Commissioner Her Excellency Ms. Muanpuii Saiawi and Auckland Mayor Wayne Brown at the FTA entry into force event in Auckland, 22 October 2026',
+    fit: 'contain',
+  },
+  // Supplied 21 Oct 2026 as photo 4 (now 5), caption as given.
   {
     src: '/events/inzbc-luxon-vicelich-20-oct-2026.jpg',
     alt: 'INZBC Chair and CEO Sunil Kaushal with Prime Minister Christopher Luxon and Carmen Vicelich',
