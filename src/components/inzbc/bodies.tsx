@@ -141,8 +141,11 @@ function TextLink({ href, children, external = false }: { href: string; children
  * connect.html's own sourced snippet specifies). Submits to `/api/site-forms` (#45's webhook
  * contract), which signs and forwards to the platform; see src/lib/siteForms.ts. Falls back to
  * the previous mailto draft — opening the visitor's own email client — when the platform isn't
- * reachable yet (api/site-forms.ts's `not_configured`, expected until #99 lands) or the request
- * fails outright, so a visitor is never left with a dead "Send" button either way.
+ * reachable yet (api/site-forms.ts's `not_configured`; needs the platform API and its database
+ * hosted, decision 3 in inzbc's decisions-needed.md, not just #99's free-tier FTA-only deploy)
+ * or the request fails outright, so a visitor is never left with a dead "Send" button either way.
+ * The visible copy stays the honest mailto-opening line until that lands — don't promise direct
+ * delivery the form can't yet make good on (caught in review, 25 Oct 2026).
  */
 function ContactForm() {
   const [fields, setFields] = useState({ firstName: '', lastName: '', email: '', subject: '', message: '' });
@@ -219,7 +222,7 @@ function ContactForm() {
       <p className="text-xs text-foreground/75">
         {status === 'fallback'
           ? "We couldn't submit this directly — opening your email app instead."
-          : 'Sends straight to the Secretariat.'}
+          : 'Sending opens your own email client with this message ready to go.'}
       </p>
       <button
         type="submit"

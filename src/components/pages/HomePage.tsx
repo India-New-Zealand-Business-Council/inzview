@@ -846,8 +846,10 @@ function openContactMailtoDraft(data: FormData) {
 /**
  * Home's quick-contact card. Submits to `/api/site-forms` (#45's webhook contract) via
  * src/lib/siteForms.ts, same pattern as Connect's ContactForm (src/components/inzbc/bodies.tsx)
- * — falls back to the previous mailto draft when the platform isn't reachable yet (expected
- * until #99 lands) or the request fails outright.
+ * — falls back to the previous mailto draft when the platform isn't reachable yet (needs the
+ * platform API and its database hosted, decision 3 in inzbc's decisions-needed.md, not just
+ * #99's free-tier FTA-only deploy) or the request fails outright. Visible copy stays the honest
+ * mailto-opening line until that lands (caught in review, 25 Oct 2026).
  */
 function HomeContactForm() {
   const [status, setStatus] = useState<SiteFormStatus>('idle');
@@ -910,7 +912,7 @@ function HomeContactForm() {
       >
         <div className="home-contact-form__head">
           <h4 id="home-contact-form-title">Send an enquiry</h4>
-          <span>{status === 'fallback' ? 'Email draft' : 'Direct'}</span>
+          <span>Email draft</span>
         </div>
         <div className="home-contact-form__grid">
           <label>
@@ -951,13 +953,13 @@ function HomeContactForm() {
         </div>
         <div className="home-contact-form__footer">
           <button type="submit" disabled={status === 'submitting'} aria-describedby="home-contact-form-status">
-            {status === 'submitting' ? 'Sending…' : 'Send enquiry'}
+            {status === 'submitting' ? 'Sending…' : 'Prepare email'}
             <ArrowRight aria-hidden="true" size={17} />
           </button>
           <p id="home-contact-form-status">
             {status === 'fallback'
               ? "We couldn't submit this directly — opening your email app instead."
-              : 'Sends straight to the Secretariat.'}
+              : 'Opens your email app with these details ready to review and send.'}
           </p>
         </div>
       </form>
