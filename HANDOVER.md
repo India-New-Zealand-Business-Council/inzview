@@ -218,12 +218,20 @@ Needs INZBC to supply something:
    HSIIDC are text-only because `nabard.org` and `hsiidc.org.in` both refuse every connection
    attempt from this environment (not a scraping failure — the sites themselves are
    unreachable here). Checked 20 Oct 2026.
-2. **Both forms on the site are mailto-only, not real submissions.** The Connect page's
-   `ContactForm` (`bodies.tsx`) and Home's quick-contact form (`HomePage.tsx`) both build a
-   `mailto:` link from what was typed and open the visitor's own email client — honestly
-   labelled as such in both, so nothing is silently discarded, but nothing reaches the
-   Secretariat unless the visitor's own client sends it. Needs a real Wix Form (or equivalent)
-   so a submission actually delivers. Checked 20 Oct 2026, still the real state of both.
+2. **Both forms submit for real now, but have nowhere live to submit to yet.** As of 25 Oct
+   2026, the Connect page's `ContactForm` (`bodies.tsx`) and Home's quick-contact form
+   (`HomePage.tsx`) both POST to this site's own `src/pages/api/site-forms.ts`, an Astro SSR
+   route that signs the submission (HMAC-SHA256) and forwards it to the platform's receiver per
+   `schemas/webhooks.md` (#45) in the `inzbc` repo — code is built and complete on both sides.
+   **What's actually missing is a place for it to go**: the platform API has no public host yet
+   (`inzbc`#99, "Platform hosting" is still an open decision in `inzbc/docs/decisions-needed.md`),
+   so `INZBC_API_BASE_URL` and the shared `WIX_WEBHOOK_SECRET` are unset in this site's Vibe
+   deployment. Until both are set, `site-forms.ts` returns `not_configured` and both forms fall
+   back to the previous mailto draft automatically — a visitor is never shown a dead "Send"
+   button, but nothing reaches the Secretariat without the visitor's own client sending it,
+   exactly as before. Once #99 lands: set `WIX_WEBHOOK_SECRET` (same value as the `inzbc`
+   deployment) and `INZBC_API_BASE_URL` (that deployment's base URL) as environment variables on
+   this site's Vibe deployment, then re-verify both forms against the live receiver.
 3. **News, events and sector-report content has no CMS — it's hardcoded TypeScript.** Per
    `ADR-0007`, `inzview` is a plain Astro/React site: `content.ts` and `news.ts` hold every
    post, event and figure as literal array entries. Adding or editing a post today means a

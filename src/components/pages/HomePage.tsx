@@ -37,6 +37,7 @@ import ClickSpark from '@/components/home/ClickSpark';
 import EffectsWorld from '@/components/home/EffectsWorld';
 import KineticHeading from '@/components/home/KineticHeading';
 import TradeThread from '@/components/home/TradeThread';
+import { submitSiteForm, type SiteFormStatus } from '@/lib/siteForms';
 import './HomePage.css';
 import { Image } from '@/components/ui/image';
 
@@ -822,9 +823,7 @@ function ConversionRoute() {
   );
 }
 
-function openContactDraft(event: React.FormEvent<HTMLFormElement>) {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
+function openContactMailtoDraft(data: FormData) {
   const name = String(data.get('name') ?? '').trim();
   const email = String(data.get('email') ?? '').trim();
   const organisation = String(data.get('organisation') ?? '').trim();
@@ -842,6 +841,128 @@ function openContactDraft(event: React.FormEvent<HTMLFormElement>) {
     .join('\n');
 
   window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+/**
+ * Home's quick-contact card. Submits to `/api/site-forms` (#45's webhook contract) via
+ * src/lib/siteForms.ts, same pattern as Connect's ContactForm (src/components/inzbc/bodies.tsx)
+ * — falls back to the previous mailto draft when the platform isn't reachable yet (expected
+ * until #99 lands) or the request fails outright.
+ */
+function HomeContactForm() {
+  const [status, setStatus] = useState<SiteFormStatus>('idle');
+
+  if (status === 'sent') {
+    return (
+      <div
+        className="home-conversion-card home-conversion-card--contact"
+        data-reel="rise"
+        style={{ '--reel-delay': '190ms' } as React.CSSProperties}
+      >
+        <p role="status" className="home-contact-form__footer">
+          Message sent. The Secretariat will be in touch.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="home-conversion-card home-conversion-card--contact"
+      data-reel="rise"
+      style={{ '--reel-delay': '190ms' } as React.CSSProperties}
+    >
+      <div className="home-contact-intro">
+        <span className="home-card-kicker">Contact</span>
+        <h3>Speak with the Secretariat</h3>
+        <p>
+          Sunil Kaushal<br />
+          <a href={LINKS.email} className="home-focus-light">
+            Comms@inzbc.org
+          </a>
+        </p>
+      </div>
+      <form
+        className="home-contact-form"
+        aria-labelledby="home-contact-form-title"
+        aria-describedby="home-contact-form-status"
+        onSubmit={async (event) => {
+          event.preventDefault();
+          const data = new FormData(event.currentTarget);
+          const name = String(data.get('name') ?? '').trim();
+          const email = String(data.get('email') ?? '').trim();
+          const organisation = String(data.get('organisation') ?? '').trim();
+          const message = String(data.get('message') ?? '').trim();
+          setStatus('submitting');
+          const result = await submitSiteForm(
+            {
+              form_type: 'general_enquiry',
+              page_slug: window.location.pathname,
+              contact_name: name,
+              contact_email: email,
+              organisation,
+              message,
+            },
+            () => openContactMailtoDraft(data),
+          );
+          setStatus(result);
+        }}
+      >
+        <div className="home-contact-form__head">
+          <h4 id="home-contact-form-title">Send an enquiry</h4>
+          <span>{status === 'fallback' ? 'Email draft' : 'Direct'}</span>
+        </div>
+        <div className="home-contact-form__grid">
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" autoComplete="name" maxLength={80} placeholder="Your name" required />
+          </label>
+          <label>
+            <span>Work email</span>
+            <input
+              type="email"
+              name="email"
+              autoComplete="email"
+              maxLength={254}
+              placeholder="you@company.com"
+              required
+            />
+          </label>
+          <label className="home-contact-form__wide">
+            <span>Organisation</span>
+            <input
+              type="text"
+              name="organisation"
+              autoComplete="organization"
+              maxLength={120}
+              placeholder="Company or organisation"
+            />
+          </label>
+          <label className="home-contact-form__wide">
+            <span>How can we help?</span>
+            <textarea
+              name="message"
+              rows={4}
+              maxLength={600}
+              placeholder="Tell us what you are working on"
+              required
+            />
+          </label>
+        </div>
+        <div className="home-contact-form__footer">
+          <button type="submit" disabled={status === 'submitting'} aria-describedby="home-contact-form-status">
+            {status === 'submitting' ? 'Sending…' : 'Send enquiry'}
+            <ArrowRight aria-hidden="true" size={17} />
+          </button>
+          <p id="home-contact-form-status">
+            {status === 'fallback'
+              ? "We couldn't submit this directly — opening your email app instead."
+              : 'Sends straight to the Secretariat.'}
+          </p>
+        </div>
+      </form>
+    </div>
+  );
 }
 
 /** Home's own version of motion.tsx's NavDropdown — same behaviour (hover/click-open caret,
@@ -1762,86 +1883,7 @@ export default function HomePage() {
                 </Action>
               </HomeBlock>
 
-              <div
-                className="home-conversion-card home-conversion-card--contact"
-                data-reel="rise"
-                style={{ '--reel-delay': '190ms' } as React.CSSProperties}
-              >
-                <div className="home-contact-intro">
-                  <span className="home-card-kicker">Contact</span>
-                  <h3>Speak with the Secretariat</h3>
-                  <p>
-                    Sunil Kaushal<br />
-                    <a href={LINKS.email} className="home-focus-light">
-                      Comms@inzbc.org
-                    </a>
-                  </p>
-                </div>
-                <form
-                  className="home-contact-form"
-                  aria-labelledby="home-contact-form-title"
-                  aria-describedby="home-contact-form-status"
-                  onSubmit={openContactDraft}
-                >
-                  <div className="home-contact-form__head">
-                    <h4 id="home-contact-form-title">Send an enquiry</h4>
-                    <span>Email draft</span>
-                  </div>
-                  <div className="home-contact-form__grid">
-                    <label>
-                      <span>Name</span>
-                      <input
-                        type="text"
-                        name="name"
-                        autoComplete="name"
-                        maxLength={80}
-                        placeholder="Your name"
-                        required
-                      />
-                    </label>
-                    <label>
-                      <span>Work email</span>
-                      <input
-                        type="email"
-                        name="email"
-                        autoComplete="email"
-                        maxLength={254}
-                        placeholder="you@company.com"
-                        required
-                      />
-                    </label>
-                    <label className="home-contact-form__wide">
-                      <span>Organisation</span>
-                      <input
-                        type="text"
-                        name="organisation"
-                        autoComplete="organization"
-                        maxLength={120}
-                        placeholder="Company or organisation"
-                      />
-                    </label>
-                    <label className="home-contact-form__wide">
-                      <span>How can we help?</span>
-                      <textarea
-                        name="message"
-                        rows={4}
-                        maxLength={600}
-                        placeholder="Tell us what you are working on"
-                        required
-                      />
-                    </label>
-                  </div>
-                  <div className="home-contact-form__footer">
-                    <button type="submit" aria-describedby="home-contact-form-status">
-                      Prepare email
-                      <ArrowRight aria-hidden="true" size={17} />
-                    </button>
-                    <p id="home-contact-form-status">
-                      Opens your email app with these details ready to review and send.
-                    </p>
-                  </div>
-                </form>
-              </div>
+              <HomeContactForm />
             </div>
           </div>
         </section>

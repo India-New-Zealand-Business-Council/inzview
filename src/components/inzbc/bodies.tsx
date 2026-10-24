@@ -17,6 +17,7 @@ import Council from './Council';
 import { NEWS_POSTS } from './news';
 import { useNewsDialog, NewsArticleDialog } from './News';
 import { Image } from '@/components/ui/image';
+import { submitSiteForm, type SiteFormStatus } from '@/lib/siteForms';
 
 /**
  * The migrated bodies for the inner routes, carried over from the Studio build's section
@@ -136,39 +137,61 @@ function TextLink({ href, children, external = false }: { href: string; children
 }
 
 /**
- * The real contact form's replacement until a Wix Form exists: real, labelled fields (First
- * name, Last name, Email, Subject, Message — the exact set connect.html's own sourced snippet
- * specifies), submitted via a mailto: link built from what was actually typed, rather than a
- * flat "email us" button that discards it. This is not a real submission — nothing reaches
- * the secretariat until they open their own mail client and hit send — so it stays truthful
- * about that in its one line of copy, rather than implying the message has already gone
- * anywhere.
+ * Real, labelled fields (First name, Last name, Email, Subject, Message — the exact set
+ * connect.html's own sourced snippet specifies). Submits to `/api/site-forms` (#45's webhook
+ * contract), which signs and forwards to the platform; see src/lib/siteForms.ts. Falls back to
+ * the previous mailto draft — opening the visitor's own email client — when the platform isn't
+ * reachable yet (api/site-forms.ts's `not_configured`, expected until #99 lands) or the request
+ * fails outright, so a visitor is never left with a dead "Send" button either way.
  */
 function ContactForm() {
   const [fields, setFields] = useState({ firstName: '', lastName: '', email: '', subject: '', message: '' });
+  const [status, setStatus] = useState<SiteFormStatus>('idle');
   const set = (key: keyof typeof fields) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setFields((f) => ({ ...f, [key]: e.target.value }));
 
-  const body = [
-    `${fields.firstName} ${fields.lastName}`.trim(),
-    fields.email ? `Reply to: ${fields.email}` : '',
-    '',
-    fields.message,
-  ]
-    .filter(Boolean)
-    .join('\n');
-  const mailto = `${LINKS.email}?subject=${encodeURIComponent(fields.subject || 'Message from inzbc.org')}&body=${encodeURIComponent(body)}`;
+  const openMailtoDraft = () => {
+    const body = [
+      `${fields.firstName} ${fields.lastName}`.trim(),
+      fields.email ? `Reply to: ${fields.email}` : '',
+      '',
+      fields.message,
+    ]
+      .filter(Boolean)
+      .join('\n');
+    window.location.href = `${LINKS.email}?subject=${encodeURIComponent(fields.subject || 'Message from inzbc.org')}&body=${encodeURIComponent(body)}`;
+  };
 
   const inputCls =
     'mt-1 w-full rounded-md border border-ink/15 bg-white px-3 py-2 text-sm text-ink placeholder:text-foreground/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
   const labelCls = 'text-xs font-medium text-ink';
 
+  if (status === 'sent') {
+    return (
+      <p role="status" className="mt-3 rounded-md border border-ink/15 bg-mist/60 px-4 py-3 text-sm text-ink">
+        Message sent. The Secretariat will be in touch.
+      </p>
+    );
+  }
+
   return (
     <form
       className="mt-3 space-y-4"
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        window.location.href = mailto;
+        setStatus('submitting');
+        const result = await submitSiteForm(
+          {
+            form_type: 'general_enquiry',
+            page_slug: window.location.pathname,
+            contact_name: `${fields.firstName} ${fields.lastName}`.trim(),
+            contact_email: fields.email,
+            subject: fields.subject,
+            message: fields.message,
+          },
+          openMailtoDraft,
+        );
+        setStatus(result);
       }}
     >
       <div className="grid gap-4 sm:grid-cols-2">
@@ -194,13 +217,16 @@ function ContactForm() {
         <textarea required rows={4} value={fields.message} onChange={set('message')} className={inputCls} />
       </label>
       <p className="text-xs text-foreground/75">
-        Sending opens your own email client with this message ready to go.
+        {status === 'fallback'
+          ? "We couldn't submit this directly — opening your email app instead."
+          : 'Sends straight to the Secretariat.'}
       </p>
       <button
         type="submit"
-        className={`inline-flex items-center rounded-full border border-ink/25 px-6 py-3 text-sm font-medium text-ink transition-transform duration-200 hover:bg-mist active:scale-[0.97] ${FOCUS}`}
+        disabled={status === 'submitting'}
+        className={`inline-flex items-center rounded-full border border-ink/25 px-6 py-3 text-sm font-medium text-ink transition-transform duration-200 hover:bg-mist active:scale-[0.97] disabled:opacity-60 ${FOCUS}`}
       >
-        Send message
+        {status === 'submitting' ? 'Sending…' : 'Send message'}
       </button>
     </form>
   );
