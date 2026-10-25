@@ -1,4 +1,5 @@
 import { PAGES } from '@/components/inzbc/pages';
+import { NEWS_POSTS } from '@/components/inzbc/news';
 
 /*
  * Per-route SEO metadata.
@@ -106,6 +107,14 @@ function normalise(pathname: string): string {
  */
 export function seoForPath(pathname: string): PageSeo {
   const path = normalise(pathname);
+  const article = NEWS_POSTS.find((post) => post.path === path);
+  if (article) {
+    return {
+      title: article.seo?.title ?? article.title,
+      description: article.seo?.description ?? article.excerpt,
+      image: article.cover ? `/blog/${article.cover}` : DEFAULT_IMAGE,
+    };
+  }
   // Old inzbc.org article URLs, which Router.tsx redirects per slug once the domain moves.
   // The slug-to-destination map lives in bodies.tsx and importing it here would pull the
   // whole component tree into the server bundle for a title, so every /post/ URL gets the
@@ -122,5 +131,9 @@ export function absoluteUrl(pathOrUrl: string): string {
 
 /** Every route the site answers on, for sitemap.xml. Aliases are excluded: they redirect. */
 export function allRoutes(): string[] {
-  return ['/', '/fta', '/fta/explainer', ...PAGES.map((p) => p.path).filter((p) => p !== '/fta')];
+  return [
+    '/', '/fta', '/fta/explainer',
+    ...PAGES.map((p) => p.path).filter((p) => p !== '/fta'),
+    ...NEWS_POSTS.flatMap((post) => post.path ? [post.path] : []),
+  ];
 }

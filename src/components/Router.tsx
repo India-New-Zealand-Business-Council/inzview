@@ -4,9 +4,11 @@ import ErrorPage from '@/integrations/errorHandlers/ErrorPage';
 import HomePage from '@/components/pages/HomePage';
 import FtaPage from '@/components/pages/FtaPage';
 import FtaExplainerPage from '@/components/pages/FtaExplainerPage';
+import NewsArticlePage from '@/components/pages/NewsArticlePage';
 import InnerPage from '@/components/inzbc/InnerPage';
 import { EVENT_SLUGS, INZBC_EVENTS } from '@/components/inzbc/bodies';
 import { PAGES } from '@/components/inzbc/pages';
+import { NEWS_POSTS } from '@/components/inzbc/news';
 
 function Layout() {
   return (
@@ -69,6 +71,11 @@ const router = createBrowserRouter(
           element: <FtaExplainerPage />,
           routeMetadata: { pageIdentifier: 'fta-explainer' },
         },
+        ...NEWS_POSTS.filter((post) => post.path).map((post) => ({
+          path: post.path!.replace(/^\//, ''),
+          element: <NewsArticlePage post={post} />,
+          routeMetadata: { pageIdentifier: post.slug },
+        })),
         // /fta gets its own page component above; its entry stays in the PAGES table in
         // pages.ts (NAV is a separate, hand-maintained list and doesn't read PAGES, so nothing
         // else depends on this) and is filtered out only here, to avoid a second route

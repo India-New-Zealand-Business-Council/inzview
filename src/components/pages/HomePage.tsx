@@ -1199,7 +1199,7 @@ function LatestNewsCard({
         className="home-latest-news__card home-focus-dark"
       >
         {post.cover ? (
-          <Image src={`/blog/${post.cover}`} alt={post.alt} loading="lazy" />
+          <Image src={`/blog/${post.cover}`} alt={post.alt} loading="lazy" style={{ objectFit: post.coverFit }} />
         ) : (
           <span className="home-latest-news__card-placeholder" aria-hidden="true" />
         )}

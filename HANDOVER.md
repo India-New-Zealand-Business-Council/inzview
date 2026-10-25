@@ -3,6 +3,28 @@
 Written 10 August 2026, revised after the inner page bodies landed. Everything below was
 measured on the running site, not assumed. Where something is unverified it says so.
 
+## Intellectual property article — 25 October 2026
+
+Sunil's supplied article, `INZBC_FTA_Intellectual_Property_Website_Article.docx`, is now
+the first entry in `news.ts`, featured in Home's Latest news and the News archive, and
+linked as the first card under `/fta` → Useful FTA resources. Its dedicated page is
+`/news/india-new-zealand-fta-intellectual-property`. The supplied SEO title and description
+feed the existing per-route metadata service; the new URL is included in the sitemap.
+
+All article wording, six subheadings, twelve embedded hyperlinks and the source acknowledgement
+are preserved. The document's publisher/SEO notes are excluded from the public body. The
+1200×627 supplied graphic is stored unchanged in `public/blog/`; cards and dialogs use
+`object-fit: contain` so its embedded text is not cropped. The publication date shown is
+25 October 2026, the date this entry was added.
+
+Verified against the supplied file and in an isolated local React/Tailwind preview: all text,
+links and image bytes match; existing news entries are unchanged; the article, FTA resource,
+homepage/dialog/permalink and News archive work; the article has no horizontal overflow at
+1440px, 390px or 320px; mobile Home/FTA layouts work; no browser runtime errors. This was
+not a Wix production build or a live-site check. The private Wix dependency constraint below
+still applies. A Wix Publish is required to make these changes live; check the final article
+title, canonical and share preview after publishing.
+
 ## What this is
 
 The INZBC website, rebuilt on Wix Vibe (Astro + React + Tailwind + framer-motion), replacing

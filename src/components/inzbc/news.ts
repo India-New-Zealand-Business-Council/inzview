@@ -1,12 +1,12 @@
 /**
- * The 12 most recent posts from inzbc.org/news (newest first), copied verbatim from each
+ * Posts from inzbc.org/news (newest first), copied verbatim from each
  * post's own page on 12 October 2026, plus any media release Sunil supplies directly (each
  * noted on its own entry). This is the one file to edit when Sunil wants an
  * article's wording changed - NewsBody (bodies.tsx) and the Home "Latest news" section both
  * render from this data and never need to change for a text edit.
  *
  * Body text uses a tiny inline link syntax, [label](https://example.com), parsed by
- * renderInline() in bodies.tsx - this keeps real hyperlinks (opened in a new tab, since
+ * renderInline() in News.tsx - this keeps real hyperlinks (opened in a new tab, since
  * every one of them points off-site) without resorting to dangerouslySetInnerHTML.
  *
  * Two typo fixes made against the live copy, both listed here rather than silently applied:
@@ -36,14 +36,66 @@ export type NewsPost = {
   sortKey: string;
   /** Filename in public/blog/, or undefined where inzbc.org has no real cover for this post. */
   cover?: string;
+  /** Preserve complete supplied graphics, including their embedded text. */
+  coverFit?: 'contain';
   alt: string;
   excerpt: string;
   body: NewsBlock[];
+  /** Dedicated article page, where the publisher supplied a URL and SEO settings. */
+  path?: string;
+  seo?: { title: string; description: string };
   /** The post's page on inzbc.org. Unset for posts that were never published there. */
   sourceUrl?: string;
 };
 
+// Article and cover supplied by Sunil via Bhanu on 25 October 2026. Publication date is
+// the date it was added here. Copy, hyperlinks, SEO title, description and slug are taken
+// from INZBC_FTA_Intellectual_Property_Website_Article.docx; publisher notes are not content.
+export const FTA_IP_ARTICLE = {
+  slug: "india-new-zealand-fta-intellectual-property",
+  title: "India New Zealand FTA and protecting your intellectual property",
+  date: "25 October 2026",
+  sortKey: "2026-10-25",
+  cover: "india-new-zealand-fta-intellectual-property.jpeg",
+  coverFit: "contain",
+  alt: "INZBC India–New Zealand FTA intellectual property guide: protecting brands, technology and commercial value, with a technician at work",
+  excerpt: "Protecting brands, technology and commercial value under the India New Zealand FTA. Practical steps for businesses entering either market.",
+  path: "/news/india-new-zealand-fta-intellectual-property",
+  seo: {
+    title: "India NZ FTA Intellectual Property Guide | INZBC",
+    description: "Understand intellectual property under the India New Zealand FTA, with practical steps to protect your brand, technology and commercial value in both markets.",
+  },
+  body: [
+    { type: "p", text: "Your brand, technology and product designs can be among your most valuable export assets. As businesses pursue opportunities under the [India New Zealand Free Trade Agreement](https://www.mfat.govt.nz/en/trade/free-trade-agreements/free-trade-agreements-in-force/new-zealand-india-free-trade-agreement/text-of-the-agreement), protecting those assets should be part of the commercial plan from the outset." },
+    { type: "p", text: "The agreement provides an intellectual property framework. It does not create a shared registration system. Businesses must still assess their rights and protection needs in each market, rather than assume a New Zealand registration also covers India." },
+    { type: "h", text: "What Chapter 11 means for your business" },
+    { type: "p", text: "[Chapter 11 of the India New Zealand Free Trade Agreement](https://www.mfat.govt.nz/assets/Trade-agreements/NZ-India-FTA/48.-Chapter-11-Intellectual-Property.pdf) sets out the intellectual property commitments agreed between both governments. It forms part of the bilateral treaty, rather than either country’s domestic legislation." },
+    { type: "p", text: "The chapter affirms existing international obligations, including the [WTO Agreement on Trade Related Aspects of Intellectual Property Rights](https://www.wto.org/english/docs_e/legal_e/31bis_trips_01_e.htm). It addresses trademarks, patents, industrial designs, copyright, enforcement and cooperation." },
+    { type: "p", text: "In its [National Interest Analysis](https://www.mfat.govt.nz/assets/Trade-agreements/NZ-India-FTA/NZ-India-FTA-National-Interest-Analysis-NIA.pdf), New Zealand’s Ministry of Foreign Affairs and Trade says the chapter provides exporters with greater certainty and clarity when protecting and enforcing intellectual property associated with trade into India." },
+    { type: "h", text: "Check your brand before entering the market" },
+    { type: "p", text: "Before committing to packaging, promotion or a distribution agreement, check whether your business name, product names and logos conflict with existing rights. [IP India’s official search and filing services](https://www.ipindia.gov.in/pages/e-services) provide access to Indian trademark, patent and design resources." },
+    { type: "p", text: "Articles 11.18 and 11.20 address trademark procedures and registration terms. The agreement requires initial registrations and each renewal to last at least 10 years, subject to domestic requirements. These commitments do not replace the application process." },
+    { type: "p", text: "New Zealand businesses can also explore [international trade mark protection through IPONZ](https://www.iponz.govt.nz/get-ip/trade-marks/international/). The Madrid system provides a route to seek protection in selected overseas markets. It does not create automatic worldwide rights." },
+    { type: "h", text: "Make ownership clear in your contracts" },
+    { type: "p", text: "If you work with a manufacturer, software developer or research partner, establish who owns existing intellectual property and who will own anything developed together." },
+    { type: "p", text: "Your agreements should define permitted use of brands, designs, software and technical information. Address confidentiality, sublicensing, territorial limits and what happens when the relationship ends. WIPO’s guidance on [protecting trade secrets](https://www.wipo.int/en/web/trade-secrets) offers useful context for managing confidential commercial information." },
+    { type: "p", text: "For example, a New Zealand technology company licensing a system to an Indian partner should specify the permitted uses and ownership of future improvements before sharing sensitive material." },
+    { type: "h", text: "Plan how you will respond to infringement" },
+    { type: "p", text: "The FTA addresses enforcement, including border procedures for suspected counterfeit trademark goods and pirated copyright goods. Businesses still need to monitor their markets and act when problems arise." },
+    { type: "p", text: "Keep evidence of ownership, registrations, licences and authorised distributors accessible. Indian suppliers and New Zealand importers should also understand [New Zealand Customs intellectual property border protection](https://www.customs.govt.nz/business/import/import-prohibited-and-restricted-imports/copyright-trade-marks-and-geographical-indication). This guidance concerns New Zealand procedures, rather than enforcement in India." },
+    { type: "h", text: "Respect traditional knowledge and cultural interests" },
+    { type: "p", text: "Articles 11.32 and 11.33 address genetic resources, traditional knowledge and traditional cultural expressions, including cooperation and aspects of patent examination." },
+    { type: "p", text: "Businesses using cultural knowledge or imagery should address authority, consent and ownership early. IPONZ’s guidance on [Māori culture and intellectual property](https://www.iponz.govt.nz/get-ip/maori-ip/maori-culture-and-intellectual-property/) is a useful starting point for products or branding incorporating Māori elements." },
+    { type: "h", text: "Protect the value behind your market opportunity" },
+    { type: "p", text: "For exporters, importers, and investors, intellectual property belongs alongside pricing, logistics, and regulatory compliance in market-entry planning. Identify the assets that give your business an advantage, confirm ownership and obtain advice on the protection required in your destination market." },
+    { type: "p", text: "The [India New Zealand Business Council’s work on trade and commercial connections](https://www.inzbc.org/about-us) supports businesses engaging across both markets. Explore [INZBC membership and business networks](https://www.inzbc.org/join-inzbc) as you develop your commercial relationships." },
+    { type: "p", text: "The FTA provides a trade framework. Your registrations, contracts and commercial decisions determine how well you protect the value you bring to it." },
+    { type: "p", text: "Source acknowledgement: Independently written for INZBC, drawing on [India Briefing’s reporting on intellectual property under the FTA](https://www.india-briefing.com/news/india-new-zealand-fta-intellectual-property-rights-47459.html/), the official agreement text and government guidance. This article provides general business information. Obtain professional advice for your particular intellectual property needs." },
+  ],
+} satisfies NewsPost;
+
 export const NEWS_POSTS: readonly NewsPost[] = [
+  FTA_IP_ARTICLE,
   {
     // Sunil's op-ed in Newsroom (20 Oct 2026), added 21 Oct 2026. The article is paywalled, so
     // only the headline, standfirst and opening lines Sunil supplied are reproduced here, with

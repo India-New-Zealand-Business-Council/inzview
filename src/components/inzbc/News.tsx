@@ -7,8 +7,8 @@ import type { NewsPost } from './news';
 const FOCUS =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime';
 
-/** Shared open/close state for whichever card was last activated - one instance per page
-    (Home carries 3 cards, the News page carries all 12), each rendering its own NewsArticleDialog. */
+/** Shared open/close state for whichever card was last activated - one instance per page,
+    each rendering its own NewsArticleDialog. */
 export function useNewsDialog() {
   const [active, setActive] = useState<{ post: NewsPost; trigger: HTMLElement } | null>(null);
   return {
@@ -18,10 +18,9 @@ export function useNewsDialog() {
   };
 }
 
-/** Turns the data file's `[label](url)` markers into real links, instead of reaching for a
-    markdown library or dangerouslySetInnerHTML for 12 articles' worth of plain text. Every
-    link in news.ts points off-site, so each opens in a new tab except mailto:, which stays in
-    the current one like every other mailto: link on this site. */
+/** Turns the data file's `[label](url)` markers into real links without a markdown library
+    or dangerouslySetInnerHTML. Source links open in a new tab; mailto: stays in the current
+    one like every other mailto: link on this site. */
 export function renderInline(text: string): React.ReactNode {
   const pattern = /\[([^\]]+)\]\(([^)]+)\)/g;
   const nodes: React.ReactNode[] = [];
@@ -46,6 +45,40 @@ export function renderInline(text: string): React.ReactNode {
   }
   if (last < text.length) nodes.push(text.slice(last));
   return nodes;
+}
+
+/** The same supplied article copy in the news dialog and its dedicated page. */
+export function NewsArticleContent({
+  post,
+  heading = 'h3',
+}: {
+  post: NewsPost;
+  heading?: 'h2' | 'h3';
+}) {
+  const Heading = heading;
+  return (
+    <>
+      {post.body.map((block, i) => {
+        if (block.type === 'h') {
+          return (
+            <Heading key={i} className="pt-1 font-heading text-lg text-ink">
+              {renderInline(block.text)}
+            </Heading>
+          );
+        }
+        if (block.type === 'ul') {
+          return (
+            <ul key={i} className="list-disc space-y-1.5 pl-5">
+              {block.items.map((item, j) => (
+                <li key={j}>{renderInline(item)}</li>
+              ))}
+            </ul>
+          );
+        }
+        return <p key={i}>{renderInline(block.text)}</p>;
+      })}
+    </>
+  );
 }
 
 /** The full-article pop-up, shared by the Home "Latest news" cards and the News page's cards.
@@ -76,7 +109,7 @@ export function NewsArticleDialog({
       widthClassName="w-[min(40rem,calc(100vw-2rem))]"
     >
       {post.cover ? (
-        <Image src={`/blog/${post.cover}`} alt={post.alt} loading="lazy" className="aspect-[16/9] w-full object-cover" />
+        <Image src={`/blog/${post.cover}`} alt={post.alt} loading="lazy" className="aspect-[16/9] w-full object-cover" style={{ objectFit: post.coverFit }} />
       ) : null}
       <div className="p-6 sm:p-8">
         <div className="flex items-start justify-between gap-4">
@@ -97,26 +130,13 @@ export function NewsArticleDialog({
           </button>
         </div>
         <div className="mt-5 space-y-4 text-foreground">
-          {post.body.map((block, i) => {
-            if (block.type === 'h') {
-              return (
-                <h3 key={i} className="pt-1 font-heading text-lg text-ink">
-                  {renderInline(block.text)}
-                </h3>
-              );
-            }
-            if (block.type === 'ul') {
-              return (
-                <ul key={i} className="list-disc space-y-1.5 pl-5">
-                  {block.items.map((item, j) => (
-                    <li key={j}>{renderInline(item)}</li>
-                  ))}
-                </ul>
-              );
-            }
-            return <p key={i}>{renderInline(block.text)}</p>;
-          })}
+          <NewsArticleContent post={post} />
         </div>
+        {post.path ? (
+          <a href={post.path} className={`mt-6 inline-flex min-h-11 items-center font-medium text-plum underline underline-offset-4 ${FOCUS}`}>
+            Open article page
+          </a>
+        ) : null}
       </div>
     </Dialog>
   );

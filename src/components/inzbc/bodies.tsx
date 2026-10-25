@@ -1343,7 +1343,7 @@ function NewsCard({
         className={`flex h-full w-full flex-col overflow-hidden rounded-2xl bg-mist text-left transition-shadow hover:shadow-md ${FOCUS}`}
       >
         {post.cover ? (
-          <Image src={`/blog/${post.cover}`} alt={post.alt} loading="lazy" className="aspect-[16/10] w-full object-cover" />
+          <Image src={`/blog/${post.cover}`} alt={post.alt} loading="lazy" className="aspect-[16/10] w-full object-cover" style={{ objectFit: post.coverFit }} />
         ) : (
           <span className="aspect-[16/10] w-full bg-ink/5" aria-hidden="true" />
         )}

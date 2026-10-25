@@ -8,6 +8,7 @@ import { ART, LINKS } from '@/components/inzbc/content';
 import { NAV } from '@/components/inzbc/pages';
 import Footer from '@/components/inzbc/Footer';
 import { Image } from '@/components/ui/image';
+import { FTA_IP_ARTICLE } from '@/components/inzbc/news';
 
 /**
  * NZ-India FTA Centre.
@@ -93,9 +94,16 @@ const TIMELINE: readonly Milestone[] = [
     use a real INZBC event photo matched to subject instead, same approach as the matching
     card grid on /trade-resources. Tariff Finder (a web app, not a content page) gets a plain
     icon card rather than force an unrelated photo onto it. */
-type FtaResourceLink = Readonly<{ source: string; title: string; href: string; image?: string }>;
+type FtaResourceLink = Readonly<{ source: string; title: string; href: string; image?: string; imageFit?: 'contain' }>;
 
 const FTA_RESOURCE_LINKS: readonly FtaResourceLink[] = [
+  {
+    source: 'INZBC',
+    title: FTA_IP_ARTICLE.title,
+    href: FTA_IP_ARTICLE.path,
+    image: `/blog/${FTA_IP_ARTICLE.cover}`,
+    imageFit: FTA_IP_ARTICLE.coverFit,
+  },
   {
     source: 'MFAT',
     title: 'New Zealand–India FTA information',
@@ -675,8 +683,8 @@ export default function FtaPage() {
                 Useful FTA resources
               </h2>
               <p className="mt-4 max-w-2xl text-foreground">
-                Official guidance on the agreement itself, tariff lookups and NZTE&rsquo;s own
-                India programmes — the same set INZBC points members to.
+                INZBC&rsquo;s intellectual property guide, official guidance on the agreement,
+                tariff lookups and NZTE&rsquo;s India programmes.
               </p>
             </Reveal>
 
@@ -685,12 +693,12 @@ export default function FtaPage() {
                 <Reveal key={resource.href} delay={i * 0.05}>
                   <a
                     href={resource.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={resource.href.startsWith('/') ? undefined : '_blank'}
+                    rel={resource.href.startsWith('/') ? undefined : 'noopener noreferrer'}
                     className={`group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-transform hover:-translate-y-1 ${FOCUS}`}
                   >
                     {'image' in resource ? (
-                      <Image src={resource.image} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover" />
+                      <Image src={resource.image} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover" style={{ objectFit: resource.imageFit }} />
                     ) : (
                       <span className="flex aspect-[16/9] w-full items-center justify-center bg-ink">
                         <ArrowUpRight aria-hidden="true" size={28} className="text-lime" />
