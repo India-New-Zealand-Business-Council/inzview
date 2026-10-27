@@ -10,6 +10,19 @@ export type EventForPreview = Readonly<{
 
 export type AttendancePreference = 'one' | 'two' | 'three';
 
+
+// Avoid locale-dependent en-CA formatting, which can yield MM/DD/YYYY on some hosts.
+export function aucklandTodayIso(now: Date): string {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Pacific/Auckland',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(now);
+  const values = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
 export function upcomingPreviewEvents<T extends EventForPreview>(
   events: readonly T[],
   todayIso: string,
