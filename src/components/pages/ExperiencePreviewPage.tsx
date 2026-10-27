@@ -7,6 +7,7 @@ import { NAV } from '@/components/inzbc/pages';
 import { INZBC_EVENTS } from '@/components/inzbc/bodies';
 import Footer from '@/components/inzbc/Footer';
 import {
+  aucklandTodayIso,
   registrationPreviewSummary,
   upcomingPreviewEvents,
   type AttendancePreference,
@@ -36,7 +37,7 @@ export default function ExperiencePreviewPage() {
 
   // Use the public site's actual event list, not fictional availability or prices.
   const events = useMemo(
-    () => upcomingPreviewEvents(INZBC_EVENTS, new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })),
+    () => upcomingPreviewEvents(INZBC_EVENTS, aucklandTodayIso(new Date())),
     [],
   );
   const chosenEvent = events.find((event) => event.sourceSlug === eventSlug);
