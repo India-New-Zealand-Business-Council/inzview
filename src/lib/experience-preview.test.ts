@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  aucklandTodayIso,
   registrationPreviewSummary,
   upcomingPreviewEvents,
   type EventForPreview,
@@ -13,6 +14,11 @@ const examples: EventForPreview[] = [
 ];
 
 describe('Sunil stakeholder registration preview', () => {
+  it('uses the actual Auckland civil date, including across a UTC date boundary', () => {
+    const date = new Date('2026-10-26T20:30:00.000Z');
+    expect(aucklandTodayIso(date)).toBe('2026-10-27');
+  });
+
   it('lists only current or future-dated events in ascending order', () => {
     expect(upcomingPreviewEvents(examples, '2026-10-27').map((item) => item.title)).toEqual([
       'Today', 'Future',
