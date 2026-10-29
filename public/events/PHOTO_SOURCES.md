@@ -67,3 +67,11 @@ space.
 | Local file | What it shows |
 |---|---|
 | `inzbc-board-fta-entry-into-force-22-oct-2026.jpg` | INZBC board members with Minister Todd McClay, Indian High Commissioner Muanpuii Saiawi and Auckland Mayor Wayne Brown at the FTA entry into force event, Auckland, 22 October 2026 |
+
+## Added 29 October 2026
+
+Sent directly by Sunil Kaushal via WhatsApp with the caption for the INZBC website on 29 October 2026. The event date was not provided; the date in the filename is the **upload date**, not a claim about when the event occurred. This is a web-optimized AVIF derived from his supplied original photograph; all four participants remain in frame. The names and titles in the caption are Sunil's supplied wording, not inferred from the image.
+
+| Local file | What it shows |
+|---|---|
+| `inzbc-public-sector-dialogue-29-oct-2026.avif` | Four attendees on stage, with India and New Zealand flags, at the India New Zealand Public Sector Dialogue |
