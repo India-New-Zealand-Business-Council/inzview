@@ -167,7 +167,7 @@ const GALLERY_PHOTOS = [
   // Sunil, 29 Oct 2026: supplied the image and caption over WhatsApp for the site.
   // Preserve the full group photo in the carousel without cropping participants.
   {
-    src: '/events/inzbc-public-sector-dialogue-29-oct-2026.avif',
+    src: '/events/inzbc-public-sector-dialogue-29-oct-2026.jpg',
     alt: 'Four officials posing together on stage between the Indian and New Zealand flags at the India New Zealand Public Sector Dialogue',
     caption: 'INZBC Board member Sakthi Ranganathan with Dr Amit Shukla, Joint Secretary(Cyber Diplomacy and E-Governance & Information Technology), Ministry of External Affairs; Indian High Commissioner H.E. Muanpuii Saiawi and INZBC CEO Sunil Kaushal at the recent India New Zealand Public Sector Dialogue',
     fit: 'contain',

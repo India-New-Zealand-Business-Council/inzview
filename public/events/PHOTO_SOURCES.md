@@ -70,8 +70,8 @@ space.
 
 ## Added 29 October 2026
 
-Sent directly by Sunil Kaushal via WhatsApp with the caption for the INZBC website on 29 October 2026. The event date was not provided; the date in the filename is the **upload date**, not a claim about when the event occurred. This is a web-optimized AVIF derived from his supplied original photograph; all four participants remain in frame. The names and titles in the caption are Sunil's supplied wording, not inferred from the image.
+Sent directly by Sunil Kaushal via WhatsApp with the caption for the INZBC website on 29 October 2026. The event date was not provided; the date in the filename is the **upload date**, not a claim about when the event occurred. This is his supplied photograph at full resolution (1,600 × 1,200), re-saved as JPEG with metadata stripped; all four participants remain in frame. An earlier 420 × 315 AVIF made the faces unreadable and was replaced on 29 October 2026. The names and titles in the caption are Sunil's supplied wording, not inferred from the image.
 
 | Local file | What it shows |
 |---|---|
-| `inzbc-public-sector-dialogue-29-oct-2026.avif` | Four attendees on stage, with India and New Zealand flags, at the India New Zealand Public Sector Dialogue |
+| `inzbc-public-sector-dialogue-29-oct-2026.jpg` | Four attendees on stage, with India and New Zealand flags, at the India New Zealand Public Sector Dialogue |
