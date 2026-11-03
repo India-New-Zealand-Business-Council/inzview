@@ -131,6 +131,9 @@ const EVENT_PHOTOS = [
     (signing ceremony, Luxon/Goyal) are from Sunil's newest upload (15 Oct 2026) and are also
     used in the Membership page's photo showcase — on Sunil's instruction, not exclusive to
     one page. */
+const GUJARAT_ENERGY_ROUNDTABLE =
+  'Energy Sector Business Leaders Roundtable with the visiting Energy delegation from Gujarat led by Hon Shri Rushikesh Ganeshbhai Patel, Minister of Energy and Petrochemicals Department for the Government of Gujarat'
+
 const GALLERY_PHOTOS = [
   // Cut from 21 to 12 and reordered on Sunil's instruction (21 Oct 2026), by position in
   // the 21-photo list as it stood: 21, 17, 18, 20, 13, 12, 6, 5, 10, 16, 1, 19. Removed
@@ -147,7 +150,39 @@ const GALLERY_PHOTOS = [
     alt: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting',
     caption: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting, July 2026',
   },
-  // Sunil, 21 Oct 2026: added as photo 3, caption his own.
+  // Sunil, 3 Nov 2026: added as photo 3, caption his own.
+  {
+    src: '/events/santner-gill-odi-series-eden-park-2026.jpg',
+    alt: 'BlackCaps captain Mitchell Santner and India captain Shubman Gill either side of the ODI series trophy on the Auckland waterfront, Sky Tower behind',
+    caption: 'Mitchell Santner & Shubman Gill captains shoot images ahead of the ODI series starting tomorrow at Eden Park on 4 November 2026',
+    // Portrait (1280x1600): shown whole in the 3:2 box rather than cropped.
+    fit: 'contain',
+  },
+  // Sunil, 3 Nov 2026: photos 4 to 7, all under the one caption he gave.
+  {
+    src: '/events/gujarat-energy-roundtable-table-2-nov-2026.jpg',
+    alt: 'Business leaders and the Gujarat energy delegation seated around a long boardroom table',
+    caption: GUJARAT_ENERGY_ROUNDTABLE,
+  },
+  {
+    src: '/events/gujarat-energy-roundtable-minister-address-2-nov-2026.jpg',
+    alt: 'Gujarat Energy Minister Rushikesh Patel speaking at a lectern in front of the INZBC banner and the Indian and New Zealand flags',
+    caption: GUJARAT_ENERGY_ROUNDTABLE,
+    fit: 'contain',
+  },
+  {
+    src: '/events/gujarat-energy-roundtable-delegation-2-nov-2026.jpg',
+    alt: 'Eight people standing together beside the INZBC banner and a screen titled Business Leaders Roundtable',
+    caption: GUJARAT_ENERGY_ROUNDTABLE,
+    fit: 'contain',
+  },
+  {
+    src: '/events/gujarat-energy-roundtable-group-2-nov-2026.jpg',
+    alt: 'Large group photo of roundtable attendees standing beside the boardroom table',
+    caption: GUJARAT_ENERGY_ROUNDTABLE,
+    fit: 'contain',
+  },
+  // Sunil, 21 Oct 2026: added as photo 3 (now 8), caption his own.
   {
     src: '/events/iyer-santner-t20-series-christchurch-2026.jpg',
     alt: 'India T20 captain Shreyas Iyer and BlackCaps captain Mitchell Santner either side of the T20I series trophy at a cricket ground',
@@ -155,7 +190,7 @@ const GALLERY_PHOTOS = [
     // Portrait (1279x1600): shown whole in the 3:2 box rather than cropped.
     fit: 'contain',
   },
-  // Sunil, 24 Oct 2026: added as photo 4, caption his own with names spelt as elsewhere on
+  // Sunil, 24 Oct 2026: added as photo 4 (now 9), caption his own with names spelt as elsewhere on
   // this site. Cropped from 2000x1500 to the group (1600x863) to cut the empty ceiling and
   // floor; shown whole, as with the other group photos.
   {
@@ -172,7 +207,7 @@ const GALLERY_PHOTOS = [
     caption: 'INZBC Board member Sakthi Ranganathan with Dr Amit Shukla, Joint Secretary(Cyber Diplomacy and E-Governance & Information Technology), Ministry of External Affairs; Indian High Commissioner H.E. Muanpuii Saiawi and INZBC CEO Sunil Kaushal at the recent India New Zealand Public Sector Dialogue',
     fit: 'contain',
   },
-  // Supplied 21 Oct 2026 as photo 4 (now 6), caption as given.
+  // Supplied 21 Oct 2026 as photo 4 (now 11), caption as given.
   {
     src: '/events/inzbc-luxon-vicelich-20-oct-2026.jpg',
     alt: 'INZBC Chair and CEO Sunil Kaushal with Prime Minister Christopher Luxon and Carmen Vicelich',

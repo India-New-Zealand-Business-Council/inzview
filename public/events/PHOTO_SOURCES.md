@@ -75,3 +75,15 @@ Sent directly by Sunil Kaushal via WhatsApp with the caption for the INZBC websi
 | Local file | What it shows |
 |---|---|
 | `inzbc-public-sector-dialogue-29-oct-2026.jpg` | Four attendees on stage, with India and New Zealand flags, at the India New Zealand Public Sector Dialogue |
+
+## Added 3 November 2026
+
+Sent by Sunil Kaushal over WhatsApp on 3 November 2026 with captions, for Home gallery photos 3 to 7. Resized to 1,600px on the longest edge, JPEG quality 85, metadata stripped. The roundtable date comes from the camera filenames (`20261102_*`) and the "2 N…" date on the event's title slide; the captions are Sunil's wording.
+
+| Local file | What it shows |
+|---|---|
+| `santner-gill-odi-series-eden-park-2026.jpg` | Mitchell Santner and Shubman Gill with the ODI series trophy on the Auckland waterfront (original `BLACKCAPS v India ODI Captains Shoot-5.jpg`) |
+| `gujarat-energy-roundtable-table-2-nov-2026.jpg` | Energy Sector Business Leaders Roundtable seated at the boardroom table (original `20261102_150658.jpg`) |
+| `gujarat-energy-roundtable-minister-address-2-nov-2026.jpg` | Gujarat Energy Minister Rushikesh Patel speaking at the lectern (original `20261102_152804.jpg`) |
+| `gujarat-energy-roundtable-delegation-2-nov-2026.jpg` | Delegation and INZBC hosts standing beside the roundtable title slide (original `20261102_153715.jpg`) |
+| `gujarat-energy-roundtable-group-2-nov-2026.jpg` | Full roundtable group photo (original `20261102_165126.jpg`) |
