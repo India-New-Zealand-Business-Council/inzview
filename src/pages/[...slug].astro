@@ -24,6 +24,8 @@ import "@/styles/global.css";
 const seo = seoForPath(Astro.url.pathname);
 const canonical = absoluteUrl(Astro.url.pathname);
 const shareImage = absoluteUrl(seo.image);
+// These are stakeholder concept routes, not public INZBC services or live reports.
+const stakeholderPreview = ['/sip-preview', '/experience-preview'].includes(Astro.url.pathname.replace(/\/$/, ''));
 
 const seoTagsServiceConfig = await loadSEOTagsServiceConfig({
   // Not Astro.url.href: behind Wix's proxy that reports the incoming scheme, which is how
@@ -58,6 +60,7 @@ const organizationLd = {
   <head>
     <Head />
     <meta name="description" content={seo.description} />
+    {stakeholderPreview && <meta name="robots" content="noindex,nofollow" />}
     <meta property="og:description" content={seo.description} />
     <meta property="og:image" content={shareImage} />
     <meta name="twitter:description" content={seo.description} />

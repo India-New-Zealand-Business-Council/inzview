@@ -5,6 +5,8 @@ import HomePage from '@/components/pages/HomePage';
 import FtaPage from '@/components/pages/FtaPage';
 import FtaExplainerPage from '@/components/pages/FtaExplainerPage';
 import NewsArticlePage from '@/components/pages/NewsArticlePage';
+import ExperiencePreviewPage from '@/components/pages/ExperiencePreviewPage';
+import SipPreviewPage from '@/components/pages/SipPreviewPage';
 import InnerPage from '@/components/inzbc/InnerPage';
 import { EVENT_SLUGS, INZBC_EVENTS } from '@/components/inzbc/bodies';
 import { PAGES } from '@/components/inzbc/pages';
@@ -70,6 +72,18 @@ const router = createBrowserRouter(
           path: 'fta/explainer',
           element: <FtaExplainerPage />,
           routeMetadata: { pageIdentifier: 'fta-explainer' },
+        },
+        {
+          path: 'sip-preview',
+          element: <SipPreviewPage />,
+          routeMetadata: { pageIdentifier: 'sip-preview' },
+        },
+        // Stakeholder-only review route — not linked from public navigation and
+        // does not save attendee or member data. Do not promote as live registration.
+        {
+          path: 'experience-preview',
+          element: <ExperiencePreviewPage />,
+          routeMetadata: { pageIdentifier: 'experience-preview' },
         },
         ...NEWS_POSTS.filter((post) => post.path).map((post) => ({
           path: post.path!.replace(/^\//, ''),
