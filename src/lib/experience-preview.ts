@@ -39,7 +39,7 @@ export function registrationPreviewSummary(
   people: AttendancePreference,
 ): string | null {
   if (!event) return null;
-  const headcount = Number(people);
-  if (![1, 2, 3].includes(headcount)) return null;
+  const headcount = ({ one: 1, two: 2, three: 3 } as const)[people];
+  if (!headcount) return null;
   return `${event.title} · ${event.date} · ${headcount} attendee${headcount === 1 ? '' : 's'} (selection only)`;
 }
