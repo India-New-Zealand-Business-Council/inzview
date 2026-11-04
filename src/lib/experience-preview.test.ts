@@ -33,6 +33,8 @@ describe('Sunil stakeholder registration preview', () => {
   it('never claims a reservation, payment or confirmation from a preview choice', () => {
     const summary = registrationPreviewSummary(examples[1], 'two');
     expect(summary).toContain('2 attendees (selection only)');
+    expect(registrationPreviewSummary(examples[1], 'one')).toContain('1 attendee (selection only)');
+    expect(registrationPreviewSummary(examples[1], 'three')).toContain('3 attendees (selection only)');
     expect(summary).not.toMatch(/confirmed|booked|paid|ticket/i);
     expect(registrationPreviewSummary(undefined, 'one')).toBeNull();
   });
