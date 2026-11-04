@@ -9,12 +9,15 @@ import InnerPage from '@/components/inzbc/InnerPage';
 import { EVENT_SLUGS, INZBC_EVENTS } from '@/components/inzbc/bodies';
 import { PAGES } from '@/components/inzbc/pages';
 import { NEWS_POSTS } from '@/components/inzbc/news';
+import Diwali from '@/components/inzbc/Diwali';
 
 function Layout() {
   return (
     <>
       <ScrollToTop />
       <Outlet />
+      {/* Diwali 2026 countdown, then fireworks and rangoli Fri 6 to Mon 9 Nov (NZ time). */}
+      <Diwali />
     </>
   );
 }

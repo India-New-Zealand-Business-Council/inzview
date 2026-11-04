@@ -3,6 +3,17 @@
 Written 10 August 2026, revised after the inner page bodies landed. Everything below was
 measured on the running site, not assumed. Where something is unverified it says so.
 
+## Diwali greeting — 4 November 2026
+
+Agreed with Sunil: a countdown on every page until Friday 6 November, then fireworks and a
+rangoli "Happy Diwali" banner from Friday to the end of Monday 9 November (NZ time), after
+which it disappears by itself. `src/components/inzbc/Diwali.tsx`, mounted in the router
+`Layout`; the three dates live in `diwaliSchedule.ts`. Preview any phase on the live site
+with `?diwali=countdown`, `?diwali=live` or `?diwali=off`. Fireworks play for about nine
+seconds per page load, never block clicks, and are skipped for reduced-motion visitors.
+Both banners can be closed for the session. Checked in a standalone React harness at 1440px
+and 375px (no overflow, no console errors); not yet checked in a Wix build.
+
 ## Intellectual property article — 25 October 2026
 
 Sunil's supplied article, `INZBC_FTA_Intellectual_Property_Website_Article.docx`, is now
