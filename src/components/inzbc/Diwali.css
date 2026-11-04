@@ -1,14 +1,153 @@
-/* Diwali greeting. Plain CSS rather than Tailwind so it is self-contained and easy to delete. */
+/* Diwali greeting. Plain CSS rather than Tailwind so the feature is self-contained. */
 
 .inzbc-diwali__fireworks {
   position: fixed;
   inset: 0;
-  z-index: 70;
+  z-index: 95;
   display: block;
   width: 100vw;
   height: 100vh;
   pointer-events: none;
 }
+
+/* ------------------------------------------------------------------ intro */
+
+.inzbc-diwali__intro {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  overflow-y: auto;
+  padding: 24px 16px;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 138, 31, 0.28), transparent 42%),
+    radial-gradient(circle at 15% 90%, rgba(224, 33, 138, 0.28), transparent 45%),
+    radial-gradient(circle at 85% 10%, rgba(199, 125, 255, 0.22), transparent 40%),
+    rgba(14, 5, 34, 0.94);
+  color: #fff;
+  font-family: Poppins, system-ui, sans-serif;
+  text-align: center;
+  cursor: pointer;
+  animation: inzbc-diwali-fade-in 600ms ease both;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.inzbc-diwali__intro.is-leaving {
+  animation: inzbc-diwali-fade-out 700ms ease both;
+}
+
+.inzbc-diwali__intro-inner {
+  display: flex;
+  max-width: 640px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inzbc-diwali__intro-rangoli {
+  width: min(280px, 62vw);
+  height: auto;
+  margin-bottom: 18px;
+  filter: drop-shadow(0 0 32px rgba(255, 176, 0, 0.45));
+  animation: inzbc-diwali-spin 60s linear infinite;
+}
+
+.inzbc-diwali__ring {
+  transform-origin: 0 0;
+  animation: inzbc-diwali-bloom 900ms cubic-bezier(0.2, 0.9, 0.25, 1.15) both;
+  animation-delay: calc(var(--i) * 140ms);
+}
+
+.inzbc-diwali__intro-kicker {
+  margin: 0;
+  color: #ffd76a;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  animation: inzbc-diwali-rise-in 700ms 900ms ease both;
+}
+
+.inzbc-diwali__intro-title {
+  margin: 6px 0 0;
+  background: linear-gradient(100deg, #ffe7a3 0%, #ffb000 30%, #ff8a1f 55%, #ff5fb8 80%, #ffe7a3 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: #ffb000;
+  -webkit-text-fill-color: transparent;
+  font-size: clamp(44px, 11vw, 88px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  filter: drop-shadow(0 4px 24px rgba(255, 138, 31, 0.35));
+  animation:
+    inzbc-diwali-rise-in 800ms 1050ms ease both,
+    inzbc-diwali-shimmer 4s 1.8s linear infinite;
+}
+
+.inzbc-diwali__intro-message {
+  max-width: 34ch;
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(15px, 3.6vw, 18px);
+  line-height: 1.55;
+  animation: inzbc-diwali-rise-in 800ms 1300ms ease both;
+}
+
+.inzbc-diwali__diyas {
+  display: flex;
+  gap: clamp(8px, 3vw, 22px);
+  margin-top: 22px;
+  animation: inzbc-diwali-rise-in 800ms 1550ms ease both;
+}
+
+.inzbc-diwali__diyas .inzbc-diwali__diya {
+  width: clamp(40px, 11vw, 60px);
+  height: clamp(40px, 11vw, 60px);
+}
+
+.inzbc-diwali__enter {
+  margin-top: 24px;
+  padding: 11px 24px;
+  border: 1px solid rgba(255, 215, 106, 0.6);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffe7a3;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  animation: inzbc-diwali-rise-in 800ms 1800ms ease both;
+}
+
+.inzbc-diwali__enter:hover {
+  background: rgba(255, 215, 106, 0.14);
+}
+
+/* ------------------------------------------------------------------ diya */
+
+.inzbc-diwali__diya {
+  display: block;
+  overflow: visible;
+}
+
+.inzbc-diwali__diya-flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: inzbc-diwali-flicker 1.6s ease-in-out infinite;
+  animation-delay: var(--delay, 0ms);
+}
+
+.inzbc-diwali__diya-glow {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: inzbc-diwali-glow 1.6s ease-in-out infinite;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* ------------------------------------------------------------------ banners */
 
 .inzbc-diwali__banner {
   position: fixed;
@@ -19,16 +158,35 @@
   align-items: center;
   gap: 14px;
   box-sizing: border-box;
-  width: min(560px, calc(100vw - 32px));
-  padding: 12px 44px 12px 12px;
-  border: 1px solid rgba(255, 176, 0, 0.45);
-  border-radius: 20px;
-  background: linear-gradient(135deg, #160933 0%, #2a0f55 60%, #61145f 100%);
-  box-shadow: 0 18px 50px rgba(14, 5, 34, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  width: min(540px, calc(100vw - 32px));
+  padding: 12px 46px 12px 14px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 8% 50%, rgba(255, 138, 31, 0.35), transparent 38%),
+    linear-gradient(135deg, #160933 0%, #2a0f55 55%, #61145f 100%);
+  box-shadow:
+    0 20px 50px rgba(14, 5, 34, 0.5),
+    0 0 0 1px rgba(255, 215, 106, 0.35),
+    0 0 28px rgba(255, 138, 31, 0.18);
   color: #fff;
   font-family: Poppins, system-ui, sans-serif;
   transform: translateX(-50%);
-  animation: inzbc-diwali-rise 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: inzbc-diwali-banner-in 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* A slow gold shimmer travelling round the border. */
+.inzbc-diwali__banner::before {
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent 20%, #ffd76a 45%, #ff5fb8 55%, transparent 80%) 0 0 / 300% 100%;
+  content: '';
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: inzbc-diwali-shimmer 5s linear infinite;
 }
 
 .inzbc-diwali__copy {
@@ -36,34 +194,30 @@
   flex: 1;
 }
 
-.inzbc-diwali__rangoli {
+.inzbc-diwali__banner-diya {
   flex: none;
-  display: block;
-  width: 64px;
-  height: 64px;
-  filter: drop-shadow(0 0 10px rgba(255, 176, 0, 0.35));
+  width: 56px;
+  height: 56px;
 }
 
-.inzbc-diwali__rangoli--small {
-  width: 52px;
-  height: 52px;
-}
-
-.inzbc-diwali__banner--live .inzbc-diwali__rangoli {
-  width: 88px;
-  height: 88px;
-}
-
-.inzbc-diwali__rangoli--spin {
+.inzbc-diwali__banner-rangoli {
+  flex: none;
+  width: 76px;
+  height: 76px;
+  filter: drop-shadow(0 0 12px rgba(255, 176, 0, 0.4));
   animation: inzbc-diwali-spin 40s linear infinite;
 }
 
 .inzbc-diwali__eyebrow {
-  margin: 0 0 6px;
-  color: #ffd37a;
+  margin: 0 0 7px;
+  background: linear-gradient(90deg, #ffe7a3, #ffb000);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: #ffd76a;
+  -webkit-text-fill-color: transparent;
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
 }
 
 .inzbc-diwali__timer {
@@ -74,45 +228,47 @@
 
 .inzbc-diwali__unit {
   display: flex;
-  min-width: 48px;
+  min-width: 52px;
   flex-direction: column;
   align-items: center;
-  padding: 4px 6px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.08);
+  padding: 5px 6px 4px;
+  border: 1px solid rgba(255, 215, 106, 0.22);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
 }
 
 .inzbc-diwali__value {
   color: #fff;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 22px;
   font-variant-numeric: tabular-nums;
-  line-height: 1.2;
+  font-weight: 700;
+  line-height: 1.15;
+  text-shadow: 0 0 14px rgba(255, 176, 0, 0.55);
 }
 
 .inzbc-diwali__label {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 11px;
+  color: rgba(255, 231, 163, 0.8);
+  font-size: 10px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 
 .inzbc-diwali__title {
   margin: 0;
-  background: linear-gradient(90deg, #ffb000, #ff7a1a 45%, #ff5fb8);
+  background: linear-gradient(100deg, #ffe7a3, #ffb000 35%, #ff8a1f 60%, #ff5fb8);
   -webkit-background-clip: text;
   background-clip: text;
   color: #ffb000;
   -webkit-text-fill-color: transparent;
   font-size: 26px;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.15;
 }
 
 .inzbc-diwali__message {
-  margin: 4px 0 0;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 14px;
+  margin: 3px 0 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 13.5px;
   line-height: 1.45;
 }
 
@@ -121,12 +277,13 @@
   padding: 6px 14px;
   border: 0;
   border-radius: 999px;
-  background: #b8f07c;
+  background: linear-gradient(90deg, #ffd76a, #ffb000);
   color: #1a0b3f;
   font: inherit;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12.5px;
+  font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 4px 16px rgba(255, 176, 0, 0.35);
 }
 
 .inzbc-diwali__close {
@@ -140,20 +297,25 @@
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.75);
   font: inherit;
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
 }
 
-.inzbc-diwali__close:hover,
+.inzbc-diwali__close:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
 .inzbc-diwali__replay:hover {
-  filter: brightness(1.1);
+  filter: brightness(1.08);
 }
 
 .inzbc-diwali__close:focus-visible,
-.inzbc-diwali__replay:focus-visible {
+.inzbc-diwali__replay:focus-visible,
+.inzbc-diwali__enter:focus-visible {
   outline: 2px solid #b8f07c;
   outline-offset: 2px;
 }
@@ -164,14 +326,18 @@
     padding: 10px 40px 10px 10px;
   }
 
-  .inzbc-diwali__banner--live .inzbc-diwali__rangoli {
-    width: 60px;
-    height: 60px;
-  }
-
-  .inzbc-diwali__rangoli--small {
+  .inzbc-diwali__banner-diya {
     width: 40px;
     height: 40px;
+  }
+
+  .inzbc-diwali__banner-rangoli {
+    width: 58px;
+    height: 58px;
+  }
+
+  .inzbc-diwali__timer {
+    gap: 6px;
   }
 
   .inzbc-diwali__unit {
@@ -180,26 +346,55 @@
   }
 
   .inzbc-diwali__value {
-    font-size: 17px;
+    font-size: 18px;
   }
 
   .inzbc-diwali__title {
-    font-size: 21px;
+    font-size: 22px;
   }
 
   .inzbc-diwali__message {
-    font-size: 13px;
+    font-size: 12.5px;
   }
 }
 
-@keyframes inzbc-diwali-rise {
+/* ------------------------------------------------------------------ keyframes */
+
+@keyframes inzbc-diwali-banner-in {
   from {
     opacity: 0;
-    transform: translate(-50%, 24px);
+    transform: translate(-50%, 28px);
   }
   to {
     opacity: 1;
     transform: translate(-50%, 0);
+  }
+}
+
+@keyframes inzbc-diwali-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes inzbc-diwali-fade-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes inzbc-diwali-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes inzbc-diwali-bloom {
+  from {
+    opacity: 0;
+    transform: scale(0.2) rotate(-60deg);
   }
 }
 
@@ -209,15 +404,53 @@
   }
 }
 
+@keyframes inzbc-diwali-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes inzbc-diwali-flicker {
+  0%,
+  100% {
+    transform: scale(1, 1) skewX(0deg);
+  }
+  25% {
+    transform: scale(0.94, 1.08) skewX(-3deg);
+  }
+  50% {
+    transform: scale(1.04, 0.95) skewX(2deg);
+  }
+  75% {
+    transform: scale(0.97, 1.05) skewX(-1deg);
+  }
+}
+
+@keyframes inzbc-diwali-glow {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .inzbc-diwali__intro,
+  .inzbc-diwali__intro *,
   .inzbc-diwali__banner,
-  .inzbc-diwali__rangoli--spin {
-    animation: none;
+  .inzbc-diwali__banner *,
+  .inzbc-diwali__banner::before {
+    animation: none !important;
   }
 }
 
 @media print {
   .inzbc-diwali__fireworks,
+  .inzbc-diwali__intro,
   .inzbc-diwali__banner {
     display: none;
   }
