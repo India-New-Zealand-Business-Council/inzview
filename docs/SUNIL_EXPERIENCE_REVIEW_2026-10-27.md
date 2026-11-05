@@ -1,6 +1,6 @@
 # Sunil's 27 October feedback — reviewable website prototypes
 
-**Status: review only; not approved for launch.** This branch originates from the INZBC organisation's 25 October `inzview/main`, not the fork's older 13 October main. No live website publishing takes place on a GitHub push; the INZBC Vibe owner must intentionally publish approved changes. The organisation site is managed by Paras / INZBC, so Roshan's proposal must be reviewed with that lane owner.
+**Status: review only; not approved for launch.** This branch originates from the INZBC organisation's 25 October `inzview/main`, not the fork's older 13 October main; rebased onto current inzview/main with attendance preference headcount mapping fixed. No live website publishing takes place on a GitHub push; the INZBC Vibe owner must intentionally publish approved changes. The organisation site is managed by Paras / INZBC, so Roshan's proposal must be reviewed with that lane owner.
 
 ## Review URLs once this PR is run in a staging preview
 
