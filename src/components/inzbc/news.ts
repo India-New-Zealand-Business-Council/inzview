@@ -104,6 +104,12 @@ export const NEWS_POSTS: readonly NewsPost[] = [
     coverFit: "contain",
     alt: "INZBC graphic highlighting investment and innovation opportunities between New Zealand and India.",
     excerpt: "The India–New Zealand Free Trade Agreement opens opportunities for closer investment, innovation and business partnerships.",
+    path: "/news/india-new-zealand-fta-investment-innovation",
+    seo: {
+      title: "India–New Zealand FTA: Investment and Innovation Opportunities | INZBC",
+      description: "Explore investment and innovation opportunities under the India–New Zealand Free Trade Agreement, including manufacturing, agritech, technology and renewable energy sectors.",
+    },
+    sourceUrl: "https://www.investindia.gov.in/blogs/india-new-zealand-fta-investment-opportunities-in-india",
     body: [
       { type: "p", text: "The India–New Zealand Free Trade Agreement opens opportunities for closer investment, innovation and business partnerships." },
       { type: "p", text: "Invest India highlights potential across manufacturing, agritech, food processing, technology, renewable energy and services. The agreement includes an objective to increase New Zealand private-sector investment into India by US$20 billion over 15 years, alongside improved market access and support for collaboration." },

@@ -52,21 +52,61 @@ const organizationLd = {
   email: LINKS.email.replace('mailto:', ''),
   sameAs: [LINKS.linkedin, LINKS.facebook, LINKS.x, LINKS.youtube, LINKS.flickr, LINKS.instagram],
 };
+
+// NewsArticle JSON-LD for article pages
+const { NEWS_POSTS } = await import('@/components/inzbc/news');
+const currentArticle = NEWS_POSTS.find((post) => post.path === Astro.url.pathname);
+const newsArticleLd = currentArticle ? {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: currentArticle.seo?.title ?? currentArticle.title,
+  description: currentArticle.seo?.description ?? currentArticle.excerpt,
+  image: absoluteUrl(currentArticle.cover?.startsWith('http') ? currentArticle.cover : `/blog/${currentArticle.cover}`),
+  datePublished: currentArticle.sortKey,
+  author: {
+    '@type': 'Organization',
+    name: SITE_NAME,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE_NAME,
+    logo: {
+      '@type': 'ImageObject',
+      url: absoluteUrl(ART.logo),
+    },
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonical,
+  },
+} : null;
 ---
 
 <html lang="en" class="w-full min-h-full">
   <head>
     <Head />
     <meta name="description" content={seo.description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
     <meta property="og:description" content={seo.description} />
     <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:description" content={seo.description} />
     <meta name="twitter:image" content={shareImage} />
+    <meta name="twitter:image:alt" content={seo.title} />
     <script
       type="application/ld+json"
       is:inline
       set:html={JSON.stringify(organizationLd)}
     />
+    {newsArticleLd && (
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={JSON.stringify(newsArticleLd)}
+      />
+    )}
     <SEO.Tags seoTagsServiceConfig={seoTagsServiceConfig} slot="seo-tags" />
   </head>
   <body class="w-full min-h-full">

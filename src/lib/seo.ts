@@ -112,7 +112,7 @@ export function seoForPath(pathname: string): PageSeo {
     return {
       title: article.seo?.title ?? article.title,
       description: article.seo?.description ?? article.excerpt,
-      image: article.cover ? `/blog/${article.cover}` : DEFAULT_IMAGE,
+      image: article.cover?.startsWith('http') ? article.cover : (article.cover ? `/blog/${article.cover}` : DEFAULT_IMAGE),
     };
   }
   // Old inzbc.org article URLs, which Router.tsx redirects per slug once the domain moves.

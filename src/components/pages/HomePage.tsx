@@ -1238,6 +1238,33 @@ function LatestNewsCard({
     return `/blog/${cover}`;
   };
   
+  // If article has a dedicated path, link to it; otherwise open dialog
+  if (post.path) {
+    return (
+      <HomeBlock
+        className="home-latest-news__card-wrap"
+        effect="fold"
+        delay={index * 90}
+      >
+        <Link
+          to={post.path}
+          className="home-latest-news__card home-focus-dark"
+        >
+          {post.cover ? (
+            <Image src={resolveImageUrl(post.cover)} alt={post.alt} loading="lazy" style={{ objectFit: post.coverFit }} />
+          ) : (
+            <span className="home-latest-news__card-placeholder" aria-hidden="true" />
+          )}
+          <div className="home-latest-news__card-copy">
+            <span className="home-card-kicker">{post.date}</span>
+            <h3>{post.title}</h3>
+            <p>{post.excerpt}</p>
+          </div>
+        </Link>
+      </HomeBlock>
+    );
+  }
+  
   return (
     <HomeBlock
       className="home-latest-news__card-wrap"

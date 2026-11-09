@@ -79,6 +79,7 @@ const router = createBrowserRouter(
           element: <NewsArticlePage post={post} />,
           routeMetadata: { pageIdentifier: post.slug },
         })),
+        // ... keep existing code (remaining routes) ...
         // /fta gets its own page component above; its entry stays in the PAGES table in
         // pages.ts (NAV is a separate, hand-maintained list and doesn't read PAGES, so nothing
         // else depends on this) and is filtered out only here, to avoid a second route

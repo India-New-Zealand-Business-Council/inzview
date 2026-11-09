@@ -32,7 +32,14 @@ export default function NewsArticlePage({ post }: { post: NewsPost }) {
               {post.title}
             </h1>
             {post.cover ? (
-              <Image src={`/blog/${post.cover}`} alt={post.alt} loading="eager" fetchPriority="high" className="mt-8 h-auto w-full rounded-2xl" />
+              <Image 
+                src={post.cover.startsWith('http') ? post.cover : `/blog/${post.cover}`} 
+                alt={post.alt} 
+                loading="eager" 
+                fetchPriority="high" 
+                className="mt-8 h-auto w-full rounded-2xl" 
+                style={{ objectFit: post.coverFit }}
+              />
             ) : null}
           </header>
           <div className="mx-auto mt-10 max-w-3xl space-y-5 leading-relaxed [&_a]:break-words [&_h2]:pt-6 [&_h2]:text-2xl">

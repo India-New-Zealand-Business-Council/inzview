@@ -1334,6 +1334,30 @@ function NewsCard({
   onOpen: (post: (typeof NEWS_POSTS)[number], trigger: HTMLButtonElement) => void;
 }) {
   const ref = React.useRef<HTMLButtonElement>(null);
+  
+  // If article has a dedicated path, link to it; otherwise open dialog
+  if (post.path) {
+    return (
+      <Reveal delay={delay}>
+        <Link
+          to={post.path}
+          className={`flex h-full w-full flex-col overflow-hidden rounded-2xl bg-mist text-left transition-shadow hover:shadow-md ${FOCUS}`}
+        >
+          {post.cover ? (
+            <Image src={post.cover.startsWith('http') ? post.cover : `/blog/${post.cover}`} alt={post.alt} loading="lazy" className="aspect-square w-full" style={{ objectFit: post.coverFit || 'cover' }} />
+          ) : (
+            <span className="aspect-square w-full bg-ink/5" aria-hidden="true" />
+          )}
+          <div className="flex flex-1 flex-col p-6">
+            <p className="text-xs font-medium text-plum">{post.date}</p>
+            <h3 className="mt-1 font-heading text-lg text-ink">{post.title}</h3>
+            <p className="mt-2 flex-1 text-sm text-foreground">{post.excerpt}</p>
+          </div>
+        </Link>
+      </Reveal>
+    );
+  }
+  
   return (
     <Reveal delay={delay}>
       <button
