@@ -109,7 +109,7 @@ export function NewsArticleDialog({
       widthClassName="w-[min(40rem,calc(100vw-2rem))]"
     >
       {post.cover ? (
-        <Image src={`/blog/${post.cover}`} alt={post.alt} loading="lazy" className="aspect-[16/9] w-full object-cover" style={{ objectFit: post.coverFit }} />
+        <Image src={post.cover.startsWith('http') ? post.cover : `/blog/${post.cover}`} alt={post.alt} loading="lazy" className="aspect-square w-full" style={{ objectFit: post.coverFit || 'cover' }} />
       ) : null}
       <div className="p-6 sm:p-8">
         <div className="flex items-start justify-between gap-4">

@@ -102,7 +102,8 @@ export const NEWS_POSTS: readonly NewsPost[] = [
     title: "India–New Zealand FTA: New Opportunities for Investment and Innovation",
     date: "Draft – Pending Review",
     sortKey: "2026-11-09",
-    cover: "df219d_76e8444f62e24b84945ed3ffdd9e1bea~mv2.png",
+    cover: "https://static.wixstatic.com/media/df219d_76e8444f62e24b84945ed3ffdd9e1bea~mv2.png",
+    coverFit: "contain",
     alt: "INZBC graphic highlighting investment and innovation opportunities between New Zealand and India.",
     excerpt: "The India–New Zealand Free Trade Agreement opens opportunities for closer investment, innovation and business partnerships.",
     body: [
