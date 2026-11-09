@@ -1229,6 +1229,15 @@ function LatestNewsCard({
   onOpen: (post: (typeof NEWS_POSTS)[number], trigger: HTMLButtonElement) => void;
 }) {
   const ref = useRef<HTMLButtonElement>(null);
+  
+  // Resolve image URL: use absolute URLs directly, prefix /blog/ only for relative filenames
+  const resolveImageUrl = (cover: string) => {
+    if (cover.startsWith('http://') || cover.startsWith('https://')) {
+      return cover;
+    }
+    return `/blog/${cover}`;
+  };
+  
   return (
     <HomeBlock
       className="home-latest-news__card-wrap"
@@ -1242,7 +1251,7 @@ function LatestNewsCard({
         className="home-latest-news__card home-focus-dark"
       >
         {post.cover ? (
-          <Image src={`/blog/${post.cover}`} alt={post.alt} loading="lazy" style={{ objectFit: post.coverFit }} />
+          <Image src={resolveImageUrl(post.cover)} alt={post.alt} loading="lazy" style={{ objectFit: post.coverFit }} />
         ) : (
           <span className="home-latest-news__card-placeholder" aria-hidden="true" />
         )}
