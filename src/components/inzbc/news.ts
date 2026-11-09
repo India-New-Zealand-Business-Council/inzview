@@ -96,11 +96,9 @@ export const FTA_IP_ARTICLE = {
 
 export const NEWS_POSTS: readonly NewsPost[] = [
   {
-    // UNPUBLISHED DRAFT - Added for review. Do not publish without owner approval.
-    // Article and image supplied for review. Publish date to be confirmed by owner.
     slug: "india-new-zealand-fta-new-opportunities-for-investment-and-innovation",
     title: "India–New Zealand FTA: New Opportunities for Investment and Innovation",
-    date: "Draft – Pending Review",
+    date: "9 November 2026",
     sortKey: "2026-11-09",
     cover: "https://static.wixstatic.com/media/df219d_76e8444f62e24b84945ed3ffdd9e1bea~mv2.png",
     coverFit: "contain",
