@@ -95,6 +95,23 @@ export const FTA_IP_ARTICLE = {
 } satisfies NewsPost;
 
 export const NEWS_POSTS: readonly NewsPost[] = [
+  {
+    // UNPUBLISHED DRAFT - Added for review. Do not publish without owner approval.
+    // Article and image supplied for review. Publish date to be confirmed by owner.
+    slug: "india-new-zealand-fta-new-opportunities-for-investment-and-innovation",
+    title: "India–New Zealand FTA: New Opportunities for Investment and Innovation",
+    date: "Draft – Pending Review",
+    sortKey: "2026-11-09",
+    cover: "df219d_76e8444f62e24b84945ed3ffdd9e1bea~mv2.png",
+    alt: "INZBC graphic highlighting investment and innovation opportunities between New Zealand and India.",
+    excerpt: "The India–New Zealand Free Trade Agreement opens opportunities for closer investment, innovation and business partnerships.",
+    body: [
+      { type: "p", text: "The India–New Zealand Free Trade Agreement opens opportunities for closer investment, innovation and business partnerships." },
+      { type: "p", text: "Invest India highlights potential across manufacturing, agritech, food processing, technology, renewable energy and services. The agreement includes an objective to increase New Zealand private-sector investment into India by US$20 billion over 15 years, alongside improved market access and support for collaboration." },
+      { type: "p", text: "For New Zealand businesses, this creates opportunities to explore joint ventures, research partnerships and stronger supply chains, with benefits subject to sector-specific rules and requirements." },
+      { type: "p", text: "[Read the full article on Invest India](https://www.investindia.gov.in/blogs/india-new-zealand-fta-investment-opportunities-in-india)" },
+    ],
+  },
   FTA_IP_ARTICLE,
   {
     // Sunil's op-ed in Newsroom (20 Oct 2026), added 21 Oct 2026. The article is paywalled, so
