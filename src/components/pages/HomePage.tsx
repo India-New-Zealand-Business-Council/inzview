@@ -189,6 +189,18 @@ const GALLERY_PHOTOS = [
     fit: 'contain',
   },
   {
+    src: 'https://static.wixstatic.com/media/df219d_878d78c9b39843bd8489fef96b983006~mv2.jpeg',
+    alt: 'Ms. Geetha Rajan stands with members of the Christchurch civic delegation at the Greater Chennai Corporation offices.',
+    caption: 'The Christchurch City Council civic delegation met with Ms. Geetha Rajan at the Greater Chennai Corporation offices in Chennai, India.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_8998cbc9323e4d788e0f17e2b4df3bcd~mv2.jpeg',
+    alt: 'Members of the Christchurch civic delegation pose for a group photo at IIT Madras.',
+    caption: 'The Christchurch City Council civic delegation visited the Indian Institute of Technology Madras (IIT Madras) in Chennai, India.',
+    fit: 'contain',
+  },
+  {
     src: '/events/gujarat-energy-roundtable-group-2-nov-2026.jpg',
     alt: 'Large group photo of roundtable attendees standing beside the boardroom table',
     caption: GUJARAT_ENERGY_ROUNDTABLE,
