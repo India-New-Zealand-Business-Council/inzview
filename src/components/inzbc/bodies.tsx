@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Image } from '@/components/ui/image';
+import { submitSiteForm, type SiteFormStatus } from '@/lib/siteForms';
 import {
   ArrowUpRight,
   Facebook as FacebookIcon,
@@ -10,14 +10,14 @@ import {
   Twitter as TwitterIcon,
   Youtube as YoutubeIcon,
 } from 'lucide-react';
-import { Reveal } from './motion';
-import { ART, BENEFITS, LINKS, STATS, BUSINESS_PARTNERS, INDIA_NETWORK, PUBLIC_SECTOR_NETWORK } from './content';
-import SocialFeeds from './SocialFeeds';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ART, BENEFITS, BUSINESS_PARTNERS, INDIA_NETWORK, LINKS, PUBLIC_SECTOR_NETWORK, STATS } from './content';
 import Council from './Council';
+import { Reveal } from './motion';
 import { NEWS_POSTS } from './news';
-import { useNewsDialog, NewsArticleDialog } from './News';
-import { Image } from '@/components/ui/image';
-import { submitSiteForm, type SiteFormStatus } from '@/lib/siteForms';
+import { NewsArticleDialog, useNewsDialog } from './News';
+import SocialFeeds from './SocialFeeds';
 
 /**
  * The migrated bodies for the inner routes, carried over from the Studio build's section
@@ -673,7 +673,25 @@ export const EVENT_SLUGS: ReadonlySet<string> = new Set(
 
 /** A featured event card with image beside text on desktop, stacked on mobile */
 function FeaturedEventCard({ event, delay = 0 }: { event: EventItem; delay?: number }) {
-  return (\n    <Reveal delay={delay}>\n      <div className=\"rounded-xl overflow-hidden bg-white border border-ink/10\">\n        <div className=\"grid gap-0 sm:grid-cols-[1fr_320px] lg:grid-cols-[1fr_320px]\">\n          {/* Text content */}\n          <div className=\"p-6 sm:p-8 flex flex-col justify-between\">\n            <div>\n              <h3 className=\"font-heading text-2xl sm:text-3xl text-ink\">{event.title}</h3>\n              <p className=\"mt-3 text-sm font-medium text-plum\">{event.date}</p>\n              {event.venue && <p className=\"mt-2 text-sm font-medium text-plum\">{event.venue}</p>}\n              <p className=\"mt-5 text-foreground leading-relaxed\">{event.description}</p>\n            </div>\n            <div className=\"mt-6\">\n              <a\n                href=\"https://inzbc.memberjungle.club/index.cfm?module=event&pagemode=indiv&page_id=7893429\"\n                target=\"_blank\"\n                rel=\"noopener noreferrer\"\n                className={`inline-flex items-center rounded-full px-6 py-3 text-sm font-medium bg-lime text-navy hover:brightness-105 transition-transform duration-200 active:scale-[0.97] ${FOCUS}`}\n              >\n                Register now\n              </a>\n            </div>\n          </div>\n          \n          {/* Image */}\n          {event.cover && (\n            <div className=\"flex items-center justify-center bg-mist p-4 sm:p-0\">\n              <Image\n                src={`/blog/${event.cover}`}\n                alt={event.title}\n                loading=\"lazy\"\n                className=\"w-full h-auto max-w-[320px] rounded-lg sm:rounded-none\"\n                style={{ aspectRatio: 'auto' }}\n              />\n            </div>\n          )}\n        </div>\n      </div>\n    </Reveal>\n  );\n}\n\n/** A past event: real cover, real details, links out to the original post — every claim on\n    this row traces back to something INZBC itself published.\n\n    The id is the slug, so /events/past#<slug> lands on this exact row. That is what\n    Router.tsx's /post/:slug redirect targets, and it is why these rows are addressable at\n    all — see the domain cutover section in HANDOVER.md. */\nfunction EventRow({ event, delay = 0 }: { event: EventItem; delay?: number }) {
+  return (
+    <Reveal delay={delay}>
+      <article id={event.sourceSlug} className="grid overflow-hidden rounded-xl border border-ink/10 bg-white sm:grid-cols-[1fr_320px]">
+        <div className="p-6 sm:p-8">
+          <h3 className="font-heading text-2xl text-ink">{event.title}</h3>
+          <p className="mt-3 font-medium text-plum">Friday 4 December 2026, 5–7 pm NZDT. Check-in from 4:45 pm.</p>
+          <p className="mt-2 text-plum">{event.venue}. Hosted by Auckland University of Technology.</p>
+          <p className="mt-5 leading-relaxed">Join the India New Zealand Business Council for our Annual Address and end-of-year gathering. We’ll look back on the year’s achievements, catch up with members and partners, and look ahead to what 2027 holds for the India–New Zealand business community.</p>
+          <p className="mt-4">Free for INZBC members and $25 for non-members. Registration is required. Tickets sell out fast, so register early.</p>
+          <a className={`mt-6 inline-flex rounded-full bg-lime px-6 py-3 font-medium text-navy ${FOCUS}`} href="https://inzbc.memberjungle.club/index.cfm?module=event&pagemode=indiv&page_id=7893429" target="_blank" rel="noopener noreferrer">Register now</a>
+        </div>
+        {event.cover && <Image src={`/blog/${event.cover}`} alt="INZBC Annual Address 2026 invitation, hosted by AUT" className="mx-auto h-auto w-full max-w-[320px] self-center" />}
+      </article>
+    </Reveal>
+  );
+}
+
+/** Renders a past event and links to its original post. */
+function EventRow({ event, delay = 0 }: { event: EventItem; delay?: number }) {
   return (
     <Reveal delay={delay}>
       <a
