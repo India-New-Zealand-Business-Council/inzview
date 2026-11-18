@@ -177,6 +177,12 @@ const GALLERY_PHOTOS = [
     fit: 'contain',
   },
   {
+    src: 'https://static.wixstatic.com/media/df219d_007082c0532e4653879d285d7746caa6~mv2.jpeg',
+    alt: 'S. Keerthana stands with members of the Christchurch civic delegation in Chennai.',
+    caption: 'The Christchurch City Council civic delegation met with S. Keerthana, Tamil Nadu’s Minister for Industries, Investment Promotion and Commerce, during its visit to Chennai, India.',
+    fit: 'contain',
+  },
+  {
     src: '/events/gujarat-energy-roundtable-delegation-2-nov-2026.jpg',
     alt: 'Eight people standing together beside the INZBC banner and a screen titled Business Leaders Roundtable',
     caption: GUJARAT_ENERGY_ROUNDTABLE,
