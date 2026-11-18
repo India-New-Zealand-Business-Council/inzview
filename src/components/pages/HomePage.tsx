@@ -171,6 +171,12 @@ const GALLERY_PHOTOS = [
     caption: GUJARAT_ENERGY_ROUNDTABLE,
   },
   {
+    src: 'https://static.wixstatic.com/media/df219d_5c06deb017ea42899df0cc8e970ab623~mv2.jpeg',
+    alt: 'Victoria Henstock speaks into a microphone beside Christchurch Mayor Phil Mauger.',
+    caption: 'Christchurch Deputy Mayor Victoria Henstock addresses stakeholders at a civic reception in Chennai, Tamil Nadu, India.',
+    fit: 'contain',
+  },
+  {
     src: '/events/gujarat-energy-roundtable-minister-address-2-nov-2026.jpg',
     alt: 'Gujarat Energy Minister Rushikesh Patel speaking at a lectern in front of the INZBC banner and the Indian and New Zealand flags',
     caption: GUJARAT_ENERGY_ROUNDTABLE,
@@ -180,6 +186,12 @@ const GALLERY_PHOTOS = [
     src: 'https://static.wixstatic.com/media/df219d_007082c0532e4653879d285d7746caa6~mv2.jpeg',
     alt: 'S. Keerthana stands with members of the Christchurch civic delegation in Chennai.',
     caption: 'The Christchurch City Council civic delegation met with S. Keerthana, Tamil Nadu’s Minister for Industries, Investment Promotion and Commerce, during its visit to Chennai, India.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_4f0392249fac4f759e007a9d5db9a50f~mv2.jpeg',
+    alt: 'Phil Mauger points to Christchurch on a wooden wall map in Chennai.',
+    caption: 'Christchurch Mayor Phil Mauger puts Christchurch on the map during the civic delegation’s visit to Chennai, India.',
     fit: 'contain',
   },
   {
