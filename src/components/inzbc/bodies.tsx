@@ -684,7 +684,7 @@ function FeaturedEventCard({ event, delay = 0 }: { event: EventItem; delay?: num
           <p className="mt-4">Free for INZBC members and $25 for non-members. Registration is required. Tickets sell out fast, so register early.</p>
           <a className={`mt-6 inline-flex rounded-full bg-lime px-6 py-3 font-medium text-navy ${FOCUS}`} href="https://inzbc.memberjungle.club/index.cfm?module=event&pagemode=indiv&page_id=7893429" target="_blank" rel="noopener noreferrer">Register now</a>
         </div>
-        {event.cover && <Image src={`/blog/${event.cover}`} alt="INZBC Annual Address 2026 invitation, hosted by AUT" className="mx-auto h-auto w-full max-w-[320px] self-center" />}
+        {event.cover && <Image src="https://inzbc.memberjungle.club/client_images/6490325.png" alt="INZBC Annual Address 2026 invitation, hosted by AUT" className="mx-auto h-auto w-full max-w-[320px] self-center" />}
       </article>
     </Reveal>
   );
