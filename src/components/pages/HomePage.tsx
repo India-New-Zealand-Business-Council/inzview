@@ -1,5 +1,22 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import ClickSpark from '@/components/home/ClickSpark';
+import EffectsWorld from '@/components/home/EffectsWorld';
+import KineticHeading from '@/components/home/KineticHeading';
+import TradeThread from '@/components/home/TradeThread';
+import {
+  ART,
+  BENEFITS,
+  BUSINESS_PARTNERS,
+  INDIA_NETWORK,
+  LINKS,
+  PUBLIC_SECTOR_NETWORK,
+  STATS,
+} from '@/components/inzbc/content';
+import Footer from '@/components/inzbc/Footer';
+import { NEWS_POSTS } from '@/components/inzbc/news';
+import { NewsArticleDialog, useNewsDialog } from '@/components/inzbc/News';
+import { NAV } from '@/components/inzbc/pages';
+import { Image } from '@/components/ui/image';
+import { submitSiteForm, type SiteFormStatus } from '@/lib/siteForms';
 import {
   AnimatePresence,
   motion,
@@ -20,26 +37,9 @@ import {
   UsersRound,
   X,
 } from 'lucide-react';
-import {
-  ART,
-  BENEFITS,
-  LINKS,
-  STATS,
-  BUSINESS_PARTNERS,
-  INDIA_NETWORK,
-  PUBLIC_SECTOR_NETWORK,
-} from '@/components/inzbc/content';
-import { NAV } from '@/components/inzbc/pages';
-import { NEWS_POSTS } from '@/components/inzbc/news';
-import { useNewsDialog, NewsArticleDialog } from '@/components/inzbc/News';
-import Footer from '@/components/inzbc/Footer';
-import ClickSpark from '@/components/home/ClickSpark';
-import EffectsWorld from '@/components/home/EffectsWorld';
-import KineticHeading from '@/components/home/KineticHeading';
-import TradeThread from '@/components/home/TradeThread';
-import { submitSiteForm, type SiteFormStatus } from '@/lib/siteForms';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './HomePage.css';
-import { Image } from '@/components/ui/image';
 
 /**
  * INZBC homepage.
@@ -149,6 +149,12 @@ const GALLERY_PHOTOS = [
     src: '/events/modi-luxon-bilateral-meeting-2026.jpg',
     alt: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting',
     caption: 'Prime Ministers Narendra Modi and Christopher Luxon in a bilateral meeting, July 2026',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_79cb670cfbdc426f96ed8db527d8e0f1~mv2.jpeg',
+    alt: 'Phil Mauger and Aadhav Arjuna hold up a BLACKCAPS shirt beside members of the Christchurch civic delegation in Chennai.',
+    caption: 'Christchurch Mayor Phil Mauger presents a BLACKCAPS shirt to Tamil Nadu Sports Development Minister Aadhav Arjuna during the Christchurch City Council civic delegation’s visit to Chennai, Tamil Nadu, India.',
+    fit: 'contain',
   },
   // Sunil, 3 Nov 2026: added as photo 3, caption his own.
   {
@@ -1229,7 +1235,7 @@ function LatestNewsCard({
   onOpen: (post: (typeof NEWS_POSTS)[number], trigger: HTMLButtonElement) => void;
 }) {
   const ref = useRef<HTMLButtonElement>(null);
-  
+
   // Resolve image URL: use absolute URLs directly, prefix /blog/ only for relative filenames
   const resolveImageUrl = (cover: string) => {
     if (cover.startsWith('http://') || cover.startsWith('https://')) {
@@ -1237,7 +1243,7 @@ function LatestNewsCard({
     }
     return `/blog/${cover}`;
   };
-  
+
   // If article has a dedicated path, link to it; otherwise open dialog
   if (post.path) {
     return (
@@ -1264,7 +1270,7 @@ function LatestNewsCard({
       </HomeBlock>
     );
   }
-  
+
   return (
     <HomeBlock
       className="home-latest-news__card-wrap"
