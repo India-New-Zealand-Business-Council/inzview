@@ -135,9 +135,93 @@ const GUJARAT_ENERGY_ROUNDTABLE =
   'Energy Sector Business Leaders Roundtable with the visiting Energy delegation from Gujarat led by Hon Shri Rushikesh Ganeshbhai Patel, Minister of Energy and Petrochemicals Department for the Government of Gujarat'
 
 const GALLERY_PHOTOS = [
-  // Cut from 21 to 12 and reordered on Sunil's instruction (21 Oct 2026), by position in
-  // the 21-photo list as it stood: 21, 17, 18, 20, 13, 12, 6, 5, 10, 16, 1, 19. Removed
-  // from this gallery only (files kept): 2, 3, 4, 7, 8, 9, 11, 14, 15.
+  // 14 new photos added 23 Nov 2026 - centenary sporting ties celebration
+  // Prepended to existing 27 photos, mapping by attachment order: 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+  {
+    src: 'https://static.wixstatic.com/media/df219d_4879621bff76423189aad88ed1064a80~mv2.jpeg',
+    alt: 'Commemorative plaque marking 100 years of sporting ties between India and New Zealand',
+    caption: 'Commemorative plaque marking 100 years of sporting ties between India and New Zealand, designed by Tanmay Desai.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_92d4b44434b04f64be6a8046f9902446~mv2.jpeg',
+    alt: 'INZBC Chair Bharat Chawla and CEO Sunil Kaushal with plaque designer Tanmay Desai presenting commemorative plaque to India head coach Gautam Gambhir',
+    caption: 'INZBC Chair Bharat Chawla and CEO Sunil Kaushal, along with plaque designer Tanmay Desai, present a commemorative plaque to India head coach Gautam Gambhir, alongside Indian High Commissioner Muanpuii Saiawi.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_d3aac68f3be44aac98795d94f8e5a335~mv2.jpg',
+    alt: 'Commemorative plaque being handed over on stage at the centenary reception',
+    caption: 'A commemorative plaque is handed over on stage at the centenary reception.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_096314e3e7544678b9b16e9c8f3f2ec3~mv2.jpg',
+    alt: 'INZBC Chair Bharat Chawla and CEO Sunil Kaushal with plaque designer Tanmay Desai presenting plaque to BLACKCAPS head coach Rob Walter',
+    caption: 'INZBC Chair Bharat Chawla and CEO Sunil Kaushal, along with plaque designer Tanmay Desai, present a commemorative plaque to BLACKCAPS head coach Rob Walter alongside Indian High Commissioner Muanpuii Saiawi.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_10bd3fb9066c4bcb8f9e3ea2845a6ed9~mv2.jpg',
+    alt: 'India and New Zealand cricket teams on stage with Indian High Commissioner Muanpuii Saiawi at centenary reception',
+    caption: 'The India and New Zealand cricket teams join Indian High Commissioner Muanpuii Saiawi on stage.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_dcd530d5af1048afa3e7b6949cf0a6aa~mv2.jpg',
+    alt: 'Indian High Commissioner Muanpuii Saiawi with Indian Defence Forces men\'s hockey team on stage',
+    caption: 'Indian High Commissioner Muanpuii Saiawi joins the Indian Defence Forces men\'s hockey team on stage.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_f3603ea145c6467ba39732a1b5aa1601~mv2.jpg',
+    alt: 'Indian Defence Forces men\'s hockey team at the centenary reception',
+    caption: 'The Indian Defence Forces men\'s hockey team at the centenary reception.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_8df7fe81b7ff4ffca83d67f5c73e1e7f~mv2.jpg',
+    alt: 'INZBC board members with Indian High Commissioner Muanpuii Saiawi and the commemorative plaque',
+    caption: 'INZBC board members with Indian High Commissioner Muanpuii Saiawi and the commemorative plaque.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_125e3b20b32a4da3812fd039f3b6b489~mv2.jpg',
+    alt: 'INZBC board members with Indian High Commissioner Muanpuii Saiawi',
+    caption: 'INZBC board members with Indian High Commissioner Muanpuii Saiawi.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_c4f53f2c9ca8496a9847d697e1b88a51~mv2.jpg',
+    alt: 'INZBC board member Sakthi Ranganathan with Peter Miskimmin at the reception',
+    caption: 'INZBC board member Sakthi Ranganathan with Peter Miskimmin at the reception.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_44f581e7b5484cb1aaeffc9c96a87a84~mv2.jpg',
+    alt: 'Newstalk ZB sports host Jason Pine speaking with India captain Shubman Gill and BLACKCAPS Test captain Tom Latham',
+    caption: 'Newstalk ZB sports host Jason Pine speaks with India captain Shubman Gill and BLACKCAPS Test captain Tom Latham.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_a4053489f72c45849ddefc8731b78e86~mv2.jpg',
+    alt: 'Plaque designer Tanmay Desai with Sport NZ\'s Jamie Tout and INZBC\'s Chair and Chief Executive',
+    caption: 'Plaque designer Tanmay Desai with Sport NZ\'s Jamie Tout and INZBC\'s Chair and Chief Executive.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_744888604aae4c518d05cbd1e0a3447e~mv2.jpg',
+    alt: 'Jason Pine hosts a discussion with Peter Miskimmin and former rugby player Manu Albert',
+    caption: 'Jason Pine hosts a discussion with Peter Miskimmin and former rugby player Manu Albert.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_162b0ec01a054a929855e653975b1a66~mv2.jpg',
+    alt: 'INZBC board members visit the Wellington Phoenix High Performance Centre',
+    caption: 'INZBC board members visit the Wellington Phoenix High Performance Centre.',
+    fit: 'contain',
+  },
+  // ... keep existing code (original 27 photos starting with the Kotahitanga shirt photo) ...
   {
     src: 'https://static.wixstatic.com/media/df219d_a983173d04484d5299070e65e813ddd8~mv2.jpg',
     alt: 'Three professionals holding New Zealand sports jersey at INZBC event',

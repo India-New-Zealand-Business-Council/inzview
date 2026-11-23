@@ -58,10 +58,10 @@ export type PageSeo = {
  */
 const STANDALONE: Record<string, PageSeo> = {
   '/': {
-    title: "New Zealand's gateway to the India opportunity",
+    title: 'India New Zealand Business Council | Trade, FTA and Events',
     description:
-      'INZBC connects exporters, investors, institutions and government across the NZ-India trade relationship, with the intelligence and access to move from interest to action.',
-    image: DEFAULT_IMAGE,
+      'Explore the NZ–India Free Trade Agreement, trade resources and events from INZBC, including photos celebrating 100 years of India–New Zealand sporting ties.',
+    image: '/events/santner-gill-odi-series-eden-park-2026.jpg',
   },
   '/fta/explainer': {
     title: 'FTA Opportunity Explainer',
