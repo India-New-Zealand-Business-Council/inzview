@@ -139,8 +139,8 @@ const GALLERY_PHOTOS = [
   // Prepended to existing 27 photos, mapping by attachment order: 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
   {
     src: 'https://static.wixstatic.com/media/df219d_4879621bff76423189aad88ed1064a80~mv2.jpeg',
-    alt: 'Commemorative plaque marking 100 years of sporting ties between India and New Zealand',
-    caption: 'Commemorative plaque marking 100 years of sporting ties between India and New Zealand, designed by Tanmay Desai.',
+    alt: '“From Fern to Feather” commemorative plaque marking 100 years of sporting ties between India and New Zealand',
+    caption: '“From Fern to Feather”: a commemorative plaque marking 100 years of sporting ties between India and New Zealand, designed by Tanmay Desai. Its inscription reads: “The fern lit the path for those travelling in the dark. The feather keeps a watchful eye on those far away from home.”',
     fit: 'contain',
   },
   {
