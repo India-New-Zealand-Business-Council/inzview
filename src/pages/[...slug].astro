@@ -27,6 +27,9 @@ const shareImage = absoluteUrl(seo.image);
 // These are stakeholder concept routes, not public INZBC services or live reports.
 const stakeholderPreview = ['/sip-preview', '/experience-preview'].includes(Astro.url.pathname.replace(/\/$/, ''));
 
+// Determine if this is the home page for custom og:title handling
+const isHomePage = Astro.url.pathname === '/';
+
 const seoTagsServiceConfig = await loadSEOTagsServiceConfig({
   // Not Astro.url.href: behind Wix's proxy that reports the incoming scheme, which is how
   // the live canonical came out as http:// on an https-only site.
@@ -95,6 +98,7 @@ if (currentArticle?.cover === 'https://static.wixstatic.com/media/df219d_76e8444
     <Head />
     <meta name="description" content={seo.description} />
     <meta name="robots" content={stakeholderPreview ? "noindex,nofollow" : "index, follow"} />
+    {isHomePage && <meta property="og:title" content="India New Zealand Business Council | Trade, Events and Connections" />}
     <meta property="og:description" content={seo.description} />
     <meta property="og:image" content={shareImage} />
     <meta property="og:image:width" content="1200" />
