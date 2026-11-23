@@ -1509,6 +1509,7 @@ export default function HomePage() {
 
   return (
     <ClickSpark>
+      <link rel="canonical" href="https://www.inzbc.org" />
       <div ref={pageRef} className="home-page">
         <EffectsWorld />
       <a href="#main-content" className="home-skip-link">
