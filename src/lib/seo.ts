@@ -61,7 +61,7 @@ const STANDALONE: Record<string, PageSeo> = {
     title: 'India New Zealand Business Council | Trade, FTA and Events',
     description:
       'Explore the NZ–India Free Trade Agreement, trade resources and events from INZBC, including photos celebrating 100 years of India–New Zealand sporting ties.',
-    image: 'https://static.wixstatic.com/media/df219d_10bd3fb9066c4bcb8f9e3ea2845a6ed9~mv2.jpg',
+    image: 'https://static.wixstatic.com/media/df219d_a4053489f72c45849ddefc8731b78e86~mv2.jpg',
   },
   '/fta/explainer': {
     title: 'FTA Opportunity Explainer',
