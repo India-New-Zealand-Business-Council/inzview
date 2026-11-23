@@ -144,15 +144,15 @@ const GALLERY_PHOTOS = [
     fit: 'contain',
   },
   {
-    src: 'https://static.wixstatic.com/media/df219d_44f581e7b5484cb1aaeffc9c96a87a84~mv2.jpg',
-    alt: 'INZBC Chair Bharat Chawla and CEO Sunil Kaushal with plaque designer Tanmay Desai presenting commemorative plaque to India head coach Gautam Gambhir',
-    caption: 'INZBC Chair Bharat Chawla and CEO Sunil Kaushal, along with plaque designer Tanmay Desai, present a commemorative plaque to India head coach Gautam Gambhir, alongside Indian High Commissioner Muanpuii Saiawi.',
-    fit: 'contain',
-  },
-  {
     src: 'https://static.wixstatic.com/media/df219d_096314e3e7544678b9b16e9c8f3f2ec3~mv2.jpg',
     alt: 'Commemorative plaque being handed over on stage at the centenary reception',
     caption: 'A commemorative plaque is handed over on stage at the centenary reception.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_44f581e7b5484cb1aaeffc9c96a87a84~mv2.jpg',
+    alt: 'INZBC Chair Bharat Chawla and CEO Sunil Kaushal with plaque designer Tanmay Desai presenting commemorative plaque to India head coach Gautam Gambhir',
+    caption: 'INZBC Chair Bharat Chawla and CEO Sunil Kaushal, along with plaque designer Tanmay Desai, present a commemorative plaque to India head coach Gautam Gambhir, alongside Indian High Commissioner Muanpuii Saiawi.',
     fit: 'contain',
   },
   {
@@ -170,13 +170,13 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_f3603ea145c6467ba39732a1b5aa1601~mv2.jpg',
     alt: 'Indian High Commissioner Muanpuii Saiawi with Indian Defence Forces men\'s hockey team on stage',
-    caption: 'Indian High Commissioner Muanpuii Saiawi joins the Indian Defence Forces men\'s hockey team on stage.',
+    caption: 'Indian High Commissioner Muanpuii Saiawi joins the Indian Defence Forces men’s hockey team on stage.',
     fit: 'contain',
   },
   {
     src: 'https://static.wixstatic.com/media/df219d_dcd530d5af1048afa3e7b6949cf0a6aa~mv2.jpg',
     alt: 'Indian Defence Forces men\'s hockey team at the centenary reception',
-    caption: 'The Indian Defence Forces men\'s hockey team at the centenary reception.',
+    caption: 'The Indian Defence Forces men’s hockey team at the centenary reception.',
     fit: 'contain',
   },
   {
@@ -206,7 +206,7 @@ const GALLERY_PHOTOS = [
   {
     src: 'https://static.wixstatic.com/media/df219d_92d4b44434b04f64be6a8046f9902446~mv2.jpeg',
     alt: 'Plaque designer Tanmay Desai with Sport NZ\'s Jamie Tout and INZBC\'s Chair and Chief Executive',
-    caption: 'Plaque designer Tanmay Desai with Sport NZ\'s Jamie Tout and INZBC\'s Chair and Chief Executive.',
+    caption: 'Plaque designer Tanmay Desai with Sport NZ’s Jamie Tout and INZBC’s Chair and Chief Executive.',
     fit: 'contain',
   },
   {
