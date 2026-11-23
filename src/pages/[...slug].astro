@@ -96,10 +96,20 @@ if (currentArticle?.cover === 'https://static.wixstatic.com/media/df219d_76e8444
 <html lang="en" class="w-full min-h-full">
   <head>
     <Head />
-    <meta name="description" content={seo.description} />
+    {isHomePage ? (
+      <>
+        <title>India New Zealand Business Council | Trade, FTA and Events</title>
+        <meta name="description" content="Explore the NZ–India Free Trade Agreement, trade resources and events from INZBC, including photos celebrating 100 years of India–New Zealand sporting ties." />
+        <meta property="og:title" content="India New Zealand Business Council | Trade, Events and Connections" />
+        <meta property="og:description" content="See how INZBC connects New Zealand and India through trade, business events and a century of sporting ties." />
+      </>
+    ) : (
+      <>
+        <meta name="description" content={seo.description} />
+        <meta property="og:description" content={seo.description} />
+      </>
+    )}
     <meta name="robots" content={stakeholderPreview ? "noindex,nofollow" : "index, follow"} />
-    {isHomePage && <meta property="og:title" content="India New Zealand Business Council | Trade, Events and Connections" />}
-    <meta property="og:description" content={seo.description} />
     <meta property="og:image" content={shareImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content={ogImageHeight} />
@@ -119,7 +129,7 @@ if (currentArticle?.cover === 'https://static.wixstatic.com/media/df219d_76e8444
         set:html={JSON.stringify(newsArticleLd)}
       />
     )}
-    <SEO.Tags seoTagsServiceConfig={seoTagsServiceConfig} slot="seo-tags" />
+    {!isHomePage && <SEO.Tags seoTagsServiceConfig={seoTagsServiceConfig} slot="seo-tags" />}
   </head>
   <body class="w-full min-h-full">
     <div id="root" class="w-full min-h-full">
