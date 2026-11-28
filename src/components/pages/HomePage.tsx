@@ -135,6 +135,98 @@ const GUJARAT_ENERGY_ROUNDTABLE =
   'Energy Sector Business Leaders Roundtable with the visiting Energy delegation from Gujarat led by Hon Shri Rushikesh Ganeshbhai Patel, Minister of Energy and Petrochemicals Department for the Government of Gujarat'
 
 const GALLERY_PHOTOS = [
+  // 15 new photos added 28 Nov 2026 - New Zealand–India Business, Sport and Innovation Summit
+  // Prepended to existing 41 photos
+  {
+    src: 'https://static.wixstatic.com/media/df219d_f71aa40dee9a45a49db8f564fe14b779~mv2.jpeg',
+    alt: 'Sunil Kaushal and P.K.S.V. Sagar seated on stage in conversation at the Auckland summit.',
+    caption: 'INZBC Chief Executive Sunil Kaushal leads a conversation with P.K.S.V. Sagar, President of GMR Sports, on what New Zealand businesses can learn from India about scale, innovation and market development.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_05d5b9c5e1da4eeba370be7716c0f461~mv2.jpg',
+    alt: 'Summit group poses in front of the New Zealand–India Business, Sport and Innovation Summit backdrop.',
+    caption: 'Representatives from Sport New Zealand and INZBC join India\'s High Commissioner to New Zealand, Ms Muanpuii Saiawi, for a group photograph at the summit.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_5299f2d60188473491b46aa0f09ba6aa~mv2.jpg',
+    alt: 'Bharat Chawla holds a microphone alongside three panellists during the Market Acceleration session.',
+    caption: 'INZBC Chair Bharat Chawla joins the Market Acceleration panel to discuss practical lessons for New Zealand businesses entering and growing in India.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_d7b673ebb06540f3a70235f6bbfbab5b~mv2.jpg',
+    alt: 'Ajinkya Rahane, Grant Elliott and Gemma McCaw seated with the moderator on the summit stage.',
+    caption: 'Former India Test captain Ajinkya Rahane, former BLACKCAPS cricketer Grant Elliott and three-time Olympian Gemma McCaw take part in a summit discussion marking 100 years of sporting ties between New Zealand and India.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_e35926b819174901aabbd9d2d8ecdcdb~mv2.jpg',
+    alt: 'Bharat Chawla seated on stage holding a microphone.',
+    caption: 'INZBC Chair Bharat Chawla takes part in the Market Acceleration discussion on entering and growing in the Indian market.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_31b1269f31cb4cbfb32e3c43385e6167~mv2.jpg',
+    alt: 'Four panellists on stage during the food and beverage session.',
+    caption: 'Panellists discuss how food, culture and commerce can help build business relationships between New Zealand and India.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_ce4d331447324bbfb86047db98c41ec7~mv2.jpg',
+    alt: 'Four panellists seated on stage during the innovation session.',
+    caption: 'The innovation panel explores how New Zealand businesses can grow their ideas in the Indian market.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_64d1206e33cb4cc69b07a9f8b334a22c~mv2.jpg',
+    alt: 'Ashok Krish addresses the summit audience from the stage.',
+    caption: 'Ashok Krish, who leads the AI practice at Tata Consultancy Services, speaks at the Auckland summit.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_a8d5231319e045bd8ad63c67737edf72~mv2.jpg',
+    alt: 'Four panellists seated on stage during the education session.',
+    caption: 'The education panel discusses how student connections can grow into longer-term partnerships between New Zealand and India.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_c2533e0fd3a642338597a75d216331e6~mv2.jpg',
+    alt: 'Five panellists seated on stage during the visitor economy session.',
+    caption: 'Panellists explore opportunities to grow tourism from India to New Zealand, including the role of travel connections.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_cb1df4a0f9c04e049d73e5255ab9a9c6~mv2.jpg',
+    alt: 'Rahul Bose speaks at a lectern surrounded by greenery.',
+    caption: 'Rahul Bose, President of Rugby India, addresses summit guests from the lectern.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_ab08572de9914448854613f616058cc1~mv2.jpg',
+    alt: 'Ajinkya Rahane, Gemma McCaw and Grant Elliott seated together on stage.',
+    caption: 'Former India Test captain Ajinkya Rahane, three-time Olympian Gemma McCaw and former BLACKCAPS cricketer Grant Elliott share the stage in Auckland.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_d7b845da684b46bf9bf41744e63ff217~mv2.jpg',
+    alt: 'Sunil Kaushal and P.K.S.V. Sagar stand together on the summit stage.',
+    caption: 'INZBC Chief Executive Sunil Kaushal and GMR Sports President P.K.S.V. Sagar pose together on the summit stage.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_b6d7225d33344149ae5d498ec97c774e~mv2.jpg',
+    alt: 'A wide view of delegates watching a panel discussion.',
+    caption: 'Delegates watch a panel discussion at the New Zealand–India Business, Sport and Innovation Summit in Auckland.',
+    fit: 'contain',
+  },
+  {
+    src: 'https://static.wixstatic.com/media/df219d_85c8bc7f6e444a74bc26dc9f37c9e0e2~mv2.jpg',
+    alt: 'Delegates chat in small groups at the summit.',
+    caption: 'Delegates catch up between sessions at the Auckland summit.',
+    fit: 'contain',
+  },
   // 14 new photos added 23 Nov 2026 - centenary sporting ties celebration
   // Prepended to existing 27 photos, mapping by attachment order: 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
   {
